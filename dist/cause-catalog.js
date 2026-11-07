@@ -104,7 +104,7 @@ function fonsTau(game,s,now=causeNow()){if(game.fonsIdle0===undefined)return 0;r
 // The dives (Fons marí de vidre, Selva de llum 0.29, Sabana de paper 0.30, El pou del temps 0.31, Gegants del blau 0.36) share the same clocks and the same way of travelling; each has
 // its own poses, camera, music and starting place (the surface of the sea, the sky over the jungle, the sky over Kilimanjaro at the end
 // of the night).
-const DIVES=Object.freeze({jelly:Object.freeze({N:FONS_N,STIM:FONS_STIM,START:FONS_SURF,camera:fonsCamera,duration:fonsDuration,rest:fonsRest,score:fonsScore}),
+export const DIVES=Object.freeze({jelly:Object.freeze({N:FONS_N,STIM:FONS_STIM,START:FONS_SURF,camera:fonsCamera,duration:fonsDuration,rest:fonsRest,score:fonsScore}),
  jungle:Object.freeze({N:SELVA_N,STIM:SELVA_STIM,START:SELVA_START,camera:selvaCamera,duration:selvaDuration,rest:selvaRest,score:selvaScore}),
  savanna:Object.freeze({N:SABANA_N,STIM:SABANA_STIM,START:SABANA_START,camera:sabanaCamera,duration:sabanaDuration,rest:sabanaRest,score:sabanaScore}),
  well:Object.freeze({N:POU_N,STIM:POU_STIM,START:POU_START,camera:pouCamera,duration:pouDuration,rest:pouRest,score:pouScore}),

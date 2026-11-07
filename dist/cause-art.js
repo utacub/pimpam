@@ -22,6 +22,7 @@ import {diaPhase,diaStart,diaStops} from './dia.js';
 import {ESC_WAIT,ESC_WAIT_START,escWaitClock} from './escenari.js';
 import {FONS_N,FONS_STIM} from './fons.js';
 import {drawFons,fonsPrewarm,fonsLoad} from './fons-gl.js';
+import {vdOn,vdDraw,vdKey} from './video-dives.js';
 import {SELVA_N,SELVA_STIM} from './selva.js';
 import {drawSelva,selvaPrewarm,selvaLoad} from './selva-gl.js';
 import {SABANA_N,SABANA_STIM} from './sabana.js';
@@ -91,6 +92,9 @@ function Cwaiting(c,w,h,id,g,s,preview,draw,stamp,ownDark=false){const now=typeo
  if(k&&k.dark>.002&&!ownDark){c.save();c.globalAlpha=1;c.globalCompositeOperation='source-over';c.fillStyle=`rgba(3,5,14,${k.dark.toFixed(3)})`;c.fillRect(0,0,w,h);c.restore();}
  if(key){const old=C_WAIT_SHEET.sheet,sheet=old&&old.width===cv.width&&old.height===cv.height?old:Object.assign(document.createElement('canvas'),{width:cv.width,height:cv.height}),x=sheet.getContext('2d');
   x.clearRect(0,0,sheet.width,sheet.height);x.drawImage(cv,0,0);C_WAIT_SHEET.key=key;C_WAIT_SHEET.sheet=sheet;}}
+// 0.49 · The dives played as videos (video-dives.js): the frame of the scene's video, darkened while it waits for the next press, as the
+// live drawing was (down to 15 % of the light).
+function Cvideo(c,w,h,id,g,s){Cwaiting(c,w,h,id,g,s,false,(idle,k)=>{vdDraw(c,w,h,!!s.reduced,k?k.dark/ESC_WAIT.dark*.85:0);},()=>'vd:'+vdKey(),true);}
 // Fons marí de vidre (CE06, 0.28): the dive, drawn with WebGL2 (fons-gl.js), at rest too: the surface before the first press, each
 // scene stopped and dark after its stimulus, the surface again after the climb that follows the twentieth. The darkening is done by
 // the renderer itself (down to 15 % of the light, more than the stories), with «Avís d'espera»; «Reducció de moviment» shows each
@@ -98,6 +102,7 @@ function Cwaiting(c,w,h,id,g,s,preview,draw,stamp,ownDark=false){const now=typeo
 // the moon jellies.
 function Cfons(c,w,h,g,s,p,clock,preview){
  if(preview){if(!drawFons(c,w,h,{variant:1,t:FONS_STIM*.5,tau:FONS_STIM*.5-.3,prevTau:null,stim:FONS_STIM,sea:30,dark:0,background:s.background,opacity:s.opacity,base:s.base,scale:1}))Cocean(c,w,h,g,s,p,clock);return;}
+ if(vdOn('jelly')){Cvideo(c,w,h,'jelly',g,s);return;}
  const v=g.variant??-1,running=g.time!==null&&v>=0;
  Cwaiting(c,w,h,'jelly',g,s,false,(idle,k)=>{const tau=v<0?0:s.reduced?FONS_STIM*.5:Math.max(0,fonsTau(g,s));
   const ok=drawFons(c,w,h,{variant:v,t:running&&!s.reduced?g.time:null,tau,prevTau:g.fonsPrevTau!=null?g.fonsPrevTau+tau:null,from:g.fonsFrom,stim:g.fonsStim||FONS_STIM,sea:s.reduced?0:idle,
@@ -115,6 +120,7 @@ function CselvaPlain(c,w,h,s,v=-1){const [a,b]=C_SELVA_LIGHT[Math.max(0,v)%20],g
  c.restore();}
 function Cselva(c,w,h,g,s,p,clock,preview){
  if(preview){if(!drawSelva(c,w,h,{variant:2,t:SELVA_STIM*.5,tau:SELVA_STIM*.5-.3,prevTau:null,stim:SELVA_STIM,sea:30,dark:0,background:s.background,opacity:s.opacity,base:s.base,scale:1}))CselvaPlain(c,w,h,s,2);return;}
+ if(vdOn('jungle')){Cvideo(c,w,h,'jungle',g,s);return;}
  const v=g.variant??-1,running=g.time!==null&&v>=0;
  Cwaiting(c,w,h,'jungle',g,s,false,(idle,k)=>{const tau=v<0?0:s.reduced?SELVA_STIM*.5:Math.max(0,fonsTau(g,s));
   const ok=drawSelva(c,w,h,{variant:v,t:running&&!s.reduced?g.time:null,tau,prevTau:g.fonsPrevTau!=null?g.fonsPrevTau+tau:null,from:g.fonsFrom,stim:g.fonsStim||SELVA_STIM,sea:s.reduced?0:idle,
@@ -130,6 +136,7 @@ function CsabanaPlain(c,w,h,s,v=-1){const [a,b]=C_SABANA_LIGHT[Math.max(0,v)%20]
  c.restore();}
 function Csabana(c,w,h,g,s,p,clock,preview){
  if(preview){if(!drawSabana(c,w,h,{variant:3,t:SABANA_STIM*.5,tau:SABANA_STIM*.5-.3,prevTau:null,stim:SABANA_STIM,sea:30,dark:0,background:s.background,opacity:s.opacity,base:s.base,scale:1}))CsabanaPlain(c,w,h,s,3);return;}
+ if(vdOn('savanna')){Cvideo(c,w,h,'savanna',g,s);return;}
  const v=g.variant??-1,running=g.time!==null&&v>=0;
  Cwaiting(c,w,h,'savanna',g,s,false,(idle,k)=>{const tau=v<0?0:s.reduced?SABANA_STIM*.5:Math.max(0,fonsTau(g,s));
   const ok=drawSabana(c,w,h,{variant:v,t:running&&!s.reduced?g.time:null,tau,prevTau:g.fonsPrevTau!=null?g.fonsPrevTau+tau:null,from:g.fonsFrom,stim:g.fonsStim||SABANA_STIM,sea:s.reduced?0:idle,
@@ -146,6 +153,7 @@ function CpouPlain(c,w,h,s,v=-1){const [a,b]=C_POU_LIGHT[Math.max(0,v)%20],g=c.c
  c.restore();}
 function Cpou(c,w,h,g,s,p,clock,preview){
  if(preview){if(!drawPou(c,w,h,{variant:5,t:POU_STIM*.5,tau:POU_STIM*.5,prevTau:null,stim:POU_STIM,sea:30,dark:0,background:s.background,opacity:s.opacity,base:s.base,scale:1}))CpouPlain(c,w,h,s,5);return;}
+ if(vdOn('well')){Cvideo(c,w,h,'well',g,s);return;}
  const v=g.variant??-1,running=g.time!==null&&v>=0;
  Cwaiting(c,w,h,'well',g,s,false,(idle,k)=>{const tau=v<0?0:s.reduced?POU_STIM*.5:Math.max(0,fonsTau(g,s));
   const ok=drawPou(c,w,h,{variant:v,t:running&&!s.reduced?g.time:null,tau,prevTau:g.fonsPrevTau!=null?g.fonsPrevTau+tau:null,from:g.fonsFrom,stim:g.fonsStim||POU_STIM,sea:s.reduced?0:idle,
@@ -163,6 +171,7 @@ function CgegantsPlain(c,w,h,s,v=-1){const [a,b]=v<0?['#e8a070','#1a3048']:C_GG_
  c.restore();}
 function Cgegants(c,w,h,g,s,p,clock,preview){ggSetSoft(s.ggCamera==='soft');
  if(preview){if(!drawGegants(c,w,h,{variant:10,t:7.6,tau:7.6,prevTau:null,stim:GG_STIM,sea:30,dark:0,background:s.background,opacity:s.opacity,base:s.base,scale:1}))CgegantsPlain(c,w,h,s,10);return;}
+ if(vdOn('giants')){Cvideo(c,w,h,'giants',g,s);return;}
  const v=g.variant??-1,running=g.time!==null&&v>=0;
  Cwaiting(c,w,h,'giants',g,s,false,(idle,k)=>{const tau=v<0?0:s.reduced?GG_STILL[v]:Math.max(0,fonsTau(g,s));
   const ok=drawGegants(c,w,h,{variant:v,t:running&&!s.reduced?g.time:null,tau,prevTau:g.fonsPrevTau!=null?g.fonsPrevTau+tau:null,from:g.fonsFrom,stim:g.fonsStim||GG_STIM,sea:s.reduced?0:idle,

@@ -54,7 +54,7 @@ Ar arParts(vec2 f,float ph,float walk,float dig,float rear,float sniff,float ear
  P.legsN=lN;P.legsF=lF;P.claw=cl;return P;}
 float arUnion(Ar P){return min(min(min(P.legsN,P.legsF),min(P.body,P.neck)),min(min(P.head,P.snout),min(P.tail,P.earN)));}
 void aardvark(vec2 q,vec2 c,float s,float ph,float walk,float dig,float rear,float sniff,float earA,float earB,float front,float ha,float bl,float shadow){
- vec2 f=(q-c)/s;if(f.y<-.08||f.y>1.0||f.x<-.95||f.x>.9)return;float px=PX/s;
+ vec2 f=(q-c)/s;if(f.y<-.08||f.y>1.5||f.x<-1.1||f.x>1.1)return;float px=PX/s;
  Ar P=arParts(f,ph,walk,dig,rear,sniff,earA,earB,front,ha);
  if(shadow>0.){vec2 fs=f-SHD*.04/s;Ar S=arParts(fs,ph,walk,dig,rear,sniff,earA,earB,front,ha);dropShadow(arUnion(S)*s,.04,.32*shadow);}
  // sparse-haired skin, greyish pink with a yellow tinge, the legs darker with the earth it digs
