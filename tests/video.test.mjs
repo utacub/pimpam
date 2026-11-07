@@ -16,7 +16,7 @@ test('the dives: one video per scene on disk, under the GitHub limit, wired into
  assert.match(app,/const bg=LOAD_DIVES\.includes\(id\)\?\{background:'full'\}:/,'the dives are always shown with the full decor');
  assert.match(app,/const dive=page==='game'&&LOAD_DIVES\.includes\(game\?\.item\?\.id\);/,'no decor choice inside a dive');
  assert.match(app,/if\(!vdAvailable\(\)\)prewarmDives\(\);/,'no shader warm-up on the home page when the videos are used');
- // 0.49.1: «Alta qualitat» on each dive card opens the live WebGL drawing instead of the videos
- assert.match(app,/data-start-hq="\$\{g\.id\}"[^>]*data-tip="Més requisits de maquinari">Alta qualitat<\/button>/);
+ // 0.49.1: «Versió WebGL 2» (0.50.3; «Alta qualitat» in 0.50.2) on each dive card opens the live WebGL drawing instead of the videos
+ assert.match(app,/data-start-hq="\$\{g\.id\}"[^>]*data-tip="Més requisits de maquinari">Versió WebGL 2<\/button>/);
  assert.match(app,/else if\(b\.dataset\.startHq\)start\(b\.dataset\.startHq,\{live:true\}\);/);assert.match(app,/if\(LOAD_DIVES\.includes\(id\)&&!opts\.live\)vdStart\(id,audio,master\);/);
 });
