@@ -11,7 +11,7 @@ Versió actual: **0.49** (42 activitats: 31 de causa-efecte i 11 d’encercament
 | Carpeta o fitxer | Què hi ha |
 |---|---|
 | `dist/` | L’app tal com es publica: `index.html`, els mòduls JavaScript, l’estil i `assets/` (sons enregistrats i imatges). És l’única carpeta que es publica a GitHub Pages. |
-| `dist/videos/` | Els vídeos 1080p H.264 dels cinc viatges i immersions, un per escena (`fons`, `selva`, `sabana`, `pou`, `gegants`), en total uns 490 MB. Els reprodueix `dist/video-dives.js`. |
+| `dist/videos/` | Els vídeos 1080p H.264 a 30 fps dels cinc viatges i immersions, un per escena (`fons`, `selva`, `sabana`, `pou`, `gegants`), en total uns 393 MB, i els de les «Petites pel·lícules». Els vídeos de les immersions els reprodueix `dist/video-dives.js`; el botó «Alta qualitat» de cada fitxa les obre amb el motor original. |
 | `tests/` | Proves automàtiques (`npm test`, amb Node.js). |
 | `tools/` | Eines de revisió, d’àudio i de captura. |
 | `production/` | Fonts de producció (shaders GLSL, notes i proves d’estil). |

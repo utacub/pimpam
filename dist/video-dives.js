@@ -1,5 +1,5 @@
 // 0.49 · The five dives (Fons marí de vidre, Selva de llum, Sabana de paper, El pou del temps, Gegants del blau) play pre-rendered videos
-// when the app is served over the web (at Marc's request of 7 November 2026): one MP4 per scene (1920×1080, H.264 High 8-bit, 60 fps, AAC,
+// when the app is served over the web (at Marc's request of 7 November 2026): one MP4 per scene (1920×1080, H.264 High 8-bit, 30 fps since 0.50.1, AAC,
 // with its music), made frame by frame from the same WebGL engine. The video of scene N starts where scene N−1 rests, so pressing again
 // goes on from the last frame. Tablets no longer have to compile and draw the shaders live.
 // Files: videos/<folder>/<folder>_escena_NN.mp4 next to index.html. Where they cannot be played (the single offline file opened from disk,
