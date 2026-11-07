@@ -1,3 +1,11 @@
+# Pim Pam 0.50.1 · Nom de «Comunicar a tot arreu sempre»
+
+Base: 0.50. Demanat per en Marc el 7 de novembre de 2026: «El nom de la segona fitxa canvia'la a "Comunicar a tot arreu sempre".» La segona pel·lícula de «Petites pel·lícules» es diu ara «Comunicar a tot arreu sempre» (targeta, títol de l'activitat, registre i «Sobre aquesta versió»). Res més no canvia.
+
+- `node --test tests/*.test.mjs`: les mateixes 3 fallades de mida en bytes de la 0.49 i la 0.50; la resta, superades.
+
+---
+
 # Pim Pam 0.50 · Petites pel·lícules
 
 Base: 0.49 (`v0_49_viatges_en_video`, commit 6a00e67). Demanat per en Marc el 7 de novembre de 2026: dues activitats noves a una carpeta «Petites pel·lícules», posada després d’«Històries pas a pas», fetes amb els vídeos del projecte «Edició de vídeo»: «Un mos a Barcelona» (10 seqüències) i «Comunicar a tot arreu» (11). Sense el logo de la UTAC sobreimprès ni al final. En acabar cada seqüència cal prémer el commutador. A la seqüència 8 de «Comunicar a tot arreu» cal retallar la distorsió de l’inici i del final.
