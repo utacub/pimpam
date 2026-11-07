@@ -1,0 +1,1529 @@
+{
+ "jelly": [
+  {
+   "t": "La flota de veles blaves",
+   "l": [
+    "La caravel·la portuguesa és una colònia d’organismes que sura al mar amb una vela plena de gas.",
+    "Viu a mar obert, en aigües càlides, i es deixa portar pel vent, igual que les veles blaves i els botons blaus.",
+    "Entre els seus tentacles hi viuen a recer uns peixets platejats, els peixos de caravel·la."
+   ]
+  },
+  {
+   "t": "Medusa de lluna",
+   "l": [
+    "La medusa de lluna és una medusa transparent que no té cervell ni ossos.",
+    "Viu a prop de la costa en gairebé tots els mars del món.",
+    "Els quatre anells que es veuen a través de la campana són els seus òrgans reproductors."
+   ]
+  },
+  {
+   "t": "El banc de plata",
+   "l": [
+    "Molts peixos petits neden junts en bancs que es mouen com si fossin un sol cos.",
+    "Viuen a les aigües il·luminades de prop de la superfície.",
+    "Nedar en grup els ajuda a protegir-se: el banc es pot obrir i tornar a tancar en un moment."
+   ]
+  },
+  {
+   "t": "Cinturons de Venus",
+   "l": [
+    "El cinturó de Venus és un ctenòfor, un animal transparent en forma de cinta llarga.",
+    "Viu a mar obert, en aigües càlides i temperades, a prop de la superfície.",
+    "Els colors que li corren pel cos no són llum pròpia: és la llum que es trenca a les seves files de pintes."
+   ]
+  },
+  {
+   "t": "Cadenes de salpes",
+   "l": [
+    "Les salpes són animals gelatinosos que es poden unir en cadenes llargues.",
+    "Viuen a mar obert, a tots els oceans, i neden bombant aigua a través del cos.",
+    "Tot i semblar meduses, són parents més propers dels vertebrats que de les meduses."
+   ]
+  },
+  {
+   "t": "Àngels de mar",
+   "l": [
+    "Els àngels de mar són cargols marins sense closca que neden batent dues aletes com ales.",
+    "Viuen a mar obert, sobretot en aigües fredes, al costat de les papallones de mar.",
+    "Les papallones de mar també són cargols nedadors, però porten una closca fina i transparent."
+   ]
+  },
+  {
+   "t": "Medusa ou ferrat",
+   "l": [
+    "La medusa ou ferrat té la campana de color crema amb una cúpula taronja al mig, com un ou ferrat.",
+    "És molt comuna a l’estiu a la Mediterrània.",
+    "Sovint hi ha peixos joves que neden a recer sota la seva campana."
+   ]
+  },
+  {
+   "t": "Ctenòfors irisats",
+   "l": [
+    "Els ctenòfors són animals transparents que neden amb files de pintes petites que baten.",
+    "Viuen a tots els mars, des de la superfície fins a grans fondàries.",
+    "No són meduses: la majoria no couen, i les pintes trenquen la llum en colors d’arc de Sant Martí."
+   ]
+  },
+  {
+   "t": "Calamar de vidre",
+   "l": [
+    "El calamar de vidre és un calamar gairebé transparent.",
+    "Viu a la penombra, a centenars de metres de fondària.",
+    "Els punts de color de la pell s’obren i es tanquen, i així pot canviar de color."
+   ]
+  },
+  {
+   "t": "Pop de vidre",
+   "l": [
+    "El pop de vidre és un pop gairebé transparent: només se li veuen bé els ulls i l’òrgan de la digestió.",
+    "Viu a mar obert, en aigües tropicals i subtropicals, a la zona de penombra.",
+    "Neda com una medusa: obre i tanca la membrana que li uneix els braços."
+   ]
+  },
+  {
+   "t": "El sifonòfor",
+   "l": [
+    "Un sifonòfor és una colònia de molts animalons units que viuen com si fossin un sol organisme.",
+    "Viu a mar obert i a grans fondàries, on avança com un tren de vidre.",
+    "Alguns sifonòfors són dels animals més llargs del món i poden fer més de 30 metres."
+   ]
+  },
+  {
+   "t": "El palau del larvaci",
+   "l": [
+    "El larvaci és un animaló semblant a un capgròs que es construeix una casa de mucositat transparent.",
+    "Viu a mar obert; els larvacis gegants viuen a centenars de metres de fondària.",
+    "La casa li fa de filtre per recollir l’aliment, i quan s’embussa en fa una de nova."
+   ]
+  },
+  {
+   "t": "El vel de seda",
+   "l": [
+    "La medusa Deepstaria té una campana molt fina i ampla, com un vel, amb una xarxa de canals.",
+    "Viu a grans fondàries, a centenars de metres sota la superfície."
+   ]
+  },
+  {
+   "t": "Atolla, la sirena blava",
+   "l": [
+    "L’Atolla és una medusa de fondària de color vermell fosc.",
+    "Viu a la foscor, a centenars de metres de fondària, a tots els oceans.",
+    "Quan la molesten, encén una roda de llum blava que gira per la vora de la campana."
+   ]
+  },
+  {
+   "t": "Calamar vampir",
+   "l": [
+    "El calamar vampir no és ni un calamar ni un pop: és l’últim representant d’un grup propi.",
+    "Viu a centenars de metres de fondària, en aigües amb molt poc oxigen.",
+    "Quan se sent amenaçat, es gira la capa per sobre i pot deixar anar un núvol de llum blava."
+   ]
+  },
+  {
+   "t": "Pirosomes",
+   "l": [
+    "Els pirosomes són colònies en forma de tub fetes de milers d’animalons.",
+    "Viuen a mar obert, en aigües càlides, i de nit pugen cap a la superfície.",
+    "Fan llum pròpia, i quan un s’encén, els del costat responen encenent-se també."
+   ]
+  },
+  {
+   "t": "Peixos llanterna",
+   "l": [
+    "Els peixos llanterna són peixos petits amb punts de llum al cos.",
+    "De dia viuen a la penombra i de nit pugen cap a la superfície, com els peixos destral.",
+    "Són dels peixos més abundants de l’oceà."
+   ]
+  },
+  {
+   "t": "Jardí d’esponges de vidre",
+   "l": [
+    "Les esponges de vidre són animals amb un esquelet de sílice, el mateix material del vidre.",
+    "Viuen al fons del mar, sovint a molta fondària.",
+    "Dins d’algunes hi viu una parella de gambetes que hi entra de jove i després ja no en pot sortir."
+   ]
+  },
+  {
+   "t": "Plomes de mar i lliris",
+   "l": [
+    "Les plomes de mar són parents dels coralls, i els lliris de mar ho són de les estrelles de mar.",
+    "Viuen fixades al fons del mar, i molts lliris de mar viuen a gran fondària.",
+    "Moltes plomes de mar fan llum quan les toquen, i les comàtules poden nedar movent els braços."
+   ]
+  },
+  {
+   "t": "Pops dumbo",
+   "l": [
+    "Els pops dumbo són pops de fondària amb dues aletes al cap que semblen orelles.",
+    "Viuen a prop del fons, a grans fondàries, a molts oceans del món.",
+    "Neden batent les aletes i obrint la membrana dels braços com una campana."
+   ]
+  }
+ ],
+ "jungle": [
+  {
+   "t": "El riu entre la boira",
+   "l": [
+    "L’Amazònia és la selva tropical més gran del món, travessada pel riu Amazones i els seus afluents.",
+    "Sobre les capçades hi volen guacamais vermells i estols de lloros.",
+    "La boira de l’alba es forma perquè els arbres de la selva deixen anar molta aigua a l’aire."
+   ]
+  },
+  {
+   "t": "Els guacamais",
+   "l": [
+    "Els guacamais són lloros grans de colors vius i cua llarga.",
+    "Viuen a les selves tropicals d’Amèrica, a la part més alta dels arbres.",
+    "Solen viure en parella, i sovint es netegen les plomes l’un a l’altre."
+   ]
+  },
+  {
+   "t": "Els tucans",
+   "l": [
+    "Els tucans són ocells amb un bec enorme i de colors vius.",
+    "Viuen a les capçades dels boscos tropicals d’Amèrica Central i del Sud, on mengen sobretot fruits.",
+    "Tot i ser tan gran, el bec és buit per dins i pesa poc."
+   ]
+  },
+  {
+   "t": "Colibrís a les heliconies",
+   "l": [
+    "Els colibrís són ocells molt petits que es poden quedar quiets a l’aire mentre beuen nèctar.",
+    "Viuen a Amèrica, i molts visiten flors de la selva com les heliconies.",
+    "El color de la gola canvia segons l’angle de la llum, perquè les plomes són iridescents."
+   ]
+  },
+  {
+   "t": "El peresós",
+   "l": [
+    "El peresós de tres dits és un mamífer que viu penjat dels arbres i es mou molt a poc a poc.",
+    "Viu a les selves d’Amèrica Central i del Sud.",
+    "Al seu pelatge hi viuen unes arnes petites."
+   ]
+  },
+  {
+   "t": "Morfos i papallones de vidre",
+   "l": [
+    "Els morfos són papallones grans d’un blau brillant, i les papallones de vidre tenen les ales transparents.",
+    "Viuen a les selves tropicals d’Amèrica Central i del Sud.",
+    "El blau del morfo no és un pigment: el fan unes escates minúscules que reflecteixen la llum."
+   ]
+  },
+  {
+   "t": "Tamarins emperador",
+   "l": [
+    "El tamarí emperador és un mico petit amb un bigoti blanc molt llarg.",
+    "Viu al sud-oest de l’Amazònia, al Brasil, el Perú i Bolívia."
+   ]
+  },
+  {
+   "t": "La granota d’ulls vermells",
+   "l": [
+    "La granota d’ulls vermells és una granota d’arbre verda, amb els ulls vermells i els flancs blaus.",
+    "Viu a les selves de l’Amèrica Central i del nord-oest de l’Amèrica del Sud.",
+    "De dia dorm enganxada a les fulles amb els ulls tancats, i de nit es desperta."
+   ]
+  },
+  {
+   "t": "La teranyina de rosada",
+   "l": [
+    "Moltes aranyes teixeixen teranyines en forma de roda amb fils de seda.",
+    "A la humitat del sotabosc de la selva, les gotes de rosada s’hi queden enganxades.",
+    "Cada gota fa de lent i mostra el paisatge del revés."
+   ]
+  },
+  {
+   "t": "Granotes de vidre",
+   "l": [
+    "Les granotes de vidre tenen la pell del ventre tan transparent que se’ls veuen els òrgans.",
+    "Viuen a les selves d’Amèrica Central i del Sud, a prop dels rierols.",
+    "Quan dormen, amaguen la sang al fetge i es tornen encara més transparents."
+   ]
+  },
+  {
+   "t": "Granotes punta de fletxa",
+   "l": [
+    "Les granotes punta de fletxa són granotes petites de colors molt vius.",
+    "Viuen a les selves tropicals d’Amèrica Central i del Sud.",
+    "Els mascles d’algunes espècies porten els capgrossos a petites basses d’aigua dins les plantes."
+   ]
+  },
+  {
+   "t": "Formigues talladores",
+   "l": [
+    "Les formigues talladores tallen trossos de fulla per cultivar un fong que els serveix d’aliment.",
+    "Viuen a les selves i boscos d’Amèrica Central i del Sud.",
+    "Sovint una formiga petita viatja a sobre del tros de fulla que porta una companya."
+   ]
+  },
+  {
+   "t": "Bolets que brillen",
+   "l": [
+    "Alguns bolets fan llum pròpia, una llum verda que es veu de nit.",
+    "Un d’aquests bolets creix al Brasil, al peu de les palmeres joves.",
+    "La seva llum segueix el ritme del dia i la nit, i atreu insectes que en poden escampar les espores."
+   ]
+  },
+  {
+   "t": "Cuques de llum",
+   "l": [
+    "Les cuques de llum són escarabats que fan llum pròpia.",
+    "S’encenen de nit en llocs humits, com el sotabosc de la selva.",
+    "Fan servir els senyals de llum per trobar parella."
+   ]
+  },
+  {
+   "t": "Capibares",
+   "l": [
+    "La capibara és el rosegador més gran del món.",
+    "Viu a prop de rius i aiguamolls d’Amèrica del Sud, en grups familiars.",
+    "De dia, alguns ocells se li posen a sobre i li treuen els paràsits de la pell."
+   ]
+  },
+  {
+   "t": "Victòria amazònica",
+   "l": [
+    "La victòria amazònica és un nenúfar gegant, amb fulles rodones que poden fer més de dos metres.",
+    "Viu a les aigües tranquil·les de la conca de l’Amazones.",
+    "La flor s’obre blanca una nit, amb escarabats tancats a dins, i la nit següent s’obre rosa."
+   ]
+  },
+  {
+   "t": "Tetres neó",
+   "l": [
+    "El tetra neó és un peix petit d’aigua dolça amb una ratlla blava brillant i una de vermella.",
+    "Viu als rius i rierols de la conca de l’Amazones.",
+    "La ratlla blava canvia de color segons l’angle de la llum."
+   ]
+  },
+  {
+   "t": "El dofí rosat",
+   "l": [
+    "El dofí rosat és un dofí de riu amb el morro llarg i el coll molt flexible.",
+    "Viu als rius de les conques de l’Amazones i de l’Orinoco.",
+    "Quan els rius es desborden, entra al bosc inundat i neda entre els troncs."
+   ]
+  },
+  {
+   "t": "Les rajades",
+   "l": [
+    "Les rajades de riu són rajades d’aigua dolça que reposen al fons, sovint mig colgades a la sorra.",
+    "Viuen als rius d’Amèrica del Sud, també a la conca de l’Amazones.",
+    "Neden ondulant la vora del cos, com una onada."
+   ]
+  },
+  {
+   "t": "L’arapaima",
+   "l": [
+    "L’arapaima és un dels peixos d’aigua dolça més grans del món.",
+    "Viu als rius i llacs de la conca de l’Amazones.",
+    "Ha de pujar a la superfície a respirar aire, perquè no en té prou amb l’oxigen de l’aigua."
+   ]
+  }
+ ],
+ "savanna": [
+  {
+   "t": "El Kilimanjaro a l’alba",
+   "l": [
+    "El Kilimanjaro és la muntanya més alta d’Àfrica, i el Kibo n’és el cim més alt.",
+    "S’alça a Tanzània, a prop de la frontera amb Kenya, per sobre de la sabana.",
+    "Tot i ser a prop de l’equador, té neu i gel al cim."
+   ]
+  },
+  {
+   "t": "Els flamencs",
+   "l": [
+    "El flamenc menor és el flamenc més petit, de color rosa i amb les ales corall i negres.",
+    "Viu en llacs salats i poc fondos de l’Àfrica oriental, com els de Kenya i Tanzània.",
+    "Menja amb el cap del revés dins l’aigua, i en grup fa exhibicions movent el cap i obrint les ales."
+   ]
+  },
+  {
+   "t": "Les grues coronades",
+   "l": [
+    "La grua coronada grisa és un ocell alt amb una corona de plomes daurades al cap.",
+    "Viu a les zones humides i les praderies de l’Àfrica oriental i del sud.",
+    "Fa una dansa amb reverències del cap i salts amb les ales obertes."
+   ]
+  },
+  {
+   "t": "Les girafes de l’acàcia",
+   "l": [
+    "La girafa és l’animal més alt del món.",
+    "Viu a les sabanes d’Àfrica, on menja sobretot fulles d’acàcia.",
+    "Agafa les fulles amb una llengua fosca d’uns 45 centímetres, i els picabous se li posen al coll."
+   ]
+  },
+  {
+   "t": "Els elefants a la bassa",
+   "l": [
+    "L’elefant africà de sabana és l’animal terrestre més gran del món.",
+    "Viu a les sabanes d’Àfrica, en grups familiars guiats per una femella gran.",
+    "Amb la trompa es tira aigua o fang per sobre, i les orelles l’ajuden a refrescar-se."
+   ]
+  },
+  {
+   "t": "Les zebres",
+   "l": [
+    "La zebra comuna és un parent del cavall amb ratlles negres i blanques.",
+    "Viu a les sabanes de l’Àfrica oriental i del sud, com el Serengeti.",
+    "Les zebres s’empolainen l’una a l’altra, posades de costat i cap a cua."
+   ]
+  },
+  {
+   "t": "Els impales",
+   "l": [
+    "L’impala és un antílop àgil; els mascles tenen unes banyes llargues i corbades.",
+    "Viu a les sabanes i els boscos clars de l’Àfrica oriental i del sud.",
+    "Pot saltar fins a 3 metres d’alçada."
+   ]
+  },
+  {
+   "t": "Els facoquers",
+   "l": [
+    "El facoquer és un porc salvatge africà amb ullals i berrugues a la cara.",
+    "Viu a les sabanes d’Àfrica i dorm dins de caus.",
+    "Pastura recolzat sobre els canells, que té encallats, i quan corre porta la cua dreta."
+   ]
+  },
+  {
+   "t": "El riu dels nyus",
+   "l": [
+    "El nyu és un antílop gran de la sabana africana, amb barba i banyes corbes.",
+    "Viu a les sabanes de l’Àfrica oriental, com el Serengeti.",
+    "Cada any migra en ramats de milers d’animals a la recerca d’herba fresca."
+   ]
+  },
+  {
+   "t": "Els hipopòtams",
+   "l": [
+    "L’hipopòtam és un mamífer molt gran que passa el dia dins l’aigua.",
+    "Viu als rius i llacs d’Àfrica, i de nit surt a pasturar.",
+    "El seu gran badall és una exhibició, i pot caminar pel fons dels rius poc fondos."
+   ]
+  },
+  {
+   "t": "Els blauets",
+   "l": [
+    "El blauet garser és un blauet blanc i negre; al seu costat hi ha un blauet malaquita, més petit.",
+    "Viuen a la vora de rius i llacs d’Àfrica.",
+    "El blauet garser es pot quedar quiet a l’aire, batent les ales, abans de capbussar-se."
+   ]
+  },
+  {
+   "t": "Els rinoceronts i els picabous",
+   "l": [
+    "El rinoceront negre és un rinoceront africà amb dues banyes, ara en perill d’extinció.",
+    "Viu a les sabanes i els matollars de l’Àfrica oriental i del sud.",
+    "Els picabous li treuen paràsits de la pell i l’avisen amb crits quan s’acosta algú."
+   ]
+  },
+  {
+   "t": "El termiter per dins",
+   "l": [
+    "Un termiter és el niu de terra que construeixen milers de tèrmits.",
+    "A la sabana africana, alguns termiters fan diversos metres d’alçada.",
+    "En alguns termiters, l’escalfor del dia fa circular l’aire pels conductes de la paret i la xemeneia."
+   ]
+  },
+  {
+   "t": "Les mangostes i els càlaus",
+   "l": [
+    "La mangosta nana és la mangosta més petita d’Àfrica i viu en famílies.",
+    "Viu a les sabanes de l’Àfrica oriental, sovint dins de termiters vells.",
+    "Les mangostes i alguns càlaus busquen menjar junts i s’avisen quan hi ha perill."
+   ]
+  },
+  {
+   "t": "Els teixidors",
+   "l": [
+    "El teixidor de poble és un ocell petit; el mascle és groc i té una màscara negra.",
+    "Viu a gran part d’Àfrica i fa colònies de nius penjats als arbres.",
+    "El mascle teixeix el niu amb tires llargues de fulla, i la femella només hi fa el folre."
+   ]
+  },
+  {
+   "t": "Els guepards",
+   "l": [
+    "El guepard és el mamífer terrestre més ràpid del món.",
+    "Viu a les sabanes obertes d’Àfrica.",
+    "Els cadells tenen un mantell de pèl gris i llarg a l’esquena, i la mare els crida amb un piulet."
+   ]
+  },
+  {
+   "t": "Els lleons a la posta",
+   "l": [
+    "El lleó és l’únic felí que viu en grup.",
+    "Viu a les sabanes d’Àfrica, i n’hi ha una petita població a l’Índia.",
+    "El rugit, que se sent de molt lluny, serveix per anunciar el seu territori."
+   ]
+  },
+  {
+   "t": "El baobab",
+   "l": [
+    "El baobab és un arbre africà amb un tronc molt gruixut que guarda aigua.",
+    "Creix a les sabanes seques d’Àfrica.",
+    "Les flors blanques s’obren al vespre per una sola nit, i les pol·linitzen sobretot ratpenats."
+   ]
+  },
+  {
+   "t": "Els escarabats piloters",
+   "l": [
+    "Els escarabats piloters fan boles de fems i les fan rodar caminant enrere.",
+    "Viuen a les sabanes d’Àfrica, i alguns surten a treballar de nit.",
+    "S’enfilen dalt de la bola, potser per orientar-se, i alguns es guien per la Via Làctia."
+   ]
+  },
+  {
+   "t": "L’oricteròp",
+   "l": [
+    "L’oricteròp és un mamífer africà amb orelles llargues, morro allargat i urpes fortes.",
+    "Viu a les sabanes d’Àfrica, i de dia dorm dins d’un cau.",
+    "Surt de nit, obre els termiters escarbant i pot moure cada orella pel seu compte."
+   ]
+  }
+ ],
+ "well": [
+  {
+   "t": "Els mamuts llanuts",
+   "l": [
+    "El mamut llanut era un parent dels elefants actuals, cobert de pèl llarg.",
+    "Vivia a les estepes fredes del nord d’Euràsia i d’Amèrica durant l’última edat del gel.",
+    "Tenia les orelles petites i una capa de greix que l’ajudaven a suportar el fred."
+   ]
+  },
+  {
+   "t": "Els esmilòdons",
+   "l": [
+    "L’esmilodó era un felí gran amb dues dents de sabre molt llargues.",
+    "Va viure a Amèrica durant l’última edat del gel.",
+    "A les basses d’asfalt de La Brea, a Los Angeles, se n’han trobat milers de fòssils."
+   ]
+  },
+  {
+   "t": "El rinoceront llanut i el cérvol gegant",
+   "l": [
+    "El rinoceront llanut tenia el cos cobert de pèl, i el cérvol gegant, unes banyes enormes.",
+    "Tots dos vivien a les estepes fredes d’Euràsia durant l’última edat del gel.",
+    "Les banyes més grans conegudes del cérvol gegant fan uns 3,6 metres d’una punta a l’altra."
+   ]
+  },
+  {
+   "t": "El megateri i el gliptodont",
+   "l": [
+    "El megateri era un peresós gegant, i el gliptodont, un parent dels armadillos amb una closca enorme.",
+    "Tots dos vivien a Amèrica del Sud durant l’última edat del gel.",
+    "La closca del gliptodont estava feta de centenars de plaques d’os unides."
+   ]
+  },
+  {
+   "t": "Els tiranosaures",
+   "l": [
+    "El tiranosaure era un dels dinosaures més grans que caminaven sobre dues potes.",
+    "Va viure al final del Cretaci, a l’oest d’Amèrica del Nord (formació Hell Creek).",
+    "Probablement tenia llavis que li tapaven les dents, i feia sons amb la boca tancada."
+   ]
+  },
+  {
+   "t": "Els triceratops",
+   "l": [
+    "El triceratops era un dinosaure herbívor amb tres banyes a la cara i una gran gorgera.",
+    "Va viure al final del Cretaci, a l’oest d’Amèrica del Nord (formació Hell Creek).",
+    "La gorgera probablement li servia per exhibir-se davant dels altres triceratops."
+   ]
+  },
+  {
+   "t": "L’anquilosaure",
+   "l": [
+    "L’anquilosaure era un dinosaure herbívor cobert de plaques d’os, amb una maça a la punta de la cua.",
+    "Va viure al final del Cretaci, a l’oest d’Amèrica del Nord.",
+    "La maça es movia d’un costat a l’altre, sobretot des de la base de la cua, que era rígida."
+   ]
+  },
+  {
+   "t": "L’abditosaure del Pirineu",
+   "l": [
+    "L’abditosaure era un titanosaure, un dinosaure herbívor gegant de coll llarg.",
+    "Va viure fa uns 70 milions d’anys a l’actual conca de Tremp, al Pallars Jussà.",
+    "Feia uns 17,5 metres de llargada i pesava unes 14 tones."
+   ]
+  },
+  {
+   "t": "El velociraptor",
+   "l": [
+    "El velociraptor era un dinosaure petit, de la mida d’un gall dindi, i tenia plomes.",
+    "Va viure al final del Cretaci al desert del Gobi, a l’actual Mongòlia.",
+    "Els ossos del braç conserven les marques on s’hi enganxaven plomes grans, com les dels ocells."
+   ]
+  },
+  {
+   "t": "El citipati i el niu",
+   "l": [
+    "El citipati era un dinosaure semblant a un ocell, amb un bec sense dents i una cresta alta.",
+    "Va viure al final del Cretaci a Ukhaa Tolgod, al desert del Gobi, a l’actual Mongòlia.",
+    "S’han trobat fòssils d’adults asseguts al mig de la posta, covant els ous amb els braços estesos."
+   ]
+  },
+  {
+   "t": "Els parasaurolophus",
+   "l": [
+    "El parasaurolophus era un dinosaure herbívor amb bec d’ànec i una cresta llarga i buida.",
+    "Va viure al final del Cretaci a l’actual Alberta, al Canadà.",
+    "La cresta, plena de conductes, podia fer ressonar sons greus, com una trompa."
+   ]
+  },
+  {
+   "t": "El pteranodon i el plesiosaure",
+   "l": [
+    "El pteranodon era un rèptil volador, no un dinosaure, i l’elasmosaure, un plesiosaure de coll molt llarg.",
+    "Tots dos vivien al final del Cretaci, al mar interior que travessava Amèrica del Nord.",
+    "Els pterosaures probablement s’enlairaven des de quatre potes, impulsant-se amb els braços."
+   ]
+  },
+  {
+   "t": "L’espinosaure",
+   "l": [
+    "L’espinosaure era un dinosaure molt gran amb una vela alta a l’esquena.",
+    "Va viure a mitjan Cretaci als grans rius del Kem Kem, a l’actual Marroc.",
+    "Estava adaptat a la vida al riu, tot i que encara es debat si nedava o hi caminava."
+   ]
+  },
+  {
+   "t": "El yutyrannus i el sinosauropteryx",
+   "l": [
+    "El yutyrannus era un parent dels tiranosaures d’uns 9 metres, cobert de filaments com plomes.",
+    "Va viure al Cretaci inferior a l’actual Liaoning, al nord-est de la Xina, igual que el sinosauropteryx.",
+    "El sinosauropteryx, molt més petit, era castany vermellós, amb la cua a anelles i una màscara als ulls."
+   ]
+  },
+  {
+   "t": "Els iguanodons",
+   "l": [
+    "L’iguanodon era un dinosaure herbívor gran, amb bec i un punxó al dit polze.",
+    "Va viure al Cretaci inferior; a Bernissart, a Bèlgica, se’n van trobar desenes d’esquelets.",
+    "Caminava a quatre potes però es podia alçar, i mastegava amb les dents de les galtes."
+   ]
+  },
+  {
+   "t": "L’arqueòpterix",
+   "l": [
+    "L’arqueòpterix era un dinosaure petit amb plomes i ales, emparentat amb els primers ocells.",
+    "Va viure al Juràssic superior en unes illes de l’actual Solnhofen, a Alemanya.",
+    "Una ploma fòssil indica que almenys una part del plomatge era de color negre mat."
+   ]
+  },
+  {
+   "t": "L’estegosaure",
+   "l": [
+    "L’estegosaure era un dinosaure herbívor amb plaques a l’esquena i punxes a la cua.",
+    "Va viure al Juràssic superior a l’oest d’Amèrica del Nord (formació Morrison).",
+    "Les plaques probablement li servien per exhibir-se, i les punxes de la cua, per defensar-se."
+   ]
+  },
+  {
+   "t": "El braquiosaure i el diplodoc",
+   "l": [
+    "El braquiosaure i el diplodoc eren sauròpodes, dinosaures herbívors enormes de coll llarg.",
+    "Tots dos vivien al Juràssic superior a l’oest d’Amèrica del Nord (formació Morrison).",
+    "S’empassaven les fulles sense mastegar; el diplodoc menjava més a prop de terra."
+   ]
+  },
+  {
+   "t": "Els ictiosaures",
+   "l": [
+    "Els ictiosaures eren rèptils marins amb forma de dofí, però no eren parents dels dofins.",
+    "Vivien al Juràssic inferior al mar que cobria l’actual Holzmaden, a Alemanya.",
+    "Tenien uns ulls molt grossos, i un fòssil de Holzmaden conserva la pell llisa i una capa de greix."
+   ]
+  },
+  {
+   "t": "L’eoraptor",
+   "l": [
+    "L’eoraptor era un dels primers dinosaures, petit i lleuger, i caminava sobre dues potes.",
+    "Va viure al Triàsic superior a la vall d’Ischigualasto, a l’Argentina.",
+    "Les capes de cendra volcànica de la vall han permès calcular l’edat de les roques."
+   ]
+  },
+  {
+   "t": "El pit-roig al jardí",
+   "l": [
+    "El pit-roig és un ocell petit amb el pit taronja, molt comú als jardins.",
+    "Viu avui a Europa, i és dels pocs ocells que canten també a la tardor i a l’hivern.",
+    "Com tots els ocells, descendeix dels dinosaures."
+   ]
+  }
+ ],
+ "pot": [
+  {
+   "t": "Pègas",
+   "l": [
+    "Pègas és el cavall alat de la mitologia grega; va néixer quan Perseu va vèncer Medusa.",
+    "Segons el mite, d’un cop de peülla va fer brollar una font a la muntanya de l’Helicó, la font de les Muses.",
+    "A l’escena, en Glupòcrates estrena les ales, fa una volta pel cel i bota sobre un núvol com si fos un trampolí."
+   ]
+  },
+  {
+   "t": "El grifó",
+   "l": [
+    "El grifó té cos de lleó i el cap i les ales d’una àguila.",
+    "Els grecs explicaven que, molt al nord, els grifons guardaven l’or de les muntanyes.",
+    "A l’escena, un esternut fa saltar les monedes del niu, i un bol d’or li cau al cap com un barret."
+   ]
+  },
+  {
+   "t": "El fènix",
+   "l": [
+    "El fènix és un ocell fabulós que els grecs relacionaven amb Heliòpolis, la ciutat del sol d’Egipte.",
+    "Segons les versions més conegudes, quan es fa vell crema al seu niu i reneix de les cendres.",
+    "A l’escena s’adorm al niu, les flames el fan desaparèixer i de la cendra en surt un pollet amb bigoti."
+   ]
+  },
+  {
+   "t": "El drac de les pomes d’or",
+   "l": [
+    "Ladó era el drac que guardava l’arbre de les pomes d’or al jardí de les Hespèrides, a l’extrem occidental del món.",
+    "Aconseguir aquestes pomes va ser un dels dotze treballs d’Hèracles.",
+    "A l’escena, en lloc de guardar-les, se les menja fins que queda rodó com una pilota i no pot volar."
+   ]
+  },
+  {
+   "t": "Cèrber",
+   "l": [
+    "Cèrber és el gos de tres caps que guarda la porta del món dels morts.",
+    "Orfeu, el gran músic, el va encantar amb la seva lira per poder entrar a buscar Eurídice.",
+    "A l’escena, els tres caps s’adormen amb la música, i el més petit obre un ull i fa l’ullet a Orfeu."
+   ]
+  },
+  {
+   "t": "La hidra",
+   "l": [
+    "La hidra de Lerna era una serp d’aigua de molts caps que vivia en un aiguamoll.",
+    "Segons el mite, quan li tallaven un cap n’hi sortien dos; la va vèncer Hèracles.",
+    "A l’escena, cada esternut li fa sortir dos caps nous, i els cinc acaben cantant com una coral."
+   ]
+  },
+  {
+   "t": "La quimera",
+   "l": [
+    "La quimera era un monstre de Lícia amb cos de lleó, un cap de cabra a l’esquena i una serp per cua.",
+    "Treia foc per la boca, i la va vèncer l’heroi Bel·lerofont, muntat sobre Pègas.",
+    "A l’escena, el lleó torra pa amb el seu alè de foc, però la cabra i la serp se’l mengen."
+   ]
+  },
+  {
+   "t": "El minotaure",
+   "l": [
+    "El minotaure, meitat home i meitat toro, vivia tancat al laberint de Cnossos, a Creta.",
+    "Teseu el va trobar i va saber sortir del laberint gràcies al fil que li havia donat Ariadna.",
+    "A l’escena, perdut al seu propi laberint, segueix un fil vermell fins que queda embolicat com un paquet."
+   ]
+  },
+  {
+   "t": "El centaure",
+   "l": [
+    "Els centaures eren meitat home i meitat cavall, i vivien al mont Pèlion, a Tessàlia.",
+    "El més savi era Quiró, que tocava la lira i va ser el mestre d’herois com Aquil·les.",
+    "A l’escena, balla amb la lira, s’embolica les quatre potes i acaba assegut tocant."
+   ]
+  },
+  {
+   "t": "Medusa",
+   "l": [
+    "Medusa era una gorgona amb serps per cabells, i qui la mirava es tornava de pedra.",
+    "Perseu la va vèncer sense mirar-la directament, veient-la reflectida al seu escut de bronze.",
+    "A l’escena, en Glupòcrates s’admira al mirall de l’escut i es torna de pedra ell mateix."
+   ]
+  },
+  {
+   "t": "La sirena",
+   "l": [
+    "Les sirenes gregues eren meitat dona i meitat ocell, i amb el seu cant feien naufragar els mariners.",
+    "Ulisses es va fer lligar al pal del vaixell per sentir-les, i els seus mariners es van tapar les orelles amb cera.",
+    "A l’escena, la nota més aguda de la sirena desafina tant que el vaixell s’allunya remant."
+   ]
+  }
+ ],
+ "castells": [
+  {
+   "t": "La pinya",
+   "l": [
+    "La pinya és la base del castell: molta gent abraçada que l’aguanta i que esmorteiria una caiguda.",
+    "Com més alt és el castell, més gent hi ha de fer pinya.",
+    "L’any 2010, la UNESCO va declarar els castells Patrimoni Cultural Immaterial de la Humanitat."
+   ]
+  },
+  {
+   "t": "Els baixos i els segons",
+   "l": [
+    "Els baixos són el primer pis del tronc i aguanten el pes de tot el castell.",
+    "Els segons s’hi enfilen per l’esquena fins a posar-se drets sobre les espatlles dels baixos.",
+    "Els castellers pugen descalços, per no fer mal als companys i notar millor on trepitgen."
+   ]
+  },
+  {
+   "t": "Els terços i els quarts",
+   "l": [
+    "El tronc és la part del castell on tots els pisos tenen el mateix nombre de persones.",
+    "En un castell de set pisos, el tronc té baixos, segons, terços i quarts.",
+    "La faixa ben cordada protegeix l’esquena i fa d’agafador per pujar."
+   ]
+  },
+  {
+   "t": "Els dosos",
+   "l": [
+    "El pom de dalt és la part més alta del castell, feta per nens i nenes que pesen poc.",
+    "Els dosos són els dos castellers que s’agafen sota l’acotxador i l’enxaneta.",
+    "Com tot el pom de dalt, porten casc per protegir-se."
+   ]
+  },
+  {
+   "t": "L’acotxador",
+   "l": [
+    "L’acotxador s’ajup damunt dels dosos i fa de graó perquè l’enxaneta pugi.",
+    "El nom ve d’«acotxar-se», que vol dir ajupir-se."
+   ]
+  },
+  {
+   "t": "L’enxaneta i l’aleta",
+   "l": [
+    "L’enxaneta és el casteller més petit i el que corona el castell.",
+    "Quan arriba dalt de tot aixeca la mà: és l’aleta, el gest que diu que el castell s’ha carregat."
+   ]
+  },
+  {
+   "t": "El castell de tres",
+   "l": [
+    "En un castell de tres, cada pis del tronc té tres persones.",
+    "El nom diu les persones per pis i els pisos: un tres de set té tres persones per pis i set pisos.",
+    "És un dels castells que més es veuen a les places."
+   ]
+  },
+  {
+   "t": "La torre",
+   "l": [
+    "La torre, o castell de dos, té dues persones a cada pis.",
+    "És més estreta que un castell de tres i costa més de mantenir en equilibri."
+   ]
+  },
+  {
+   "t": "El castell de quatre",
+   "l": [
+    "En un castell de quatre, cada pis del tronc té quatre persones.",
+    "Un quatre de set té quatre persones per pis i set pisos."
+   ]
+  },
+  {
+   "t": "Descarregar el castell",
+   "l": [
+    "El castell no s’acaba amb l’aleta: després s’ha de desmuntar pis a pis, de dalt a baix.",
+    "Si arriba a l’aleta es diu que s’ha carregat, i si també es desmunta sense caure, que s’ha descarregat.",
+    "A l’activitat, el castell baixa a poc a poc i mai no cau."
+   ]
+  },
+  {
+   "t": "La festa major",
+   "l": [
+    "Els castells es fan a la plaça, sovint per la festa major, davant de l’ajuntament o de l’església.",
+    "Cada colla té el seu color de camisa, i tothom porta pantalons blancs, faixa i mocador.",
+    "El toc de castells, tocat amb gralles i timbal, acompanya el castell mentre es fa. A l’activitat en sona un de veritat, gravat en una diada a Salt, i cada pulsació en fa sonar el tros següent."
+   ]
+  }
+ ],
+ "orchestra": [
+  {
+   "t": "L’arpa",
+   "l": [
+    "L’arpa és un instrument de corda que es toca pinçant les cordes amb els dits.",
+    "L’arpa de concert té 47 cordes i set pedals que serveixen per canviar-ne les notes."
+   ]
+  },
+  {
+   "t": "La corda",
+   "l": [
+    "La família de la corda té els violins, les violes, els violoncels i els contrabaixos.",
+    "Les cordes es freguen amb l’arc o es pincen amb els dits, i és el grup més nombrós de l’orquestra.",
+    "Com més gran és l’instrument, més greu sona."
+   ]
+  },
+  {
+   "t": "La fusta",
+   "l": [
+    "La família de la fusta té la flauta, l’oboè, el clarinet i el fagot.",
+    "El so es fa bufant: a la flauta, l’aire topa amb una vora, i a l’oboè i al clarinet fa vibrar una canya.",
+    "La flauta d’avui és de metall, però continua sent de la família de la fusta."
+   ]
+  },
+  {
+   "t": "El metall",
+   "l": [
+    "La família del metall té la trompeta, la trompa, el trombó i la tuba.",
+    "El so neix als llavis del músic, que vibren contra el broquet.",
+    "La tuba és la més gran i la que sona més greu."
+   ]
+  },
+  {
+   "t": "La percussió",
+   "l": [
+    "La percussió són els instruments que sonen quan es colpegen, com els timbals, el triangle o els plats.",
+    "Els timbals de l’orquestra s’afinen, i cadascun fa una nota."
+   ]
+  },
+  {
+   "t": "La marimba",
+   "l": [
+    "La marimba és un instrument de percussió amb làmines de fusta que es toquen amb baquetes.",
+    "Sota cada làmina hi ha un tub que fa ressonar el so.",
+    "Ve d’instruments africans semblants i és molt tradicional a l’Amèrica Central."
+   ]
+  }
+ ],
+ "sounds": [
+  {
+   "t": "L’arpa",
+   "l": [
+    "L’arpa té moltes cordes tibades que es pincen amb els dits.",
+    "Les cordes llargues fan les notes greus, i les curtes, les agudes.",
+    "És un dels instruments més antics que es coneixen."
+   ]
+  },
+  {
+   "t": "La marimba",
+   "l": [
+    "Les làmines de fusta de la marimba es toquen amb baquetes de cap tou.",
+    "Els tubs de sota, com més llargs, més greu fan sonar la nota.",
+    "Té un so càlid i rodó que s’apaga a poc a poc."
+   ]
+  },
+  {
+   "t": "El timbal",
+   "l": [
+    "El timbal d’orquestra és un gran bol de coure tapat amb una pell tibada.",
+    "Amb un pedal es tiba o s’afluixa la pell, i així canvia la nota.",
+    "Es toca amb baquetes de cap de feltre."
+   ]
+  },
+  {
+   "t": "La flauta",
+   "l": [
+    "La flauta travessera es toca de costat, bufant per sobre d’un forat.",
+    "L’aire que es trenca a la vora del forat fa el so, com quan bufes en una ampolla.",
+    "Tapant els forats amb les claus, el músic canvia les notes."
+   ]
+  },
+  {
+   "t": "Els violins",
+   "l": [
+    "El violí és l’instrument més petit i més agut de la família de la corda.",
+    "Té quatre cordes, que sonen fregades amb un arc de crins de cavall.",
+    "A l’orquestra n’hi ha molts, repartits en primers i segons violins."
+   ]
+  },
+  {
+   "t": "El glockenspiel",
+   "l": [
+    "El glockenspiel té làmines de metall que es toquen amb baquetes dures.",
+    "Sona molt agut i brillant, com unes campanetes.",
+    "El seu nom vol dir «joc de campanes» en alemany."
+   ]
+  },
+  {
+   "t": "La trompeta",
+   "l": [
+    "La trompeta és l’instrument més agut de la família del metall.",
+    "El so neix als llavis del músic, que vibren contra el broquet.",
+    "Amb tres pistons canvia el camí de l’aire i, així, la nota."
+   ]
+  },
+  {
+   "t": "El triangle",
+   "l": [
+    "El triangle és una barra d’acer doblegada en forma de triangle.",
+    "Es penja d’un cordill perquè vibri lliure i es toca amb una vareta de metall.",
+    "Fa un so molt agut que dura una bona estona."
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "t": "El rierol",
+   "l": [
+    "L’aigua d’un rierol sona quan topa amb les pedres i fa petits salts.",
+    "Com més pedres i pendent hi ha, més fort i viu és el so."
+   ]
+  },
+  {
+   "t": "La platja",
+   "l": [
+    "El so de les ones neix quan l’onada es trenca i l’aigua s’arrossega per la sorra.",
+    "Les ones les aixeca el vent, a vegades molt lluny de la costa."
+   ]
+  },
+  {
+   "t": "La pluja al bosc",
+   "l": [
+    "La pluja sona quan les gotes piquen sobre les fulles, la terra i els tolls.",
+    "Al bosc, les capçades dels arbres fan que la pluja soni suau i contínua."
+   ]
+  },
+  {
+   "t": "Els grills del prat",
+   "l": [
+    "Els grills canten de nit fregant una ala contra l’altra.",
+    "Només canten els mascles, per atraure les femelles.",
+    "Quan fa més calor, canten més de pressa."
+   ]
+  },
+  {
+   "t": "Les granotes de l’estany",
+   "l": [
+    "Les granotes mascle canten per atraure les femelles, sobretot a la primavera.",
+    "Moltes inflen un sac de pell a la gola que fa el cant més fort."
+   ]
+  },
+  {
+   "t": "La merla del jardí",
+   "l": [
+    "La merla és un ocell negre de bec groc molt comú als jardins.",
+    "El mascle canta des d’un lloc alt, sobretot a la primavera, a l’alba i al capvespre."
+   ]
+  },
+  {
+   "t": "El vent del cim",
+   "l": [
+    "El vent és aire que es mou d’on hi ha més pressió cap on n’hi ha menys.",
+    "Al cim de les muntanyes bufa més fort, i xiula quan passa entre roques i arestes."
+   ]
+  },
+  {
+   "t": "Les bombolles del fons del mar",
+   "l": [
+    "Sota l’aigua, cada bombolla fa un petit so perquè vibra mentre es forma.",
+    "El so viatja per l’aigua més de quatre vegades més de pressa que per l’aire."
+   ]
+  },
+  {
+   "t": "Les gotes de la cova",
+   "l": [
+    "A les coves, l’aigua s’escola per la roca i cau gota a gota.",
+    "Cada gota deixa una mica de calç i, en milers d’anys, forma estalactites i estalagmites.",
+    "L’eco de la cova fa que cada gota ressoni."
+   ]
+  }
+ ],
+ "giants": [
+  {
+   "t": "Els narvals",
+   "l": [
+    "El narval és una balena dentada de l’Àrtic; el mascle té un ullal llarg i en espiral.",
+    "A l’hivern viu sota el gel i respira per les esquerdes que s’hi obren.",
+    "Viu sempre a les aigües fredes de l’Àrtic."
+   ]
+  },
+  {
+   "t": "Les belugues",
+   "l": [
+    "La beluga és una balena blanca de l’Àrtic; les cries neixen grises i es tornen blanques amb els anys.",
+    "A l’estiu entra als estuaris i es frega contra els còdols del fons.",
+    "Fa tants xiulets i cants que l’anomenen el canari del mar."
+   ]
+  },
+  {
+   "t": "La balena de Groenlàndia",
+   "l": [
+    "La balena de Groenlàndia viu tot l’any a l’Àrtic, entre el gel.",
+    "Amb el cap pot trencar el gel prim per obrir-se un forat i respirar.",
+    "És un dels animals que viuen més anys: pot passar dels cent anys."
+   ]
+  },
+  {
+   "t": "El tauró pelegrí",
+   "l": [
+    "El tauró pelegrí és el segon peix més gran del món, després del tauró balena.",
+    "Neda a poc a poc amb la boca ben oberta i filtra el plàncton de l’aigua.",
+    "És inofensiu per a les persones."
+   ]
+  },
+  {
+   "t": "Les iubartes i la xarxa de bombolles",
+   "l": [
+    "Les iubartes deixen anar aire sota l’aigua i fan un cercle de bombolles que tanca el krill i els peixets.",
+    "Després pugen pel mig amb la boca oberta i s’empassen l’aigua amb el menjar.",
+    "La gola s’infla com un globus i l’aigua torna a sortir per les barbes."
+   ]
+  },
+  {
+   "t": "Les tonyines vermelles",
+   "l": [
+    "La tonyina vermella pot fer tres metres de llargada i neda molt de pressa.",
+    "Travessa l’Atlàntic i passa per l’estret de Gibraltar per anar a fer la posta a la Mediterrània.",
+    "Neda en bancs que giren tots alhora."
+   ]
+  },
+  {
+   "t": "Els catxalots",
+   "l": [
+    "El catxalot és la balena dentada més gran i té un cap enorme.",
+    "Dorm fent becaines curtes, quiet i dret a prop de la superfície.",
+    "Fa clics molt forts per orientar-se i comunicar-se."
+   ]
+  },
+  {
+   "t": "El rorqual comú",
+   "l": [
+    "El rorqual comú és el segon animal més gran del món, després de la balena blava.",
+    "És llarg i esvelt, i neda de pressa.",
+    "Viu també a la Mediterrània, sobretot al mar de Ligúria."
+   ]
+  },
+  {
+   "t": "El peix lluna",
+   "l": [
+    "El peix lluna és un dels peixos ossis més pesants del món.",
+    "Baixa a les aigües fredes de fondària a menjar i després puja a escalfar-se prop de la superfície.",
+    "Menja sobretot meduses i altres animals tous."
+   ]
+  },
+  {
+   "t": "Els dofins i el veler",
+   "l": [
+    "El dofí ratllat és un dels dofins més comuns de la Mediterrània.",
+    "Als dofins els agrada nedar a l’onada de proa dels vaixells: així avancen gairebé sense esforç.",
+    "Sovint salten fora de l’aigua en grup."
+   ]
+  },
+  {
+   "t": "El salt de la iubarta",
+   "l": [
+    "La iubarta té les aletes pectorals més llargues de totes les balenes.",
+    "Salta fora de l’aigua i cau d’esquena amb un gran esquitx.",
+    "A l’hivern va a les aigües càlides del Carib, on els mascles canten cançons llargues."
+   ]
+  },
+  {
+   "t": "Els taurons martell",
+   "l": [
+    "El tauró martell té el cap pla i ample, amb un ull a cada punta.",
+    "De dia s’aplega en grups grans al voltant de muntanyes submarines, i de nit se separa.",
+    "Viu en mars càlids de tot el món."
+   ]
+  },
+  {
+   "t": "El peix rem",
+   "l": [
+    "El peix rem és el peix ossi més llarg que es coneix.",
+    "Viu a centenars de metres de fondària, on arriba poca llum.",
+    "Té una aleta dorsal vermella al llarg de tot el cos."
+   ]
+  },
+  {
+   "t": "Els dofins rotadors",
+   "l": [
+    "El dofí rotador salta fora de l’aigua i gira sobre ell mateix diverses vegades seguides.",
+    "De dia descansa en badies tranquil·les i de nit surt a mar obert a menjar.",
+    "Viu en grups en mars càlids, com els de Hawaii."
+   ]
+  },
+  {
+   "t": "El tauró balena",
+   "l": [
+    "El tauró balena és el peix més gran del món.",
+    "Neda amb la boca oberta i filtra de l’aigua animals molt petits, el plàncton.",
+    "Cada tauró balena té les taques diferents, com una empremta."
+   ]
+  },
+  {
+   "t": "Les mantes",
+   "l": [
+    "La manta d’escull pot fer més de tres metres d’una punta d’ala a l’altra.",
+    "Va a estacions de neteja, on peixos petits li treuen els paràsits.",
+    "Menja plàncton i de vegades fa tombarelles mentre menja."
+   ]
+  },
+  {
+   "t": "El dugong",
+   "l": [
+    "El dugong és un mamífer marí que menja només plantes, sobretot herbes marines.",
+    "Arrenca l’herba del fons amb el morro i deixa un solc a la prada.",
+    "Puja a la superfície a respirar cada pocs minuts."
+   ]
+  },
+  {
+   "t": "La balena franca i la seva cria",
+   "l": [
+    "La balena franca austral no té aleta dorsal i té callositats clares al cap.",
+    "Cada balena té les callositats diferents, i així es poden reconèixer.",
+    "A l’hivern va a la península Valdés, a l’Argentina, a tenir les cries."
+   ]
+  },
+  {
+   "t": "Les orques",
+   "l": [
+    "L’orca és el dofí més gran.",
+    "Viu en grups familiars molt units.",
+    "El mascle té una aleta dorsal alta i recta, que pot fer gairebé dos metres."
+   ]
+  },
+  {
+   "t": "La balena blava",
+   "l": [
+    "La balena blava és l’animal més gran que ha existit mai.",
+    "Obre la boca, s’empassa una gran quantitat d’aigua amb krill i la gola s’infla com un globus.",
+    "Després fa sortir l’aigua per les barbes i s’empassa el krill."
+   ]
+  }
+ ],
+ "pinta": [
+  {
+   "t": "La vall",
+   "l": [
+    "Un riu baixa per una vall entre muntanyes, passa sota un pont de pedra i voreja un poble amb campanar, un bosc de roures i uns camps amb un espantaocells.",
+    "El cel canta amb la flauta; les muntanyes, amb la trompa; el riu i el poble, amb l’arpa; el bosc, amb la marimba, i els camps, amb l’udu. Hi sonen la campana, els coloms, un gat, un picot i una gallina.",
+    "Quan tot és pintat, a la primavera surt l’arc de Sant Martí; a l’estiu, volen papallones al capvespre; a la tardor, cauen les fulles; a l’hivern, neva i s’encenen les finestres."
+   ]
+  },
+  {
+   "t": "La costa",
+   "l": [
+    "Un far dalt del penya-segat, el mar amb barques de vela, un poble blanc enfilat al turó, uns pins pinyers a la duna i la platja amb un para-sol.",
+    "Hi criden les gavines, lladra una foca, salta un peix i toca la campaneta de l’ermita. Mentre es pinta el mar, se senten les onades; a l’estiu, les cigales dels pins.",
+    "A l’hivern el vent bufa per la platja i el poble s’il·lumina sota la neu."
+   ]
+  },
+  {
+   "t": "L’alta muntanya",
+   "l": [
+    "Uns cims dentats amb neu, un torrent que baixa entre els prats, un bosc d’avets i un llogaret amb una ermita.",
+    "Xiulen les marmotes, salta un peix al gorg, gruny un os, pica un picot, mugeix una vaca i dringuen les esquelles. El torrent sona mentre és pintat.",
+    "A l’hivern el vent bufa entre els cims i les finestres del llogaret s’encenen quan neva."
+   ]
+  },
+  {
+   "t": "La ciutat vora el mar",
+   "l": [
+    "Uns turons amb cases i un funicular, el port amb grues i un vaixell, una quadrícula de teulades amb una església, un parc amb plàtans i uns cavallets, i el passeig amb palmeres i una sínia.",
+    "Sona la sirena del vaixell, la campaneta del tramvia, els coloms del parc, un gat a les teulades i les gavines del port.",
+    "Quan es pinten les teulades, passa el tramvia i s’atura a la parada; a l’hivern, la ciutat s’il·lumina sota la neu."
+   ]
+  },
+  {
+   "t": "El llac i els volcans",
+   "l": [
+    "Dos volcans adormits darrere un llac quiet amb una barca, una fageda, unes masies i uns camps amb dos molins de vent.",
+    "Grasna un corb, salten els peixos, fa quac un ànec, esbufega un senglar, escataina una gallina i giren les aspes dels molins. Els molins sonen mentre es pinten els camps.",
+    "A l’estiu s’enlaira un globus i vola un estel; a la tardor, les fulles de la fageda volen per tot el paisatge."
+   ]
+  }
+ ],
+ "masia": [
+  {
+   "t": "L’àvia Pepa i la truita al sostre",
+   "l": [
+    "L’àvia fa saltar la truita tan amunt que s’enganxa a una biga. Espera a sota, pica de peus, i té una idea: un plat al cap.",
+    "La truita es desenganxa i cau al plat. A la segona ronda cau al cap del gat, que dormia damunt la cuina.",
+    "La seva veu és el clarinet."
+   ]
+  },
+  {
+   "t": "L’avi Tomàs i la pesca",
+   "l": [
+    "L’avi dorm amb la canya. El suro s’enfonsa, una estirada el desperta i la carpa surt volant de la bassa fins al barret.",
+    "La cua li pica el nas; ell la vol agafar i la carpa torna a l’aigua d’un salt. A la segona ronda, primer surt una bota vella.",
+    "La seva veu és la trompa."
+   ]
+  },
+  {
+   "t": "La Nina i la pastanaga gegant",
+   "l": [
+    "La Nina estira una fulla amb totes les forces: en surt una pastanaga minúscula i cau de cul.",
+    "Estira la següent, la terra s’infla i una pastanaga gegant la fa pujar enlaire. S’hi enfila, saluda i baixa relliscant.",
+    "La seva veu és la flauta."
+   ]
+  },
+  {
+   "t": "En Pol i el vent a l’estenedor",
+   "l": [
+    "En Pol penja la roba de puntetes. Una ventada li pren la gorra i una de més forta aixeca el llençol amb ell penjant.",
+    "Vola per damunt del pati i cau al paller amb les cames enlaire; en surt amb palla al cap i la gorra del revés.",
+    "El llençol tapa l’avi, que ronca com un fantasma. La seva veu és el glockenspiel."
+   ]
+  },
+  {
+   "t": "La cabra Nata i la pluja de figues",
+   "l": [
+    "La Nata vol figues. S’aixeca, no hi arriba, recula, grata el terra i envesteix el tronc: bum!",
+    "Plouen figues: una li queda entre les banyes i una li cau a la boca. Un ruixat de sol, una sacsejada i surt l’arc de Sant Martí.",
+    "Acaba gronxant-se. La seva veu és la marimba."
+   ]
+  },
+  {
+   "t": "El sopar a la fresca",
+   "l": [
+    "Al capvespre, la família sopa sota la figuera amb fanalets. L’àvia porta la truita; la carpa de l’avi salta al gerro.",
+    "Brinden, mengen, i la Nata estira les estovalles. Es fa de nit: estels, cuques de llum i les finestres enceses.",
+    "Sona el tema de la família: la flauta i el clarinet amb tota la banda."
+   ]
+  }
+ ],
+ "viatge": [
+  {
+   "t": "El globus d’aire calent",
+   "l": [
+    "El cremador escalfa l’aire de dins de la tela. L’aire calent pesa menys que l’aire fred del voltant, i per això el globus puja.",
+    "Quan el cremador s’apaga, l’aire es refreda a poc a poc i el globus baixa.",
+    "Un globus no es pot dirigir: el vent l’empeny, i a dalt sol bufar més fort que arran de terra."
+   ]
+  },
+  {
+   "t": "La vall",
+   "l": [
+    "Camps, masies, ramats d’ovelles i pobles amb campanar.",
+    "El tren travessa el riu per un viaducte de pedra amb arcs.",
+    "Al final de la vall, un pantà guarda l’aigua del riu."
+   ]
+  },
+  {
+   "t": "La costa",
+   "l": [
+    "Un port de pescadors, platges i cales amb pins.",
+    "Els pobles blancs miren al mar i les gavines volen sobre els illots.",
+    "Al cap hi ha un far: de nit, la seva llum gira per avisar els vaixells."
+   ]
+  },
+  {
+   "t": "L’alta muntanya",
+   "l": [
+    "Un refugi entre pins, estanys d’aigua freda i tarteres de pedres.",
+    "Els isards salten per les roques i els corbs volen sobre els cingles.",
+    "El telecabina puja la gent penjat d’un cable d’acer."
+   ]
+  },
+  {
+   "t": "El delta",
+   "l": [
+    "On el riu arriba al mar hi ha arrossars, canals i barraques blanques amb teulada de canyís.",
+    "A les llacunes hi viuen ànecs i flamencs.",
+    "Les dunes de sorra acaben a la gola, on l’aigua del riu es troba amb la del mar."
+   ]
+  },
+  {
+   "t": "Les illes",
+   "l": [
+    "Molins de vent, cales d’aigua clara i pobles enfilats al turó.",
+    "Un castell antic vigila el mar des de dalt.",
+    "Els dofins salten a prop de la costa i un far petit marca l’illa de nit."
+   ]
+  },
+  {
+   "t": "Un dia sencer i les estacions",
+   "l": [
+    "Cada viatge dura un dia: de l’albada al migdia, la posta, la nit i la matinada.",
+    "A la primavera passa un ruixat i surt l’arc de Sant Martí; a l’estiu, una tempesta llunyana; a la tardor, boira i oques; a l’hivern, neu.",
+    "Quan torna a fer-se de dia, el globus aterra on l’esperen amb fanalets."
+   ]
+  }
+ ],
+ "encaix": [
+  {
+   "t": "El port · Matí",
+   "l": [
+    "Quatre forats: la gavina, la pescadora, el pop i el cranc. A la safata també hi ha la barca, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: la gavina bat les ales i pesca un peix; la pescadora llança la canya i treu una bota; el pop saluda i s’amaga; el cranc camina de costat i pinça.",
+    "Matí al moll: les cases de colors, el sol que puja, dos núvols i tres onades que van i venen. Música del port: claves, guitarra, marimba, cellos pessigats i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El circ · L’entrada",
+   "l": [
+    "Quatre forats: la malabarista, la pallassa, l’acròbata i el gos. A la safata també hi ha l’equilibrista, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: la malabarista fa volar les boles; la pallassa perd les rodes del cotxet; l’acròbata gira al trapezi; el gos salta pel cèrcol.",
+    "La pista buida abans de l’espectacle: la garlanda de banderetes es gronxa. Música del circ: bombo, caixa, plats, tuba, trompeta, marimba i glockenspiel; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "La ciutat · Mercat del matí",
+   "l": [
+    "Quatre forats: la bombera, el forner, el gat i la nena del paraigua. A la safata també hi ha el tramvia, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: la bombera desplega l’escala; el forner treu el pa; el gat s’estira i salta; a la nena se li obre el paraigua i la fa volar.",
+    "Mercat del matí: el rellotge de la plaça avança, el sol puja i tres coloms passen. Música de la ciutat: tambor, cellos pessigats, guitarra, clarinet, claves i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El bosc · Primavera",
+   "l": [
+    "Quatre forats: el mussol, el cérvol, l’eriçó i la guineu. A la safata també hi ha l’esquirol, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el mussol gira el cap i parpelleja; el cérvol aixeca el cap; l’eriçó es fa bola i rodola; la guineu salta a la neu.",
+    "Primavera: el sol d’alba, un núvol, el rierol i pètals que volen; se senten els ocells de bon matí. Música del bosc: kalimba, flauta, cellos pessigats, arpa i fustes; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "L’espai · La Lluna",
+   "l": [
+    "Quatre forats: l’astronauta, el planeta, l’extraterrestre i el cometa. A la safata també hi ha el coet, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’astronauta fa una tombarella; els anells del planeta giren; l’extraterrestre saluda amb tres braços; el cometa travessa el cel.",
+    "La Lluna: el sòl gris, la bandera que oneja a poc a poc i un satèl·lit que passa. Música de l’espai: triangle, arpa, vibràfon, glockenspiel i tambor; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El port · Migdia",
+   "l": [
+    "Quatre forats: la barca, la pescadora, el pop i el cranc. A la safata també hi ha la gavina, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: la barca infla la vela i navega; la pescadora llança la canya i treu una bota; el pop saluda i s’amaga; el cranc camina de costat i pinça.",
+    "Migdia: el sol ben alt, el mar clar i les onades que no paren. Música del port: claves, guitarra, marimba, cellos pessigats i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El circ · El número dels llums",
+   "l": [
+    "Quatre forats: l’equilibrista, la pallassa, l’acròbata i el gos. A la safata també hi ha la malabarista, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’equilibrista pedala el monocicle; la pallassa perd les rodes del cotxet; l’acròbata gira al trapezi; el gos salta pel cèrcol.",
+    "El número dels llums: dos focus escombren la pista mentre la garlanda es gronxa. Música del circ: bombo, caixa, plats, tuba, trompeta, marimba i glockenspiel; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "La ciutat · Pluja",
+   "l": [
+    "Quatre forats: el tramvia, el forner, el gat i la nena del paraigua. A la safata també hi ha la bombera, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el tramvia toca la campaneta; el forner treu el pa; el gat s’estira i salta; a la nena se li obre el paraigua i la fa volar.",
+    "Pluja: gotes que cauen davant les cases i els coloms que busquen aixopluc. Música de la ciutat: tambor, cellos pessigats, guitarra, clarinet, claves i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El bosc · Estiu",
+   "l": [
+    "Quatre forats: l’esquirol, el cérvol, l’eriçó i la guineu. A la safata també hi ha el mussol, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’esquirol amaga una gla; el cérvol aixeca el cap; l’eriçó es fa bola i rodola; la guineu salta a la neu.",
+    "Estiu: el sol fort, el prat i el rierol; se senten les cigales. Música del bosc: kalimba, flauta, cellos pessigats, arpa i fustes; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "L’espai · Els planetes",
+   "l": [
+    "Quatre forats: el coet, el planeta, l’extraterrestre i el cometa. A la safata també hi ha l’astronauta, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el coet s’encén i puja; els anells del planeta giren; l’extraterrestre saluda amb tres braços; el cometa travessa el cel.",
+    "Els planetes: el cel ple d’estels i un satèl·lit que passa. Música de l’espai: triangle, arpa, vibràfon, glockenspiel i tambor; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El port · Capvespre",
+   "l": [
+    "Quatre forats: la barca, la gavina, el pop i el cranc. A la safata també hi ha la pescadora, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: la barca infla la vela i navega; la gavina bat les ales i pesca un peix; el pop saluda i s’amaga; el cranc camina de costat i pinça.",
+    "Capvespre: el cel taronja, el sol que baixa i les onades fosques. Música del port: claves, guitarra, marimba, cellos pessigats i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El circ · Pluja de confeti",
+   "l": [
+    "Quatre forats: l’equilibrista, la malabarista, l’acròbata i el gos. A la safata també hi ha la pallassa, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’equilibrista pedala el monocicle; la malabarista fa volar les boles; l’acròbata gira al trapezi; el gos salta pel cèrcol.",
+    "Pluja de confeti: trossets de colors cauen a poc a poc sobre la pista. Música del circ: bombo, caixa, plats, tuba, trompeta, marimba i glockenspiel; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "La ciutat · Festa major",
+   "l": [
+    "Quatre forats: el tramvia, la bombera, el gat i la nena del paraigua. A la safata també hi ha el forner, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el tramvia toca la campaneta; la bombera desplega l’escala; el gat s’estira i salta; a la nena se li obre el paraigua i la fa volar.",
+    "Festa major: globus que pugen, el sol i els coloms sobre la plaça. Música de la ciutat: tambor, cellos pessigats, guitarra, clarinet, claves i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El bosc · Tardor",
+   "l": [
+    "Quatre forats: l’esquirol, el mussol, l’eriçó i la guineu. A la safata també hi ha el cérvol, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’esquirol amaga una gla; el mussol gira el cap i parpelleja; l’eriçó es fa bola i rodola; la guineu salta a la neu.",
+    "Tardor: fulles seques que cauen, el rierol i el vent; canta una merla. Música del bosc: kalimba, flauta, cellos pessigats, arpa i fustes; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "L’espai · Pluja d’estels",
+   "l": [
+    "Quatre forats: el coet, l’astronauta, l’extraterrestre i el cometa. A la safata també hi ha el planeta, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el coet s’encén i puja; l’astronauta fa una tombarella; l’extraterrestre saluda amb tres braços; el cometa travessa el cel.",
+    "Pluja d’estels: estels fugaços que travessen el cel negre. Música de l’espai: triangle, arpa, vibràfon, glockenspiel i tambor; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El port · Nit",
+   "l": [
+    "Quatre forats: la barca, la gavina, la pescadora i el cranc. A la safata també hi ha el pop, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: la barca infla la vela i navega; la gavina bat les ales i pesca un peix; la pescadora llança la canya i treu una bota; el cranc camina de costat i pinça.",
+    "Nit: la lluna sobre el mar, els llums de les cases i les onades lentes. Música del port: claves, guitarra, marimba, cellos pessigats i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El circ · Gran final",
+   "l": [
+    "Quatre forats: l’equilibrista, la malabarista, la pallassa i el gos. A la safata també hi ha l’acròbata, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’equilibrista pedala el monocicle; la malabarista fa volar les boles; la pallassa perd les rodes del cotxet; el gos salta pel cèrcol.",
+    "Gran final: l’estrella del sostre brilla sobre la pista plena. Música del circ: bombo, caixa, plats, tuba, trompeta, marimba i glockenspiel; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "La ciutat · Nit",
+   "l": [
+    "Quatre forats: el tramvia, la bombera, el forner i la nena del paraigua. A la safata també hi ha el gat, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el tramvia toca la campaneta; la bombera desplega l’escala; el forner treu el pa; a la nena se li obre el paraigua i la fa volar.",
+    "Nit: la lluna sobre els terrats, les finestres enceses i els grills. Música de la ciutat: tambor, cellos pessigats, guitarra, clarinet, claves i arpa; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "El bosc · Hivern",
+   "l": [
+    "Quatre forats: l’esquirol, el mussol, el cérvol i la guineu. A la safata també hi ha l’eriçó, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: l’esquirol amaga una gla; el mussol gira el cap i parpelleja; el cérvol aixeca el cap; la guineu salta a la neu.",
+    "Hivern: flocs de neu que cauen sobre el bosc blanc i el rierol gelat; bufa el vent. Música del bosc: kalimba, flauta, cellos pessigats, arpa i fustes; cada peça posada hi afegeix una veu."
+   ]
+  },
+  {
+   "t": "L’espai · Sortida de la Terra",
+   "l": [
+    "Quatre forats: el coet, l’astronauta, el planeta i el cometa. A la safata també hi ha l’extraterrestre, que no hi té forat.",
+    "Posada al seu lloc, cada figura cobra vida: el coet s’encén i puja; l’astronauta fa una tombarella; els anells del planeta giren; el cometa travessa el cel.",
+    "Sortida de la Terra: la Terra blava que puja per l’horitzó mentre el satèl·lit passa. Música de l’espai: triangle, arpa, vibràfon, glockenspiel i tambor; cada peça posada hi afegeix una veu."
+   ]
+  }
+ ],
+ "fira": [
+  {
+   "t": "Les bitlles",
+   "l": [
+    "Una jugadora de bitlles catalanes llança el bitllot cap a sis bitlles en dues fileres de tres.",
+    "Sorpreses: el dòmino, la bitlla que balla i es queda dreta, el fanal que torna el bitllot, el gos que el porta, el cotó de sucre i les bitlles que tornen soles a lloc.",
+    "Final: les sis bitlles ballen en rotllana i la jugadora fa una reverència. Música: una polca amb clarinet, tuba i violins en pizzicato."
+   ]
+  },
+  {
+   "t": "El canó de la bala humana",
+   "l": [
+    "Un acròbata surt disparat del canó amb un «pum» de cotó.",
+    "Sorpreses: la xarxa, el timbal de la banda, la bala de palla, el trampolí que el torna al canó, l’elefant que l’agafa amb la trompa i el paraigua per baixar.",
+    "Final: aterra dret sobre una cadireta dalt d’un pal i saluda. Música: un pasdoble amb trompeta, tuba i caixa."
+   ]
+  },
+  {
+   "t": "El coet de corda",
+   "l": [
+    "Un nen dona corda al coet de llauna i s’aparta.",
+    "Sorpreses: el paracaigudes, la volta a la lluna, l’estrella enganxada, el rull de fum, els tirabuixons i la capsa de cartó d’on surt d’un salt.",
+    "Final: la lluna s’obre com una capsa de llauna i en cau una pluja d’estrelles. Música: un vals amb flauta, violoncels i violins en pizzicato."
+   ]
+  },
+  {
+   "t": "La força",
+   "l": [
+    "Un forçut amb bigoti pica la palanca amb un maç de fusta i la peça puja per la torre.",
+    "Sorpreses: la peça que s’atura a mitja torre, la campana, la torre que s’estira com un acordió, el niu, la campana que es gronxa i el forçut que surt volant.",
+    "Final: s’encenen les bombetes de la torre i la campana toca una melodia. Música: una marxa amb trompa, tuba i bombo."
+   ]
+  },
+  {
+   "t": "La cursa de cavallets",
+   "l": [
+    "Una nena obre la tanca de tres cavallets de corda sobre carrils.",
+    "Sorpreses: guanya per un nas, el cavallet que s’atura a menjar una flor, l’empat, el salt, la volta enrere i el cavallet sense corda que l’altre empeny.",
+    "Final: els carrils es corben i els cavallets fan un cavallet de fira que gira. Música: un galop amb clarinet, tuba i claves."
+   ]
+  }
+ ]
+}

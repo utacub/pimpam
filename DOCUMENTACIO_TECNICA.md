@@ -1,0 +1,502 @@
+# Pim Pam · 36 activitats · 0.36.3
+
+## 0.47 · La fira de llauna (CE44)
+
+- **Activitat nova a «Prémer al moment»: La fira de llauna (CE44, id `fira`).** Preparats, llestos, ja: després d’una calma que dura una estona diferent cada vegada, tres bombetes s’encenen d’una en una amb tres notes que pugen; quan s’encén la tercera, la pulsació llança. Cinc atraccions (bitlles catalanes, canó de la bala humana, coet de corda, la força, cursa de cavallets) amb sis sorpreses i un final cadascuna, i quatre llums: vint rondes. Cada llançament penja una medalla a l’arc; després de 3, 5 o 7 llançaments (l’ajust «Passos») ve el final i la parada gira cap a l’atracció següent.
+- `dist/fira.js`: el model (rellotge propi `fiNow`, fases `calm`, `count`, `go` i `launch`; `fiTick`, `fiPress`, `fiDone`), els ajustos i la música (`fiCountScore`, `fiTickScore`, `fiPlan`). `dist/fira-llauna.js`: la impressió de llauna (trama, reflex, contorn desplaçat, desgast, reblons, bombetes) i els sprites. `dist/fira-gent.js`: les persones de llauna, el gos, els cavallets i l’elefant. `dist/fira-art.js`: la fira i les cinc atraccions.
+- Al llançador (`cause-catalog.js`, `cause-art.js`, `app.js`): tipus `ready`; l’esdeveniment `count` comença el compte, `loop` el tic-tac fluix després de la tercera bombeta, `rest` l’apaga si ningú no prem (ajust). Ajustos nous a «Aquesta activitat»: `fiRhythm`, `fiCalm`, `fiEarly`, `fiPress`, `fiFirst`. Panell ⓘ amb les cinc atraccions.
+- Proves: `tests/fira.test.mjs`. Nivells de so: `tools/fira-audio.mjs` (cada llançament a uns −31 LUFS).
+
+## 0.45.5 · L’halo, enganxat al contorn
+
+Versió del 5 de novembre de 2026, sobre la 0.45.4. En créixer amb la respiració, l’halo es despegava del contorn i es veia com una segona línia. Ara no creix: és una llum esvaïda (difuminada) enganxada al contorn que respira només en intensitat. L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_45_5.html`.
+
+## 0.45.4 · L’halo, a mig camí
+
+Versió del 5 de novembre de 2026, sobre la 0.45.3. En Marc va trobar excessiu l’halo de la 0.45.3: ara és a mig camí entre la 0.45.1 i la 0.45.3 (anells de 29 i 22 unitats, més suaus). L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_45_4.html`.
+
+## 0.45.3 · Un halo més intens
+
+Versió del 5 de novembre de 2026, sobre la 0.45.2. A «Encaixos de fusta», l’halo que respira al voltant del contorn del forat objectiu és més intens: dos anells, l’interior gairebé opac i un d’exterior més ample, que s’eixamplen amb la respiració (2,4 s). L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_45_3.html`.
+
+## 0.45.1 · El forat objectiu, més clar
+
+Versió del 5 de novembre de 2026, sobre la 0.45. A «Encaixos de fusta» el forat on va la peça es marca amb un contorn groc gruixut amb vora fosca i un halo que respira a poc a poc (2,4 s), mentre es tria i mentre una peça equivocada ho prova (`exMark` a `dist/encaix-art.js`; proposta A de tres, triada per en Marc). L’ajust «Llum al forat marcat» l’apaga. L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_45_1.html`.
+
+## 0.45 · Encaixos de fusta (EN12)
+
+Versió del 5 de novembre de 2026, sobre la 0.44.7. L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_45.html`. «Encaixos de fusta» substitueix «Puzles que cobren vida» (EN12, de la carpeta «Per revisar»), refeta de zero com un trencaclosques de fusta pintada que omple la pantalla, a la carpeta «Encercament: relacionar» (`encaix`). El model és `dist/encaix.js` (els 20 taulers, 5 mons × 4 llums, les figures de cada tauler, la peça marcada, les opcions de la safata, l’ajuda, el ritme), el so `dist/encaix-so.js` (el «clac» i el refús en fusta, la veu de cada figura, els gags i una música per món que creix una veu amb cada peça), les figures `dist/encaix-figures.js` (25 figures de fusta articulada, en parts sobre pivots, amb dos gags cadascuna), els mons `dist/encaix-mons.js` (els decorats de cada llum, els forats i els moviments lents) i la pintura `dist/encaix-art.js` (la veta de fusta, els bisells, els forats de bedoll amb el fantasma de la figura, el halo del forat marcat, el vol de la peça, la festa i el canvi de tauler; fora del navegador pinta pla, per a les proves). Ajustos nous a «Encaixos de fusta» (`exMode`, `exHint`, `exLike`, `exHelp`, `exGlow`, `exPace`). Tots els sons surten dels bancs que ja hi havia: no s’ha generat ni enregistrat cap so nou. El panell ⓘ té els vint taulers (`production/info/escenes.json`, `production/info/img/encaix_*.jpg`; `make_info.py` ara treu de les imatges la caixa de credencials que una còpia hi pot afegir). Eines de revisió: `tools/encaix-frames.mjs` (fotogrames) i `tools/encaix-audio.mjs` (el so d’un tauler sencer renderitzat fora de línia i la seva sonoritat, com `masia-audio.mjs`). Prova nova: `tests/encaix.test.mjs`.
+
+## 0.43 · El viatge en globus (CE43)
+
+Versió del 4 de novembre de 2026, sobre la 0.42. L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_43.html`. Activitat nova de mantenir premut, a la carpeta «Mantenir premut» (`viatge`): el model és `dist/viatge.js` (vol, dia, rutes, poses, música i sons), la pintura `dist/viatge-pinzell.js` (eines), `dist/viatge-mon.js` (els plans i els 30 llocs, pintats una vegada per viatge) i `dist/viatge-art.js` (el fotograma). Sons nous a `dist/assets/samples/viatge/` (banc `vgRec`, crèdits a `CREDITS.md`). Eines: `tools/viatge-frames.mjs` (imatges fixes), `tools/viatge-audio.mjs` (so i sonoritat), `tools/viatge-app.mjs` (a l’app), `tools/viatge-perf.mjs` (cost del fotograma). Proves: `tests/viatge.test.mjs`.
+
+## 0.42 · La pàgina principal en carpetes
+
+Versió del 4 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_43_activitats_v0_42.html`. El menú mostra 8 carpetes per tipus d’activitat en lloc de les 43 fitxes (`HOME_GROUPS` a `dist/app.js`), amb «Per revisar» a part per a les primeres activitats fetes amb ChatGPT que no s’han refet, una carpeta «Preferits» quan n’hi ha i «Altres» per a qualsevol id que no tingui carpeta. L’encercament del menú recorre les carpetes i, dins, les fitxes i la fitxa de tornada. `tools/smoke-all.mjs` obre cada activitat des de la seva carpeta. El detall és a `../CANVIS.md`.
+
+## 0.36.3 · Segona tanda de correccions de «El pou del temps»
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_36_activitats_v0_36_3.html`. A petició d’en Marc:
+
+- **Escena 10 (pollets de *Citipati*).** Cada píxel triava només el pollet més proper, i per això els pollets es tallaven entre ells quan s’encavalcaven; el cap i l’ull no quedaven retallats per l’ala de la mare. Ara els tres pollets es dibuixen de més lluny a més a prop (ordenats per l’altura a terra), estan prou separats per no trepitjar-se, i tot el pollet, cap i ull inclosos, queda tapat per l’ala quan hi és a sota (`chick()`, `chickState`, `life()` a `scene_09.glsl`).
+- **Escena 11 (pell dels parasaurolofs).** La quadrícula d’escates era massa fina: amb l’escala de dibuix reduïda (`pgAdapt`, fins a 0,4) i l’ampliació del navegador, bategava amb els píxels com un muaré. Les cel·les són ara una vegada i mitja més grans, i el dibuix d’escates només apareix quan cada cel·la fa entre 7 i 12 píxels; per sota, la pell és llisa (`scene_10.glsl`).
+- **Escena 12 (pteranodon).** Mentre la finestra de la vida s’obre (abans d’enlairar-se) o s’esvaeix (en passar a l’escena següent), `GROW` és entre 0,14 i 0,5. En aquest interval els ossos no es calculen (`dB=-1`), però l’ala propera els pintava igualment (`G<.5`), i tota la capsa de l’ala quedava plena de color d’os: el requadre clar. Ara l’os només es pinta quan s’ha calculat (`G<.14`), com a les altres escenes. A més, s’han protegit càlculs que en una targeta gràfica poden donar valors no definits: el tub de Bézier gairebé recte, l’`acos` sense límits, `pow` amb base negativa, dues divisions i un `atan` (`scene_11.glsl`). La funció comuna `piece()` ara també salta les distàncies que no són un nombre (`common.glsl`).
+
+Proves: les mateixes de la 0.36 (323). El control de flaixos (`tools/flash-audit.mjs`) no s’ha executat.
+
+
+## 0.36.2 · Correccions de «Gegants del blau»
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_36_activitats_v0_36_2.html`. A petició d’en Marc:
+
+- **Escenes 10 i 14 (dofins).** Les aletes caudals es dibuixaven gairebé de cantell (`flukeD` amb un gruix de 0,10) i quedaven en un punt. Ara es veuen una mica des de dalt (0,62 a 1) i són més grans (`scene_09.glsl`, `scene_13.glsl`).
+- **Escena 13 (peix rem).** Redibuixat (`scene_12.glsl`): cinta platejada amb ratlles obliqües, taques i reflexos que hi corren, aleta dorsal vermella amb radis i ones, cresta de radis amb banderetes, aletes pelvianes en forma de rem. Les línies fines s’esvaeixen amb `fwidth` quan s’acosten al píxel. La càmera (`GG_SHOTS`, escena 13) s’acosta al cap i a la cresta i després recorre el cos.
+- **Escena 16 (mantes).** La roca de corall es dibuixava fixa a la pantalla mentre el fons es movia amb la càmera, i per això lliscava en el viatge d’entrada i de sortida. Ara està ancorada al fons (`PR`, a la distància del fons), i les mantes s’hi mouen amb ella (`RX`).
+- **Escena 20 (balena blava).** En obrir la boca, el tall del musell tenia el signe invertit: esborrava la part de dalt del cap en lloc de la gola, i el cap quedava reduït a una falca. Ara el musell queda sencer i la mandíbula inferior (una banda de pell sota la línia de la boca) gira de debò sobre la comissura (`jawDep`, marc `fl`). La boca oberta té les barbes negres que pengen del musell, amb la serreta i el serrell, i l’interior fosc i més clar cap a l’obertura. La gola inflada (`pouchPt`) va de la barbeta al melic, mai per sobre del ventre, arrodonida cap a fora, amb els solcs que s’obren; s’hi fon la gola que hi ha darrere de la comissura. L’obertura màxima passa de 1,30 a 1,0 radiants. L’ull és just per sobre i darrere de la comissura.
+- Les imatges del panell d’informació (ⓘ) de les escenes 10, 13, 14, 16 i 20 són noves.
+
+Proves: les mateixes de la 0.36 (323). El control de flaixos (`tools/flash-audit.mjs`) no s’ha executat.
+
+
+## 0.36.1 · Correccions de «El pou del temps»
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_36_activitats_v0_36_1.html`. A petició d’en Marc:
+
+- **Escena 3 (rinoceront llanut).** La banya sortia del requadre on es dibuixa l’animal (`rhino()` a `scene_02.glsl`) quan el cap s’allarga endavant, i quedava tallada. El requadre és ara prou ample. La neu que cau de les banyes del cérvol deixava estelles llargues que es veien com barres verticals: ara cada terròs deixa una estela curta, no més llarga que ell mateix, i es desfà abans de tocar a terra.
+- **Escena 11 (parasaurolophus).** El muaré venia de les juntes entre escates, més primes que un píxel quan l’animal és petit a la pantalla o el quadre es dibuixa a menys resolució. Ara la junta mai és més prima que un píxel i mig (`cp`, la mida d’una escata en píxels), amb la mateixa foscor mitjana, i el patró s’esvaeix entre 3 i 6 píxels per escata. El mateix arranjament s’aplica a les altres pells amb la mateixa funció: escenes 6 (`tcScales`), 15 (`igScales`) i 17 (`stScales`). També s’ha tret una línia de llum dentada a la boca (la llum de contorn arribava al plec entre el musell i la mandíbula) i el tramat de les falgueres llunyanes (els folíols es tanquen en una fronda sòlida quan són massa petits).
+- **Escena 12 (pteranodon).** En el salt, l’ala plegada passava de cop a ala oberta (llindar `ptFly>.42`), i durant uns instants l’ala plegada estirada es veia com una gran placa fosca que canviava de cop. Ara les dues formes es transformen l’una en l’altra des que comença l’impuls (`kO`, de `ptFly` .02 a .30), i la membrana oberta ja dóna forma a l’ala mentre es desplega. Les distàncies a triangles i polígons (`ptTri`, `ptPoly`) ja no poden donar «dins a tot arreu» si una figura queda plana.
+- **Escena 20 (eoraptor).** Amagat entre les falgueres, la cua sortia del requadre de l’animal i quedava tallada amb un tall recte fins que l’eoraptor en sortia. El requadre arriba ara fins a la punta de la cua, també al fòssil.
+
+Proves: les mateixes de la 0.36. El control de flaixos (`tools/flash-audit.mjs`) no s’ha executat.
+
+## 0.36 · Gegants del blau, un viatge pels oceans
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_36_activitats_v0_36.html`. Parteix de la 0.35 i hi afegeix una activitat nova, «Gegants del blau» (CE38), a petició d’en Marc (estil C de les proves, «documental pintat»): un viatge pels oceans, de l’Àrtic a l’oceà Austral, en vint escenes amb grans peixos i mamífers marins que entren nedant al pla, fan el seu gest més vistós amb vida al voltant i en surten. Té el motor de les immersions (travelling de 2 s, estímul de 12 s, 14 s per al tauró balena i la balena blava, escena aturada i fosca). Comença i acaba a la superfície, a la posta de sol; després de la vintena, la càmera puja amb la balena blava fins que esbufega. 36 activitats: 28 de causa-efecte i 8 d’encercament.
+
+- `dist/gegants.js` (prefix `gg`/`GG_`): les escenes (`GG_NAMES`, `GG_OCEAN`), la càmera (`GG_SHOTS`, `ggShot`, `ggCamera`, `ggRest`, `GG_START`; `ggSetSoft` per a «Moviment de càmera: suau»), les capes (`ggLayers`, `ggRestLayers`), el moment fix per a moviment reduït (`GG_STILL`) i la música (`ggScore`, `GG_PIECES`, `GG_CUES`, `GG_FX`, `GG_TRIM`, `GG_LOUD`). Els moments de `GG_CUES` són en el rellotge del shader i es desplacen `GG_LAG` (0,3 s).
+- `dist/gegants-gl.js`: el dibuix amb WebGL2 (capes de les escenes → composició). `GGL_FIT=.80`.
+- `dist/gegants-shaders.js` (generat): les fonts són a `production/gegants/` (`common.glsl`, `scene_head.glsl`, `scene_tail.glsl`, `scene_00.glsl`–`scene_20.glsl`, on la 20 és la superfície); després de tocar-les cal executar `python3 production/gegants/make_shaders.py`. `production/gegants/BRIEF.md` és l’encàrrec de dibuix.
+- So: cada oceà té els seus instruments (VSCO-2 i els bancs generats de la 0.30 i la 0.31). Els gestos sonen amb sons que ja hi havia (`pouRec`, `selvaRec`, `sabanaRec`, `natureRec`), per nom (`GG_FX`). Banc nou `ggRec` (12 sons generats amb ElevenLabs amb el permís d’en Marc): les veus de la iubarta, la beluga, el narval, la balena de Groenlàndia, el catxalot, els dofins, la balena franca, les orques, la balena blava i el rorqual, l’esbufec d’una balena gran i la respiració del dugong; als tres més greus s’hi han afegit harmònics perquè se sentin en altaveus petits. Crèdits a `dist/assets/samples/CREDITS.md`.
+- Volum: `GG_TRIM`, mesurat amb `tools/gegants-audio.mjs`: cada pulsació sona a −29,6 LUFS a la còpia de revisió (+12 dB).
+- Informació (ⓘ): 20 escenes amb imatge i tres línies (`production/info/`), i la imatge de la fitxa del menú (`production/info/cards/giants.jpg`).
+- Proves: `tests/gegants.test.mjs` (11) i les generals adaptades; en total, 323. Eines: `tools/gegants-frames.mjs` (imatges fixes) i `tools/gegants-audio.mjs` (àudio i volum). `tools/smoke-all.mjs` accepta `SHOT_TIMEOUT` (ms) per a les immersions lentes sense GPU.
+
+
+## 0.35 · El menú s’obre de seguida
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_35_activitats_v0_35.html`. En Marc va veure que en obrir Pim Pam amb Chrome la pàgina es quedava penjada una bona estona. La causa era que les miniatures del menú de les quatre immersions (CE06, CE35, CE36, CE37) es dibuixaven en directe amb WebGL, i això obligava a compilar i enllaçar els seus shaders, que són molt grans, abans de mostrar el menú. Amb un perfil de CPU a Chromium sense GPU, el menú trigava 17,4 s i 15,7 s d’aquest temps eren aquesta feina; ara hi arriba en 1,3 s. Ara aquestes quatre fitxes mostren una imatge capturada de la mateixa miniatura (`CARD_IMG`, `production/info/cards/`), i les altres miniatures es pinten unes quantes per fotograma (`paintPreviews`). Amb el menú obert, els shaders de les immersions es preparen en segon pla, un cada 400 ms (`prewarmDives`), però només on el navegador compila en paral·lel (`KHR_parallel_shader_compile`). Sense compilació paral·lela, la preparació en segon pla durant el viatge es limita a un shader cada 1,5 s, perquè cada compilació atura els fotogrames.
+
+
+## 0.34 · Correccions de «Selva de llum»
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_35_activitats_v0_34.html`. A petició d’en Marc:
+
+- **Girs.** Els animals vistos de costat es miraven al mirall multiplicant la x pel sentit (`f.x*=dir`). Quan el sentit passava per zero a mig gir, la figura s’estirava per tota la pantalla. Ara es divideix per `sdir(dir)` (`common.glsl` de la selva i de la sabana): a mig gir la figura s’estreny com una carta, mai per sota d’un 18 % de l’amplada. La formiga i el dofí ja tenien el seu propi estrenyiment, i ara hi giren només de signe.
+- **El peresós (escena 5).** Redibuixat sencer: penja sota una branca per les quatre potes, amb les urpes ganxudes per sobre de la fusta. Té el pelatge marró càlid, la cara clara més gran, la ratlla fosca de cada ull i ulls rodons amb llum. La cria és a la panxa i treu el cap entre els braços. Els horaris de l’escena no canvien.
+- **L’aranya (escena 9).** Fa un sol camí continu: surt pel radi de la vora del forat, va i ve pels anells en quatre passades i torna pel mateix radi. El cap gira suaument, sense salts, i les potes només caminen quan es mou.
+
+
+## 0.33 · Informació a cinc activitats més
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_35_activitats_v0_33.html`. A petició d’en Marc, el panell d’informació (ⓘ) de la 0.32 també és a «La cassola de Glupòcrates» (EN23: les 11 criatures, el mite i l’escena), «Fem castells» (CE25: les parts del castell, els tipus i la festa), «L’orquestra que es desperta» (CE12: les sis seccions), «Detectius de sons» (EN11: els vuit instruments del templet) i «D’on ve aquest so?» (EN21: els nou llocs i el seu so). Cada panell té un encapçalament propi (`SCENE_INFO_HEAD`). Les captures es fan amb les eines de revisió de cada activitat (`tools/cassola-frames.mjs`, `tools/stage-frames.mjs`) i, per als dos taulers, dibuixant cada lloc i cada instrument tot sol.
+
+
+## 0.32 · Informació de les escenes
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_35_activitats_v0_32.html`. A petició d’en Marc, «Fons marí de vidre» (CE06), «Selva de llum» (CE35), «Sabana de paper» (CE36) i «El pou del temps» (CE37) tenen un botó d’informació (ⓘ), a la fitxa del menú inicial i a les eines de dalt a la dreta de l’activitat. Obre un panell amb totes les escenes (20, i 21 al pou amb el jardí final), cadascuna amb una captura i d’una a tres línies planeres, sense cites, sobre què s’hi representa. Mentre és obert, l’activitat queda en pausa. Les captures (384×216) i els textos són a `production/info/` (`img/`, `escenes.json`); `python3 production/info/make_info.py` genera `dist/info-escenes.js`. Proves: `tests/info.test.mjs`.
+
+
+## 0.31 · El pou del temps, de l’edat del gel fins als primers dinosaures
+
+Versió de l’1 de novembre de 2026. L’HTML autònom és `dist/Pim_Pam_35_activitats_v0_31.html`. Parteix de la 0.30 i hi afegeix una activitat nova, «El pou del temps» (CE37), a petició d’en Marc (estil A de les proves): un viatge enrere en el temps a través de les capes de roca, en vint escenes pintades com un diorama de museu, de l’edat del gel fins al Triàsic, amb el motor de les immersions (travellings de 2 s, estímul de 12 s, escena aturada i fosca). Comença i acaba al jardí d’avui, amb un pit-roig. 35 activitats: 27 de causa-efecte i 8 d’encercament.
+
+- `dist/pou.js` (prefix `pou`/`POU_`, música `PO_`): les vint escenes (`POU_POSES`, `POU_NAMES`; el jardí és l’escena `POU_GARDEN`, índex 20), la càmera (`pouCamera`, `pouRest`, `POU_START`), la vida de cada escena (`pouLife`: el fòssil es desperta), les capes (`pouLayers`, `pouRestLayers`) i la música (`pouScore`, `POU_PIECES`, `POU_CUES`, `POU_TRIM`, `POU_LOUD`). Els moments de `POU_CUES` són en el rellotge del shader (`uTau`) i es desplacen `POU_LAG` (0,3 s), menys els de `POU_PRESS_TIMED`, que ja són en segons des de la pulsació.
+- `dist/pou-gl.js`: el dibuix amb WebGL2 (roca → capes de les escenes → composició). `PG_FIT=.85`: les pantalles de 4:3 i verticals s’allunyen prou per veure els animals dels costats; les de 16:9 no canvien.
+- `dist/pou-shaders.js` (generat): les fonts són a `production/pou/` (`common.glsl`, `rock.glsl`, `scene_head.glsl`, `scene_tail.glsl`, `scene_00.glsl`–`scene_20.glsl`); després de tocar-les cal executar `python3 production/pou/make_shaders.py`. Cada escena té les seves notes a `production/pou/notes/` (història, moments per al so, fonts i criteris), i `production/pou/BRIEF.md` és l’encàrrec de dibuix comú.
+- Integració: fila CE37 (`well`) a `dist/cause-catalog.js`; `Cpou` i `CpouPlain` (sense WebGL2: la llum i el color de terra de cada escena) a `dist/cause-art.js`; el nom de l’escena, el decorat i «Quant a» a `dist/app.js`; la paleta a `dist/art.js`.
+- Sons: bancs nous `pouRec` (55 veus i gestos), `pouPerc` (5 percussions), `crestaRec` (la crida dels parasaurolophus, afinada), `uduRec`, `escletxaRec` i `vibRec`, i dotze ambients nous a `natureRec` (`pouEstepa` … `pouJardi`), tots generats amb ElevenLabs; crèdits a `dist/assets/samples/CREDITS.md`. La resta d’instruments són de VSCO-2.
+- Volum: `POU_LOUD` i `POU_TRIM`, mesurats amb `tools/pou-audio.mjs`: cada pulsació sona entre −29,7 i −29,6 LUFS a la còpia de revisió (+12 dB).
+- Proves: `tests/pou.test.mjs` (11) i les generals adaptades; en total, 306. Eines: `tools/pou-frames.mjs` (imatges fixes), `tools/pou-audio.mjs` (àudio i volum) i `tools/pou-app.mjs` (l’HTML construït).
+
+## 0.30 · Sabana de paper, un dia a la sabana
+
+Versió del 31 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_34_activitats_v0_30.html`. Parteix de la 0.29 i hi afegeix una activitat nova, «Sabana de paper» (CE36), a petició d’en Marc: un dia a la sabana de l’Àfrica oriental en vint escenes de paper retallat, com un diorama, de l’alba al Kilimanjaro fins a la nit, amb el motor de les immersions (travellings de 2 s, estímul de 12 s, escena aturada i fosca, pujada final de 5 s). Cada escena té la seva hora del dia. 34 activitats: 26 de causa-efecte i 8 d’encercament.
+
+- `dist/sabana.js` (prefix `sabana`/`SABANA_`, intern `SB`): les vint escenes (`SABANA_POSES`, `SABANA_NAMES`, `SABANA_HOURS`), la càmera (`sabanaCamera`, `sabanaRest`), les capes, el període de la ruta (`SABANA_PERIOD`, 46: la pujada final acaba un període més enllà de l’inici) i la música (`sabanaScore`, `SB_PIECES`, `SB_CUES`, `SB_TRIM`, `SABANA_LOUD`).
+- `dist/sabana-gl.js`: el dibuix amb WebGL2. Als darrers 1,2 s de la pujada fon el cel del final amb el de l’inici (els núvols no es repeteixen), perquè la imatge no salti. `SB_FIT=.62`.
+- `dist/sabana-shaders.js` (generat): les fonts són a `production/sabana/`; després de tocar-les cal executar `python3 production/sabana/make_shaders.py`.
+- Integració: fila CE36 (`savanna`) i `DIVES.savanna` a `dist/cause-catalog.js`; `Csabana` i `CsabanaPlain` (sense WebGL2: la llum de l’hora de cada escena) a `dist/cause-art.js`; el nom de l’escena, el decorat i «Quant a» a `dist/app.js`; la paleta a `dist/art.js`.
+- Sons: bancs nous `kalimbaRec` (sis notes, afinades amb `tune`), `tamborRec` (tambor de mà i sonall) i `sabanaRec` (29 sons), i cinc ambients nous a `natureRec` (`sbAlba`, `sbMigdia`, `sbRiu`, `sbVespre`, `sbNit`), tots generats amb ElevenLabs; crèdits a `dist/assets/samples/CREDITS.md`. `tools/make_ambience.py` té l’opció nova `--lowpass`.
+- Volum: `SABANA_LOUD` i `SB_TRIM`, mesurats amb `tools/sabana-review.mjs` (`AUDIO_ONLY=1`): cada pulsació sona entre −29,8 i −29,5 LUFS a la còpia de revisió (+12 dB). El volum varia aproximadament amb el quadrat del factor: per corregir x dB, multipliqueu-lo per 10^(x/40).
+- Proves: `tests/sabana.test.mjs` (11) i les generals adaptades; en total, 295. Eines: `tools/sabana-frames.mjs`, `tools/sabana-review.mjs` i `tools/sabana-app.mjs`.
+
+## 0.29 · Selva de llum, del cel de l’alba al llit del riu
+
+Versió del 31 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_33_activitats_v0_29.html`. Parteix de la 0.28.1 i hi afegeix una activitat nova, «Selva de llum» (CE35), a petició d’en Marc: un descens per la selva tropical americana en vint escenes, del cel per sobre dels núvols fins al llit del riu de nit, amb el motor del Fons marí (travellings de 2 s, estímul de 12 s, escena aturada i fosca, pujada final de 5 s fins al cel). 33 activitats: 25 de causa-efecte i 8 d’encercament.
+
+- `dist/selva.js` (prefix `selva`/`SELVA_`, música `SV_`): les vint escenes (`SELVA_POSES`, `SELVA_NAMES`), la durada, la càmera (`selvaCamera`, `selvaRest`), les capes (`selvaLayers`), la resplendor segons l’alçada (`selvaBloom`, més baixa sota l’aigua) i la música (`selvaScore`, `SV_PIECES`, `SV_CUES`, `SV_TRIM`, `SELVA_LOUD`). Els noms de nivell superior són únics a tot l’HTML autònom (`SVclamp`, `SVsmooth`, `SVsmoother`).
+- `dist/selva-gl.js` (prefix `sg`/`SG_`): el dibuix amb WebGL2, com `fons-gl.js`, amb un pla més a prop de la càmera (fulles, lianes, boira i taques a l’aigua), dibuixat petit i desenfocat. `SG_FIT=.62`.
+- `dist/selva-shaders.js` (generat): les fonts són a `production/selva/` (`common.glsl`, `bg.glsl`, `near.glsl`, `scene_head.glsl`, `scene_tail.glsl`, `scene_00.glsl` … `scene_19.glsl`); després de tocar-les cal executar `python3 production/selva/make_shaders.py`.
+- `dist/cause-catalog.js`: la fila de CE35 (`jungle`, `dive:true`, `recorded:true`) i el mapa `DIVES`, que fa servir el mateix camí de pulsació, durada i música per a `jelly` i `jungle`. `dist/cause-art.js`: `Cselva` (sense WebGL2, `CselvaPlain`: un degradat amb taques de llum). `dist/app.js`: el nom de l’escena a la barra, el decorat complet per defecte i el text «Quant a».
+- Sons: banc nou `selvaRec` a `dist/sampler.js` (12 sons a `dist/assets/samples/selva/`) i tres ambients nous a `natureRec` (`alba`, `nit`, `riu`), generats amb ElevenLabs i preparats amb `tools/make_oneshot.py` i `tools/make_ambience.py`; crèdits a `dist/assets/samples/CREDITS.md`.
+- Volum: `SELVA_LOUD` i `SV_TRIM`, mesurats amb `tools/selva-review.mjs` (`AUDIO_ONLY=1`): cada pulsació sona entre −29,6 i −29,2 LUFS a la còpia de revisió (+12 dB). El volum varia aproximadament amb el quadrat de `SV_TRIM`: per corregir x dB, multipliqueu-lo per 10^(x/40).
+- Proves: `tests/selva.test.mjs` (11) i les generals adaptades; en total, 284. Eines: `tools/selva-frames.mjs`, `tools/selva-review.mjs` i `tools/selva-app.mjs`.
+
+## 0.28.1 · Fons marí de vidre, primera escena i jardí d’esponges
+
+Versió del 31 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_32_activitats_v0_28_1.html`. A petició d’en Marc:
+
+- `production/fons_mari/bg.glsl`: per sobre de l’aigua, una vista «mig dins, mig fora»: el mar llunyà fosc fins a l’horitzó (`hz`), el cel blau amb núvols i el sol; una franja més fosca sota la superfície i la línia de l’aigua nítida; la neu marina només dins l’aigua.
+- `production/fons_mari/scene_00.glsl`: els peixos de caravel·la (`nomeus`), orientats amb `rot(atan(v.y,v.x))` com els altres peixos, amb la velocitat de la caravel·la més un vuit lent. `dist/fons.js`: l’escena 1 una mica més amunt (y −0,25).
+- `production/fons_mari/scene_17.glsl`: les esponges de corda, que quedaven tallades pel límit de dibuix (u > 1,15), són ara gerros oberts (límit 1,5); la més alta, més baixa.
+- Les proves no canvien (273).
+
+## 0.28 · Fons marí de vidre, un descens en temps real
+
+Versió del 31 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_32_activitats_v0_28.html`. Parteix de la 0.27.1 i refà del tot «Fons marí de vidre» (CE06), a petició d’en Marc: un descens continu de la superfície del mar fins al fons de l’abisme en vint escenes, amb travellings de càmera entre escena i escena, i dibuixat amb la targeta gràfica (WebGL2).
+
+- `dist/fons.js` (prefix `fons`/`FONS_`, música `fm`/`FM_`): les vint escenes (`FONS_POSES`: on és cada escena al món, l’alçada de la pantalla, quant s’allunya la càmera a mig viatge i la deriva durant l’estímul; `FONS_NAMES`), la durada de cada pulsació (`fonsDuration`: 2 s de travelling, l’estímul de 12 s o més segons «Durada», i 5 s de pujada després de la vintena), la càmera (`fonsCamera`, `fonsTravel`, `fonsRest`), les capes que es dibuixen (`fonsLayers`: durant el travelling, l’escena que es deixa enrere continua movent-se i s’esvaeix) i la música (`fonsScore`, `FM_PIECES`, `FM_CUES`).
+- `dist/fons-gl.js` (prefix `fg`/`FG_`): el dibuix amb WebGL2. A cada imatge: el mar en una textura de coma flotant; les criatures de l’escena (i de l’anterior durant el travelling), cada escena un programa propi que veu el mar a través dels cossos de vidre, desviat i amb dispersió de colors; la resplendor amb una cadena de còpies petites; el mapatge de tons, la saturació, la vinyeta, l’enfosquiment de l’espera i el fons blanc. La mida de la imatge s’adapta a la velocitat del dispositiu. Sense WebGL2, l’activitat dibuixa el dibuix antic de cada animal (`dist/ocean.js`).
+- `dist/fons-shaders.js` (generat): els shaders. Les fonts són a `production/fons_mari/` (`common.glsl`, `bg.glsl`, `scene_head.glsl`, `scene_tail.glsl`, `scene_00.glsl` … `scene_19.glsl`); després de tocar-les cal executar `python3 production/fons_mari/make_shaders.py`.
+- `dist/cause-catalog.js`: la fila nova de CE06 (`dive:true`, `recorded:true`), `fonsPress` (on és la càmera i quin rellotge té l’escena anterior a cada pulsació), `fonsTau` i el canvi de durada. Espera com les històries pas a pas (`causeWaits`). `dist/cause-art.js`: `Cfons`, que fa servir `Cwaiting` amb l’enfosquiment fet pel mateix dibuix (fins al 15 % de la llum). `dist/app.js`: el nom de l’escena a la barra i el decorat complet per defecte.
+- En vertical (i en qualsevol pantalla més estreta que 1,24 vegades l’alçada), la càmera s’allunya perquè cada escena hi càpiga sencera d’amplada (`FG_FIT` a `fons-gl.js`, el mateix valor a `scene_tail.glsl`).
+- Volum: `FONS_LOUD` i `FM_TRIM` (un per escena), mesurats amb `tools/fons-review.mjs` (`AUDIO_ONLY=1`): cada pulsació sona entre −29,7 i −29,5 LUFS a la còpia de revisió (+12 dB).
+- Proves: `tests/fons.test.mjs` (9) i quatre d’antigues adaptades; en total, 273. Eines: `tools/fons-frames.mjs` (fotogrames), `tools/fons-review.mjs` (vídeo de revisió amb so i volum per escena; `JOBS=n` per dibuixar amb n navegadors alhora) i `tools/fons-app.mjs` (l’activitat a l’HTML construït).
+
+
+## 0.27.1 · Glupòcrates, més ben dibuixat
+
+Versió del 31 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_32_activitats_v0_27_1.html`. Parteix de la 0.27 i redibuixa el cuiner de «La cassola d’en Glups» (EN23), a petició d’en Marc: la perspectiva de tres quarts, la barba, la boca, l’acabat i l’animació. El cuiner es diu ara Glupòcrates i l’activitat, «La cassola de Glupòcrates»; dins del codi conserva el nom de Glups.
+
+- `dist/grec-art.js`: en Glups nou. Els braços es diuen `far` (el dret, el que remena, que es dibuixa darrere del cos) i `near` (l’esquerre, que es dibuixa després del cap, amb la màniga i la fíbula); amb `farFore`, l’avantbraç dret passa per davant de la cara (el tast). Corbes noves (`grSpline`, `grTaper`, `grPoly`), mans amb dits (`grHandAt`: `grip`, `open`, `flat`, `rest`), mànigues arrodonides (`grSleeve`), ulls amb iris i parpella, boca amb llavis, dents i llengua (`grMouth`), barba de rínxols en fileres que baixa amb la mandíbula (`grBeard`, `GR_JAW`), bigoti (`grMoustache`), orella i nas a part. La memòria cau de camins (`GR_PATHS`) es buida quan passa de 3.000 camins.
+- `dist/cassola-art.js`: l’animació en repòs (`csRest`: remena amb el cos, parpelleig irregular, es toca la barba, copets a la panxa), les proves de l’ingredient amb el braç esquerre, el tast (bufa, s’empassa, salta) i la tornada.
+- `dist/cassola-mites3.js`: el minotaure, el centaure i Medusa amb els braços nous. `dist/scan-catalog.js`, `dist/app.js`, `ACTIVITATS.md` i els crèdits: el nom nou.
+- Les proves no canvien (264). La música i els sons tampoc.
+
+## 0.27 · La cassola d’en Glups, a la Grècia clàssica
+
+Versió del 31 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_32_activitats_v0_27.html`. Parteix de la 0.26.1 i refà de dalt a baix «La cassola d’en Glups» (EN23), a petició d’en Marc: tot el decorat i el personatge de la Grècia clàssica, ingredients que el converteixen en animals mítics i una escena còmica diferent per a cada criatura, sobre el seu mite.
+
+- `dist/cassola.js` (prefix `gp`/`GP_`): els ingredients màgics (`GP_MAGICS`: ploma, all, pa), les galetes d’animal (`GP_ANIMALS`) i les que van amb cada ingredient (`GP_TREE`), les onze criatures (`GP_CREATURES`), els quatre moments del dia (`GP_DAYS`), els temps (`GP_STEP` 3,2 s, `GP_SHOW` 16 s, `GP_T`), les opcions de cada torn (`gpOptions`, que fa rodar la llista d’una ronda a l’altra perquè surtin totes) i la música: una banda per ingredient màgic (`GP_BANDS`), una pista per criatura (`GP_CUES`), `gpPiece`/`gpScore`, `gpStep`/`gpStepScore` i `gpTaste`.
+- `dist/grec-art.js` (prefix `gr`/`GR_`): les eines de dibuix i en Glups grec (`grGlups`, `grHead`, el calder, les ales). `dist/grec-bestiari.js` (prefix `my`/`MY_`): l’escenari de les escenes (`myStage`, `myBackdrop`) i les parts de les criatures (cavall, lleó, gos, serp, cabra, àguila, ocell, brau, persones, la lira…).
+- `dist/cassola-mites.js` (Pègas, el grifó, el fènix, el drac; `myScene`), `dist/cassola-mites2.js` (Cèrber, la hidra, la quimera) i `dist/cassola-mites3.js` (el minotaure, el centaure, la sirena, Medusa): una escena de 9,5 s per criatura, amb el seu decorat, en apaïsat i en vertical, i amb «Moviment reduït». La pedra de Medusa fa servir dos llenços de la mida de la pantalla (`myStoned`).
+- `dist/cassola-art.js` (prefix `cs`/`CS_`): la terrassa, els nínxols en forma de temple petit (`tlNaiskos` a `dist/tauler.js`), les triades, el tast, el pas a l’escena i la tornada.
+- `dist/scan-catalog.js`: opcions segons l’ingredient triat, dos torns (tres amb «Un ingredient sorpresa») i les preguntes noves. `dist/app.js`: l’ajust i la pàgina «Quant a».
+- Proves: `tests/cassola.test.mjs` (10, reescrites) i `tests/scanning.test.mjs` (l’efecte més llarg ara és de 16 s). Eines: `tools/grec-style.mjs` (fulls d’estil i d’escenes) i `tools/cassola-frames.mjs`, adaptada.
+
+## 0.26.1 · Neteja de les activitats de ChatGPT
+
+Versió del 30 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_32_activitats_v0_26_1.html`. Parteix de la 0.26 i treu definitivament 27 activitats antigues fetes amb ChatGPT, a petició d’en Marc: Tinta viva i Tinta viva - original (CE01), Focs artificials (CE04), Pluja musical - original (CE07), Cintes de pintura (CE08), L’ou sorpresa, Missió coet, El pastís impossible, La màquina de crispetes, El robot ballarí i El tren dels colors (CE14–CE19), Petit Pim, gran Pam (CE20) i, d’encercament, EN01–EN03, EN05, EN08–EN10 i EN13–EN20. Queden 24 activitats de causa-efecte i 8 d’encercament, amb el mateix codi.
+
+- `dist/cause-catalog.js`: fora les files i els sorolls d’aquestes activitats; la llavor de cada activitat que queda (`CE_SEEDS`) és la d’abans, perquè no canviïn ni els colors ni la música.
+- `dist/cause-art.js`: fora els dibuixos de les activitats tretes i els auxiliars que només feien servir elles (el drac, l’ull, els instruments, el confeti).
+- `dist/scan-catalog.js` i `dist/scan-art.js`: fora les activitats tretes, les seves opcions (personatges, ingredients, objectes, camins, estacions, parcel·les) i els seus dibuixos; queden el vestidor, el taller de vehicles, els puzles i els cinc taulers.
+- `dist/visual-patterns.js`: només la Flor de paper; `dist/patterns.js` conserva les vint paletes de tinta per a `causePalette`. `dist/art.js`: fora la tinta i els gelats.
+- `dist/app.js`: fora els casos especials de la tinta, la ràdio, el director d’orquestra i els gelats, i els ajustos que només servien per a activitats tretes (preparació del gran espectacle, jardí amb selecció de fila i parcel·la, joc lliure a la recepta del robot); el filtre «Grups» ja no té activitats i s’ha tret. El peu de pàgina compta les activitats del catàleg.
+- Proves adaptades (263, totes en verd). Eina nova: `tools/smoke-all.mjs` obre totes les activitats de l’HTML construït, prem el commutador i en desa una imatge.
+
+
+## 0.24 · La cassola d’en Glups
+
+Versió del 30 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_56_activitats_v0_24.html`; el detall és a `../CANVIS.md`. Parteix de la 0.23 i és la tercera de les quatre activitats divertides que en Marc va encarregar el 30 d’octubre a partir de HelpKidzLearn, i la primera d’encercament.
+
+- **La cassola d’en Glups (EN23, id `pot`).** `dist/cassola.js`: els ingredients de cada torn (`GP_COLORS`, `GP_SHAPES`, `GP_MOVES`; `GP_LADLE` per al tast), les opcions de cada torn (`gpOptions`: sempre les mateixes, perquè una recepta es pugui repetir; amb `potPick:'one'`, un sol ingredient per torn que canvia cada ronda, `gpSurprise`, i el cullerot al quart torn), la recepta (`gpRecipe`, `gpLook`), les cinc cuines (`GP_KITCHENS`), les formes d’en Glups (`GP_FORMS`), els moments (`GP_T`, `GP_STEP`, `GP_SHOW`) i la música: el color dona l’instrument i la tonalitat, la forma el registre i el moviment el ritme (`gpGroove`, `gpMusic`, `gpPiece`, `gpScore`); cada tria que no és l’última, `gpStepScore`, i el tast d’una opció enfocada, `gpTaste`. `dist/cassola-art.js`: la plastilina (`csLump`, `csClay`, `csUnion`, `csRoll`), la cuina (`csKitchen`, `csDresser`, `csStove`, els nínxols), l’olla i la sopa (`gpSoup`), en Glups amb cara (`csBody`, `csGlups`), el tauler (`gpBoard`) i el resultat (`gpResult`: l’ingredient que vola a l’olla i, a la darrera tria, el tast, el núvol de vapor, la transformació, el moviment, el singlot i la cuina següent que apareix).
+- Al tauler: `'pot'` a `TL_BOARDS` i a `tlLayout` (`dist/tauler.js`), fila nova a `dist/scan-catalog.js` (amb música enregistrada i `BOARD_TIMES`), el dibuix a `dist/scan-art.js` i, a `dist/app.js`, la música de cada tria, el tast i l’ajust «Ingredients a La cassola d’en Glups» (`potPick`, a `dist/input.js`).
+- Sons nous: `plop`, `blub`, `slurp`, `inflate`, `stretch` i `hiccup` al banc `toonRec` (`dist/sampler.js`), generats amb ElevenLabs i preparats amb `tools/make_oneshot.py`; triats per mesura, no escoltats.
+- Proves: `tests/cassola.test.mjs` (9) i proves adaptades a `tests/scanning.test.mjs` i `tests/activities.test.mjs`. Eines: `tools/cassola-frames.mjs` (fotogrames, amb mesura del temps de dibuix) i `tools/tauler-review.mjs`, que accepta `pot` (plans `pot` i `potone`, i `PIMPAM_PROFILE` per començar amb uns ajustos).
+
+## 0.23 · El cambrer equilibrista
+
+Versió del 30 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_55_activitats_v0_23.html`; el detall és a `../CANVIS.md`. Parteix de la 0.22 i és la segona de les quatre activitats divertides que en Marc va encarregar el 30 d’octubre a partir de HelpKidzLearn.
+
+- **El cambrer equilibrista (CE31, id `waiter`).** `dist/cambrer.js`: les vint rondes (`cbRound`: ordre de les sis coses, personatge, lloc, contratemps i tonalitat; cada parella de personatge i lloc surt una sola vegada, i dues rondes seguides no comencen amb les mateixes coses), què mostra cada pulsació (`cbStep`), quant es gronxa la pila (`cbSway`), els moments de cada pulsació i de la darrera (`CB_T`, `CB_FALL`, `CB_FALL_GAP`) i la música (`cbPlan`: vals de cordes pinçades, una nota de marimba més aguda per a cada cosa que cau i les mateixes notes de baix a dalt quan tot cau). `dist/cambrer-art.js` (`drawCambrer`): el guaix, els cinc llocs, la porta de la cuina, la taula i la cadira (sempre senceres, també sense decorat), els quatre personatges amb cara, la pila que es vincla, les proeses d’equilibri, els tres contratemps, la caiguda a càmera lenta, la reverència i el fos d’una ronda a la següent.
+- Al llançador: fila nova a `dist/cause-catalog.js` (història per passos, com el mag), `Cstage('waiter',drawCambrer)` a `dist/cause-art.js` i el decorat complet per defecte a `dist/app.js`.
+- Sons nous: `clink`, `jelly` i `clatter` al banc `toonRec` (`dist/sampler.js`), generats amb ElevenLabs i preparats amb `tools/make_oneshot.py`; triats per mesura, no escoltats.
+- Proves: `tests/cambrer.test.mjs` (8) i proves adaptades a `tests/stage.test.mjs` i `tests/activities.test.mjs`. En total, 235. Eines: `tools/stage-frames.mjs` i `tools/stage-review.mjs` accepten `cambrer`; `tools/cambrer-app.mjs` prova l’activitat a l’HTML compilat (amb mesura de velocitat).
+
+## 0.22 · Esperar i prémer: Toc, toc! Qui hi ha?
+
+Versió del 30 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_54_activitats_v0_22.html`; el detall és a `../CANVIS.md`. Parteix de la 0.21.1 i és la segona activitat divertida de la fase 5 (la primera de les quatre que en Marc va encarregar el 30 d’octubre a partir de HelpKidzLearn).
+
+- **Toc, toc! Qui hi ha? (CE30, id `door`).** `dist/toc.js`: l’estat del carrer guardat a la partida (`tcEnsure`; fases `wait`, `knock`, `leave` i `visit`, amb rellotge propi `tcNow`), el pas de cada fotograma (`tcTick`), la pulsació (`tcPress`, que només obre si truquen) i el final d’una visita (`tcDone`). Les vint rondes (`tcRound`: ordre dels set visitants, casa, hora del dia i tonalitat; dues rondes seguides no comparteixen cap dels tres primers visitants), els temps de cada visita (`TC_T`, que segueixen alhora el dibuix i la música), l’espera (`tcWait`, ajust `tcWait`) i el temps a la porta (`tcLeave`, ajust `tcLeave`). La música: `tcKnockScore` (el truc, que es repeteix cada `TC_KNOCK_EVERY` segons), `tcPlan` i `tcScore` (melodia de cada visitant, cadència en notes pinçades o percudides; `TC_LOUD`). `dist/toc-art.js`: el fons (cel i casa, `tkBack`, guardat per ronda, mida i decorat), la porta (`tkInterior`, `tkLeaf`, `tkFrame`, `tkUnder`, `tkKnockMarks`), les persones (`tkPerson`, `tkHead`, nou expressions) i els vestits de cada visitant, els gags (`TK_GAG`, en dues passades: dins del forat de la porta i al carrer), els efectes sobre la porta (`TK_DOORFX`), el carrer (`tkFigure`, `tkSlot`), la festa (`tkBunting`, `tkConfetti`), el canvi de ronda (fosa amb `tkFadeSheet`) i `drawToc`. Els contorns són sempre foscos; sobre negre sense decorat, només les marques del truc passen a color clar.
+- Al llançador (`dist/cause-catalog.js`, `dist/cause-art.js`, `dist/app.js`): l’esdeveniment `knock` comença una partitura sense final que s’atura quan s’obre la porta; una pulsació fora de `knock` no fa res; la línia d’estat diu «Truquen» quan truquen. Ajustos nous a `dist/input.js` i al diàleg d’ajustos: «Espera abans que truquin a Toc, toc» i «Quan ningú no obre a Toc, toc».
+- Sons nous: `knock`, `doorOpen` i `doorClose` al banc `toonRec` (`dist/sampler.js`), generats amb ElevenLabs i preparats amb `tools/make_oneshot.py`; triats per mesura, no escoltats.
+- Proves: `tests/toc.test.mjs` (9) i proves adaptades a `tests/activities.test.mjs` i `tests/causes.test.mjs`. En total, 226. Eines: `tools/toc-frames.mjs` (fotogrames), `tools/toc-app.mjs` (a l’HTML compilat, amb mesura de velocitat) i `tools/toc-review.mjs` (vídeo de revisió amb so).
+
+## 0.21.1 · Contorns foscos al mag sense decorat
+
+Versió del 30 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_53_activitats_v0_21_1.html`. A `dist/mag-art.js`, els contorns són sempre foscos (`MG_INK`), també sense decorat o amb el decorat atenuat; abans passaven a color crema sobre negre. Sobre negre amb poc decorat (`MG_LIFT`), els farcits més foscos són uns tons més clars: les jaquetes (`MG_COATS_LIFT`), les sabates, la vareta i la pota de la taula (`MG_LIFTED`, `mgDk`). Una prova nova a `tests/fase5.test.mjs` ho comprova en els cinc modes del decorat; en total, 217 proves.
+
+## 0.21 · La primera activitat divertida: El mag desastrós
+
+Versió del 30 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_53_activitats_v0_21.html`; el detall és a `../CANVIS.md`. Parteix de la 0.20 i comença la fase 5: activitats de dibuixos animats en què passen coses gracioses, amb HelpKidzLearn com a referència de qualitat.
+
+- **El mag desastrós (CE29).** `dist/mag.js`: les vint funcions (`mgRound`: ordre dels sis trucs, teló, fons, jaqueta i tonalitat; dues funcions seguides mai no comencen amb els mateixos trucs), què mostra cada pulsació (`mgStep`), els temps de cada truc i del final (`MG_T`, que segueixen alhora el dibuix i la música) i la música (`mgPlan`, `mgScore`; `MG_LOUD`). `dist/mag-art.js`: el teatre (`mgBack`, `mgFront`, en capes guardades per funció, mida i decorat), el mag articulat (`mgFigure`, `mgHead`, `mgArm`, `mgGlove`; poses per fotogrames clau `MG_K` amb `mgPose`), els trucs (`MG_DO`), el final (`mgDoFinal`), el que queda a l’escenari i desapareix al final (`MG_LEFT`) i `drawMag`. Les partícules (plomes, cartes, confeti) es calculen un cop (`mgFlight`). Si una pulsació talla un truc, el que encara queia continua caient amb el seu rellotge. Fa servir `Cstage` (escena aturada i enfosquida quan toca prémer). Sons nous: `toonRec` a `dist/sampler.js` (set efectes d’ElevenLabs a `dist/assets/samples/toon/`, preparats amb `tools/make_oneshot.py`).
+- Proves: `tests/fase5.test.mjs` (6) i proves adaptades a `tests/stage.test.mjs`, `tests/activities.test.mjs` i `tests/kaleido.test.mjs`. En total, 216. `tools/stage-frames.mjs` i `tools/stage-review.mjs` accepten `mag`.
+
+## 0.20 · Dues activitats noves de causa-efecte: Festa de globus i El far
+
+Versió del 29 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_52_activitats_v0_20.html`; el detall és a `../CANVIS.md`. Parteix de la 0.19 i comença la fase 4 del redisseny.
+
+- **Festa de globus (CE27).** `dist/globus.js`: les vint rondes (`gbRound`: plaça, hora, joc de colors, forma dels globus, cançó, tonalitat i llocs on s’aturen), el repartiment dels set moments entre 3, 5 o 7 pulsacions (`escGroups`, com les altres històries) i la música de cada pulsació (`gbPlan`, `gbScore`; `GB_LOUD`). `dist/globus-art.js`: el feltre (`gbFelt`, `gbStitch`, la textura de fibres `gbFibre`), les tres places (`gbPlaca`, `gbMar`, `gbMuntanya`) en una capa guardada per ronda, mida i decorat, els globus com a sprites (`gbBalloonSprite`, `gbTokenSprite`) i `drawGlobus`. Fa servir `Cstage` (escena aturada i enfosquida quan toca prémer).
+- **El far (CE28).** `dist/far.js`: el feix (`farPool`, un anar i tornar sinusoidal), l’encert per temps (`farGap`, `farNear`: una barca és a l’abast durant `farWindow` segons al voltant del moment en què el centre de la llum hi passa), l’estat del mar dins el joc (`farEnsure`, `farTick`, `farPress`, `farDock`), les barques (`farBoat`) i la música (`farScore`; `FAR_LOUD`, `FAR_SEA`). `dist/far-art.js`: el gravat (`frBack`, `frFront` i el gra `frGrainOver`, tot en capes guardades per nit, mida i decorat), les barques (`frBoat`), el feix (`frBeam`), les guspires (`frSparks`) i `drawFar`. Tipus de catàleg nou `beam` (`beginBeam`, `beamTick` a `cause-catalog.js`); `app.js` fa avançar la llum a cada fotograma i fa sonar el mar (`farAir`). Ajustos nous a `input.js`: `farSpeed`, `farWindow` i `farBoats`, a la configuració general.
+- Proves: `tests/fase4.test.mjs` (10) i proves adaptades a `tests/stage.test.mjs`, `tests/activities.test.mjs` i `tests/causes.test.mjs`. En total, 209. Eines: `tools/far-frames.mjs`, `tools/far-review.mjs`; `tools/stage-frames.mjs` i `tools/stage-review.mjs` accepten `globus`.
+
+## 0.19 · Encercament sense paraules
+
+Versió del 28 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_50_activitats_v0_19.html`; el detall és a `../CANVIS.md`. Parteix de la 0.18. Durant les 22 activitats d’encercament no hi ha cap paraula escrita: només l’escena.
+
+- `dist/app.js`: les targetes (`scanMarkup`) i els taulers (`boardMarkup`) ja no porten la paraula de cada opció, el rètol per a l’adult ni el botó «Tria · Espai». La paraula queda només a `aria-label`. L’ordre per tornar a sentir el model (EN11, EN21) és un altaveu dibuixat (`commandButton`). L’inici de l’encercament no té botó. La fletxa ▶ del focus també s’ha tret: el focus el marca el ressaltat configurable. S’ha tret l’opció «Rètols per a l’adult» de la configuració; la clau `boardLabels` es manté al perfil perquè els perfils desats continuïn sent vàlids.
+- La pista del commutador (`switchHint`, `hintOn`, `SWITCH_SVG`): és el dibuix d’un commutador a baix al centre. Apareix quan l’encercament ha fet una volta sencera sense cap pulsació (`scan.turns`) o quan espera una pulsació per començar. Amb dos commutadors, apareix després del temps d’una volta sense pulsacions (`game.idle`, `lapTime`) i n’hi ha dos: el d’avançar, amb el capçal clar, i el de triar. El capçal s’il·lumina i baixa una mica cada 1,8 s; amb «Moviment reduït» només s’il·lumina. El color del capçal és el del ressaltat. Tocar-lo equival a prémer el commutador (`data-switch`).
+- `dist/style.css`: les targetes tenen més lloc per a la imatge i la franja inferior dels taulers deixa el centre per a la pista.
+- Proves: una prova nova a `tests/scanning.test.mjs` comprova que el marcatge de l’encercament no escriu cap paraula. En total, 198.
+
+## 0.18 · Dues activitats noves d’encercament: D’on ve aquest so? i El meu espectacle de llum
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_50_activitats_v0_18.html`; el detall és a `../CANVIS.md`. Parteix de la 0.17 i afegeix dues activitats d’encercament amb el tauler a pantalla completa (`dist/tauler.js`). Totes dues segueixen les normes de la 0.17: «Presentació del decorat», el ressaltat configurable, una sola paraula per opció i el pas de ronda sense preguntes.
+
+- **D’on ve aquest so? (EN21, guiada).** `dist/origen.js`: nou llocs (rierol, platja, bosc sota la pluja, prat de nit, estany, jardí, cim, sota el mar i cova), cadascun amb un so de natura de la col·lecció de Natura; vint rondes amb el model i els distractors (primer de famílies de so diferents), tres moments del dia; el model (4,6 s), el tast del focus (1,3 s), la resposta a un altre paisatge (1,6 s, sense senyal d’error, i torna a sonar el model) i la peça del paisatge encertat (9 s: el seu so, arpa i violoncels en pizzicato, i la veu del lloc en un instrument propi). `dist/origen-art.js`: collage de paper pintat (`ogPaper`, `ogTorn`, `ogTexture`), els paisatges (`ogLandscape`, amb una capa quieta i una de viva), el tauler (paret de paper índigo, medalló del model amb la pista visual i la fulla de paper que segueix el focus) i el resultat (`ogResult`).
+- **El meu espectacle de llum (EN22, creativa).** `dist/guix.js`: tres tries (color, forma i música, fins a quatre opcions cadascuna), cinc llocs, els coets de l’espectacle (`gxShow`, mai més de dos esclats per segon), la música de cada tria (`gxPiece`: arpa, banda, marimba o cordes en pizzicato), els tastos i el so de cada tria intermèdia. `dist/guix-art.js`: guix de colors sobre una pissarra (`gcChalk` treu un gra fi de la capa de guix), els llocs, els quatre focs (flor, palmera, espiral i cascada; creixen en 0,5 s i s’apaguen en 1 s), els instruments dibuixats, el tauler de finestres (`gxBoard`) i l’espectacle (`gxResult`, 11 s).
+- `dist/scan-catalog.js`: EN21 (`sources`) i EN22 (`lights`), les seves opcions, el model i l’ordre «Escolta» d’EN21, els rètols per a l’adult i els temps (`BOARD_TIMES`). `dist/scan-art.js` les dibuixa amb el tauler. `dist/tauler.js`: el tauler `lights` (finestres altes sobre el lloc dibuixat). `dist/app.js`: tastos, model, resultats, textos de configuració i «Quant a».
+- Proves: `tests/origen-guix.test.mjs` (6) i proves adaptades a `tests/scanning.test.mjs`, `tests/activities.test.mjs` i `tests/decor.test.mjs`. En total, 196. `tools/tauler-review.mjs` accepta `sources` i `lights`.
+
+## 0.17 · Decorat a totes les activitats i encercament més senzill
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_48_activitats_v0_17.html`; el detall és a `../CANVIS.md`.
+
+- **Decorat.** «Presentació del decorat» (complet, atenuat o sense decorat, sobre el color de base negre o blanc) val ara per a totes les activitats que tenen decorat. `dist/escenari.js` té l’ajust comú: `escDecor` (mode, visibilitat i base; les targetes de la portada sempre el mostren complet), `escVeil` (el vel del color de base), `escVeiled` (el vel només damunt del que dibuixa una capa guardada) i `escDecorKey` (la clau de les capes guardades). El fan servir Dia rere dia (`dia-art.js`), El cel de les constel·lacions (`constel-art.js`), L’orquestra que es desperta (`orquestra-art.js`), El vent del bosc (`vent-art.js`), Piromusical (`firework.js`), Fem castells (`fmDecor`) i les activitats d’encercament (`scan-art.js`, `estacio-art.js`, `templet-art.js`). El decorat és el fons que no es tria (cel, paisatge, plaça, sala, taula); les figures i el que es tria es dibuixen sencers. Sense decorat i sobre blanc, les figures clares (estrelles, lluna, neu, pluja) prenen colors de tinta. Caleidoscopi, Vitralls i Natura no tenen decorat.
+- `dist/app.js`: les històries, Piromusical i les activitats d’encercament (excepte Gelats impossibles) comencen amb el decorat complet (`SCENE_DECOR`); el canvi fet dins d’una activitat es desa per a ella.
+- **Ressaltat del focus.** Quatre ajustos nous a `dist/input.js`: `scanFrame` (`progress`, el marc que es va dibuixant amb el temps, o `whole`, el marc sencer que salta d’opció en opció), `scanColor` (vuit colors, `SCAN_COLORS`; per defecte taronja), `scanWidth` (de 4 a 24 px; per defecte 10) i `scanRelief` (ombra i dos traços desplaçats). `scanRing` en fa l’estil, amb una vora clara per als colors foscos. Les targetes d’opció dibuixen el marc amb un SVG (`RING_SVG`, `ringStyle`, variables `--ring-*` a `style.css`) i els taulers amb `tlRing(…, style)` (`dist/tauler.js`).
+- **Encercament més senzill.** Cada tria passa a la ronda següent sense preguntar res (`nextScanRound` a `dist/scan-catalog.js`); al cicle de l’alumne ja no hi ha les ordres de repetir, tornar enrere, inici ni pista. Les opcions són una imatge amb una sola paraula; només queden les ordres «Comença» (inici manual) i «Escolta» (Detectius de sons), amb icona. No s’escriu mai què s’ha triat. La pregunta del moment queda en un rètol petit per a l’adult («Rètols per a l’adult»).
+- Proves: `tests/decor.test.mjs` (6) i proves adaptades a `tests/scanning.test.mjs`, `tests/tauler.test.mjs`, `tests/activities.test.mjs` i `tests/stage.test.mjs`. En total, 190.
+
+## 0.16.2 · Banderes d’un sol color
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_48_activitats_v0_16_2.html`. A Fem castells, les banderes (`FmFlags`) ja no tenen la franja blanca central i els domassos dels balcons (`FmHangings`) ja no tenen la franja daurada: tots són d’un sol color. Els colors de les banderes depenen de l’hora (`FM_FLAG_COLS`), perquè destaquin sobre el cel: sense blau al cel blau, sense taronja ni vermell a la posta.
+
+## 0.16.1 · Fem castells més contrastat
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_48_activitats_v0_16_1.html`. Parteix de la 0.16 i només canvia Fem castells (CE25), perquè els castellers destaquin més sobre el fons.
+
+- `dist/castells-art.js`: el cel és un degradat llis (`FmSmoothSky`), sense trencadís; el sol i els núvols són de colors plans. Les façanes i el paviment continuen sent de trencadís («Fons senzill» les fa planes). Els castellers i la pinya tenen un contorn fosc (`FM_INK`, `FmInk`).
+- «Presentació del decorat» ara també actua a Fem castells (`fmDecor`): complet; atenuat (el color de base per sobre de la plaça, segons la visibilitat del decorat, i sense la llum de l’hora); o sense decorat (el castell, la pinya i el confeti sobre el color de base, negre o blanc). Les targetes de la portada sempre mostren la plaça.
+- `dist/app.js`: Fem castells comença amb el decorat complet encara que el fons comú sigui «Sense decorat» (`SCENE_DECOR`); el canvi es desa per a l’activitat. `dist/cause-art.js` passa el decorat a les històries.
+- Proves: una de nova a `tests/stage.test.mjs`. En total, 184. `tools/stage-frames.mjs` accepta `DECOR`, `BASE` i `OPACITY`.
+
+## 0.16 · Fase 3 del redisseny: l’encercament com a escena
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_48_activitats_v0_16.html`; el detall és a `../CANVIS.md`. Parteix de la 0.15 i canvia dues activitats d’encercament al format nou de tauler: On anem? (EN04) i Detectius de sons (EN11). Les altres 18 activitats d’encercament no canvien.
+
+- `dist/tauler.js` (nou): el tauler comú. L’escena ocupa tota la pantalla i les opcions en són zones grans (portes amb arc a l’estació, plafons a la resta), en dues files quan la pantalla és vertical. La zona en focus queda il·luminada i la resta al 60 % de llum, amb fosos de 0,25 s (`tlLights`); el contorn del focus és blanc i gruixut i el temps que queda es dibuixa en taronja al llarg del contorn (`tlRing`); la zona triada s’obre a tota la pantalla en 1 s (`tlOpenBox`, `tlClipOpen`). Les ordres van en una franja de 66 px a baix (`TL_STRIP`). `tlSheet` guarda fins a vuit capes quietes ja dibuixades.
+- `dist/estacio.js` i `dist/estacio-art.js` (nous): On anem?, una estació amb quatre portes (mar, bosc, neu i espai) en estil de cartell de viatge. La porta triada s’obre i el trenet vermell es fa el vehicle del lloc (veler, tren sobre un pont de fusta, trineu, coet), que travessa el lloc fins a una descoberta en 9 s (`ET_TRIP`). Cada ronda canvia l’hora de l’estació (matí, tarda, nit); cada viatge al mateix lloc canvia la descoberta (cinc per lloc) i el recorregut (quatre). Amb dues o tres portes, les que s’obren canvien de ronda en ronda i conserven l’ordre.
+- `dist/templet.js` i `dist/templet-art.js` (nous): Detectius de sons, un templet de música en una plaça, en estil de taller de lutier, amb vuit instruments enregistrats (arpa, marimba, timbal, flauta, violins, glockenspiel, trompeta i triangle). Sona una pista (cinc frases per instrument) i cal trobar l’instrument. L’encertat toca una peça de 8,5 s (`TM_PIECE`); un altre toca el seu tast i la pista torna a sonar, sense penalització. Les rondes canvien la pista, la tonalitat, els instruments de l’escenari, el seu lloc i l’hora de la plaça.
+- `dist/scan-catalog.js` i `dist/scan-art.js`: les dues activitats noves fan servir el tauler (`tlBoard`), amb temps propis de resultat (`BOARD_TIMES`). `dist/app.js`: els botons transparents damunt de les zones, els llums, el tast en el focus (`boardTaste`, amb un sintetitzador propi), l’espera de la pista fins que els instruments són carregats i el registre de so per a les eines de revisió (`window.__pimpamSoundLog`).
+- Ajustos nous: «Tast en el focus» (`boardTaste`: el so de cada opció, un clic de fusta suau o cap so) i «Rètols per a l’adult» (`boardLabels`). «Fons senzill» (`plainScene`) i «Escena aturada i enfosquida quan toca prémer» (`waitCue`) també actuen en aquestes dues activitats.
+- So: només instruments acústics enregistrats; el mar i el bosc hi afegeixen dos sons de natura de la col·lecció (onades i merla), generats amb ElevenLabs. Volum, mesurat amb EBU R 128 al so de revisió (còpia +12 dB): −29,6 LUFS a totes dues (`ET_LOUD`, `TM_LOUD`).
+- Proves: `tests/tauler.test.mjs` (9). En total, 183.
+- Eines: `tools/tauler-frames.mjs` (fotogrames), `tools/tauler-app.mjs` (prova a l’HTML construït), `tools/tauler-speed.mjs` (temps entre fotogrames) i `tools/tauler-review.mjs` (vídeo de l’HTML construït amb el so renderitzat fora de línia).
+
+## 0.15 · Fase 2 del redisseny: Fem castells i El vent del bosc
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_48_activitats_v0_15.html`; el detall és a `../CANVIS.md`. Parteix de la 0.14.1 i afegeix dues activitats noves: Fem castells (CE25, pas a pas) i El vent del bosc (CE26, mentre es manté premut).
+
+- `dist/castells.js` i `dist/castells-art.js` (nous): Fem castells. Una plaça en dia de festa major on cada pulsació fa pujar un pis del castell (pinya i baixos, segons, terços, quarts, pom de dalt) i porta un esdeveniment a la plaça; a la darrera, l’enxaneta fa l’aleta i el castell es desmunta pis a pis. Vint rondes d’una taula (`FEM_ROUNDS`): castell (tres, torre o quatre de set), plaça (porxos, campanar, mar, muntanya), hora (migdia, tarda, posta) i color de la colla; dues rondes seguides canvien les quatre coses. Fa servir el motor d’escenari de la 0.14 (`escenari.js`).
+- Dibuix de Fem castells: el que no es mou és trencadís (cel, façanes, paviment, sol i núvols), fet a trossets entre fotogrames; el que es mou és ceràmica vidrada llisa (castellers sense cara, pinya, banderoles, domassos, banderes, confeti). L’ajust nou `plainScene` («Fons senzill a Fem castells», desactivat per defecte) deixa la plaça i el cel amb colors plans. Les targetes de la portada es tornen a pintar quan el trencadís és a punt.
+- `dist/vent.js` i `dist/vent-art.js` (nous): El vent del bosc. Mentre es manté premut, el vent bufa cada cop més fort en quatre graus (brisa, vent, vent fort i ventada; a la ventada, una ratxa diferent cada 4 s). Una pulsació de menys de 3 s bufa 3 s. En deixar-lo anar, el vent es calma en 1,5 s i l’escena espera. Vuit llocs (ametllers florits, prat de dents de lleó, terrat amb roba estesa, camp de blat amb roselles, platja amb estels, vinya a la verema, fageda, bosc nevat), cinc anys amb hora i cel diferents (40 escenes); després de 25 s de vent en un lloc, la pulsació següent pinta el lloc nou damunt de l’anterior.
+- Dibuix d’El vent del bosc: pinzellades empastades que segueixen el vent. El paisatge quiet es pinta a poc a poc entre fotogrames, d’esquerra a dreta; el que es mou (arbres, herba, roba, estels, pètals, fulles, cintes de vent) són peces que es dibuixen a cada fotograma.
+- So d’El vent del bosc: arpa, glockenspiel, marimba, pizzicato i flauta enregistrats, que entren grau a grau (`ventPlan`, setze segons cada vegada); en calmar-se, una nota d’arpa i una de glockenspiel. El vent és l’enregistrament `nature/wind.mp3` en bucle, amb un filtre que s’obre i un volum que creix amb la força del vent (`ventAir` a `app.js`); a quatre llocs hi ha també el so del lloc (prat, grills a la tarda i a la posta, onades, rierol).
+- `dist/cause-catalog.js`: el vent té el seu tipus (`hold`) i el seu estat (`ventPress`, `ventOffset`, `ventTotal`, `ventChange`, `ventFrom`). El control és mantenir premut, o iniciar/aturar si s’ha triat als ajustos; una pulsació mentre es calma continua des de la força que té. Fem castells i El vent del bosc esperen amb l’escena aturada i enfosquida (`waitCue`).
+- Volum, mesurat amb EBU R 128 als vídeos de revisió (còpia +12 dB): Fem castells −29,7 LUFS (instruments +4 dB, `FEM_LOUD`) i El vent del bosc −29,3 LUFS (instruments +10 dB, `VENT_LOUD`; vent i lloc +12 dB, `VENT_AIR`), com les activitats de la 0.14.
+- Proves: `tests/wind.test.mjs` (8) i tres de noves a `tests/stage.test.mjs` per a Fem castells; recomptes adaptats a `tests/activities.test.mjs` i dues proves de `tests/causes.test.mjs` adaptades al vent, que no té una durada fixa. En total, 174.
+- Eines: `tools/vent-frames.mjs` (fotogrames i temps de dibuix), `tools/vent-app.mjs` (prova a l’HTML construït i mesura del temps entre fotogrames) i `tools/vent-review.mjs` (vídeo de l’HTML construït amb el so renderitzat fora de línia); `tools/stage-frames.mjs` i `tools/stage-review.mjs` també fan Fem castells.
+
+## 0.14.1 · Escena en espera quan toca prémer
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_46_activitats_v0_14_1.html`; el detall és a `../CANVIS.md`. Parteix de la 0.14 i afegeix l’ajust `waitCue` («Escena aturada i enfosquida quan toca prémer»), activat per defecte.
+
+- A Dia rere dia (CE09), L’orquestra que es desperta (CE12) i El cel de les constel·lacions (CE10), quan s’acaba un pas l’escena s’alenteix fins a aturar-se i s’enfosqueix en 1,2 s (queda amb un 35 % de la llum), i espera així fins a la pulsació següent, que la torna a encendre en 0,6 s. Abans de la primera pulsació també espera.
+- `dist/escenari.js`: `ESC_WAIT`, `ESC_WAIT_START`, `escWaitClock` i `escWaitTurn`. El rellotge de l’ambient (`idle`) és propi: s’alenteix, s’atura mentre l’escena espera i torna a arrencar on era, de manera que no salta mai.
+- `dist/cause-catalog.js`: `beginCause` i `finishCause` desen l’estat (`game.wait`); `restCause` posa l’escena en espera quan es canvia el nombre de passos, es restableixen els ajustos o s’importa un perfil.
+- `dist/cause-art.js`: `Cwaiting` dibuixa les tres activitats amb aquest rellotge, hi posa el vel fosc i, quan la imatge ja és quieta, la copia en lloc de tornar-la a dibuixar.
+- Proves: `tests/wait.test.mjs` (5). En total, 162.
+- Eina: `tools/wait-video.mjs`, vídeo de l’HTML construït amb el rellotge virtual de Playwright (cada fotograma al seu moment exacte).
+
+## 0.14 · Fase 1 del redisseny: L’orquestra que es desperta i El cel de les constel·lacions
+
+Versió del 27 d’octubre de 2026. L’HTML autònom és `dist/Pim_Pam_46_activitats_v0_14.html`; el detall és a `../CANVIS.md`. Parteix de la 0.13 i refà dues activitats pas a pas, L’orquestra que es desperta (CE12, abans Orquestra de joguina) i El cel de les constel·lacions (CE10, abans Constel·lacions), sobre un motor d’escenari comú.
+
+- `dist/escenari.js` (nou): el motor comú. Una història té set moments: sis que porten les pulsacions i el final. Amb 3 o 5 passos els sis moments es reparteixen entre les pulsacions (`escGroups`), de manera que cada pulsació continua canviant l’escena i la música. També guarda el rellotge de cada moment (una pulsació que arriba abans d’hora deixa acabar l’entrada de l’anterior), les capes fora de pantalla per al que no es mou, el mapa de llum a 1/8 de resolució, la capa de llum suau a 1/4 i les eines de partitura (registre de cada instrument enregistrat, ±4 semitons de la gravació més propera).
+- `dist/orquestra.js` i `dist/orquestra-art.js` (nous): l’orquestra. Quatre llocs (plaça, teatre, jardí, port), cinc peces i vint ordres d’entrada de les sis seccions; cada secció que es desperta canvia una part gran de l’escenari i s’afegeix a la mateixa peça.
+- `dist/constel.js` i `dist/constel-art.js` (nous): el cel. Cinc figures, quatre paisatges, quatre estacions i catorze esdeveniments; cada pulsació encén una estrella, la uneix amb fils de llum i porta un esdeveniment al paisatge que s’hi queda.
+- Les dues històries es dibuixen també en repòs i es construeixen amb instruments acústics enregistrats; totes les peces s’acaben amb notes pinçades o percudides que s’apaguen soles.
+- Volum: els instruments del cel van 4 dB per sobre (`SK_LOUD` a `dist/constel.js`, sense tocar el so de natura), perquè el cel soni com Dia rere dia i l’orquestra. Mesurat amb EBU R 128 als vídeos de revisió: el cel −29,6 LUFS, l’orquestra −30,1 i Dia rere dia −29,2.
+- Eines de revisió: `tools/stage-frames.mjs` (fotogrames i temps de dibuix), `tools/stage-review.mjs` (vídeo amb so de rondes senceres) i `tools/stage-continuity.mjs` (salts entre fotogrames, amb pulsacions que arriben abans i després d’acabar el pas).
+- Proves: `tests/stage.test.mjs` (repartiment dels moments, música de cada pulsació dins de registre i diferent de les altres, 20 rondes diferents, esdeveniments possibles a cada paisatge i estació, dibuix amb coordenades vàlides, cel quiet al final). En total, 157 proves; tres d’antigues adaptades a `tests/causes.test.mjs` i `tests/activities.test.mjs`.
+
+## 0.12 · Versió integrada
+
+Versió del 26 d’octubre de 2026. Uneix en un sol HTML les dues línies de treball que havien sortit de la 0.7.1: la 0.11 feta amb ChatGPT (`Pim_Pam_43_activitats_v0_11.html`) i la 0.10.1 feta amb Claude. L’HTML autònom és `dist/Pim_Pam_46_activitats_v0_12_integrada.html`. El detall és a `../CANVIS.md`.
+
+- De la 0.11 (ChatGPT): Tinta viva (CE01) refeta, amb la versió anterior com a *Tinta viva - original*; Pluja de colors (CE03) refeta; Fons marí de vidre (CE06) en lloc de Meduses de vidre; Pluja musical (CE07) refeta, amb la versió anterior com a *Pluja musical - original*; Escape i la sortida de pantalla completa tornen a l’inici. La 0.11 només es va lliurar com a HTML: `dist/color-rain.js`, `dist/ocean.js` i `dist/musical-rain.js` són els seus tres mòduls nous, separats de l’HTML sense canviar-ne cap línia, i Tinta viva és dins de `dist/visual-patterns.js`, com a la 0.11.
+- De la 0.10.1 (Claude): Caleidoscopi (CE21) en la darrera versió, Vitralls (CE22), Natura (CE23) i Piromusical (CE24), amb els instruments enregistrats i els sons de natura i de focs. La 0.11 duia el Caleidoscopi de la 0.7.1, amb sons sintètics.
+- `dist/cause-catalog.js`, `dist/cause-art.js`, `dist/art.js` i `dist/app.js` són la fusió a tres bandes (base 0.7.1) dels dos costats. Els altres mòduls són els d’un costat o de l’altre sense canvis: es comprova que la música i el dibuix de les col·leccions de la 0.11 són idèntics als de la 0.11 (1.120 partitures i 423 fotogrames comparats).
+- Les importacions i exportacions dels mòduls tocats per la fusió s’han regenerat a partir de l’anàlisi dels noms que fa servir cada mòdul; l’HTML continua sent la concatenació de `build_standalone.py`.
+- Proves: 142. Quatre de noves (`tests/integration.test.mjs` i la del catàleg a `tests/activities.test.mjs`) i cinc d’antigues adaptades al catàleg nou i a la Tinta viva de la 0.11, que dura com a mínim 8 s; el carregador de l’app de les proves inclou els mòduls nous.
+- Correcció menor: al full de ruta, els números de pas passen de «010», «046»... a «10», «46».
+
+## 0.10.1 · Instruments enregistrats
+
+Versió del 26 d’octubre de 2026 sobre la 0.10. La música de Caleidoscopi (CE21) i de Vitralls (CE22) la toquen ara instruments acústics enregistrats, com la de Natura, en lloc dels sons sintètics; les peces són les mateixes (cada nota escrita sona al mateix instant, amb la mateixa nota en alguna octava, i una prova ho comprova). Piromusical (CE24) acaba amb un acord d’arpa arpegiat en lloc de l’acord sostingut de trompes, que sonava com un orgue. També es corregeix un error de la 0.10: l’HTML només descodificava les gravacions en obrir Natura, de manera que, si s’obria Piromusical primer, les trompes sonaven amb l’orgue sintètic de reserva. L’HTML autònom és `dist/Pim_Pam_44_activitats_v0_10_1_instruments.html`. El detall és a `../CANVIS.md`.
+
+- `dist/kaleido-music.js`: l’orquestració enregistrada (`kit`): cada instrument sintètic d’una peça diu quina gravació el toca i a quin nivell; les notes de cada instrument es mouen per octaves senceres fins al registre de la seva gravació (`fold`), abans de la transposició de la ronda. Opcions noves: cua curta del darrer acord dels violins (`pad.tail`) i de la contramelodia (`counter.tail`), darrera nota curta del baix (`bass.endLen`) i bordó que es reprèn a cada compàs i para a l’assentament (`drone.every`, `maxBow`, `stop`, `end`).
+- `dist/kaleido.js` i `dist/vitrall.js`: la taula de cada col·lecció (`K_KIT`, `V_KIT`), amb els nivells mesurats (EBU R128) instrument per instrument. `kaleidoScore` i `vitrallScore` admeten `{builtIn:true}`, la peça tal com està escrita, per a les proves.
+- `dist/piro.js`: final d’arpa arpegiat, darrera nota de tuba d’1,2 s i violins que deixen anar l’acord 1,2 s després de l’assentament.
+- `dist/sampler.js`: les trompes i els trombons no tenen instrument sintètic de reserva (abans era l’orgue): fins que no s’han descodificat, callen.
+- `dist/cause-catalog.js` i `dist/app.js`: les quatre col·leccions amb instruments enregistrats porten `recorded:true`, i obrir-ne qualsevol comença a descodificar les gravacions.
+- Proves: 138.
+
+## 0.10 · Piromusical
+
+Versió del 26 d’octubre de 2026 sobre la 0.9.2. S’hi afegeix l’activitat CE24 *Piromusical*: 20 espectacles de focs artificials de colors, cadascun amb una peça de música de banda de festa tocada amb notes enregistrades (trompeta, trompa, trombó, tuba, timbales, plats, bombo i caixa, a més de l’arpa, el glockenspiel i les fustes de Natura) i esclats suaus. El nom és diferent del de CE04 *Focs artificials*, que no canvia. Les 43 activitats de la 0.9.2 no canvien, i la música de Caleidoscopi, Vitralls i Natura és idèntica nota a nota (una prova ho comprova). L’HTML autònom era `dist/Pim_Pam_44_activitats_v0_10_piromusical.html`.
+
+- `dist/firework.js`: el motor dels focs. Cada espurna és una funció tancada del temps (vol frenat per l’aire i caiguda per la gravetat), de manera que qualsevol instant es dibuixa directament i la mateixa ronda dona sempre el mateix fotograma. Peònies, crisantems, dàlies, salzes, corones, brocats, palmeres, anells, planetes, formes (cors, estrelles, flors i trèvols), creuetes, espirals, peixets, cometes, fonts, cascades, rodes, candeles romanes i mines; cel de nit, turons, poble o llac amb reflex. Els esclats grans obren amb una llum suau que mai no omple la pantalla, i com a molt dues vegades per segon; si diversos focs s’obren junts al mateix lloc, comparteixen una sola llum.
+- `dist/piro-art.js`: els 20 espectacles. Cada un té els seus moments visuals sobre la graella musical i tres paletes, una per ronda.
+- `dist/piro.js`: el catàleg dels 20 espectacles, la família melòdica de la col·lecció (tretze crides de banda de festa), la partitura de cadascun (amb timbales sota els focs grans, els sons dels focs i un tancament de plats) i el dibuix de cada fotograma, amb qualitat adaptativa (en un dispositiu lent, estrelles sense lluentor, cues més curtes i sense brases ni reflexos).
+- `dist/sampler.js` i `dist/assets/samples/`: 40 notes noves de banda (VSCO-2 CE, CC0) i sis sons de focs generats amb ElevenLabs i suavitzats amb `tools/make_oneshot.py`. Un so de foc que no s’ha pogut descodificar no sona, i mai no se’n fa sonar un altre al seu lloc.
+- `dist/kaleido-music.js`: tres capes noves (acompanyament a contratemps, accents de timbales i efectes), que només fa servir Piromusical.
+- `tests/piro.test.mjs`: 20 proves.
+- `tools/render-review.mjs` i `tools/flash-audit.mjs` accepten `piro` com a darrer argument. L’auditoria de flaixos no s’ha executat en aquesta versió.
+
+## 0.9.2 · Natura amb sons de natura
+
+Versió del 25 d’octubre de 2026 sobre la 0.9.1. Totes 20 formes de Natura fan sonar ja el seu so de natura. El rierol és un enregistrament de camp (CC BY 3.0). Els altres onze sons s’han generat amb ElevenLabs i s’han convertit en bucles amb `tools/make_ambience.py`: cor de l’alba, merla, pluja, gotes, onades, vent, prat amb abelles, grills, granotes, bombolles i degoteig de cova. Les imitacions acústiques de la 0.9.1 queden de reserva: si es treu un so de la carpeta, la forma torna a imitar-lo. L’HTML autònom era `dist/Pim_Pam_43_activitats_v0_9_2_natura.html`.
+
+## 0.9.1 · Sons de natura
+
+Versió del 25 d’octubre de 2026 sobre la 0.9. Cada forma de Natura té un so de natura sota la música. Si la col·lecció té l’enregistrament de camp que la forma demana, sona sota tota la peça, des de dos punts del bucle i separat a esquerra i dreta. Si no el té, els instruments acústics l’imiten: gotes, pluja, onades, cants d’ocell, bombolles, grills i granotes. Ara per ara només hi ha un enregistrament, el rierol de la Falguera. El detall és al `CANVIS.md` de la 0.9.1.
+
+- `dist/sampler.js` i `dist/assets/samples/nature/`: els enregistraments de natura (`natureRec`), amb les fonts i les llicències a `dist/assets/samples/CREDITS.md`. Un so que no s’ha pogut descodificar no sona, i mai no se’n fa sonar un altre al seu lloc.
+- `dist/kaleido-music.js`: la capa d’imitació (`mimic`), que només fa servir Natura. La música de Caleidoscopi i de Vitralls continua idèntica.
+- `dist/natura.js`: el so que demana cada forma i la imitació que el substitueix mentre no hi és.
+- `tools/make_ambience.py`: converteix un enregistrament de camp en un bucle mono sense costura (fosa encadenada, puntes rares rebaixades, −32 LUFS, MP3).
+- `tests/natura.test.mjs`: 19 proves.
+
+## 0.9 · Natura
+
+Versió del 25 d’octubre de 2026 sobre la 0.8. S’hi afegeix l’activitat CE23 *Natura*: 20 formes geomètriques de la natura fetes de paper retallat, cadascuna amb una peça musical tocada amb notes enregistrades d’instruments acústics reals. Les 42 activitats de la 0.8 no canvien, i la música de Caleidoscopi (CE21) i de Vitralls (CE22) és idèntica nota a nota (una prova ho comprova). L’HTML autònom és `dist/Pim_Pam_43_activitats_v0_9_natura.html` (6,3 MB, perquè porta les gravacions a dins). El detall és a `../CANVIS.md`.
+
+- `dist/paper.js`: el motor de paper: retalls amb vores tallades o esquinçades (amb el blanc de la fibra a la vora), cinc textures de paper generades en codi (cotó, washi, cartolina, pasta i crepè), ombres suaus que creixen quan una peça s’aixeca, plecs i la cartolina de fons.
+- `dist/natura-art.js`: les 20 formes de la natura. Cada fotograma es calcula només a partir del temps.
+- `dist/natura.js`: el catàleg de les 20 formes, la família melòdica de la col·lecció (dotze motius a la manera dels cants d’ocell), la partitura de cadascuna i el dibuix de cada fotograma, amb la mateixa qualitat adaptativa que els Vitralls (les ombres suaus passen a ombres netes en un dispositiu lent).
+- `dist/sampler.js` i `dist/assets/samples/`: 83 notes enregistrades de 12 instruments (arpa, marimba, glockenspiel, flauta, oboè, clarinet, violins, violoncels, pizzicats de violins i violoncels, triangle i claves) de Versilian Studios Chamber Orchestra 2, Community Edition, en domini públic (CC0). Es descodifiquen en obrir Natura; mentre no hi són, o si un navegador no les pot descodificar, cada nota la toca l’instrument sintètic més proper. Crèdits a `dist/assets/samples/CREDITS.md`.
+- `dist/synth.js` toca els instruments enregistrats, i `dist/kaleido-music.js` admet tres opcions noves (nota greu enregistrada a l’inici, baix una octava més amunt i percussió lleugera enregistrada) que només fa servir Natura.
+- `tests/natura.test.mjs`: 18 proves.
+- `tools/render-review.mjs` i `tools/flash-audit.mjs` accepten `natura` com a darrer argument. L’auditoria de flaixos no s’ha executat en aquesta versió.
+
+## 0.8 · Vitralls
+
+Versió del 25 d’octubre de 2026 sobre la 0.7.1. S’hi afegeix l’activitat CE22 *Vitralls*: 20 vitralls de colors amb textures de vidre, cadascun amb una peça de música de dansa antiga. Les 41 activitats de la 0.7.1 no canvien, i la música de Caleidoscopi (CE21) és idèntica nota a nota. L’HTML autònom és `dist/Pim_Pam_42_activitats_v0_8_vitralls.html`. El detall és a `../CANVIS.md`.
+
+- `dist/glass.js`: el motor de vidre: geometria de les peces, textures de vidre generades en codi (catedral, opalescent, amb bombolles i glaçat), plom, llum que travessa el vidre, raigs i franja de llum.
+- `dist/vitrall-art.js`: els 20 vitralls. Cada fotograma es calcula només a partir del temps.
+- `dist/vitrall.js`: el catàleg dels 20 vitralls, la família de motius melòdics de la col·lecció, la partitura de cadascun i el dibuix de cada fotograma. Si el dibuix és lent al dispositiu (mitjana de més de 22 ms per fotograma), la textura del vidre i l’ombra del plom s’esvaeixen; tornen després d’una retenció que es dobla a cada baixada, i després de la tercera ja no tornen.
+- `dist/kaleido-base.js`, `dist/kaleido-music.js` i `dist/synth.js`: les fases, la graella de passos, el compositor i el sintetitzador, compartits per les dues col·leccions. El compositor admet capes noves (bordó, melodia a partir de motius, veu paral·lela, ornaments, tamborí i picarols) que només fan servir els Vitralls. El sintetitzador té set instruments nous: orgue, flauta dolça, llaüt, dulcimer, carilló, tamborí i picarols.
+- `tests/vitrall.test.mjs`: 15 proves. `tests/kaleido.test.mjs`: 19 proves.
+- `tools/render-review.mjs`: vídeos MP4 de revisió de qualsevol de les dues col·leccions (darrer argument: `kaleido` o `vitrall`). `tools/flash-audit.mjs`: auditoria orientativa de flaixos de qualsevol de les dues col·leccions (per als Vitralls: `node tools/flash-audit.mjs AUDITORIA_FLAIXOS_VITRALLS.md vitrall`), que en aquesta versió no s’ha executat. Són eines de desenvolupament; l’aplicació continua sense dependències.
+
+## 0.7.1 · Caleidoscopi complet
+
+L’activitat CE21 *Caleidoscopi* té els 20 patrons del pla, cadascun amb una peça musical pròpia, i el *Corrent d’aurora* es mou sense salts. Mòduls: `dist/kaleido-base.js`, `dist/kaleido-art.js`, `dist/kaleido-music.js`, `dist/kaleido.js` i `dist/synth.js`.
+
+Les seccions següents descriuen la base 0.6.
+
+# Pim Pam · 40 activitats · 0.6
+
+Versió local de desenvolupament · 25 d’octubre de 2026.
+
+## Obrir
+
+Obriu `dist/Pim_Pam_46_activitats_v0_12_integrada.html` amb un navegador. L’HTML inclou el codi, els estils i les imatges, i genera els sons al dispositiu. No necessita servidor ni connexió per executar les activitats. La previsualització d’un gestor de fitxers pot no executar JavaScript: cal obrir el fitxer amb un navegador.
+
+## Canvi de paleta · 0.6
+
+Nova direcció cromàtica aplicada a inici, catàleg, configuració, controls, encercament, escenes i estímuls. Superfícies blanques i blau clar; blau cobalt per a l’acció i el focus, violeta, verd, turquesa, rosa i groc com a accents. S’han redissenyat les 20 paletes de tinta i les 20 de paper, mantenint geometries, moviments i sons. Sense filtre global de saturació; els materials de fusta, xocolata o pell conserven els seus colors propis. Logos originals intactes.
+
+(La guia de Google Flow de La llenyataire, `production/Flow_llenyataire/`, es va treure a la 0.47.3 amb l’activitat.)
+
+## Catàleg i direcció artística
+
+Inclou 20 activitats de causa-efecte i 20 activitats d’encercament, totes amb un o dos commutadors. El catàleg detallat és a `ACTIVITATS.md`.
+
+La proposta antiga s’ha adaptat a les decisions més recents: art 2D propi, varietat de colors, efectes abstractes, estímuls repartits per tota la pantalla, focs artificials, bombolles i històries divertides. Els animals no són el tema predominant. Les propostes antigues de cançons cantades, aquari i vent del bosc s’han substituït en aquest lliurament; no es presenten com a implementades.
+
+Hi ha nou activitats d’efecte complet amb 20 patrons o composicions cadascuna: Tinta viva, Flor de paper, Pluja de colors, Focs artificials, Bombolles de sabó, Meduses de vidre, Pluja musical, Cintes de pintura i Petit Pim, gran Pam. Cada activació acceptada passa a la següent variant; després de la vintena torna la primera. Les paletes, les formes, les distribucions i els moviments varien, dins de l’estil de cada activitat. `PATRONS.md` descriu amb detall els 40 patrons de tinta i paper.
+
+Dia rere dia (CE09, des de la 0.13) fa avançar el dia d’un poble de paper per vuit moments, amb un esdeveniment diferent a cada moment i un dia diferent cada vegada; l’ajust «Moments del dia» permet 4 o 2 moments (2 conserva l’antiga alternança de migdia i nit). L’escena es manté entre pulsacions. El paper fix (paisatge, arbres grans, margarides) es retalla una vegada en capes fora de pantalla i només s’hi aplica la llum de cada moment; el pas d’un dia al següent és continu. Eines de revisió: `tools/dia-frames.mjs` (fotogrames), `tools/dia-review.mjs` (vídeo amb so) i `tools/dia-continuity.mjs` (salts entre fotogrames).
+
+Hi ha deu activitats de construcció o història per passos: El cel de les constel·lacions, Jardí de paper, L’orquestra que es desperta, La llenyataire, L’ou sorpresa, Missió coet, El pastís impossible, La màquina de crispetes, El robot ballarí i El tren dels colors. El progrés persisteix entre passos. No hi ha un temporitzador que executi el pas següent: l’enlairament, l’eclosió o la sortida del tren requereixen la darrera pulsació. Les noves històries canvien de paleta en començar una altra ronda després del desenllaç. La llenyataire conserva els 12 fotogrames per cop i el tall progressiu.
+
+## Les 22 activitats d’encercament
+
+Catàleg EN01–EN22: salutacions, tria d’efectes, ràdio musical dels animals, destinacions, gelats, vestidor, taller de vehicles, orquestra, bessons, encaixos, detectius de sons, puzles, recepta del robot, camins, conte, excursió, estacions agrupades, jardí per parcel·les, cinema, espectacle, d’on ve aquest so i espectacle de llum.
+
+En un commutador, el marc avança automàticament i l’activació selecciona. En dos commutadors, un avança i l’altre selecciona; es poden intercanviar. La primera opció és activa quan apareix. El temps extra inicial, el sentit, l’inici manual o automàtic, les voltes abans d’esperar i el retorn després d’una tria diferent es poden configurar.
+
+Les opcions contenen il·lustracions derivades dels mateixos objectes del resultat. Els controls per tornar, repetir, modificar una tria, començar una altra ronda i sortir són opcions del mateix recorregut. Després d’un resultat final, l’activitat espera: no es perd la composició fins que es demana una nova ronda o es torna al menú.
+
+Hi ha tries lliures i tasques guiades diferenciades. A les correspondències, una tria diferent produeix una resposta neutral, conserva el model i l’ordre i permet tornar-ho a provar. No hi ha puntuació, penalització temporal ni canvi automàtic de dificultat. La recepta també té un mode de joc lliure explícit.
+
+Les estacions seleccionen regió i després estació, amb retorn al grup anterior. El jardí conserva les plantes en quatre parcel·les; admet recorregut lineal o selecció de fila i després parcel·la. El gran espectacle té dues decisions inicials o quatre en el mode ampliat.
+
+Des de la 0.16, Detectius de sons utilitza vuit instruments enregistrats (abans, pistes sintetitzades de campana, tambor, arpa i pluja). Permet tornar a escoltar i mostrar una pista visual; quan el so es desactiva, es conserva una alternativa visual. La ràdio utilitza interpretacions sonores sintètiques d’animals, no enregistraments biològics.
+
+La locució opcional depèn d’una veu catalana instal·lada i exposada pel navegador; no hi ha veus incorporades a l’HTML ni cap garantia que el sistema en tingui. Si no n’hi ha, el recorregut continua amb dibuixos, etiquetes i sons. L’encercament espera mentre parla i durant el marge configurat després de la locució. La tria pot acceptar-se abans, sense penalitzar qui respon de pressa. Pausa, selecció i canvi de pantalla cancel·len la locució pendent.
+
+## Accés i configuració
+
+Espai i Retorn són les tecles inicials, reassignables. Inclou punter, pantalla tàctil i lectura de botons Gamepad. Els filtres de pressió mínima i d’interval entre pulsacions són independents per commutador. Una pressió mantinguda no es repeteix com a activacions noves.
+
+En mode d’efecte complet i amb bloqueig, les pulsacions durant l’animació s’ignoren sense cua. Desactivar-lo permet passar a una variant o pas nou amb una pulsació nova. No hi ha respostes incorrectes ni exigència de rapidesa.
+
+Pluja de colors, Focs artificials, Bombolles de sabó, Pluja musical i Cintes de pintura també admeten modes opcionals de manteniment i iniciar/aturar. En manteniment, alliberar inicia un tancament de 0,85 segons; en iniciar/aturar, la segona activació fa aquest tancament sense avançar la variant. La pausa interromp so i moviment. Si s’havia de mantenir premut, la represa no simula una pressió que ja s’ha alliberat.
+
+Durada dels efectes, 3/5/7 passos, densitat dels estímuls escampats, volum, silenci i moviment reduït configurables. Les històries utilitzen almenys 2,5 segons per pas i 4,5 segons per al desenllaç; la durada seleccionada pot allargar-les. Canviar la durada amb una activitat en pausa conserva la fase visual i sonora.
+
+Fons complet, atenuat amb opacitat regulable o absent; base blanca o negra. Hi ha una preferència comuna i ajustos per activitat. El fons no tapa ni atenua els objectes actius. En absència de fons, els efectes complets tornen al blanc o negre net; les construccions conserven només el progrés necessari i Dia i nit conserva el seu petit món delimitat.
+
+L’entrada a una activitat activa la vista de joc a tota la finestra i demana pantalla completa nativa. Si el navegador la rebutja, es conserva la vista de finestra completa. Els controls permeten pausa, configuració, tornada al menú i sortida. Esc posa en pausa.
+
+Perfils exportables/importables en JSON, amb configuració comuna de fons i excepcions. El desament local depèn del navegador i del seu suport de localStorage per a fitxers locals.
+
+## Art i so
+
+Gràfics vectorials Canvas, plecs i gradients, construccions articulades, trajectòries, partícules i transparències. Els sons harmònics segueixen el progrés de les animacions; hi ha petits efectes de closca, aire, crispetes, instruments i motors. No hi ha música en repòs. Les opcions de so i moviment no s’anuncien com una validació clínica.
+
+## Codi i recuperació
+
+- `dist/input.js`: perfils, filtres d’entrada i rellotge d’encercament.
+- `dist/patterns.js`, `visual-patterns.js`: els 40 patrons de tinta i paper, geometria i partitures; des de la 0.11, també la Tinta viva nova (`TINTA_VIVA`, `drawTintaViva`, `tintaScore`).
+- `dist/fons.js`, `fons-gl.js`, `fons-shaders.js` (0.28): Fons marí de vidre (el `ocean.js` de la 0.11 només es fa servir si no hi ha WebGL2).
+- `dist/color-rain.js`, `ocean.js`, `musical-rain.js` (0.11): Pluja de colors, Fons marí de vidre i Pluja musical, cadascuna amb el seu dibuix, les seves 20 composicions i la seva música; `ocean.js` i `musical-rain.js` també hi afegeixen els seus instruments (`sea-…`, `rain-…`) al sintetitzador.
+- `dist/cause-catalog.js`: catàleg, estats, seqüències, variants, manteniment, iniciar/aturar i retiming.
+- `dist/cause-art.js`: les 17 activitats noves, objectes i animacions articulades.
+- `dist/escenari.js`, `orquestra.js`, `orquestra-art.js`, `constel.js`, `constel-art.js` (0.14): el motor d’escenari de les històries pas a pas i les dues primeres històries que el fan servir.
+- `dist/castells.js`, `castells-art.js`, `vent.js`, `vent-art.js` (0.15): Fem castells i El vent del bosc.
+- `dist/tauler.js`, `estacio.js`, `estacio-art.js`, `templet.js`, `templet-art.js` (0.16): el tauler de l’encercament, On anem? i Detectius de sons.
+- `dist/dia.js`, `dia-art.js` (0.13): Dia rere dia.
+- `dist/art.js`: capes, càrrega de recursos, llenyataire, gelats i coordinació del dibuix.
+- `dist/scan-catalog.js`: activitats, opcions semàntiques, objectius, estats i revisió de resultats.
+- `dist/scan-art.js`: objectes compartits entre miniatures, pistes i escenes.
+- `dist/app.js`, `style.css`: navegació, configuració, adaptadors d’entrada i àudio.
+- `dist/assets/`: logos originals i atles/fotogrames alineats de la llenyataire.
+- `build_standalone.py`: reconstrueix l’HTML autònom amb Python estàndard.
+- `tests/`: proves d’entrada, seqüències, patrons, dibuix, controls i partitures.
+
+Reconstrucció: `python3 build_standalone.py`. Proves: `npm test` o `node --test tests/*.test.mjs`. Els fitxers modulars de desenvolupament necessiten servir-se per HTTP; l’HTML autònom no.
+
+## Verificació i límits
+
+57 proves automàtiques superades: no-cua, pressió/alliberament, filtres, perfils, 20 codis CE, recorreguts de variants, progrés de passos, canvi dia/nit, manteniment i parada, retiming, absència d’efectes residuals, coordenades de dibuix, composicions i paletes diferenciades, integritat i límits temporals de les partitures, recorreguts de les 20 activitats d’encercament, correspondències sense pèrdua de pista, revisió de resultats, grups, parcel·les persistents, sentit invers i perfils d’entrada.
+
+Revisió de composicions al navegador i comprovació funcional de l’HTML autònom. Encara cal validació amb commutadors físics i una matriu de dispositius Windows, macOS, Linux, ChromeOS, iPadOS i Android. No es declara compatibilitat universal ni validació clínica. Les 40 activitats són una primera versió de desenvolupament pendent de revisió amb participants i professionals.
