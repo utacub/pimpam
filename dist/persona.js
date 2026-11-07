@@ -2,6 +2,7 @@ import {pdActs,pdMedia,pdClean,pdMarks} from './persona-dades.js';
 import {tcWaitRange,tcLeave} from './toc.js';
 import {TL_STRIP,tlRound} from './tauler.js';
 import {scanExtend} from './scan-catalog.js';
+import {plAct,plMediaIs,plUrl,plRoutable,PL_GAIN} from './pellicules.js';
 
 // ---------- Activitats personalitzades (0.44): the mechanics and the time ----------
 // Each activity made by a family or a professional takes one of five mechanics of Pim Pam, with the photos, videos and music they add;
@@ -34,7 +35,7 @@ export function psInit(){if(!PS_READY)PS_READY=psReload();return PS_READY;}
 async function psReload(){try{PS_ACTS=(await pdActs()).filter(a=>(a.owner||'guest')===PS_OWNER).map(pdClean).sort((a,b)=>a.created-b.created);}catch{PS_ACTS=[];}for(const f of PS_LISTENERS)try{f();}catch{}return PS_ACTS;}
 export const psOnChange=f=>PS_LISTENERS.push(f);
 export const psActs=()=>PS_ACTS;
-export const psAct=id=>PS_ACTS.find(a=>a.id===id)||null;
+export const psAct=id=>PS_ACTS.find(a=>a.id===id)||plAct(id); // 0.50: also the films of «Petites pel·lícules» (pellicules.js)
 // An activity as a card of the catalogue: the code PE01, PE02… in the order they were made.
 // the name and the child are written by the family: they are escaped here, since the catalogue goes into the HTML of the menu
 const psEsc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -52,17 +53,23 @@ export function psProblems(a,media){const T=PS_TEMPLATES[a.tpl],out=[];if(!T)ret
 let PS_CUR=null;
 const psNow=()=>typeof performance!=='undefined'?performance.now()/1000:0;
 async function psLoadMedia(P,id){if(!id||P.media.has(id))return;const h={id,rec:null,bmp:null,el:null,url:null,ready:false,g:null,until:null,playing:false};P.media.set(id,h);
- try{const rec=await pdMedia(id);if(!rec)throw Error('missing');h.rec=rec;if(P.closed)return;
+ // 0.50: a sequence of a film is a file next to the app (not in the database of the device)
+ try{const film=plMediaIs(id),rec=film?{kind:'video',sound:true,gain:PL_GAIN}:await pdMedia(id);if(!rec)throw Error('missing');h.rec=rec;if(P.closed)return;if(film)h.noRoute=!plRoutable();
   if(rec.kind==='image'){h.bmp=await createImageBitmap(rec.blob);}
-  else{h.url=URL.createObjectURL(rec.blob);const el=document.createElement(rec.kind==='video'?'video':'audio');el.preload='auto';el.playsInline=true;el.muted=true;el.src=h.url;h.el=el;
-   await new Promise(res=>{const done=()=>{clearTimeout(t);res();},t=setTimeout(done,15000);el.addEventListener(rec.kind==='video'?'loadeddata':'canplay',done,{once:true});el.addEventListener('error',done,{once:true});});
+  else{h.url=film?null:URL.createObjectURL(rec.blob);const el=document.createElement(rec.kind==='video'?'video':'audio');el.preload='auto';el.playsInline=true;el.muted=true;el.src=film?plUrl(id):h.url;h.el=el;
+   await new Promise(res=>{const done=()=>{clearTimeout(t);res();},t=setTimeout(done,15000);el.addEventListener(rec.kind==='video'?'loadeddata':'canplay',done,{once:true});el.addEventListener('error',()=>{if(film)h.failed=true;done();},{once:true});});
    if(rec.kind==='video'&&el.duration>1.2&&P.tpl!=='video'){el.currentTime=Math.min(1,el.duration/3);await new Promise(res=>{const t=setTimeout(res,3000);el.addEventListener('seeked',()=>{clearTimeout(t);res();},{once:true});});}}
  }catch{h.failed=true;}h.ready=true;P.loaded++;}
 export function psStart(game,s){psStop();const a=psAct(game.item.id);if(!a)return;const T=PS_TEMPLATES[a.tpl];
  const P={act:a,tpl:a.tpl,T,media:new Map(),need:0,loaded:0,closed:false,k:0,cur:-1,prev:-1,phase:a.tpl==='moment'?'wait':a.tpl==='pas'||a.tpl==='video'?'cover':'idle',vi:0,seg:0,stops:null,target:0,t:0,show:0,trans:0,done:0,dark:1,queue:[],seed:(Math.random()*1e6)|0,order:[],knocks:0,again:0,wait:0,wake:0,bus:null,paused:[],started:psNow()};
- const ids=new Set();for(const it of a.items){ids.add(it.media);if(it.sound)ids.add(it.sound);}if(a.musicMode==='own'&&a.music)ids.add(a.music);P.need=ids.size;for(const id of ids)psLoadMedia(P,id);
+ const ids=new Set();for(const it of a.items){ids.add(it.media);if(it.sound)ids.add(it.sound);}if(a.musicMode==='own'&&a.music)ids.add(a.music);P.need=ids.size;if(a.film)psFilmKeep(P);else for(const id of ids)psLoadMedia(P,id);
  P.settings=s;P.order=psOrder(P,0);if(a.tpl==='pas'){P.cur=P.order[0];psTiles(P);}if(a.tpl==='moment')P.wait=psWaitFor(P,s);if(a.tpl==='video')P.cur=0;game.persona=P;PS_CUR=P;}
-export function psLoadShare(game){const P=game?.persona;if(!P)return 1;return P.need?P.loaded/P.need:1;}
+export function psLoadShare(game){const P=game?.persona;if(!P)return 1;if(P.act.film){const h=psMediaOf(P,P.act.items[0]?.media);return h?.ready?1:.3;}return P.need?P.loaded/P.need:1;}
+// 0.50 · a film keeps loaded only the sequence it is on and the next one (21 videos at once would fight for the network and the memory)
+function psFilmKeep(P){const n=P.act.items.length,keep=new Set([P.vi%n,(P.vi+1)%n].map(i=>P.act.items[i].media));
+ for(const [id,h] of P.media)if(!keep.has(id)){try{h.el?.pause();}catch{}if(h.el){h.el.removeAttribute('src');try{h.el.load();}catch{}}try{h.g?.disconnect();h.src?.disconnect();}catch{}P.media.delete(id);}
+ for(const id of keep)psLoadMedia(P,id);}
+function psFilmNext(P){const n=P.act.items.length,h=psMediaOf(P,P.act.items[(P.vi+1)%n]?.media);return h;}
 export function psStop(){const P=PS_CUR;PS_CUR=null;if(!P)return;P.closed=true;for(const h of P.media.values()){try{h.el?.pause();}catch{}try{h.bmp?.close?.();}catch{}if(h.el){h.el.removeAttribute('src');try{h.el.load();}catch{}}if(h.url)URL.revokeObjectURL(h.url);try{h.g?.disconnect();h.src?.disconnect();}catch{}}P.media.clear();try{P.bus?.disconnect();}catch{}}
 // The order of the elements: as listed, or shuffled at every lap when the activity asks for it.
 function psOrder(P,lap){const n=P.act.items.length,list=Array.from({length:n},(_,i)=>i);if(P.act.order!=='shuffle')return list;let x=(P.seed+lap*7919)>>>0;for(let i=n-1;i>0;i--){x=(x*1103515245+12345)>>>0;const j=x%(i+1);[list[i],list[j]]=[list[j],list[i]];}if(lap&&n>1&&list[0]===P.lastShown)[list[0],list[1]]=[list[1],list[0]];return list;}
@@ -78,7 +85,7 @@ export function psShowTime(P,item,s){const m=psMediaOf(P,item?.media),snd=item?.
 // The queue is played by psAudio, called every frame by the app with its audio context, its master gain and its way of playing the notes
 // of the recorded instruments of Pim Pam.
 const psQ=(P,op)=>{if(P)P.queue.push(op);};
-function psHandle(P,audio,h){if(!h?.el||h.g||!audio||!P.bus)return h;try{h.src=audio.createMediaElementSource(h.el);h.g=audio.createGain();h.g.gain.value=0;h.src.connect(h.g);h.g.connect(P.bus);h.el.muted=false;}catch{h.g=null;}return h;}
+function psHandle(P,audio,h){if(!h?.el||h.g||h.noRoute||!audio||!P.bus)return h;try{h.src=audio.createMediaElementSource(h.el);h.g=audio.createGain();h.g.gain.value=0;h.src.connect(h.g);h.g.connect(P.bus);h.el.muted=false;}catch{h.g=null;}return h;}
 function psFadeTo(audio,h,level,fade){if(!h.g||!audio)return;const t=audio.currentTime;h.g.gain.cancelScheduledValues(t);h.g.gain.setValueAtTime(h.g.gain.value,t);h.g.gain.linearRampToValueAtTime(level,t+Math.max(.02,fade));}
 // Plays a media element (a sound, the music or the sound of a video) from a point and for a length, with fades.
 function psPlay(P,audio,s,h,from,len,fadeIn=.05,fadeOut=.6){if(!h?.el||h.failed)return 0;psHandle(P,audio,h);const el=h.el;try{if(from!==null&&from!==undefined)el.currentTime=Math.max(0,from);}catch{}
@@ -92,6 +99,7 @@ function psMusic(P){return P.act.musicMode==='own'&&P.act.music?psMediaOf(P,P.ac
 function psSoundOf(P,item){const m=psMediaOf(P,item?.media);if(item?.sound)return {kind:'own',h:psMediaOf(P,item.sound)};if(m?.rec?.kind==='video'&&m.rec.sound)return {kind:'video',h:m};const mu=psMusic(P);if(mu)return {kind:'music',h:mu};return {kind:P.act.musicMode==='none'?'none':'pimpam'};}
 export function psAudio(game,s,audio,master,play){const P=game?.persona;if(!P||!audio)return;if(!P.bus){P.bus=audio.createGain();P.bus.gain.value=1;P.bus.connect(master);}
  for(const h of P.media.values())if(h.el&&!h.g&&h.ready)psHandle(P,audio,h);
+ for(const h of P.media.values())if(h.noRoute&&h.el){h.el.muted=!s.sound||P.showing!==h.id;h.el.volume=Math.max(0,Math.min(1,(s.volume??100)/100*.35*(h.rec?.gain||1)));}
  const running=audio.state==='running';
  while(P.queue.length){const op=P.queue.shift();if(!running&&op.op!=='hush')continue;
   if(op.op==='item'){const item=psItemAt(P,op.i),snd=psSoundOf(P,item),v=psMediaOf(P,item?.media);if(v?.rec?.kind==='video'&&v.el){if(v.g)psFadeTo(audio,v,snd.kind==='video'?(v.rec.gain||1)*(s.sound?1:0):0,.05);}
@@ -135,7 +143,7 @@ export function psPhrase(kind,n,len){const out=[],key=PS_KEYS[((n%6)+6)%6],add=(
 // ---------- Cause and effect: the press and the time ----------
 const PS_TRANS=6,PS_IN=1.1;
 // a press is refused while an element is entering or (with «Espera que acabi cada efecte») still shown
-export function psBlocked(game,s){const P=game?.persona;if(!P)return false;if(P.tpl==='moment')return P.phase!=='knock';if(P.tpl==='video')return P.phase==='play'||!psVideoReady(P);if(P.tpl==='pas')return P.phase==='enter'||(s.lock&&(P.phase==='step'||P.phase==='show'));return s.lock&&P.phase==='show'||P.phase==='show'&&P.t<PS_IN;}
+export function psBlocked(game,s){const P=game?.persona;if(!P)return false;if(P.tpl==='moment')return P.phase!=='knock';if(P.tpl==='video')return P.phase==='play'||(P.act.film&&P.phase==='end'?!psFilmNext(P)?.ready||!!psFilmNext(P)?.failed:!psVideoReady(P));if(P.tpl==='pas')return P.phase==='enter'||(s.lock&&(P.phase==='step'||P.phase==='show'));return s.lock&&P.phase==='show'||P.phase==='show'&&P.t<PS_IN;}
 function psNext(P){const n=P.act.items.length;if(!n)return -1;const lap=Math.floor(P.k/n),pos=P.k%n;if(pos===0)P.order=psOrder(P,lap);P.k++;return P.order[pos]??0;}
 function psShowItem(P,s,i){P.prev=P.cur;P.cur=i;P.lastShown=i;P.phase='show';P.t=0;P.show=psShowTime(P,psItemAt(P,i),s)+(P.tpl==='album'?PS_IN*.6:0);P.trans=(P.k-1)%PS_TRANS;psStartVideo(P,psItemAt(P,i));psQ(P,{op:'item',i,len:P.show});}
 function psStartVideo(P,item){for(const h of P.media.values())if(h.rec?.kind==='video'&&h.el&&!h.el.paused&&h.id!==item?.media)try{h.el.pause();}catch{}const v=psMediaOf(P,item?.media);P.showing=null;if(v?.rec?.kind!=='video'||!v.el)return;P.showing=v.id;try{v.el.currentTime=0;}catch{}if(!v.g)v.el.muted=true;v.playing=true;v.until=null;v.el.play?.()?.catch?.(()=>{});}
@@ -157,14 +165,14 @@ function psVideoEl(P){const it=psItemAt(P,P.vi),h=psMediaOf(P,it?.media);return 
 function psVideoReady(P){const h=psVideoEl(P);return !!h&&h.ready;}
 function psVideoPrime(P){const h=psVideoEl(P);if(!h)return null;const d=Number.isFinite(h.el.duration)&&h.el.duration>0?h.el.duration:h.rec.dur||0;P.stops=psVideoStops(d,P.act,psItemAt(P,P.vi));return h;}
 function psVideoPress(game,P){const n=P.act.items.length;if(!n)return false;
- if(P.phase==='end'){for(const h of P.media.values())if(h.el)try{h.el.pause();}catch{}P.vi=(P.vi+1)%n;P.seg=0;P.cur=P.vi;P.stops=null;const h0=psVideoEl(P);if(h0)try{h0.el.currentTime=0;}catch{}}
+ if(P.phase==='end'){for(const h of P.media.values())if(h.el)try{h.el.pause();}catch{}P.vi=(P.vi+1)%n;P.seg=0;P.cur=P.vi;P.stops=null;if(P.act.film)psFilmKeep(P);const h0=psVideoEl(P);if(h0)try{h0.el.currentTime=0;}catch{}}
  const h=P.stops?psVideoEl(P):psVideoPrime(P);if(!h||!P.stops?.length)return false;if(P.seg===0&&P.phase!=='pause')try{h.el.currentTime=0;}catch{}
- P.target=P.stops[Math.min(P.seg,P.stops.length-1)];P.phase='play';P.t=0;P.showing=h.id;P.cur=P.vi;P.faded=false;h.playing=true;h.until=null;if(!h.g)h.el.muted=true;h.el.play?.()?.catch?.(()=>{});psQ(P,{op:'vplay',id:h.id});P.k++;game.count=P.seg+1;return true;}
+ P.target=P.stops[Math.min(P.seg,P.stops.length-1)];P.phase='play';P.t=0;P.showing=h.id;P.cur=P.vi;P.faded=false;h.playing=true;h.until=null;if(!h.g&&!h.noRoute)h.el.muted=true;h.el.play?.()?.catch?.(()=>{});psQ(P,{op:'vplay',id:h.id});P.k++;game.count=P.act.film?P.vi+1:P.seg+1;return true;}
 // every frame while it plays: the sound fades in the last 0.35 s before the stop; at the stop the video pauses and the screen darkens
 function psVideoTick(game,P){const h=psVideoEl(P);if(!h){if(P.phase==='play')P.phase='pause';return;}if(P.phase==='cover'&&!P.primed&&h.ready){P.primed=true;try{h.el.currentTime=0;}catch{}}
  if(P.phase!=='play')return;const ct=h.el.currentTime||0,last=P.seg>=P.stops.length-1;
  if(!P.faded&&ct>=P.target-.35){P.faded=true;psQ(P,{op:'vfade',id:h.id,fade:Math.max(.05,Math.min(.35,P.target-ct))});}
- if(ct>=P.target-.02||h.el.ended||(h.el.paused&&P.t>1.5)){try{h.el.pause();}catch{}h.playing=false;P.showing=null;P.t=0;if(last){P.phase='end';P.seg=0;}else{P.phase='pause';P.seg++;}game.count=last?P.stops.length:P.seg;}}
+ if(ct>=P.target-.02||h.el.ended||(h.el.paused&&P.t>1.5)){try{h.el.pause();}catch{}h.playing=false;P.showing=null;P.t=0;if(last){P.phase='end';P.seg=0;}else{P.phase='pause';P.seg++;}game.count=P.act.film?P.vi+1:last?P.stops.length:P.seg;}}
 const psSteps=s=>[3,5,7].includes(s.steps)?s.steps:5;
 // Descobreix pas a pas: the paper pieces over the element, 12 of them (4 × 3), in groups of the steps of the profile, in another order and
 // other colours for every element.
@@ -185,11 +193,15 @@ export function psTick(game,s,dt){const P=game?.persona;if(!P)return;P.t+=dt;// 
   if(P.phase==='open'&&P.t>=1.3){const i=psNext(P);psShowItem(P,s,i<0?0:i);P.phase='show';game.count=P.k;}
   else if(P.phase==='show'&&P.t>=P.show){P.phase='close';P.t=0;psStopVideo(P);psQ(P,{op:'close'});}
   else if(P.phase==='close'&&P.t>=1.3){P.phase='wait';P.t=0;P.again=0;P.wait=psWaitFor(P,s);}}}
-export function psProgress(game,s){const P=game?.persona;if(!P)return '';const n=P.act.items.length;if(P.tpl==='video'){const N=P.stops?.length||0;if(!N)return '';const done=P.phase==='end'?N:P.seg+(P.phase==='play'?0:0);return N<=16?Array.from({length:N},(_,i)=>`<span class="${i<done||P.phase==='play'&&i===P.seg?'done':''}"></span>`).join(''):`${Math.min(N,done+(P.phase==='play'?1:0))} / ${N}`;}if(P.tpl==='pas'){const N=psSteps(s);return Array.from({length:N},(_,i)=>`<span class="${i<P.done?'done':''}"></span>`).join('');}
+export function psProgress(game,s){const P=game?.persona;if(!P)return '';const n=P.act.items.length;if(P.act.film){const done=P.phase==='cover'?0:P.vi+(P.phase==='end'?1:0);return Array.from({length:n},(_,i)=>`<span class="${i<done||P.phase==='play'&&i===P.vi?'done':''}"></span>`).join('');}if(P.tpl==='video'){const N=P.stops?.length||0;if(!N)return '';const done=P.phase==='end'?N:P.seg+(P.phase==='play'?0:0);return N<=16?Array.from({length:N},(_,i)=>`<span class="${i<done||P.phase==='play'&&i===P.seg?'done':''}"></span>`).join(''):`${Math.min(N,done+(P.phase==='play'?1:0))} / ${N}`;}if(P.tpl==='pas'){const N=psSteps(s);return Array.from({length:N},(_,i)=>`<span class="${i<P.done?'done':''}"></span>`).join('');}
  return P.k?`${((P.k-1)%n)+1} / ${n}`:`${n} ${n===1?'element':'elements'}`;}
-export function psStatus(game,s){const P=game?.persona;if(!P)return '';if(P.tpl==='video')return P.phase==='play'?'El vídeo avança.':P.phase==='end'?'S’ha acabat el vídeo. Prem per tornar a començar.':P.phase==='cover'?'Prem per començar el vídeo.':'El vídeo espera la pulsació següent.';if(P.tpl==='moment')return P.phase==='knock'?'Truquen darrere el teló.':P.phase==='open'||P.phase==='show'?'S’obre el teló.':'Esperem que truquin.';
+export function psStatus(game,s){const P=game?.persona;if(!P)return '';if(P.act.film)return psFilmStatus(P);if(P.tpl==='video')return P.phase==='play'?'El vídeo avança.':P.phase==='end'?'S’ha acabat el vídeo. Prem per tornar a començar.':P.phase==='cover'?'Prem per començar el vídeo.':'El vídeo espera la pulsació següent.';if(P.tpl==='moment')return P.phase==='knock'?'Truquen darrere el teló.':P.phase==='open'||P.phase==='show'?'S’obre el teló.':'Esperem que truquin.';
  if(P.tpl==='pas')return P.phase==='show'||P.phase==='rest'?'Ja es veu sencer.':`Pas ${P.done} de ${psSteps(s)}.`;return P.k?`Element ${((P.k-1)%P.act.items.length)+1} de ${P.act.items.length}.`:'Preparat per a una nova pulsació.';}
-export function psHelp(game,s){const P=game?.persona;if(!P)return '';return P.tpl==='video'?'Cada pulsació fa avançar el vídeo fins a la pausa següent.':P.tpl==='moment'?'Espera que truquin darrere el teló i prem per obrir-lo.':P.tpl==='pas'?'Cada pulsació aparta unes quantes peces de paper.':'Prem per veure la foto o el vídeo següent.';}
+function psFilmStatus(P){const n=P.act.items.length,h=psVideoEl(P)||psMediaOf(P,P.act.items[P.vi]?.media),next=psFilmNext(P);
+ if(h?.failed||!h&&P.media.size)return 'No s’han pogut carregar els vídeos d’aquesta pel·lícula. Obriu Pim Pam des del web, o poseu la carpeta «videos» al costat del fitxer.';
+ if(P.phase==='play')return `Seqüència ${P.vi+1} de ${n}.`;if(P.phase==='cover')return h?.ready?'Prem per començar la pel·lícula.':'Carregant la pel·lícula…';
+ if(P.phase==='end')return P.vi>=n-1?'S’ha acabat la pel·lícula. Prem per tornar a començar.':next&&!next.ready?'Carregant la seqüència següent…':`S’ha acabat la seqüència ${P.vi+1}. Prem per veure la següent.`;return 'Prem per continuar.';}
+export function psHelp(game,s){const P=game?.persona;if(!P)return '';if(P.act.film)return 'Cada pulsació mostra una seqüència de la pel·lícula. Quan s’acaba, la imatge s’atura i s’enfosqueix fins a la pulsació següent.';return P.tpl==='video'?'Cada pulsació fa avançar el vídeo fins a la pausa següent.':P.tpl==='moment'?'Espera que truquin darrere el teló i prem per obrir-lo.':P.tpl==='pas'?'Cada pulsació aparta unes quantes peces de paper.':'Prem per veure la foto o el vídeo següent.';}
 
 // ---------- Scanning: the options, the clue and the times (through the scanning of the app, scan-catalog.js) ----------
 const psChoice=(P,i)=>({id:'pi-'+i,label:`Foto ${i+1}`,kind:'persona',value:i,color:null});
