@@ -29,3 +29,6 @@ jobs:
           path: dist
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          # The site is ~580 MB (videos): GitHub's file sync can take longer than the default 10 minutes.
+          timeout: 1800000
