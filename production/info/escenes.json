@@ -1525,5 +1525,167 @@
     "Final: els carrils es corben i els cavallets fan un cavallet de fira que gira. Música: un galop amb clarinet, tuba i claves."
    ]
   }
+ ],
+ "flower": [
+  {
+   "t": "Rosella",
+   "l": [
+    "Creix als camps de cereals i a les vores dels camins, a la primavera.",
+    "La poncella penja cap per avall i s’adreça abans d’obrir-se; els dos sèpals peluts cauen quan la flor s’obre.",
+    "Té quatre pètals vermells, arrugats com paper de seda, amb una taca fosca a la base. La visita una abella."
+   ]
+  },
+  {
+   "t": "Margarida",
+   "l": [
+    "El que sembla una sola flor és un capítol: un cap amb moltes floretes juntes.",
+    "Les floretes blanques de la vora semblen pètals; les grogues del mig són floretes petites en forma de tub.",
+    "Creix als prats a la primavera i a l’estiu. Hi arriba una papallona blanca."
+   ]
+  },
+  {
+   "t": "Gira-sol",
+   "l": [
+    "El seu cap també és un capítol, amb centenars de floretes.",
+    "Les floretes del mig formen espirals que es creuen, unes cap a un costat i les altres cap a l’altre.",
+    "De jove, el cap segueix el sol durant el dia; de gran, queda mirant cap a l’est. Hi arriba un borinot."
+   ]
+  },
+  {
+   "t": "Blauet",
+   "l": [
+    "Cada «pètal» és una floreta en forma d’embut, amb la vora dentada.",
+    "Abans creixia a tots els camps de blat; ara és més difícil de trobar.",
+    "Una marieta camina per la vora de la flor."
+   ]
+  },
+  {
+   "t": "Nenúfar blanc",
+   "l": [
+    "Viu als estanys: les fulles rodones suren a l’aigua.",
+    "La flor s’obre al matí, pètal a pètal, i es tanca a la tarda.",
+    "Una libèl·lula vola arran de l’aigua."
+   ]
+  },
+  {
+   "t": "Lotus",
+   "l": [
+    "Les fulles i les flors s’aixequen per damunt de l’aigua.",
+    "Al mig té un receptacle pla, amb forats, on es fan les llavors.",
+    "L’aigua rellisca per les seves fulles i les deixa netes. Una granota salta a la fulla."
+   ]
+  },
+  {
+   "t": "Lliri groc",
+   "l": [
+    "Creix a la vora dels rius i dels estanys.",
+    "Té tres peces grans que cauen, amb ratlles fosques que porten els insectes cap al nèctar.",
+    "Les fulles són llargues com espases. Un cavall de serp vermell s’hi atura."
+   ]
+  },
+  {
+   "t": "Cala",
+   "l": [
+    "El que sembla un pètal blanc és una espata: una fulla que s’enrotlla al voltant de l’espàdix groc.",
+    "Les flors de debò són petitíssimes i estan a l’espàdix.",
+    "Viu en llocs humits i ve del sud d’Àfrica. Les gotes d’aigua hi rellisquen."
+   ]
+  },
+  {
+   "t": "Didalera",
+   "l": [
+    "Les flors, en forma de didal, s’obren de baix a dalt de la tija.",
+    "Les taques de dins guien els borinots, que hi entren sencers a buscar el nèctar.",
+    "És molt verinosa: es mira, però no es toca."
+   ]
+  },
+  {
+   "t": "Ciclamen",
+   "l": [
+    "La flor penja cap per avall i els pètals es giren enlaire, com flames.",
+    "Les fulles tenen forma de cor, amb taques platejades.",
+    "Creix a l’ombra dels boscos. Un cargol passa a poc a poc."
+   ]
+  },
+  {
+   "t": "Violeta",
+   "l": [
+    "Fa una olor dolça i floreix a finals d’hivern i a la primavera.",
+    "Té cinc pètals; el de baix té ratlles que guien els insectes.",
+    "Creix a l’ombra, als peus dels arbres. Hi arriba una papallona bruna."
+   ]
+  },
+  {
+   "t": "Peònia",
+   "l": [
+    "La peònia creix als boscos i als prats de muntanya.",
+    "Els pètals grans i arrugats s’obren en un bol, al voltant d’una corona d’estams grocs.",
+    "Floreix a finals de primavera. Una merla busca cucs a terra."
+   ]
+  },
+  {
+   "t": "Flor de lluna",
+   "l": [
+    "S’obre al vespre i es tanca al matí.",
+    "Es desplega en pocs minuts, girant com un paraigua de paper.",
+    "De nit, el seu blanc es veu de lluny. Una arna la visita."
+   ]
+  },
+  {
+   "t": "Lliri blanc",
+   "l": [
+    "Té sis tèpals blancs i estams llargs amb pol·len daurat.",
+    "En obrir-se, les vores dels tèpals creixen més que el mig: per això s’onegen i es giren enrere.",
+    "Fa una olor intensa al vespre. Les cuques de llum s’encenen per trobar-se."
+   ]
+  },
+  {
+   "t": "Camèlia",
+   "l": [
+    "Floreix a l’hivern i a principis de primavera.",
+    "En aquesta forma, els pètals estan col·locats en una espiral perfecta i s’obren de fora cap a dins.",
+    "Ve de l’Àsia oriental; la planta del te és de la mateixa família."
+   ]
+  },
+  {
+   "t": "Gessamí",
+   "l": [
+    "Fa rams de flors petites, blanques i en forma d’estrella, de cinc pètals.",
+    "Les poncelles són rosades i s’obren una darrere l’altra.",
+    "Fa una olor molt forta, sobretot al vespre i de nit."
+   ]
+  },
+  {
+   "t": "Orquídia",
+   "l": [
+    "Té tres sèpals, dos pètals amples com ales i un tercer pètal, el label, que fa de pista d’aterratge per als insectes.",
+    "Ve de les selves d’Àsia; a casa viu en un hivernacle o a prop d’una finestra.",
+    "Hi arriba una papallona blava."
+   ]
+  },
+  {
+   "t": "Hibisc",
+   "l": [
+    "Té cinc pètals grans que s’obren en espiral.",
+    "Del mig surt una columna llarga amb el pol·len i cinc estigmes vermells a la punta.",
+    "Cada flor dura només un dia. Un colibrí hi beu el nèctar."
+   ]
+  },
+  {
+   "t": "Passiflora",
+   "l": [
+    "Té deu peces blanques i una corona de filaments blaus, blancs i morats.",
+    "Al mig hi ha cinc anteres i tres estigmes.",
+    "Les abelles fusteres, grosses i negres, hi porten el pol·len."
+   ]
+  },
+  {
+   "t": "Ocell del paradís",
+   "l": [
+    "La flor surt d’un bec verd, com el cap d’un ocell.",
+    "Els sèpals taronja i els pètals blaus en forma de fletxa s’obren un darrere l’altre.",
+    "Quan un ocell s’hi posa, el pol·len se li enganxa a les potes."
+   ]
+  }
  ]
 }

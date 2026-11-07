@@ -502,6 +502,10 @@ Modificacions (tools/make_toc.py): només la pista de so, a mono; filtre passaal
 | `toc6.mp3` | 6, l’aixecador | 7,00 s |
 | `toc7.mp3` | 7, l’enxaneta, l’aleta i la baixada | 14,50 s |
 
+## La nova Flor de paper (CE02, 0.51)
+
+«Flor de paper» (CE02) no afegeix cap enregistrament ni cap so generat. La música és feta amb instruments que ja tenia la suite: guitarra (`guitarRec`), flauta (`fluteRec`), clarinet (`clarinetRec`), oboè (`oboeRec`), violins i violoncels en pizzicato (`violinsPizzRec`, `celliPizzRec`), arpa (`harpRec`, `dsArpa`), piano (`dsPiano`), fagot (`dsFagot`), marimba (`marimbaRec`), vibràfon (`vibRec`), glockenspiel (`glockRec`), kalimba (`kalimbaRec`) i udu (`uduRec`). L’aire dels cinc jardins són bucles de natura (`natureRec`: prat, cigales, llacuna, rierol, bosc, vent, nit, grills, pluja, gotes; la merla). El paper que es desplega, que llisca i les ales de paper són de `sabanaRec`. Les veus dels visitants són `masiaRec` (abelles: l’abella, el borinot i l’abella fustera, els dos últims amb el mateix enregistrament més lent i més greu; la granota), `selvaRec` (el colibrí) i `pouRec` (les gotes). Els crèdits de cada so són els de les seccions anteriors.
+
 ## Detectius de sons (EN11, 0.48)
 
 Les 165 notes de la carpeta `detectius/` són fragments editats (retallats a partir de l'atac, en mono, igualats a −18 LUFS momentanis, amb un final esvaït i codificats en MP3 a 96 kbps) dels fitxers originals de VSCO-2 CE (CC0 1.0), obtinguts del repositori https://github.com/sgossner/VSCO-2-CE. L'afinació mesurada de cada nota es desa al banc (`tune`) i el sintetitzador la corregeix en reproduir-la. La guitarra continua sent `guitarRec` (carpeta `pinta/`).

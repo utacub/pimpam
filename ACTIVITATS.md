@@ -6,7 +6,7 @@ Aquest és el catàleg implementat en l’HTML. A la 0.26.1 s’han tret definit
 
 | Codi | Activitat | Funcionament | Conseqüència |
 | --- | --- | --- | --- |
-| CE02 | Flor de paper | 20 patrons o composicions | 20 flors amb siluetes, plecs i desplegaments propis. |
+| CE02 | Flor de paper | Jardí que creix: cada pulsació obre una flor, la cinquena encén el jardí (4, 3 o 2 flors per jardí) · o una flor cada vegada · durada de l’obertura, primer jardí, color a l’entorn, visitants i sons de natura ajustables | (0.51.) Vint flors reals de paper en cinc jardins (prat, estany, bosc, jardí de nit, hivernacle) s’obren sobre el negre com s’obren de debò; quan són obertes, la seva llum tenyeix l’entorn dels seus colors, arriba un petit visitant i la música del jardí, d’instruments reals, guanya una veu. Sons de natura de cada jardí. |
 | CE03 | Pluja de colors | 20 composicions (mínim 8 s) | Vint festes de formes escampades: peces amb volum, coreografies diferents i música pròpia. Una composició per pulsació. |
 | CE05 | Bombolles de sabó | 20 patrons o composicions | Bombolles iridescents que creixen, s’agrupen, suren i es transformen en gotes. |
 | CE06 | Fons marí de vidre | 20 escenes (2 s de viatge + mínim 12 s) | Un descens pel mar, de la superfície fins al fons de l’abisme, en vint escenes de criatures de vidre, seda i llum, amb travellings de càmera entre escena i escena. Cada escena té el seu moviment, els seus colors i la seva música d’instruments acústics reals; quan s’acaba, s’atura i s’enfosqueix fins a la pulsació següent. Després de la vintena, la càmera torna a la superfície. Refeta a la 0.28 (WebGL2). |

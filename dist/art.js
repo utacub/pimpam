@@ -1,5 +1,6 @@
 import {cincRender,isCinc} from './cinc.js';
 import {vgRender} from './viatge-art.js';
+import {fpScene} from './flor-escena.js';
 import {psIs} from './persona.js';
 import {plIs} from './pellicules.js';
 import {psRender} from './persona-art.js';
@@ -22,7 +23,7 @@ function background(c,w,h,id,s){const plain=id==='kaleido'&&s.kaleidoContrast;c.
  if(!['kaleido','color-rain','jelly','jungle','savanna','well','rain','vitrall','natura','piro','drawings','toys','kitchen'].includes(id)){c.strokeStyle='#d3e5da0b';for(let j=0;j<8;j++){c.beginPath();c.ellipse(w*.5,h*.5,w*(.2+j*.09),h*(.2+j*.09),-.25,0,TAU);c.stroke();}}
  c.restore();}
 function flower(c,w,h,t=3,duration=6,s={base:'black',reduced:false},index=0){drawPaperFlower(c,w,h,t,duration,index,s.reduced,s.base);}
-function render(c,w,h,id,game,s,preview=false){c.clearRect(0,0,w,h);if(isCinc(id)){cincRender(c,w,h,id,game,s,preview);return;}if(id==='viatge'){vgRender(c,w,h,game,s,preview);return;}if(psIs(id)||plIs(id)){psRender(c,w,h,id,game,s,preview);return;}background(c,w,h,id,s);if(renderScanActivity(c,w,h,id,game,s,preview))return;if(renderExtraCause(c,w,h,id,game,s,preview))return;if(id==='flower')flower(c,w,h,preview?s.duration*.48:game.time,s.duration,s,game.pattern||0);}
+function render(c,w,h,id,game,s,preview=false){c.clearRect(0,0,w,h);if(isCinc(id)){cincRender(c,w,h,id,game,s,preview);return;}if(id==='viatge'){vgRender(c,w,h,game,s,preview);return;}if(id==='flower'){fpScene(c,w,h,game,s,preview);return;}if(psIs(id)||plIs(id)){psRender(c,w,h,id,game,s,preview);return;}background(c,w,h,id,s);if(renderScanActivity(c,w,h,id,game,s,preview))return;if(renderExtraCause(c,w,h,id,game,s,preview))return;if(id==='flower')flower(c,w,h,preview?s.duration*.48:game.time,s.duration,s,game.pattern||0);}
 function setupCanvas(canvas){const rect=canvas.getBoundingClientRect();const maxDpr=canvas.dataset.preview?1.25:canvas.id==='hero-canvas'?1.5:2;const dpr=Math.min(window.devicePixelRatio||1,maxDpr),w=Math.max(1,rect.width),h=Math.max(1,rect.height);if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}const c=canvas.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);return {c,w,h};}
 
 export {background,clamp,flower,images,ready,render,setupCanvas};

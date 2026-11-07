@@ -31,27 +31,14 @@ Tinta viva es va treure a la 0.26.1. Les seves vint paletes es conserven perquè
 
 ## Flor de paper
 
-| Núm. | Composició | Geometria / desplegament | Paleta |
-| --- | --- | --- | --- |
-| 1 | Lotus de plecs | point · 12/10/8 pètals · layers | #e6a2b3 · #f3c89e · #f7e7c3 |
-| 2 | Margarida de ventall | round · 18/18 pètals · radial | #faf0d1 · #f1d681 · #e1b35e |
-| 3 | Rosa en espiral | curl · 9/8/7/6/5 pètals · spiral | #bf5d86 · #d887a6 · #edb3c3 |
-| 4 | Dàlia estrellada | diamond · 16/16/14/12 pètals · turn | #e1a16d · #edbd8b · #f5d2a4 |
-| 5 | Iris de tres ales | ruffle · 3/3 pètals · alternating | #9d87cd · #bda5e0 · #ddd0eb |
-| 6 | Orquídia de seda | orchid · 5/3 pètals · butterfly | #d8c3df · #b792bc · #edd6c6 |
-| 7 | Rosella de paper | crumple · 4/4 pètals · cup | #df7968 · #ef9b81 · #f4bd9e |
-| 8 | Gira-sol de plecs | lance · 28/24 pètals · sunrise | #dcb353 · #f0ce75 · #f6dda1 |
-| 9 | Magnòlia de porcellana | spoon · 9/6 pètals · cup | #ede0cf · #d9b9b9 · #e8cfbd |
-| 10 | Nenúfar de cristall | lance · 12/12/10/8 pètals · tide | #90bfc9 · #b9d7dc · #e1e8dc |
-| 11 | Camèlia de volants | scallop · 7/7/6/5 pètals · ripple | #92bfad · #b9d8c6 · #f0d6c7 |
-| 12 | Crisantem de cintes | ribbon · 26/24/20/16 pètals · ribbons | #b39bcc · #cbb1dd · #e1c8e5 |
-| 13 | Hibisc de cinc plecs | ruffle · 5 pètals · swirl | #c58269 · #dca58a · #efd0aa |
-| 14 | Campanetes de paper | bell · 6 pètals · bells | #8fa5d1 · #bac8e4 · #dbe2ed |
-| 15 | Tulipa desplegable | tulip · 3/3 pètals · tulip | #d395c1 · #e4b8d9 · #efd8d1 |
-| 16 | Estrella de cinc pètals | notch · 5/5 pètals · star | #8db798 · #b3cda4 · #d8dfb4 |
-| 17 | Passiflora de fils | filament · 10/40/36 pètals · counter | #9e9dcc · #c4b4d9 · #efd4ad |
-| 18 | Anemone de vellut | round · 8/8 pètals · breath | #829bb9 · #a8bdd5 · #d2dde8 |
-| 19 | Zínnia de mosaics | tile · 12/12/10/8 pètals · tiles | #83b6b2 · #b5d1c4 · #e8d4a4 |
-| 20 | Esfera de llavors | seed · 32 pètals · seeds | #a6ccbf · #cbe3d5 · #e6eddb |
+Des de la 0.51, Flor de paper no té vint patrons: té vint flors reals en cinc jardins (`dist/flor-especies.js`). Cada jardí és una peça musical que creix flor a flor.
 
-Les flors són interpretacions estilitzades de paper. Els noms descriuen la direcció artística i no certifiquen fidelitat botànica.
+| Jardí | Paper | Música | Flors (color de la llum) |
+| --- | --- | --- | --- |
+| El prat (matí d’estiu) | crespó | re major, 6/8 · guitarra, flauta, violins pizzicato, glockenspiel | rosella (vermell), margarida (blanc càlid), gira-sol (or), blauet (blau) |
+| L’estany (alba) | seda | fa lidi, 3/4 · arpa, vibràfon, clarinet, violoncels pizzicato | nenúfar blanc, lotus (rosa), lliri groc, cala |
+| El bosc (tarda) | cartolina plegada | la dòric, 4/4 · marimba, oboè, violoncels pizzicato, fagot | didalera (porpra), ciclamen (magenta), violeta (violeta), peònia (rosa) |
+| El jardí de nit (lluna) | seda | mi pentatònic, 4/4 · piano, kalimba, glockenspiel, arpa | flor de lluna, lliri blanc, camèlia (vermell), gessamí |
+| L’hivernacle (pluja càlida) | aquarel·la | sol mixolidi, 4/4 · marimba, udu, kalimba, flauta | orquídia (fúcsia), hibisc (vermell), passiflora (blau), ocell del paradís (taronja) |
+
+A la segona volta, el jardí surt a l’inrevés i les flors que en tenen mostren una varietat real de color (per exemple, la rosella rosa, el gira-sol vermell, la camèlia blanca o l’hibisc groc). Les flors són de paper i s’inspiren en la forma, l’obertura i els visitants de cada espècie; no són il·lustracions botàniques.
