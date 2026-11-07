@@ -24,6 +24,6 @@ test('every cause-effect collection draws and scores each of its variants, and e
    finishCause(g,settings);const end=ctx();renderExtraCause(end,1280,720,item.id,g,settings);assert.equal(end.calls.filter(k=>/fill|stroke|drawImage/.test(k)).length,0,`${item.id}: empty at rest`);}}
 });
 test('changing the duration mid-effect keeps the phase in the collections that compose their own music',()=>{
- for(const id of ['color-rain','jelly','rain','kaleido','vitrall','natura','piro']){const item=ALL.find(x=>x.id===id),g={item,time:null,count:0,completed:0,nextVariant:0,control:'effect',releaseTime:null};
+ for(const id of ['jelly','rain','kaleido','vitrall','natura','piro']){const item=ALL.find(x=>x.id===id),g={item,time:null,count:0,completed:0,nextVariant:0,control:'effect',releaseTime:null};
   beginCause(g,settings);const D=g.audioDuration||g.duration;g.time=D*.4;assert.ok(retimeCause(g,settings,15));assert.ok(Math.abs(g.time/(g.audioDuration||g.duration)-.4)<1e-9,id);}
 });

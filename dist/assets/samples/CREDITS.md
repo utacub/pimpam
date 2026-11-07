@@ -502,6 +502,10 @@ Modificacions (tools/make_toc.py): només la pista de so, a mono; filtre passaal
 | `toc6.mp3` | 6, l’aixecador | 7,00 s |
 | `toc7.mp3` | 7, l’enxaneta, l’aleta i la baixada | 14,50 s |
 
+## La nova Pluja de colors (CE03, 0.52)
+
+«Pluja de colors» (CE03) no afegeix cap enregistrament ni cap so generat. La música és feta amb instruments que ja tenia la suite: guitarra (`guitarRec`), clarinet (`clarinetRec`), oboè (`oboeRec`), flauta (`fluteRec`), fagot (`dsFagot`), contrabaix (`dsBaix`), violins i violoncels en pizzicato (`violinsPizzRec`, `celliPizzRec`), arpa (`harpRec`, `dsArpa`), piano (`dsPiano`), marimba (`marimbaRec`, `dsMarimba`), glockenspiel (`glockRec`, `dsGlock`), udu (`uduRec`), tambor (`tamborRec`), pandereta (`dsPandereta`), triangle (`triangleRec`) i claves (`woodblockRec`). Els sons del taller són dels bancs `pintaRec` (gota, pinzell, full), `pouRec` (escombra, ones del toll), `sabanaRec` (paper que llisca, aire) i `masiaRec` (desenganxar, pinces); l’aire de cada taller és de `natureRec` (cigales, rierol, vent, coloms, molí). Els crèdits de tots són als apartats d’aquests bancs.
+
 ## La nova Flor de paper (CE02, 0.51)
 
 «Flor de paper» (CE02) no afegeix cap enregistrament ni cap so generat. La música és feta amb instruments que ja tenia la suite: guitarra (`guitarRec`), flauta (`fluteRec`), clarinet (`clarinetRec`), oboè (`oboeRec`), violins i violoncels en pizzicato (`violinsPizzRec`, `celliPizzRec`), arpa (`harpRec`, `dsArpa`), piano (`dsPiano`), fagot (`dsFagot`), marimba (`marimbaRec`), vibràfon (`vibRec`), glockenspiel (`glockRec`), kalimba (`kalimbaRec`) i udu (`uduRec`). L’aire dels cinc jardins són bucles de natura (`natureRec`: prat, cigales, llacuna, rierol, bosc, vent, nit, grills, pluja, gotes; la merla). El paper que es desplega, que llisca i les ales de paper són de `sabanaRec`. Les veus dels visitants són `masiaRec` (abelles: l’abella, el borinot i l’abella fustera, els dos últims amb el mateix enregistrament més lent i més greu; la granota), `selvaRec` (el colibrí) i `pouRec` (les gotes). Els crèdits de cada so són els de les seccions anteriors.

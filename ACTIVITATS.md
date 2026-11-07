@@ -7,7 +7,7 @@ Aquest és el catàleg implementat en l’HTML. A la 0.26.1 s’han tret definit
 | Codi | Activitat | Funcionament | Conseqüència |
 | --- | --- | --- | --- |
 | CE02 | Flor de paper | Jardí que creix: cada pulsació obre una flor, la cinquena encén el jardí (4, 3 o 2 flors per jardí) · o una flor cada vegada · durada de l’obertura, primer jardí, color a l’entorn, visitants i sons de natura ajustables | (0.51.) Vint flors reals de paper en cinc jardins (prat, estany, bosc, jardí de nit, hivernacle) s’obren sobre el negre com s’obren de debò; quan són obertes, la seva llum tenyeix l’entorn dels seus colors, arriba un petit visitant i la música del jardí, d’instruments reals, guanya una veu. Sons de natura de cada jardí. |
-| CE03 | Pluja de colors | 20 composicions (mínim 8 s) | Vint festes de formes escampades: peces amb volum, coreografies diferents i música pròpia. Una composició per pulsació. |
+| CE03 | Pluja de colors | Cada pulsació és un pas d’un full de paper marbrejat (3, 5 o 7 passos; l’últim és l’estampa) · gestos, mida de les gotes, colors, primer taller i estenedor ajustables | (0.52.) Plou color sobre una cubeta d’aigua: gotes, anells, pluja fina, punxó i pintes, i el paper s’endú l’estampa i es penja a l’estenedor. Vint fulls de cinc tallers (Barcelona, Istanbul, Kyoto, París, Nuremberg), marbrejat matemàtic i música d’instruments reals; cada gota toca l’aigua sobre una nota. |
 | CE05 | Bombolles de sabó | 20 patrons o composicions | Bombolles iridescents que creixen, s’agrupen, suren i es transformen en gotes. |
 | CE06 | Fons marí de vidre | 20 escenes (2 s de viatge + mínim 12 s) | Un descens pel mar, de la superfície fins al fons de l’abisme, en vint escenes de criatures de vidre, seda i llum, amb travellings de càmera entre escena i escena. Cada escena té el seu moviment, els seus colors i la seva música d’instruments acústics reals; quan s’acaba, s’atura i s’enfosqueix fins a la pulsació següent. Després de la vintena, la càmera torna a la superfície. Refeta a la 0.28 (WebGL2). |
 | CE07 | Pluja musical | 20 composicions (mínim 12 s) | Vint instruments i paisatges que la pluja fa sonar: gotes amb volum, ones de color i melodies noves sincronitzades. |
@@ -36,7 +36,7 @@ Aquest és el catàleg implementat en l’HTML. A la 0.26.1 s’han tret definit
 
 En els efectes complets, cada pulsació acceptada presenta una nova composició. En les històries, cada pulsació executa un pas; el progrés espera entre pulsacions i canvia de paleta en una nova ronda.
 
-Les tres activitats amb control continu opcional (mantenir premut o iniciar/aturar) són Pluja de colors, Bombolles de sabó i Pluja musical.
+Les dues activitats amb control continu opcional (mantenir premut o iniciar/aturar) són Bombolles de sabó i Pluja musical (Pluja de colors en va sortir a la 0.52, quan va passar a fer-se per passos).
 
 ## Encercament
 

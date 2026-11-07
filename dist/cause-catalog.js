@@ -8,7 +8,6 @@ import {DB_MIN_DURATION,DB_SET,dbScore} from './dibuixos.js';
 import {JG_SET} from './joguines.js';
 import {CN_SET} from './cuina.js';
 import {DW_ART} from './dibuixos-art.js';
-import {PC_CAUSE,PC_MIN,pcScore} from './color-rain.js';
 import {FONS_N,FONS_STIM,FONS_SURF,fonsCamera,fonsDuration,fonsRest,fonsScore} from './fons.js';
 import {SELVA_N,SELVA_START,SELVA_STIM,selvaCamera,selvaDuration,selvaRest,selvaScore} from './selva.js';
 import {SABANA_N,SABANA_START,SABANA_STIM,sabanaCamera,sabanaDuration,sabanaRest,sabanaScore} from './sabana.js';
@@ -73,7 +72,7 @@ const stageSpan=(item,game,s,duration)=>game.count>=ceSteps(item,s).steps?Math.m
 // Dibuixos que ballen (and its two sister collections) keeps the speed chosen when the drawing began (game.dbSpeed), so that the music
 // and the dance stay together.
 const ownScore=(item,game,span)=>item.kind==='cycle'?diaScore(game.diaTarget,span):DB_SETS[item.id]?dbScore(game.variant,span,game.completed,game.dbSpeed,DB_SETS[item.id]):OWN_SCORES[item.id](game.variant,span,game.completed);
-const CAUSE_MAP=new Map([...EXTRA_CAUSES,...NEW_CAUSES,PC_CAUSE,MR_CAUSE].map(x=>[x.id,x]));
+const CAUSE_MAP=new Map([...EXTRA_CAUSES,...NEW_CAUSES,MR_CAUSE].map(x=>[x.id,x]));
 const causeDefinition=id=>CAUSE_MAP.get(id);
 function causePalette(id,variant=0){const item=causeDefinition(id),n=((variant+(item?.seed||0)*3)%20+20)%20;return INK_PATTERNS[n].palette;}
 function causeBusy(game,s){if(game.time===null)return false;const item=causeDefinition(game.item.id);
@@ -140,7 +139,7 @@ function beginCause(game,s,now=causeNow()){
  if(item.continuous&&['hold','toggle'].includes(game.control)){game.audioDuration=Math.max(item.minDuration||0,s.duration);game.duration=Infinity;}
  if(item.kind==='toggle'){game.previousDay=!!game.day;game.day=!game.previousDay;}
  const scoreIndex=(game.variant+item.seed*3)%20;
- game.score=item.id==='rain'?mrScore(game.variant,game.audioDuration,game.completed):item.dive?DIVES[item.id].score(game.variant,s.duration):item.id==='color-rain'?pcScore(game.variant,game.audioDuration,game.completed):item.stage?STAGE_SCORES[item.id](game.variant,game.count,s.steps,game.duration):item.kind==='cycle'||OWN_SCORES[item.id]?ownScore(item,game,game.duration):patternScore('tinta',scoreIndex).map(e=>({...e,midi:[...e.midi]}));
+ game.score=item.id==='rain'?mrScore(game.variant,game.audioDuration,game.completed):item.dive?DIVES[item.id].score(game.variant,s.duration):item.stage?STAGE_SCORES[item.id](game.variant,game.count,s.steps,game.duration):item.kind==='cycle'||OWN_SCORES[item.id]?ownScore(item,game,game.duration):patternScore('tinta',scoreIndex).map(e=>({...e,midi:[...e.midi]}));
  const addNoise=(at,length,level,noise)=>game.score.push({at,length,level,noise,midi:[],voice:'velvet'});
  game.score.sort((a,b)=>a.at-b.at);
  return true;
@@ -194,12 +193,7 @@ function retimeCause(game,s,duration){const item=causeDefinition(game?.item.id);
   const D=DIVES[item.id],span=D.duration(game.variant,duration),old=game.audioDuration||game.duration;game.time=game.time/old*span;game.duration=span;game.audioDuration=span;game.fonsStim=Math.max(D.STIM,duration);game.score=D.score(game.variant,duration);
   const i=game.score.findIndex(e=>e.at>game.time/span+1e-6);game.soundEvent=i<0?game.score.length:i;return true;
  }
- if(item.id==='color-rain'){
-  const old=game.audioDuration||game.duration,span=Math.max(PC_MIN,duration),cycling=['hold','toggle'].includes(game.control),released=game.releaseTime!==null&&game.releaseTime!==undefined,tail=released?game.time-game.releaseTime:0;
-  if(released){game.releaseTime*=span/old;game.time=game.releaseTime+tail;game.duration=game.releaseTime+.85;}else{game.time*=span/old;if(!cycling)game.duration=span;}
-  game.audioDuration=span;game.audioCycle=cycling?Math.floor(game.time/span):0;game.score=pcScore(game.variant,span,game.completed);
-  const pos=cycling?(game.time%span)/span:game.time/span,i=game.score.findIndex(e=>e.at>pos+1e-6);game.soundEvent=i<0?game.score.length:i;return true;
- }
+
  const old=game.audioDuration||game.duration,span=item.stage?stageSpan(item,game,s,duration):item.kind==='sequence'?(game.count>=s.steps?Math.max(4.5,duration):Math.max(2.5,duration*.55)):item.kind==='toggle'?Math.min(duration,3.5):Math.max(item.minDuration||0,duration),ratio=span/old;
  const releaseProgress=game.releaseTime!==null?(game.time-game.releaseTime)/.85:null;game.time*=ratio;game.audioDuration=span;
  // Caleidoscopi, Vitralls, Natura, Piromusical and Dia rere dia compose their music on the step grid of each duration: recompose it and continue from the current position.
