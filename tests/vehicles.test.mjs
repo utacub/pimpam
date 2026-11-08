@@ -11,6 +11,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
 import {VH_CORNERS,VH_LIGHTS,VH_BODIES,VH_WHEELS,VH_TOPS,VH_COLORS,VH_STAGES,VH_WORD,VH_NAME,VH_LIGHT_NAME,VH_BODY_COLOR,VH_PALETTE,VH_SNAP,VH_WAIT,VH_RIDE,VH_ROUNDS,VH_ROLL,VH_GAG,VH_CORNER_NAME,VH_PARADE,VH_PARADE_GAP,VH_PARADE_PATH,vhLightTitle,vhFirstCorner,vhRoundOf,vhSteps,vhCells,vhStageKinds,vhStageKind,vhFamily,vhOptions,vhPicks,vhTimes,vhTimeline,vhPhase,vhCanStart,vhSurprise,vhPathOf,vhFinale,vhParadeTime} from '../dist/vehicles.js';
 import {VH_CLAC,vhStepScore,vhFinalScore,vhPattern,vhTaste,vhAmbience} from '../dist/vehicles-so.js';
 import {VH_TRAY_MIN,VH_TRAY_MAX,vhGeom,vhSlots,vhLayout,vhBoard,vhResult,vhParadeList} from '../dist/vehicles-art.js';
@@ -322,3 +323,18 @@ test('the circuits keep clear of the room objects (0.60.2): the living room plan
  // the yard: the stack and the tyre leaning on it, away from the foot of the ramp; the bathroom: the towel rail, back from the turn after the ramp
  const pati=vhPathOf(PATI);assert.ok(clear(pati,[700,300])>=180&&clear(pati,[628,320])>=140,'the tyres');
  const bany=vhPathOf(BANY);for(const x of[170,330])assert.ok(clear(bany,[x,360])>=95,`the towel rail leg at ${x}`);});
+test('the accessories sit on the real top of every body of their corner (0.61.1): no part sinks deeper than the seat, one part always touches, and the weak ones are redrawn',async()=>{
+ // Marc 8 Nov 2026: «Revisa com estan dibuixats els complements… com la campana… Sovint queden massa ensorrats per dins del vehicle». The
+ // accessory is lowered onto a height map of the body until its first part touches (the body's rounded edge stands 2.2 above its outline).
+ if(!globalThis.PP3)vm.runInThisContext(fs.readFileSync(new URL('../dist/vendor/three-taller.js',import.meta.url),'utf8'));
+ const m=await import('../dist/vehicles-3d.js'),src=read('../dist/vehicles-3d.js'),BY=+/const VH_BODY_Y=([\d.]+)/.exec(src)[1],SINK=+/VH_SEAT_SINK=([\d.]+)/.exec(src)[1];
+ for(const c of VH_CORNERS)for(const top of VH_TOPS[c]){if(top==='remolc'||top==='globus')continue;const seat=m.vhPiece('top',top).children[0].userData.seat;assert.ok(seat.length>0,top);
+  for(const body of VH_BODIES[c]){const [x,y]=m.vhTopMount(body,top),base=y-BY;let least=Infinity;for(const p of seat){const hi=m.vhRoofTop(body,x,p);if(hi<-1e8)continue;const gap=base+p[4]-hi;assert.ok(gap>=-SINK-1e-6,`${top} on ${body}: a part sinks ${(-gap).toFixed(2)}`);least=Math.min(least,gap);}
+   assert.ok(Math.abs(least+SINK)<1e-6,`${top} on ${body} rests on the body (${least.toFixed(2)})`);}}
+ assert.match(src,/const VH_TOP_AT=Object\.freeze\(\{'bolquet\|pala':-14,'excavadora\|caixa':10\.5,'helicopter\|helix':-13\}\)/);
+ // the bell's yoke runs along the body (no post in front of it for the bench camera) and it swings towards the room; the mixer drum lies down
+ assert.match(src,/for\(const x of\[-6\.1,6\.1\]\)\{vhM\(vhRB\(1\.3,10\.4,1\.3/);assert.match(src,/top\.userData\.bell\.rotation\.x=k>0/);assert.match(src,/frame\.rotation\.z=VH_DRUM;/);assert.doesNotMatch(src,/frame\.rotation\.z=\.4\+k\*\.7/);
+ const size=id=>{const T=globalThis.PP3,b=new T.Box3();const p=m.vhPiece('top',id);p.updateMatrixWorld(true);p.traverse(o=>{if(!o.isMesh)return;for(let q=o;q;q=q.parent)if(q.visible===false)return;b.expandByObject(o,true);});return b.getSize(new T.Vector3());};
+ for(const [id,h] of Object.entries({campana:12,sirena:7,escala:8,manega:10,xiulet:10,fanal:9.5,periscopi:11,ancora:10,bombolles:12}))assert.ok(size(id).y>=h,`${id} stands at least ${h} high (${size(id).y.toFixed(1)})`);
+});
+

@@ -1,3 +1,31 @@
+# Pim Pam 0.61.1 · El taller de vehicles: accessoris redibuixats i ben assentats
+
+Base: 0.61 (commit 0be7169, publicada). Petició d’en Marc el 8 de novembre de 2026 a les 22:40 (hora de Catalunya): «Revisa com estan dibuixats els complements, n’hi ha diversos, com la campana, que no es veuen bé. Revisa també com s’acoplen als vehicles. Sovint queden massa ensorrats per dins del vehicle».
+
+## Què canvia
+
+- **Assentats damunt del sostre.** Cada accessori es col·locava a l’alçada del contorn de la carrosseria, però la vora arrodonida fa el sostre real 2,2 unitats més alt: tots quedaven enfonsats. Ara es mesura el sostre real de cada carrosseria (un mapa d’alçades vist des de dalt) i l’accessori hi baixa fins que la primera de les seves peces el toca. Així l’escala de la camioneta descansa sobre la cabina i el seu peu sobre la caixa, i cap peça no entra dins del vehicle.
+- **Tres parelles canvien de lloc al llarg del vehicle:** el braç excavador a la caixa del camió volquet (abans ficava la cullera dins la cabina), la caixa basculant al davant de l’excavadora (abans s’enfonsava a la cabina) i l’hèlix a la cua de l’helicòpter, lluny de la cabina i del rotor.
+- **Redibuixats:**
+  - **Campana:** molt més gran, daurada, amb vora crema i batall fosc, penjada d’un pòrtic amb els pals davant i darrere (cap pal tapa la campana des del banc); es gronxa cap a l’habitació.
+  - **Escala:** més gruixuda i aixecada sobre una plataforma giratòria i un suport davanter, com la dels bombers; es veuen els esglaons.
+  - **Llum giratòria (sirena):** més alta, amb la cúpula coral translúcida i el reflector groc a dins.
+  - **Mànega:** un debanador amb rodes de radis obertes; es veuen les voltes de la mànega coral i el gir quan es desenrotlla.
+  - **Formigonera:** ara estirada i inclinada com la d’un camió formigonera de veritat, amb franges en espiral coral i crema que fan veure el gir, la boca i el canal a darrere. Al garatge el bombo gira al revés i la massa grisa surt per la boca, baixa pel canal i cau a la placa (abans era un ou dret que s’inclinava).
+  - **Xiulet:** un xiulet de vapor de llautó amb boca fosca, tapa i palanca; el doll de vapor surt de dalt.
+  - **Fanal:** més gran, amb vidre, marc fosc, teulada de punta i nansa.
+  - **Hèlix:** tres pales amples i inclinades amb puntes coral sobre un pal més gruixut.
+  - **Periscopi:** més gruixut i amb el cap sempre a la vista (abans, en repòs, només en sortia una capseta); a mig recorregut puja més i gira.
+  - **Àncora:** més gruixuda, amb cep, braços i puntes; en repòs penja al costat de l’habitació, de cara al banc, i al garatge el pescant gira cap a l’altre costat, s’allarga i la baixa fins a la placa.
+  - **Bombolles:** una màquina més gran amb reixeta, maneta i un cèrcol gran amb pel·lícula de sabó, de cara al banc.
+- **La safata** torna a equilibrar les mides de les peces redibuixades.
+- **Càmera del banc** una mica més enrere (el vehicle es veu un 11 % més petit) perquè els accessoris alts damunt dels vehicles alts (la bandera a l’autobús, el braç al tractor) no quedin tallats per dalt.
+- **Garatge més alt.** El rètol coral del garatge tapava la part de dalt del vehicle aparcat, just on hi ha l’accessori i on passen moltes de les seves gràcies, i l’escala en pujar travessava el sostre. El garatge és ara un terç més alt i l’escala puja fins on cap sota el sostre.
+
+## Proves
+
+- Una prova nova comprova, per a cada accessori i cada carrosseria del seu racó, que cap peça no queda més enfonsada que el mig punt d’assentament i que sempre n’hi ha una que toca el vehicle; i que els accessoris redibuixats tenen una alçada mínima.
+- tools/vehicles-sweep.mjs: cap contacte amb els objectes de cap habitació, tampoc amb els accessoris nous.
 # Pim Pam 0.61 · Fora la Pluja musical
 
 Base: 0.60.3 (commit 3616cdf, publicada). Petició d’en Marc el 8 de novembre de 2026 a les 23:09 (hora de Catalunya): «pots eliminar Pluja musical de la carpeta Per revisar».
