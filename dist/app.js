@@ -83,7 +83,7 @@ function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('sh
 const keyName=k=>({Space:'Espai',Enter:'Retorn',ArrowRight:'→',ArrowLeft:'←',ArrowUp:'↑',ArrowDown:'↓'}[k]||k.replace('Key','').replace('Digit',''));
 const sourceName=()=>({keyboard:'Teclat / adaptador USB o Bluetooth',pointer:'Botons de ratolí / adaptador',gamepad:'Comandament / adaptador Gamepad'}[settings.source]);
 // 0.50.5: the version, small, next to the Pim Pam logo on the home page (Marc, 7 November 2026)
-const APP_VERSION='0.52.1';
+const APP_VERSION='0.52.2';
 function brands(version=false){return `<a class="brands" href="#" data-home aria-label="UTAC · Pim Pam, inici"><img class="utac-logo" src="./assets/utac.png" alt="UTAC"><span class="brand-divider"></span><img class="pim-logo" src="./assets/pim-pam.png" alt="Pim Pam">${version?`<span class="app-version" aria-label="Versió ${APP_VERSION}">v${APP_VERSION}</span>`:''}</a>`}
 function header(){return `<header class="topbar">${brands(true)}<nav class="nav" aria-label="Principal">${userChip()}<button class="settings-button" data-settings aria-label="Configuració">${icon('settings')}<span>Configuració</span></button></nav></header>`}
 // 0.46: who is playing, at the top of the menu; it opens the users of this device.
@@ -94,9 +94,9 @@ function home(){loading=null;logEnd();psStop();vdStop();cancelScanSpeech();ptAir
 const itemKind=g=>(causeDefinition(g.id)||g).kind;
 // 0.42: the menu shows folders of activities by kind instead of all 43 cards at once. HOME_GROUPS sets the folders and their order;
 // an id that is not in the catalogue is skipped, and a catalogue id that is in no folder goes to «Altres» so it can never get lost.
-// «Per revisar» keeps the first activities made with ChatGPT, apart, for Marc to review. 0.47.1: «Formes, llum i música» goes first (Marc).
+// «Per revisar» keeps the first activities made with ChatGPT, apart, for Marc to review. 0.47.1: «Formes, llum i música» goes first (Marc). 0.52.2: Pluja de colors goes to the end of that folder (Marc).
 const HOME_GROUPS=[
- {id:'espectacles',name:'Formes, llum i música',desc:'Cada pulsació porta una composició nova amb la seva música: flors de paper, paper marbrejat, patrons, vitralls, focs i dibuixos que ballen.',accent:'#713bd0',ids:['flower','color-rain','kaleido','vitrall','natura','piro','drawings','toys','kitchen']},
+ {id:'espectacles',name:'Formes, llum i música',desc:'Cada pulsació porta una composició nova amb la seva música: flors de paper, patrons, vitralls, focs, dibuixos que ballen i paper marbrejat.',accent:'#713bd0',ids:['flower','kaleido','vitrall','natura','piro','drawings','toys','kitchen','color-rain']},
  {id:'viatges',name:'Viatges i immersions',desc:'Vint escenes per pulsació: el mar, la selva, la sabana, el temps i els gegants del blau.',accent:'#0b6f8a',ids:['jelly','jungle','savanna','well','giants']},
  {id:'historia',name:'Històries pas a pas',desc:'Cada pulsació afegeix un pas fins a un final: castells, orquestres, cels, el mag i el cambrer.',accent:'#c0531b',ids:['daynight','constellations','orchestra','castells','balloons','magician','waiter','robotbuild','flora','frog']},
  // 0.50 (Marc, 7 November 2026): two short films, a sequence at every press; the folder goes right after «Històries pas a pas»

@@ -1,3 +1,14 @@
+# Pim Pam 0.52.2 · Pluja de colors al final de la carpeta
+
+Base: 0.52.1. Demanat per en Marc el 8 de novembre de 2026: «PUblica-ho, i posa aquesta activitat al final de la carpeta».
+
+- **Ordre.** Pluja de colors passa a ser l’última fitxa de «Formes, llum i música», després de La cuina que balla. L’ordre queda així: Flor de paper, Caleidoscopi, Vitralls, Natura, Piromusical, Dibuixos que ballen, Joguines que ballen, La cuina que balla i Pluja de colors.
+- **Text de la carpeta.** L’enumeració segueix el nou ordre: «flors de paper, patrons, vitralls, focs, dibuixos que ballen i paper marbrejat».
+- **La resta no canvia.** L’activitat, els seus ajustos i el seu registre són els de la 0.52.1.
+- **Publicació.** Aquesta versió es publica a GitHub Pages, juntament amb la 0.52.1, que encara no s’havia publicat.
+
+---
+
 # Pim Pam 0.52.1 · Pluja de colors: cada full amb els seus colors i el seu motiu
 
 Base: 0.52 (commit aeac22e). Demanat per en Marc el 7 de novembre de 2026: «Està bé, però a pluja de colors hi hauria d'haver molta més diversitat de colors i de motius, que no hi hagi quatre dibuixos seguits amb els mateixos colors, cada dibuix ha de tenir colors diferents, no es poden repetir en cap cas. Sigues més creatiu en els colors, l'estructura per crear la pintura, i la diversitat de resultats.»
