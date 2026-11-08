@@ -1884,6 +1884,22 @@
    ]
   },
   {
+   "t": "Camioneta de caixa oberta",
+   "l": [
+    "Taronja, amb la cabina al davant i una caixa oberta al darrere, amb baranes.",
+    "Serveix per portar coses: hi cap un accessori i el remolc li escau.",
+    "El parabrisa és una sola franja fosca a la cabina."
+   ]
+  },
+  {
+   "t": "Cotxe escarabat",
+   "l": [
+    "Lila i tot rodó, com un escarabat: el sostre fa una corba sencera.",
+    "És el més petit i rodanxó del taller.",
+    "Una sola franja de vidre fa la volta al sostre."
+   ]
+  },
+  {
    "t": "Rodes de tacs",
    "l": [
     "Rodes amples de goma amb tacs, com les d’un tot terreny de joguina.",
@@ -1908,6 +1924,30 @@
    ]
   },
   {
+   "t": "Rodes amples de goma",
+   "l": [
+    "Rodes grises, grosses i toves, com les d’un cotxe de platja.",
+    "El vehicle flota i es gronxa una mica a cada bony, i fa un soroll tou de goma.",
+    "Són les més altes de totes."
+   ]
+  },
+  {
+   "t": "Rodes de radis",
+   "l": [
+    "Rodes primes amb sis radis, com les d’una bicicleta o un carro.",
+    "Fan tic-tic a cada volta, amb les claves, més de pressa que les de fusta.",
+    "S’inclinen una mica a les corbes."
+   ]
+  },
+  {
+   "t": "Rodes amb tapacubs",
+   "l": [
+    "Rodes clàssiques amb un tapacubs gris lluent i un botó groc al mig.",
+    "Rodolen fines i silencioses: només un buf d’aire quan arrenquen.",
+    "Gairebé no boten."
+   ]
+  },
+  {
    "t": "Baca amb maleta",
    "l": [
     "Una baca amb una maleta de viatge a sobre.",
@@ -1929,6 +1969,30 @@
     "Una bandereta al pal, que oneja amb el vent del viatge.",
     "Quan el vehicle s’acosta al garatge, hi ha una pancarta d’arribada esperant-lo.",
     "Sona una campana en creuar-la."
+   ]
+  },
+  {
+   "t": "Llum giratori",
+   "l": [
+    "Un llum de color corall sobre una base grisa, com els dels vehicles d’emergència.",
+    "Gira durant tot el recorregut i, a partir de la meitat, s’encén i respira a poc a poc.",
+    "Sona un ni-no suau de clarinet."
+   ]
+  },
+  {
+   "t": "Escala de bombers",
+   "l": [
+    "Una escala groga amb un segon tram corall a sobre, ajaguda al sostre.",
+    "En arribar al garatge, l’escala s’aixeca i el segon tram s’allarga.",
+    "Se senten tres clics de fusta i un estirament."
+   ]
+  },
+  {
+   "t": "Globus lligat",
+   "l": [
+    "Un globus lila lligat al sostre amb un fil.",
+    "Durant la volta es gronxa i queda endarrerit pel vent.",
+    "Al garatge el fil es deixa anar i el globus puja fins a perdre’s de vista, amb una campaneta."
    ]
   },
   {

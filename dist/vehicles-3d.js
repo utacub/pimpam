@@ -4,7 +4,7 @@
 // a pegboard with tools and a shelf with boxes, soft studio light. The picture is rendered into an offscreen canvas and copied into the
 // canvas of the app, under the highlight of the scanning (vehicles-art.js), as Pinta el món does with its WebGL painter. Without WebGL,
 // or when the context is lost, vhRender returns false and vehicles-art.js draws a flat version of the bench.
-import {VH_PALETTE,VH_BODY_COLOR,VH_ROLL,VH_GAG,vhClamp,vhEase,vhOut,vhIn,vhSettle,vhPathOf} from './vehicles.js';
+import {VH_PALETTE,VH_BODY_COLOR,VH_BODIES,VH_WHEELS,VH_TOPS,VH_ROLL,VH_GAG,vhClamp,vhEase,vhOut,vhIn,vhSettle,vhPathOf} from './vehicles.js';
 const vhP3=()=>globalThis.PP3||null;
 export const vhGLAvailable=()=>!!vhP3()&&typeof document!=='undefined';
 // The world (units of a toy world, like centimetres): the bench top is y=0, the floor FLOOR_Y below; the toy group is TOY times a chassis of 30.
@@ -28,27 +28,34 @@ function vhM(g,m,parent,{cast=true,recv=true}={}){const T=vhP3(),o=new T.Mesh(g,
 const vhRB=(w,h,d,r,s=4)=>{const T=vhP3();return new T.RoundedBoxGeometry(w,h,d,s,Math.max(.01,Math.min(r,Math.min(w,h,d)/2-.01)));};
 function vhRRShape(w,h,r){const T=vhP3(),s=new T.Shape(),x=-w/2,y=-h/2;r=Math.min(r,w/2,h/2);s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);return s;}
 const vhC=VH_PALETTE;
+// Where the body sits on the chassis (0.54: low, so the skirt of the body covers the plate and only the axles show in the arches).
+const VH_BODY_Y=4.6;// the body sits this high on the chassis (0.54: low enough to hide the plate)
+const VH_BAL_LEAN=1.1;// how far back the balloon's string leans (radians from upright)
+// Where an accessory mounts on a body: the roof; the trailer behind; the balloon tied at the back, half way up.
+function vhTopMount(body,top){const R=VH_BODY_SPEC[body].roof;return top==='remolc'?[0,0]:top==='globus'?[-16.5,VH_BODY_Y+5]:[R[0],VH_BODY_Y+R[1]];}
 // ── the pieces ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // The chassis: a grey plate with four peg bosses and two axles with their caps (in chassis units: 30 long, 14 wide, y up).
-function vhChassis(){const T=vhP3(),g=new T.Group();vhM(vhRB(30,3.2,14,1.4),vhV(vhC.gris,.6),g).position.y=3.6;
- for(const x of[-11,11])for(const z of[-4.8,4.8]){vhM(new T.CylinderGeometry(2.3,2.5,2.4,28),vhV(vhC.gris,.6),g).position.set(x,5.6,z);vhM(new T.CylinderGeometry(1.25,1.25,.6,24),vhV(0x6f7386,.8),g,{cast:false}).position.set(x,6.6,z);}
+function vhChassis(){const T=vhP3(),g=new T.Group();vhM(vhRB(28,3.2,13,1.4),vhV(vhC.gris,.6),g).position.y=3.6;
+ for(const x of[-11,11])for(const z of[-4.8,4.8]){const b=vhM(new T.CylinderGeometry(2.3,2.5,2.4,28),vhV(vhC.gris,.6),g);b.position.set(x,5.6,z);b.userData.peg=true;const c=vhM(new T.CylinderGeometry(1.25,1.25,.6,24),vhV(0x6f7386,.8),g,{cast:false});c.position.set(x,6.6,z);c.userData.peg=true;}
  for(const x of[-11,11]){const a=vhM(new T.CylinderGeometry(.9,.9,22,20),vhV(vhC.gris,.45),g);a.rotation.x=Math.PI/2;a.position.set(x,3.6,0);for(const z of[-11,11])vhM(new T.SphereGeometry(.9,16,10),vhV(vhC.gris,.45),g).position.set(x,3.6,z);}
  return g;}
 // A wheel: the tyre is a lathe with rounded shoulders, the hub a short cylinder with a cap; knobbly tyres get their lugs.
-function vhWheel(col,hub,{r=3.6,w=2.8,lug=false,spokes=0}={}){const T=vhP3(),g=new T.Group(),p=[],rr=w*.42;p.push(new T.Vector2(r*.55,-w/2));for(let i=0;i<=8;i++){const a=-Math.PI/2+i/8*Math.PI/2;p.push(new T.Vector2(r-rr+Math.cos(a)*rr,-w/2+rr+Math.sin(a)*rr));}for(let i=0;i<=8;i++){const a=i/8*Math.PI/2;p.push(new T.Vector2(r-rr+Math.cos(a)*rr,w/2-rr+Math.sin(a)*rr));}p.push(new T.Vector2(r*.55,w/2));
+function vhWheel(col,hub,{r=3.6,w=2.8,lug=false,spokes=0,cap=0}={}){const T=vhP3(),g=new T.Group(),p=[],rr=w*.42;p.push(new T.Vector2(r*.55,-w/2));for(let i=0;i<=8;i++){const a=-Math.PI/2+i/8*Math.PI/2;p.push(new T.Vector2(r-rr+Math.cos(a)*rr,-w/2+rr+Math.sin(a)*rr));}for(let i=0;i<=8;i++){const a=i/8*Math.PI/2;p.push(new T.Vector2(r-rr+Math.cos(a)*rr,w/2-rr+Math.sin(a)*rr));}p.push(new T.Vector2(r*.55,w/2));
  const t=vhM(new T.LatheGeometry(p,40),vhV(col,.72),g);t.rotation.x=Math.PI/2;
  if(lug)for(let i=0;i<12;i++){const k=vhM(vhRB(1.3,1,w*.95,.4,2),vhV(col,.72),g),a=i/12*Math.PI*2;k.position.set(Math.cos(a)*(r+.2),Math.sin(a)*(r+.2),0);k.rotation.z=a;}
- const h=vhM(new T.CylinderGeometry(r*.56,r*.58,w*.9,32),vhV(hub),g);h.rotation.x=Math.PI/2;
+ const hr=cap||.56,h=vhM(new T.CylinderGeometry(r*hr,r*(hr+.02),w*.9,32),vhV(hub),g);h.rotation.x=Math.PI/2;if(cap){const d=vhM(new T.CylinderGeometry(r*.1,r*.1,w*.9+1.3,16),vhV(vhC.groc),g);d.rotation.x=Math.PI/2;}
  if(spokes)for(let i=0;i<spokes;i++){const k=vhM(vhRB(r*.9,1.1,w*.5,.4,2),vhV(col,.6),g);k.rotation.z=i/spokes*Math.PI;k.position.z=w*.46;}
  const c=vhM(new T.CylinderGeometry(r*.24,r*.26,w*.9+.9,24),vhV(hub),g);c.rotation.x=Math.PI/2;return g;}
-export const VH_WHEEL_SPEC=Object.freeze({tacs:{col:vhC.marina,hub:vhC.groc,r:3.6,w:2.9,lug:true},primes:{col:vhC.marina,hub:vhC.corall,r:3.3,w:1.9},fusta:{col:vhC.fusta,hub:vhC.verd,r:3.4,w:3.4,spokes:3}});
-function vhWheelSet(kind){const T=vhP3(),g=new T.Group(),S=VH_WHEEL_SPEC[kind]||VH_WHEEL_SPEC.tacs;[[-11,-11.8],[11,-11.8],[-11,11.8],[11,11.8]].forEach(([x,z])=>{const w=vhWheel(S.col,S.hub,S);w.position.set(x,3.6,z);if(z<0)w.rotation.y=Math.PI;w.userData.wheel=true;g.add(w);});g.userData.r=S.r;return g;}
+export const VH_WHEEL_SPEC=Object.freeze({tacs:{col:vhC.marina,hub:vhC.groc,r:3.6,w:2.9,lug:true},primes:{col:vhC.marina,hub:vhC.corall,r:3.3,w:1.9},fusta:{col:vhC.fusta,hub:vhC.verd,r:3.4,w:3.4,spokes:3},amples:{col:vhC.gris,hub:vhC.corall,r:4.1,w:4.1},radis:{col:vhC.marina,hub:vhC.groc,r:3.8,w:1.5,spokes:6},tapacubs:{col:vhC.marina,hub:vhC.gris,r:3.4,w:2.6,cap:.8}});
+function vhWheelSet(kind){const T=vhP3(),g=new T.Group(),S=VH_WHEEL_SPEC[kind]||VH_WHEEL_SPEC.tacs;[[-11,-11.8],[11,-11.8],[-11,11.8],[11,11.8]].forEach(([x,z])=>{const w=vhWheel(S.col,S.hub,S);w.position.set(x,Math.max(3.6,S.r),z);if(z<0)w.rotation.y=Math.PI;w.userData.wheel=true;g.add(w);});g.userData.r=S.r;return g;}
 // The side profile of each body (x along the vehicle, y up; the two wheel arches are cut out) and where its roof is for the accessory.
-export const VH_BODY_SPEC=Object.freeze({familiar:{roof:[-5.5,13.6],glass:'familiar'},autobus:{roof:[0,15.8],glass:'autobus'},furgoneta:{roof:[-2,15.2],glass:'furgoneta'},curses:{roof:[-5.5,10.6],glass:'curses'}});
+export const VH_BODY_SPEC=Object.freeze({familiar:{roof:[-5.5,13.6],glass:'familiar'},autobus:{roof:[0,15.8],glass:'autobus'},furgoneta:{roof:[-2,15.2],glass:'furgoneta'},curses:{roof:[-5.5,10.6],glass:'curses'},camioneta:{roof:[7.5,14],glass:'camioneta'},escarabat:{roof:[-1.5,14.5],glass:'escarabat'}});
 function vhBodyShape(kind){const T=vhP3(),s=new T.Shape(),ar=4.3,arches=()=>{s.absarc(-11,0,ar,Math.PI,0,true);s.lineTo(6.7,0);s.absarc(11,0,ar,Math.PI,0,true);};
  if(kind==='autobus'){s.moveTo(-17,0);s.lineTo(-15.4,0);arches();s.lineTo(17,0);s.quadraticCurveTo(18.6,0,18.4,3);s.lineTo(17.8,12);s.quadraticCurveTo(17.4,15.6,14,15.8);s.lineTo(-15,15.8);s.quadraticCurveTo(-18,15.8,-18,12.8);s.lineTo(-18,1.6);s.quadraticCurveTo(-18,0,-17,0);}
  else if(kind==='furgoneta'){s.moveTo(-16,0);s.lineTo(-15.4,0);arches();s.lineTo(16.4,0);s.quadraticCurveTo(17.6,0,17.4,3);s.lineTo(16.6,8.5);s.quadraticCurveTo(15,15,11,15.2);s.lineTo(-15,15.2);s.quadraticCurveTo(-17,15.2,-17,13);s.lineTo(-17,1.5);s.quadraticCurveTo(-17,0,-16,0);}
  else if(kind==='curses'){s.moveTo(-17,0);s.lineTo(-15.4,0);arches();s.lineTo(17.8,0);s.quadraticCurveTo(19.4,0,19,2.2);s.quadraticCurveTo(17.6,5,12,5.4);s.lineTo(4.5,5.6);s.quadraticCurveTo(2.6,10.5,-3,10.6);s.lineTo(-8,10.6);s.quadraticCurveTo(-12,10.4,-13,7.2);s.lineTo(-17.4,7.2);s.quadraticCurveTo(-18.6,7.2,-18.4,5);s.quadraticCurveTo(-18.2,1,-17,0);}
+ else if(kind==='camioneta'){s.moveTo(-17,0);s.lineTo(-15.4,0);arches();s.lineTo(16.6,0);s.quadraticCurveTo(17.8,0,17.6,2.6);s.quadraticCurveTo(17.4,6.5,14.5,7);s.lineTo(12.2,7.2);s.quadraticCurveTo(11.2,13.6,6.2,14);s.lineTo(3.6,14);s.quadraticCurveTo(2.5,14,2.4,12.6);s.lineTo(2.4,7.8);s.lineTo(-16.4,7.8);s.quadraticCurveTo(-18,7.8,-18,6.2);s.lineTo(-18,1.5);s.quadraticCurveTo(-18,0,-17,0);}
+ else if(kind==='escarabat'){s.moveTo(-16,0);s.lineTo(-15.4,0);arches();s.lineTo(16,0);s.quadraticCurveTo(17.6,0,17.4,2.6);s.quadraticCurveTo(17,6,13,7);s.quadraticCurveTo(9.5,13.6,2,14.5);s.quadraticCurveTo(-6,14.9,-11,11.6);s.quadraticCurveTo(-16.2,8,-17.4,4);s.quadraticCurveTo(-17.9,1,-16,0);}
  else{s.moveTo(-16.6,0);s.lineTo(-15.4,0);arches();s.lineTo(16,0);s.quadraticCurveTo(17.4,0,17.2,2.4);s.quadraticCurveTo(17,6.2,13.5,6.8);s.lineTo(7.5,7.4);s.quadraticCurveTo(5,13.4,0,13.6);s.lineTo(-11,13.6);s.quadraticCurveTo(-17.6,13.4,-18.4,7.5);s.quadraticCurveTo(-18.8,1.2,-16.6,0);}
  return s;}
 // The glass is one continuous dark band (never two round lamps or two windows that read as eyes): a wrap-around strip on the car, a wide
@@ -57,17 +64,20 @@ function vhGlassShape(kind){const T=vhP3(),q=new T.Shape();
  if(kind==='autobus'){q.moveTo(16.9,8.6);q.lineTo(16.6,13.6);q.lineTo(11,13.6);q.lineTo(11,8.6);q.closePath();}
  else if(kind==='furgoneta'){q.moveTo(15.4,9);q.quadraticCurveTo(14,13.6,10.8,13.8);q.lineTo(5,13.8);q.lineTo(5,9);q.closePath();}
  else if(kind==='curses'){q.moveTo(3.4,6.4);q.quadraticCurveTo(2.2,9.4,-2.4,9.5);q.lineTo(-6,9.5);q.lineTo(-6,6.4);q.closePath();}
+ else if(kind==='camioneta'){q.moveTo(11.6,8.2);q.quadraticCurveTo(10.6,12.6,6.4,12.8);q.lineTo(4.2,12.8);q.lineTo(4.2,8.2);q.closePath();}
+ else if(kind==='escarabat'){q.moveTo(9,8);q.quadraticCurveTo(6.6,12.4,1,12.9);q.lineTo(-5,12.9);q.quadraticCurveTo(-10,12.4,-11.8,8.6);q.closePath();}
  else{q.moveTo(6.2,7.9);q.quadraticCurveTo(4.3,12.3,0,12.5);q.lineTo(-9.6,12.5);q.quadraticCurveTo(-14.2,12.3,-15.2,8.1);q.closePath();}
  return q;}
 const vhBodyGeo={},vhGlassGeo={};
-function vhBody(kind,colorKey){const T=vhP3(),g=new T.Group(),depth=14,bev=2.6;
+function vhBody(kind,colorKey){const T=vhP3(),g=new T.Group(),depth=17,bev=2.6;
  if(!vhBodyGeo[kind]){const geo=new T.ExtrudeGeometry(vhBodyShape(kind),{depth:depth-2*bev,bevelEnabled:true,bevelThickness:bev,bevelSize:bev*.85,bevelSegments:8,curveSegments:32});geo.translate(0,0,-(depth-2*bev)/2);geo.computeVertexNormals();vhBodyGeo[kind]=geo;
   const gd=depth+1.2-1.6,gg=new T.ExtrudeGeometry(vhGlassShape(kind),{depth:gd,bevelEnabled:true,bevelThickness:.8,bevelSize:.6,bevelSegments:3,curveSegments:16});gg.translate(0,0,-gd/2);vhGlassGeo[kind]=gg;}
  const body=vhM(vhBodyGeo[kind],vhV(vhC[colorKey]||vhC.blau,.55).clone(),g);body.userData.paint=true;vhM(vhGlassGeo[kind],vhV(vhC.marina,.35),g);
  if(kind==='autobus')for(let i=0;i<3;i++)vhM(vhRB(6,4.6,depth+1.4,1.3),vhV(vhC.marina,.35),g).position.set(5-i*8,11.1,0);
  if(kind==='furgoneta'){vhM(vhRB(.8,8,10,.3,2),vhV(vhC.marina,.35),g).position.set(-16.8,8.6,0);}
  if(kind==='curses'){for(const z of[-4,4])vhM(vhRB(1.6,4.2,1.6,.5,2),vhV(vhC.marina,.5),g).position.set(-16,9.3,z);vhM(vhRB(5,1.6,15.6,.7,3),vhV(vhC.marina,.5),g).position.set(-16.4,11.8,0);}
- vhM(vhRB(2.4,2.4,depth-1,1.1),vhV(vhC.groc),g).position.set(kind==='autobus'?18.2:kind==='curses'?19:17.2,1.8,0);
+ if(kind==='camioneta'){for(const z of[-7.4,7.4])vhM(vhRB(19.6,1.6,1.4,.5),vhV(vhC.marina,.5),g).position.set(-7.6,8.5,z);vhM(vhRB(1.4,1.6,16.2,.5),vhV(vhC.marina,.5),g).position.set(-17.2,8.5,0);}
+ vhM(vhRB(2.4,2.4,depth-1,1.1),vhV(vhC.groc),g).position.set({autobus:18.2,curses:19,camioneta:17.6,escarabat:17.4}[kind]??17.2,1.8,0);
  return g;}
 // The accessories: the roof box with its lid and the three balls inside; the trailer with its three blocks; the flag on its pole.
 function vhTop(kind){const T=vhP3(),g=new T.Group();
@@ -77,6 +87,11 @@ function vhTop(kind){const T=vhP3(),g=new T.Group();
  else if(kind==='remolc'){const tr=new T.Group();tr.position.set(-29,0,0);g.add(tr);vhM(vhRB(16,2.6,13,1.2),vhV(vhC.gris,.6),tr).position.y=3.6;vhM(vhRB(2,1.6,2,.6,2),vhV(vhC.gris,.6),g).position.set(-20,4.2,0);vhM(new T.CylinderGeometry(.7,.7,8,12),vhV(vhC.gris,.45),g).rotation.z=Math.PI/2;g.children[g.children.length-1].position.set(-21,4.2,0);
   const ax=vhM(new T.CylinderGeometry(.8,.8,20,16),vhV(vhC.gris,.45),tr);ax.rotation.x=Math.PI/2;ax.position.set(-1,3.4,0);for(const z of[-10.6,10.6]){const w=vhWheel(vhC.marina,vhC.groc,{r:3.1,w:2.4});w.position.set(-1,3.4,z);if(z<0)w.rotation.y=Math.PI;tr.add(w);w.userData.wheel=true;}
   const blocks=new T.Group();tr.add(blocks);blocks.position.y=4.9;[[vhC.corall,-4,0],[vhC.groc,2.5,0],[vhC.blau,-1,4.4]].forEach(([col,x,y],i)=>{const b=vhM(vhRB(4.4,4.4,4.4,.9),vhV(col),blocks);b.position.set(x,2.2+y,0);b.userData.block=i;b.userData.home=b.position.clone();});g.userData.blocks=blocks;g.userData.trailer=tr;}
+ else if(kind==='sirena'){vhM(new T.CylinderGeometry(4.2,4.6,1.4,28),vhV(vhC.gris,.6),g).position.y=.7;const dome=vhM(new T.SphereGeometry(3.6,24,16,0,Math.PI*2,0,Math.PI/2),vhV(vhC.corall,.25),g);dome.position.y=1.4;dome.material=dome.material.clone();dome.material.transparent=true;dome.material.opacity=.8;const rotor=new T.Group();rotor.position.y=1.5;g.add(rotor);vhM(vhRB(5.2,2.2,1.4,.5),vhV(vhC.groc),rotor).position.y=1.6;g.userData.rotor=rotor;g.userData.dome=dome;}
+ else if(kind==='escala'){const lad=new T.Group();lad.position.set(-10,1.2,0);g.add(lad);for(const z of[-3.2,3.2])vhM(vhRB(20,1.1,1.1,.4),vhV(vhC.groc),lad).position.set(10,0,z);for(let i=0;i<6;i++){const rg=vhM(new T.CylinderGeometry(.4,.4,6.4,10),vhV(vhC.crema,.7),lad);rg.rotation.x=Math.PI/2;rg.position.set(2+i*3.3,0,0);}
+  const ext=new T.Group();ext.position.y=1.3;lad.add(ext);for(const z of[-2.4,2.4])vhM(vhRB(18,.9,.9,.35),vhV(vhC.corall),ext).position.set(9.5,0,z);for(let i=0;i<5;i++){const rg=vhM(new T.CylinderGeometry(.35,.35,4.8,10),vhV(vhC.crema,.7),ext);rg.rotation.x=Math.PI/2;rg.position.set(2.5+i*3.3,0,0);}g.userData.ladder=lad;g.userData.ext=ext;}
+ else if(kind==='globus'){// tied at the back of the body; the string leans back (VH_BAL_LEAN) so the balloon trails behind and stays low enough for the bench camera
+  const bal=new T.Group();g.add(bal);vhM(new T.SphereGeometry(.7,12,10),vhV(vhC.crema,.7),g);vhM(new T.CylinderGeometry(.18,.18,8,8),vhV(vhC.crema,.7),bal).position.y=4;const b=vhM(new T.SphereGeometry(4.4,24,18),vhV(vhC.lila,.45),bal);b.position.y=12.4;b.scale.set(1,1.14,1);vhM(new T.CylinderGeometry(0,.9,1.4,10),vhV(vhC.lila,.45),bal).position.y=7.8;bal.rotation.z=VH_BAL_LEAN;g.userData.balloon=bal;}
  else{vhM(new T.CylinderGeometry(.55,.65,11,12),vhV(vhC.crema,.7),g).position.y=5.5;vhM(new T.SphereGeometry(.9,14,10),vhV(vhC.groc),g).position.y=11.2;const fs=new T.Shape();fs.moveTo(0,0);fs.lineTo(7.5,-1.6);fs.lineTo(0,-4.2);fs.closePath();const fg=new T.ExtrudeGeometry(fs,{depth:.5,bevelEnabled:true,bevelThickness:.3,bevelSize:.3,bevelSegments:2});fg.translate(0,0,-.25);const flag=vhM(fg,vhV(vhC.corall,.7),g);flag.position.set(-.5,10.8,0);flag.rotation.y=Math.PI;flag.userData.flag=true;g.userData.flag=flag;}
  return g;}
 // The paint tin of a colour pick: a cream tin with the colour on its band and lid, and a drip.
@@ -133,9 +148,9 @@ export function vhLoad(){if(!vhGLAvailable())return 1;const r=vhR();if(!r||VH_3D
  try{switch(VH_3D.step){
   case 0:{const scene=new T.Scene();VH_3D.scene=scene;const pm=new T.PMREMGenerator(r);scene.environment=pm.fromScene(new T.RoomEnvironment(),.04).texture;pm.dispose();scene.environmentIntensity=.35;VH_3D.cam=new T.PerspectiveCamera(26,16/9,2,4000);vhLights(scene);VH_3D.bg=new T.Color(vhC.paret);VH_3D.wallK=1;break;}
   case 1:vhWorkshop(VH_3D.scene);break;
-  case 2:{const toy=new T.Group();toy.scale.setScalar(VH_TOY);VH_3D.scene.add(toy);VH_3D.parts.toy=toy;const ch=vhChassis();toy.add(ch);VH_3D.parts.chassis=ch;VH_3D.parts.bodies={};for(const k of ['familiar','autobus'])VH_3D.parts.bodies[k]=vhBodyCached(k,VH_BODY_COLOR[k]);break;}
-  case 3:for(const k of ['furgoneta','curses'])VH_3D.parts.bodies[k]=vhBodyCached(k,VH_BODY_COLOR[k]);VH_3D.parts.wheels={};for(const k of ['tacs','primes','fusta']){const w=vhWheelSet(k);w.visible=false;VH_3D.parts.toy.add(w);VH_3D.parts.wheels[k]=w;}break;
-  case 4:VH_3D.parts.tops={};for(const k of ['baca','remolc','bandera']){const t=vhTop(k);t.visible=false;VH_3D.parts.toy.add(t);VH_3D.parts.tops[k]=t;}VH_3D.parts.flyer=new T.Group();VH_3D.scene.add(VH_3D.parts.flyer);VH_3D.parts.meta=vhMeta();VH_3D.parts.meta.visible=false;VH_3D.scene.add(VH_3D.parts.meta);break;
+  case 2:{const toy=new T.Group();toy.scale.setScalar(VH_TOY);VH_3D.scene.add(toy);VH_3D.parts.toy=toy;const ch=vhChassis();toy.add(ch);VH_3D.parts.chassis=ch;VH_3D.parts.bodies={};for(const k of VH_BODIES.habitacio.slice(0,3))VH_3D.parts.bodies[k]=vhBodyCached(k,VH_BODY_COLOR[k]);break;}
+  case 3:for(const k of VH_BODIES.habitacio.slice(3))VH_3D.parts.bodies[k]=vhBodyCached(k,VH_BODY_COLOR[k]);VH_3D.parts.wheels={};for(const k of VH_WHEELS.habitacio){const w=vhWheelSet(k);w.visible=false;VH_3D.parts.toy.add(w);VH_3D.parts.wheels[k]=w;}break;
+  case 4:VH_3D.parts.tops={};for(const k of VH_TOPS.habitacio){const t=vhTop(k);t.visible=false;VH_3D.parts.toy.add(t);VH_3D.parts.tops[k]=t;}VH_3D.parts.flyer=new T.Group();VH_3D.scene.add(VH_3D.parts.flyer);VH_3D.parts.meta=vhMeta();VH_3D.parts.meta.visible=false;VH_3D.scene.add(VH_3D.parts.meta);break;
   case 5:vhTrayScene();vhApplyLight('mati');vhApplyDecor({fade:1,base:'#000000'});break;
   case 6:{// every program is compiled now (the tray's too), so no pick waits for a shader; the invisible pieces are shown for the compile
    const shown=[];VH_3D.scene.traverse(o=>{if(o.visible===false){o.visible=true;shown.push(o);}});for(const n of ['mati','nit'])vhApplyLight(n);r.compile(VH_3D.scene,VH_3D.cam);for(const o of shown)o.visible=false;vhApplyLight('mati');
@@ -177,9 +192,11 @@ export const vhTierNow=()=>VH_3D.tier;
 function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pending,toy=VH_3D.parts.toy,t=view.t||0;
  for(const k in VH_3D.parts.bodies)VH_3D.parts.bodies[k].visible=false;for(const k in vhBodyCache)vhBodyCache[k].visible=false;for(const k in VH_3D.parts.wheels)VH_3D.parts.wheels[k].visible=false;for(const k in VH_3D.parts.tops)VH_3D.parts.tops[k].visible=false;
  const flyer=VH_3D.parts.flyer;while(flyer.children.length)flyer.remove(flyer.children[0]);
- const color=P.color||(P.body?VH_BODY_COLOR[P.body]:'blau');let body=null;if(P.body){body=vhBodyCached(P.body,color);body.visible=true;body.position.set(0,6.9,0);body.rotation.set(0,0,0);body.scale.setScalar(1);}
+ const color=P.color||(P.body?VH_BODY_COLOR[P.body]:'blau');let body=null;if(P.body){body=vhBodyCached(P.body,color);body.visible=true;body.position.set(0,VH_BODY_Y,0);body.rotation.set(0,0,0);body.scale.setScalar(1);}
+ // the pegs of the chassis show only while no body is on (a body about to land hides them too)
+ const landing=!!pend&&pend.kind==='body'&&view.phase==='snap'&&pend.u>.6;for(const o of VH_3D.parts.chassis.children)if(o.userData.peg)o.visible=!P.body&&!landing;
  let wheels=null;if(P.wheels){wheels=VH_3D.parts.wheels[P.wheels];wheels.visible=true;wheels.position.set(0,0,0);}
- let top=null;if(P.top&&P.body){top=VH_3D.parts.tops[P.top];top.visible=true;const R=VH_BODY_SPEC[P.body].roof;top.position.set(P.top==='remolc'?0:R[0],P.top==='remolc'?0:6.9+R[1],0);top.rotation.set(0,0,0);vhGagRest(top);}
+ let top=null;if(P.top&&P.body){top=VH_3D.parts.tops[P.top];top.visible=true;const M=vhTopMount(P.body,P.top);top.position.set(M[0],M[1],0);top.rotation.set(0,0,0);vhGagRest(top);if(top.userData.balloon&&!view.reduced){top.userData.balloon.rotation.z=VH_BAL_LEAN+Math.sin(t*1.3)*.06;top.userData.balloon.rotation.x=Math.cos(t*.9)*.05;}}
  // the ride: the toy along the circuit; otherwise at rest on the bench
  toy.position.set(0,0,0);toy.rotation.set(0,0,0);VH_3D.parts.meta.visible=false;if(VH_3D.parts.balls)for(const b of VH_3D.parts.balls)b.visible=false;
  if(view.phase==='ride'||view.phase==='park')vhRideStep(view,top);
@@ -187,31 +204,34 @@ function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pen
  if(pend&&view.phase==='snap'){vhFlight(view,pend,body,wheels);}
  // idle life of the workshop: the wrench swings on its hook
  if(VH_3D.parts.wrench)VH_3D.parts.wrench.rotation.z=view.reduced?0:Math.sin(t*1.1)*.06;}
-function vhGagRest(top){if(top.userData.lid)top.userData.lid.rotation.x=0;if(top.userData.balls)for(const b of top.userData.balls.children){b.visible=false;}if(top.userData.blocks)for(const b of top.userData.blocks.children){b.position.copy(b.userData.home);b.rotation.set(0,0,0);}if(top.userData.flag){top.userData.flag.rotation.y=Math.PI;top.userData.flag.scale.x=1;}}
+function vhGagRest(top){if(top.userData.rotor)top.userData.rotor.rotation.y=0;if(top.userData.dome)top.userData.dome.material.emissiveIntensity=0;if(top.userData.ladder){top.userData.ladder.rotation.z=0;top.userData.ext.position.x=0;}if(top.userData.balloon){top.userData.balloon.position.set(0,0,0);top.userData.balloon.rotation.set(0,0,VH_BAL_LEAN);}if(top.userData.lid)top.userData.lid.rotation.x=0;if(top.userData.balls)for(const b of top.userData.balls.children){b.visible=false;}if(top.userData.blocks)for(const b of top.userData.blocks.children){b.position.copy(b.userData.home);b.rotation.set(0,0,0);}if(top.userData.flag){top.userData.flag.rotation.y=Math.PI;top.userData.flag.scale.x=1;}}
 // Where a tray cell's centre is in the world of the bench scene, at the depth of the chassis: the start of a flight.
 function vhTrayWorld(view,i){const tmp=vhTmps(),cell=view.tray.cells[i]||view.tray.cells[0],x=(cell.x+cell.w/2)/view.w*2-1,y=-((cell.y+cell.h/2)/view.h*2-1);const ref=tmp.v2.set(0,8*VH_TOY,0).project(VH_3D.cam);return tmp.v.set(x,y,ref.z).unproject(VH_3D.cam);}
 function vhFlight(view,pend,body,wheels){const T=vhP3(),tmp=vhTmps(),u=vhClamp(pend.u),toy=VH_3D.parts.toy,from=vhTrayWorld(view,pend.index|0).clone();
  const settle=vhSettle(vhClamp((u-.62)/.38),1.6),fly=vhEase(vhClamp(u/.68)),arc=Math.sin(Math.PI*vhClamp(u/.68))*40;
  const place=(obj,targetLocal,rot0)=>{const tgt=toy.localToWorld(targetLocal.clone());const p=from.clone().lerp(tgt,fly);p.y+=arc+(1-fly)*0;obj.position.copy(toy.worldToLocal(p));const bob=(1-settle)*(u>.62?1:0);obj.position.y+=bob*1.2;obj.rotation.y=rot0*(1-fly);obj.rotation.x=(.42)*(1-fly);obj.scale.setScalar(1);};
- if(pend.kind==='body'){const b=vhBodyCached(pend.id,VH_BODY_COLOR[pend.id]);b.visible=true;place(b,new T.Vector3(0,6.9,0),-.4);}
+ if(pend.kind==='body'){const b=vhBodyCached(pend.id,VH_BODY_COLOR[pend.id]);b.visible=true;place(b,new T.Vector3(0,VH_BODY_Y,0),-.4);}
  else if(pend.kind==='wheels'){const ws=VH_3D.parts.wheels[pend.id];ws.visible=true;place(ws,new T.Vector3(0,0,0),-.3);}
- else if(pend.kind==='top'&&body){const tp=VH_3D.parts.tops[pend.id],R=VH_BODY_SPEC[view.picks.body].roof;tp.visible=true;vhGagRest(tp);place(tp,new T.Vector3(pend.id==='remolc'?0:R[0],pend.id==='remolc'?0:6.9+R[1],0),-.3);}
+ else if(pend.kind==='top'&&body){const tp=VH_3D.parts.tops[pend.id],M=vhTopMount(view.picks.body,pend.id);tp.visible=true;vhGagRest(tp);place(tp,new T.Vector3(M[0],M[1],0),-.3);}
  else if(pend.kind==='color'&&body){// the tin flies over the body, tips, and the paint runs over it from front to back
   let tin=VH_3D.parts.tins?.[pend.id];if(!tin){VH_3D.parts.tins=VH_3D.parts.tins||{};tin=vhTin(pend.id);VH_3D.parts.tins[pend.id]=tin;}VH_3D.parts.flyer.add(tin);const over=toy.localToWorld(new T.Vector3(0,30,0));const p=from.clone().lerp(over,vhEase(vhClamp(u/.45)));tin.position.copy(p);tin.scale.setScalar(VH_TOY);tin.rotation.z=vhEase(vhClamp((u-.4)/.25))*1.9;tin.rotation.y=-.4;tin.visible=u<.95;
   const k=vhEase(vhClamp((u-.45)/.45));const paint=body.children.find(o=>o.userData.paint);if(paint){const a=new T.Color(vhC[VH_BODY_COLOR[view.picks.body]||'blau']),b2=new T.Color(vhC[pend.id]||vhC.blau);paint.material.color.copy(a).lerp(b2,k);paint.material.clearcoat=.25+.5*Math.sin(Math.PI*k);}}}
-// The camera: over the bench for the choices, closer for the wait, the shots of the ride, back to the bench for the garage.
-const VH_CAM=Object.freeze({bench:{p:[0,205,345],l:[0,-22,-24]},wait:{p:[50,160,300],l:[0,8,-6]},room:{p:[0,520,1500],l:[-150,-150,380]},ramp:{p:[660,-30,640],l:[380,-100,250]},garage:{p:[-140,-30,920],l:[-580,-170,430]}});
+// The camera: over the bench for the choices, closer for the wait, the shots of the ride, back to the bench for the garage. The shots of the
+// ride (0.54, Marc: never from behind the toy) are all from outside the circuit and at a distance, so that the room is seen: the ramp from
+// the right of the room, the tour from the front of the room (the camera slides a little with the vehicle and pans to keep it in view), the
+// arrival from the front left.
+const VH_CAM=Object.freeze({bench:{p:[0,212,372],l:[0,-22,-24]},wait:{p:[50,160,300],l:[0,8,-6]},room:{p:[0,520,1500],l:[-150,-150,380]},ramp:{p:[820,120,960],l:[330,-90,240]},tour:{p:[40,300,1080],l:[-40,-150,400]},garage:{p:[-120,110,1120],l:[-560,-170,430]}});
 function vhCamera(view){const T=vhP3(),tmp=vhTmps(),cam=VH_3D.cam;cam.aspect=view.w/view.h;cam.fov=view.w/view.h<1.1?34:26;
  const set=(S)=>{cam.position.set(...S.p);cam.lookAt(...S.l);};
  if(view.phase==='choose'||view.phase==='snap'){set(VH_CAM.bench);}
  else if(view.phase==='wait'){const k=vhEase(vhClamp(view.waitU*3));cam.position.set(...VH_CAM.bench.p).lerp(tmp.v.set(...VH_CAM.wait.p),k);tmp.v2.set(...VH_CAM.bench.l).lerp(tmp.v.set(...VH_CAM.wait.l),k);cam.lookAt(tmp.v2);}
  else if(view.phase==='ride'){const R=view.ride||{u:0},u=R.u,toyPos=VH_3D.parts.toy.position;
   if(R.camera==='tranquila'){set(VH_CAM.room);}
-  else if(u<.22){set(VH_CAM.ramp);cam.lookAt(toyPos.x*.5+VH_CAM.ramp.l[0]*.5,toyPos.y+20,toyPos.z*.5+VH_CAM.ramp.l[2]*.5);}
-  else if(u<.78){const dir=VH_3D.parts.toyDir||tmp.up,back=tmp.v.copy(dir).multiplyScalar(-370);cam.position.set(toyPos.x+back.x,toyPos.y+185,toyPos.z+back.z);cam.lookAt(toyPos.x+dir.x*90,toyPos.y+16,toyPos.z+dir.z*90);}
-  else set(VH_CAM.garage);}
+  else if(u<.2){cam.position.set(...VH_CAM.ramp.p);cam.lookAt(toyPos.x*.5+VH_CAM.ramp.l[0]*.5,toyPos.y*.5+VH_CAM.ramp.l[1]*.5,toyPos.z*.5+VH_CAM.ramp.l[2]*.5);}
+  else if(u<.8){const C=VH_CAM.tour;cam.position.set(C.p[0]+toyPos.x*.22,C.p[1],C.p[2]);cam.lookAt(toyPos.x*.55+C.l[0]*.45,VH_FLOOR+50,toyPos.z*.45+C.l[2]*.55);}
+  else{const C=VH_CAM.garage;cam.position.set(...C.p);cam.lookAt(toyPos.x*.35+C.l[0]*.65,VH_FLOOR+40,toyPos.z*.35+C.l[2]*.65);}}
  else{// park: the garage, then back to the bench for the next round
-  const u=view.park?.u||0;if(u<.62)set(VH_CAM.garage);else set(VH_CAM.bench);}
+  const u=view.park?.u||0;if(u<.7)set(VH_CAM.garage);else set(VH_CAM.bench);}
  cam.updateProjectionMatrix();}
 // The ride: the toy follows the circuit of the room with the pace of its wheels; the wheels turn; the accessory plays its gag.
 let vhCurve=null,vhCurveLen=0;
@@ -235,8 +255,14 @@ function vhGag(view,top,u,park){const G=VH_GAG[view.picks.top];if(!G)return;cons
   if(!VH_3D.parts.balls){VH_3D.parts.balls=[vhC.blau,vhC.groc,vhC.verd].map(col=>{const b=vhM(new T.SphereGeometry(1.7*VH_TOY,20,14),vhV(col,.5),VH_3D.scene);b.visible=false;return b;});}
   const d0=vhClamp(G.at-.085*Math.sin(2*Math.PI*G.at)),p0=vhCurve.getPointAt(d0),tn=vhCurve.getTangentAt(d0),side=tmp.v2.set(-tn.z,0,tn.x);
   VH_3D.parts.balls.forEach((b,i)=>{const kb=vhClamp((u-G.at-.02-i*.03)/.16);if(kb<=0&&!park){b.visible=false;return;}const kk=park?1:kb;b.visible=true;const land=tmp.v.copy(p0).addScaledVector(side,(i-1)*70).addScaledVector(tn,-90-i*40);land.y=VH_FLOOR+1.7*VH_TOY;
-   b.position.set(p0.x,VH_FLOOR+(6.9+13.6+6)*VH_TOY,p0.z).lerp(land,vhEase(kk));b.position.y+=Math.sin(Math.PI*kk)*90*(1-kk*.4)+(kk>.8?Math.abs(Math.sin((kk-.8)*Math.PI*5))*12*(1-kk):0);b.rotation.z=kk*4;});}
+   b.position.set(p0.x,VH_FLOOR+(VH_BODY_Y+13.6+6)*VH_TOY,p0.z).lerp(land,vhEase(kk));b.position.y+=Math.sin(Math.PI*kk)*90*(1-kk*.4)+(kk>.8?Math.abs(Math.sin((kk-.8)*Math.PI*5))*12*(1-kk):0);b.rotation.z=kk*4;});}
  else if(G.kind==='torre'){const pu=park?vhClamp(view.park?.u||0):0;top.userData.blocks.children.forEach((b,i)=>{const kb=vhClamp((pu-.08-i*.14)/.22);if(kb<=0){b.position.copy(b.userData.home);return;}const home=b.userData.home,to=[14,4.9+i*4.4-4.9,-10];b.position.set(home.x+(to[0]-home.x)*vhEase(kb),home.y+(to[1]-home.y)*kb+Math.sin(Math.PI*kb)*7,home.z+(to[2]-home.z)*vhEase(kb));b.rotation.y=vhEase(kb)*Math.PI/2*(i%2?1:-1);});}
+ else if(G.kind==='llum'){// the beacon turns all the ride and glows, slowly pulsing (one pulse a second, well under three), from the middle on
+  const rot=top.userData.rotor,dome=top.userData.dome;if(rot&&!view.reduced)rot.rotation.y=t*4.2;if(dome){const on=u>G.at-.2?1:0,pulse=view.reduced?.7:.55+.45*Math.sin(t*Math.PI*2);dome.material.emissive.setHex(vhC.corall);dome.material.emissiveIntensity=on*pulse*.9;}}
+ else if(G.kind==='escala'){// at the garage the ladder rises and its second section slides out
+  const pu=park?vhClamp(view.park?.u||0):0,k=vhEase(vhClamp((pu-.06)/.4)),e=vhEase(vhClamp((pu-.3)/.4));top.userData.ladder.rotation.z=k*1.05;top.userData.ext.position.x=e*11;}
+ else if(G.kind==='globus'){// the balloon trails behind and sways; at the garage the string lets go and it floats up and away
+  const bal=top.userData.balloon,pu=park?vhClamp(view.park?.u||0):0,k=vhEase(vhClamp((pu-.1)/.55));bal.rotation.z=VH_BAL_LEAN*(1-k)+(park?0:.2)+(view.reduced?0:Math.sin(t*1.6)*.08);bal.rotation.x=view.reduced?0:Math.cos(t*1.1)*.06;bal.position.y=k*120;bal.position.x=Math.sin(k*3)*14;}
  else{const f=top.userData.flag;if(f&&!view.reduced){f.rotation.y=Math.PI+Math.sin(t*5.2)*.18;f.scale.x=1-.08*Math.abs(Math.sin(t*5.2+1));}VH_3D.parts.meta.visible=u>G.at-.12||park;const k=vhClamp((u-(G.at-.12))/.1);VH_3D.parts.meta.userData.banner.position.y=180-vhSettle(k,1.5)*76;}}
 // ── the tray ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Its scene is drawn with an orthographic camera whose frustum is the tray's rectangle in CSS pixels: a unit is a pixel, so the cells sit
@@ -253,7 +279,7 @@ function vhTrayBuild(view){const T=vhP3(),TP=VH_3D.trayParts,s=VH_3D.tray,tray=v
   const sh=vhM(new T.CircleGeometry(1,32),new T.MeshBasicMaterial({color:0x4a4030,transparent:true,opacity:.16,depthWrite:false}),s,{cast:false,recv:false});sh.scale.set(cell.w*.3,cell.h*.14,1);sh.position.set(cc.position.x,cc.position.y-cell.h*.22,-26);TP.shadows.push(sh);
   const id=opts[i];if(id===undefined){TP.pieces.push(null);return;}const piv=new T.Group();piv.position.set(cc.position.x,cc.position.y,0);const pc=vhPiece(view.kind,id);if(pc.userData.display){piv.rotation.x=.12;piv.rotation.y=0;}else{piv.rotation.x=.42;piv.rotation.y=-.42;}const fit=vhPieceFit(view.kind,id,cell);pc.scale.setScalar(fit.k);pc.position.set(0,fit.y,0);piv.add(pc);s.add(piv);TP.pieces.push(piv);});}
 // The scale of a piece in a cell (pixels per chassis unit) and its vertical offset, so that every option reads the same size.
-function vhPieceFit(kind,id,cell){const base=Math.min(cell.w/44,cell.h/30);if(kind==='body')return {k:base*(id==='autobus'?.92:1),y:-cell.h*.2};if(kind==='wheels')return {k:base*1.55,y:0};if(kind==='top')return {k:base*(id==='remolc'?.95:1.35),y:-cell.h*(id==='bandera'?.34:.2)};return {k:base*1.35,y:-cell.h*.3};}
+function vhPieceFit(kind,id,cell){const base=Math.min(cell.w/44,cell.h/30);if(kind==='body')return {k:base*(id==='autobus'?.92:1),y:-cell.h*.2};if(kind==='wheels')return {k:base*1.55,y:0};if(kind==='top')return {k:base*(id==='remolc'?.95:id==='escala'?1.05:id==='globus'?1.2:id==='sirena'?1.9:1.35),y:-cell.h*(id==='bandera'?.36:id==='globus'?.4:.2)};return {k:base*1.35,y:-cell.h*.3};}
 // The rectangle of the vehicle on the screen (CSS pixels), for the ring of the wait; null when it cannot be known.
 export function vhVehicleRect(view){if(!VH_3D.parts?.toy||!VH_3D.cam)return null;const T=vhP3(),tmp=vhTmps(),box=tmp.box.makeEmpty(),b2=new T.Box3();VH_3D.parts.toy.updateWorldMatrix(true,true);VH_3D.parts.toy.traverseVisible(o=>{if(o.isMesh&&!o.userData.ball){if(!o.geometry.boundingBox)o.geometry.computeBoundingBox();b2.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);box.union(b2);}});if(box.isEmpty())return null;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
  for(const x of[box.min.x,box.max.x])for(const y of[box.min.y,box.max.y])for(const z of[box.min.z,box.max.z]){const v=tmp.v.set(x,y,z).project(VH_3D.cam);const sx=(v.x+1)/2*view.w,sy=(1-v.y)/2*view.h;x0=Math.min(x0,sx);x1=Math.max(x1,sx);y0=Math.min(y0,sy);y1=Math.max(y1,sy);}

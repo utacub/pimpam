@@ -7,7 +7,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {VH_CORNERS,VH_LIGHTS,VH_BODIES,VH_WHEELS,VH_TOPS,VH_COLORS,VH_STAGES,VH_WORD,VH_NAME,VH_LIGHT_NAME,VH_BODY_COLOR,VH_PALETTE,VH_SNAP,VH_WAIT,VH_RIDE,VH_ROUNDS,VH_ROLL,VH_GAG,vhRoundOf,vhSteps,vhStageKinds,vhStageKind,vhFamily,vhOptions,vhPicks,vhTimes,vhTimeline,vhPhase,vhCanStart,vhSurprise,vhPathOf} from '../dist/vehicles.js';
+import {VH_CORNERS,VH_LIGHTS,VH_BODIES,VH_WHEELS,VH_TOPS,VH_COLORS,VH_STAGES,VH_WORD,VH_NAME,VH_LIGHT_NAME,VH_BODY_COLOR,VH_PALETTE,VH_SNAP,VH_WAIT,VH_RIDE,VH_ROUNDS,VH_ROLL,VH_GAG,vhRoundOf,vhSteps,vhCells,vhStageKinds,vhStageKind,vhFamily,vhOptions,vhPicks,vhTimes,vhTimeline,vhPhase,vhCanStart,vhSurprise,vhPathOf} from '../dist/vehicles.js';
 import {VH_CLAC,vhStepScore,vhFinalScore,vhPattern,vhTaste,vhAmbience} from '../dist/vehicles-so.js';
 import {VH_TRAY_MIN,VH_TRAY_MAX,vhGeom,vhSlots,vhLayout,vhBoard,vhResult} from '../dist/vehicles-art.js';
 import {SCAN_ACTIVITIES,createScanState,scanChoices,scanContent,chooseScan,finishScan} from '../dist/scan-catalog.js';
@@ -26,7 +26,7 @@ function ctx(){const calls=[],fills=[],gradient={addColorStop(){}};return new Pr
 test('EN07 is still El taller de vehicles, creative, recorded, in the folder of choosing and creating, heavy to load; the old drawing of it is gone and three.js travels inside the single file',()=>{
  const row=SCAN_ACTIVITIES.find(a=>a.id==='vehicles');assert.ok(row);assert.equal(row.code,'EN07');assert.equal(row.name,'El taller de vehicles');assert.equal(row.task,'creative');assert.equal(row.recorded,true);assert.match(row.desc,/tres dimensions/);
  assert.equal(SCAN_ACTIVITIES.length,11);assert.ok(TL_BOARDS.includes('vehicles'));
- const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.53/);
+ const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.5[4-9]/);
  for(const name of ['vhPressStart','vhRetime','vhSettings','vhAirUpdate','vhAirStop'])assert.match(app,new RegExp(`function ${name}\\(`),name);
  const art=read('../dist/scan-art.js');assert.doesNotMatch(art,/Svehicle|vehicle-body|vehicle-wheels|vehicle-top/);assert.match(art,/vhBoard\(c,w,h,state,game,s/);assert.match(art,/vhResult\(c,w,h,state,game,s/);
  const build=read('../build_standalone.py');assert.match(build,/'vehicles\.js','vehicles-so\.js','vehicles-3d\.js','vehicles-art\.js'/);assert.match(build,/three-taller\.js/);assert.match(build,/startswith\('\/\/ three\.js'\)/);
@@ -37,12 +37,12 @@ test('EN07 is still El taller de vehicles, creative, recorded, in the folder of 
  const mods=['vehicles.js','vehicles-so.js','vehicles-3d.js','vehicles-art.js'];const own=new Set();for(const m of mods)for(const x of read('../dist/'+m).matchAll(/^(?:export )?(?:const|let|function|class) ([A-Za-z_$][\w$]*)/gm)){assert.ok(!own.has(x[1]),`${m}: ${x[1]} twice`);own.add(x[1]);}
  for(const n of own)assert.match(n,/^(vh|VH_)/,`${n}: every top-level name of the vehicles modules is prefixed`);});
 
-test('the model: one corner with four lights, four bodies, three wheel sets, three accessories and four colours, one word each for the scanning and a long name for the panel',()=>{
- assert.deepEqual(VH_CORNERS,['habitacio']);assert.deepEqual(VH_LIGHTS[C],['mati','tarda','capvespre','nit']);assert.equal(VH_BODIES[C].length,4);assert.equal(VH_WHEELS[C].length,3);assert.equal(VH_TOPS[C].length,3);assert.equal(VH_COLORS.length,4);assert.deepEqual(VH_STAGES,['body','wheels','top','color']);
+test('the model: one corner with four lights, six bodies, six wheel sets, six accessories and six colours (0.54), one word each for the scanning and a long name for the panel',()=>{
+ assert.deepEqual(VH_CORNERS,['habitacio']);assert.deepEqual(VH_LIGHTS[C],['mati','tarda','capvespre','nit']);assert.equal(VH_BODIES[C].length,6);assert.equal(VH_WHEELS[C].length,6);assert.equal(VH_TOPS[C].length,6);assert.equal(VH_COLORS.length,6);assert.equal(new Set(PIECES).size,18,'no id is shared between families');assert.deepEqual(VH_STAGES,['body','wheels','top','color']);
  for(const id of [...PIECES,...VH_COLORS]){assert.match(VH_WORD[id],/^[A-ZÀ-Ú][a-zà-ú·]+$/,id);assert.ok(VH_NAME[id].length>=VH_WORD[id].length,id);assert.match(VH_NAME[id],/^[A-ZÀ-Ú]/);}
  for(const l of VH_LIGHTS[C])assert.match(VH_LIGHT_NAME[l],/^[A-ZÀ-Ú][a-zà-ú]+$/);
  assert.deepEqual(Object.keys(VH_BODY_COLOR).sort(),[...VH_BODIES[C]].sort());for(const c of Object.values(VH_BODY_COLOR))assert.ok(VH_COLORS.includes(c)&&Number.isInteger(VH_PALETTE[c]));
- assert.equal(new Set(Object.values(VH_BODY_COLOR)).size,4,'every body has its own colour');
+ assert.equal(new Set(Object.values(VH_BODY_COLOR)).size,6,'every body has its own colour');
  for(const w of VH_WHEELS[C]){const R=VH_ROLL[w];assert.ok(R&&R.bounce>=0&&R.bounce<=1&&R.lean>=0&&R.lean<=1&&R.clack>=0&&R.wobble>=0,w);}
  for(const t of VH_TOPS[C]){const G=VH_GAG[t];assert.ok(G&&G.at>0&&G.at<=1&&typeof G.kind==='string',t);}
  // the rounds: the light turns with every vehicle and the corner comes back round
@@ -51,16 +51,17 @@ test('the model: one corner with four lights, four bodies, three wheel sets, thr
  // the circuit: a closed tour that starts on the bench, drops to the floor and never climbs back
  const path=vhPathOf(C);assert.ok(path.length>=12);assert.deepEqual(path[0],[0,0,0]);let y=0;for(const p of path){assert.equal(p.length,3);assert.ok(p[1]<=y+1e-9,'the path only goes down');y=p[1];}assert.equal(path.at(-1)[1],-200);});
 
-test('the steps: two, three or four pieces by the setting; the tray offers as many as «Opcions de contingut» but never more than the family has, always the same for the same round, and every body comes round',()=>{
+test('the steps: two, three or four pieces by the setting; the tray offers as many as «Peces a la safata» (four by default, never more than the family has), always the same for the same round, and every piece comes round',()=>{
+ assert.equal(vhCells(S()),4);assert.equal(vhCells(S({vhCells:'2'})),2);assert.equal(vhCells(S({vhCells:'3'})),3);assert.equal(vhCells(S({vhCells:'4',scanOptions:2})),4,'«Opcions de contingut» does not touch this tray');
  assert.deepEqual(vhStageKinds(S({vhSteps:'2'})),['body','wheels']);assert.deepEqual(vhStageKinds(S()),['body','wheels','top']);assert.deepEqual(vhStageKinds(S({vhSteps:'4'})),['body','wheels','top','color']);
  assert.equal(vhSteps(S()),3);assert.equal(vhSteps(S({vhSteps:'2'})),2);assert.equal(vhSteps(S({vhSteps:'4'})),4);
  assert.deepEqual(vhFamily('body',C),VH_BODIES[C]);assert.deepEqual(vhFamily('wheels',C),VH_WHEELS[C]);assert.deepEqual(vhFamily('top',C),VH_TOPS[C]);assert.deepEqual(vhFamily('color',C),VH_COLORS);
  const offered={};for(let r=0;r<8;r++)for(const steps of ['2','3','4']){const kinds=vhStageKinds(S({vhSteps:steps}));for(let stage=0;stage<kinds.length;stage++){
-  const picks=kinds.slice(0,stage).map(k=>vhFamily(k,C)[0]);for(const n of [2,3,4]){const s=S({vhSteps:steps,scanOptions:n}),st=stateAt(r,picks,s);assert.equal(vhStageKind(st,s),kinds[stage]);
+  const picks=kinds.slice(0,stage).map(k=>vhFamily(k,C)[0]);for(const n of [2,3,4]){const s=S({vhSteps:steps,vhCells:String(n)}),st=stateAt(r,picks,s);assert.equal(vhStageKind(st,s),kinds[stage]);
    const fam=vhFamily(kinds[stage],C),opts=vhOptions(st,s);assert.equal(opts.length,Math.min(n,fam.length),`round ${r} stage ${stage} n ${n}`);assert.equal(new Set(opts).size,opts.length);for(const id of opts)assert.ok(fam.includes(id));
    assert.deepEqual(opts,vhOptions(stateAt(r,picks,s),s),'the same round offers the same tray');
-   if(kinds[stage]==='body'&&n===3&&steps==='3')for(const id of opts)offered[id]=(offered[id]||0)+(r<4?1:0);}}}
- for(const b of VH_BODIES[C])assert.equal(offered[b],3,`${b} is offered in three of the four rounds of a visit`);
+   if(n===4&&steps==='4'&&r<6)for(const id of opts)offered[id]=(offered[id]||0)+1;}}}
+ for(const id of [...PIECES,...VH_COLORS])assert.equal(offered[id],4,`${id} is offered in four of six rounds`);
  // the picks of a vehicle: what is on the chassis and the pending piece; the colour of the body when none was chosen
  assert.deepEqual(vhPicks(stateAt(0,['autobus']),S(),'fusta'),{body:'autobus',wheels:'fusta',top:null,color:null});
  assert.deepEqual(vhPicks(stateAt(0,['curses','primes','bandera']),S({vhSteps:'4'}),'groc'),{body:'curses',wheels:'primes',top:'bandera',color:'groc'});
@@ -68,7 +69,7 @@ test('the steps: two, three or four pieces by the setting; the tray offers as ma
 
 test('the engine: every piece is a good piece, the snap takes its time, the last one brings the whole ride, and the round moves on with the light',()=>{
  for(const steps of ['2','3','4']){const s=S({vhSteps:steps}),st=createScanState('vehicles',s),kinds=vhStageKinds(s),T=vhTimes(s);
-  for(let i=0;i<kinds.length;i++){const content=scanContent(st,s);assert.ok(content.length>=2&&content.length<=3);for(const c of content){assert.equal(c.kind,'vehicles');assert.equal(c.value,c.id);assert.equal(c.label,VH_WORD[c.id]);assert.ok(vhFamily(kinds[i],C).includes(c.id));}
+  for(let i=0;i<kinds.length;i++){const content=scanContent(st,s);assert.equal(content.length,4);for(const c of content){assert.equal(c.kind,'vehicles');assert.equal(c.value,c.id);assert.equal(c.label,VH_WORD[c.id]);assert.ok(vhFamily(kinds[i],C).includes(c.id));}
    const r=chooseScan(st,s,content.length-1);assert.ok(r.accepted&&st.pending.correct,`${steps} ${i}`);const final=i===kinds.length-1;assert.equal(!!st.pending.final,final);assert.equal(r.duration,final?T.final:T.step);
    finishScan(st,s);}
   assert.equal(st.round,1);assert.equal(st.stage,0);assert.equal(st.picks.length,0);assert.equal(vhRoundOf(st.round).light,'tarda');}
@@ -103,12 +104,12 @@ test('the sound, from the banks of the suite: wood for the «clac», a bar of th
   const pat=vhPattern(sc,VH_SNAP);assert.equal(pat.length,sc.length);assert.ok(pat.every(e=>e.at>=0&&e.at<1&&e.length>0&&e.inst&&e.vel>0));}
  // the band grows a voice with every piece
  const voices=k=>new Set(vhStepScore(C,k,0).filter(e=>!['woodblockRec','tamborRec'].includes(e.inst)).map(e=>e.inst)).size;assert.ok(voices(3)>=voices(1),'more voices with the third piece than with the first');
- const WHEEL={tacs:{inst:'tamborRec',variant:'baix',min:6},fusta:{inst:'woodblockRec',variant:'claves',min:12},primes:{inst:'masiaRec',variant:'whoosh',min:1}},GAG={baca:{inst:'toonRec',variant:'doorOpen'},remolc:{inst:'toonRec',variant:'knock'},bandera:{inst:'pintaRec',variant:'campana'}};
+ const WHEEL={tacs:{inst:'tamborRec',variant:'baix',min:6},fusta:{inst:'woodblockRec',variant:'claves',min:12},primes:{inst:'masiaRec',variant:'whoosh',min:1},amples:{inst:'toonRec',variant:'boing',min:5},radis:{inst:'woodblockRec',variant:'claves',min:18},tapacubs:{inst:'masiaRec',variant:'rafega',min:1}},GAG={baca:{inst:'toonRec',variant:'doorOpen'},remolc:{inst:'toonRec',variant:'knock'},bandera:{inst:'pintaRec',variant:'campana'},sirena:{inst:'dsClarinet'},escala:{inst:'toonRec',variant:'stretch'},globus:{inst:'masiaRec',variant:'telainfla'}};
  for(const body of VH_BODIES[C])for(const wheels of VH_WHEELS[C])for(const top of VH_TOPS[C])for(const [s,go] of [[S(),null],[S(),2.6],[S({vhGo:'auto',vhRide:'curt'}),null],[S({vhRide:'llarg'}),4]]){
   const picks={body,wheels,top,color:VH_BODY_COLOR[body]},TL=vhTimeline(s,go),sc=vhFinalScore(C,picks,s,go,0);assert.ok(sc.length>=60,`${body} ${wheels} ${top}: ${sc.length} events`);
   for(let i=0;i<sc.length;i++){const e=sc[i];bank(e);assert.ok(e.t<TL.end-.05,`${e.inst} at ${e.t} of ${TL.end}`);if(i)assert.ok(e.t>=sc[i-1].t-1e-9,'in order');}
   const W=WHEEL[wheels];assert.ok(sc.filter(e=>e.inst===W.inst&&e.variant===W.variant&&e.t>=TL.start&&e.t<=TL.rideEnd).length>=W.min,`${wheels}: its sound on the floor`);
-  const G=GAG[top];assert.ok(sc.some(e=>e.inst===G.inst&&e.variant===G.variant&&e.t>=TL.start),`${top}: its gag sounds`);
+  const G=GAG[top];assert.ok(sc.some(e=>e.inst===G.inst&&(!G.variant||e.variant===G.variant)&&e.t>=TL.start),`${top}: its gag sounds`);
   assert.equal(sc.filter(e=>e.inst==='woodblockRec'&&e.variant==='claves'&&e.t>TL.start-.5&&e.t<TL.start).length,2,'two claves start the engine');
   assert.ok(sc.some(e=>e.inst==='pintaRec'&&e.variant==='campana'&&e.t>TL.rideEnd),'the bell of the garage');
   const band=sc.filter(e=>['dsBaix','dsPiano','dsClarinet'].includes(e.inst)&&e.t>=TL.start&&e.t<TL.rideEnd);assert.ok(band.length>=30,'the whole band rides along');
@@ -125,7 +126,7 @@ test('the geometry: the bench fills the stage over the tray, the tray keeps its 
   assert.ok(G.tray.h>=VH_TRAY_MIN-1e-9&&G.tray.h<=VH_TRAY_MAX+1e-9,`${w}x${h}: tray ${G.tray.h}`);assert.ok(G.tray.y>=G.panel.y+G.panel.h-1e-6&&G.tray.y+G.tray.h<=h-G.strip+1e-6,`${w}x${h}: the tray between the bench and the strip`);
   for(const n of [2,3,4]){const z=vhSlots(G,n);assert.equal(z.length,n);for(let i=0;i<n;i++){const c=z[i];assert.ok(c.x>=G.tray.x-1e-6&&c.x+c.w<=G.tray.x+G.tray.w+1e-6&&c.y>=G.tray.y-1e-6&&c.y+c.h<=G.tray.y+G.tray.h+1e-6,`${w}x${h} cell ${i}`);assert.ok(c.pts.length>=4);assert.ok(c.w/c.h<=1.7+1e-9,'a cell is never wider than 1.7 to 1');if(i)assert.ok(c.x>z[i-1].x+z[i-1].w-1e-6,'left to right');}}}
  const P=vhGeom(320,180,true);assert.equal(P.strip,0);assert.ok(P.preview&&P.tray.h<VH_TRAY_MIN,'the card has a small tray');
- const s=S(),st=createScanState('vehicles',s),content=scanContent(st,s),zones=vhLayout(st,content,1280,720);assert.equal(zones.length,3);assert.deepEqual(zones.map(z=>z.zone),content.map(c=>c.value));for(let i=1;i<zones.length;i++)assert.ok(zones[i].x>zones[i-1].x);});
+ const s=S(),st=createScanState('vehicles',s),content=scanContent(st,s),zones=vhLayout(st,content,1280,720);assert.equal(zones.length,4);assert.deepEqual(zones.map(z=>z.zone),content.map(c=>c.value));for(let i=1;i<zones.length;i++)assert.ok(zones[i].x>zones[i-1].x);});
 
 test('without WebGL (and so in these tests) the bench is drawn flat, with and without the decor, through every phase of a vehicle, in reduced motion and on the card: finite everywhere',()=>{
  const item=SCAN_ACTIVITIES.find(a=>a.id==='vehicles');
@@ -149,19 +150,19 @@ test('without WebGL (and so in these tests) the bench is drawn flat, with and wi
  assert.ok(typeof vhBoard==='function'&&typeof vhResult==='function');});
 
 test('the settings of the activity are validated, with their defaults: three pieces, the pupil chooses, a press starts, a middle ride, the dynamic camera, automatic quality and the garage',()=>{
- assert.deepEqual([defaults.vhSteps,defaults.vhWho,defaults.vhGo,defaults.vhRide,defaults.vhCamera,defaults.vhGarage,defaults.vhQuality],['3','alumne','puls','mitja','dinamica',true,'auto']);
- const ok=validateProfile(S({vhSteps:'4',vhWho:'sorpresa',vhGo:'auto',vhRide:'llarg',vhCamera:'tranquila',vhGarage:false,vhQuality:'baixa'}));assert.deepEqual([ok.vhSteps,ok.vhWho,ok.vhGo,ok.vhRide,ok.vhCamera,ok.vhGarage,ok.vhQuality],['4','sorpresa','auto','llarg','tranquila',false,'baixa']);
+ assert.deepEqual([defaults.vhSteps,defaults.vhCells,defaults.vhWho,defaults.vhGo,defaults.vhRide,defaults.vhCamera,defaults.vhGarage,defaults.vhQuality],['3','4','alumne','puls','mitja','dinamica',true,'auto']);
+ const ok=validateProfile(S({vhSteps:'4',vhCells:'2',vhWho:'sorpresa',vhGo:'auto',vhRide:'llarg',vhCamera:'tranquila',vhGarage:false,vhQuality:'baixa'}));assert.deepEqual([ok.vhSteps,ok.vhCells,ok.vhWho,ok.vhGo,ok.vhRide,ok.vhCamera,ok.vhGarage,ok.vhQuality],['4','2','sorpresa','auto','llarg','tranquila',false,'baixa']);
  for(const v of ['alta','mitjana','baixa','auto'])assert.equal(validateProfile(S({vhQuality:v})).vhQuality,v);
- for(const bad of [{vhSteps:'5'},{vhSteps:3},{vhWho:'mestre'},{vhGo:'tecla'},{vhRide:'infinit'},{vhCamera:'fixa'},{vhGarage:'si'},{vhQuality:'ultra'}])assert.throws(()=>validateProfile(S(bad)),JSON.stringify(bad));
- const app=read('../dist/app.js');for(const k of ['vhSteps','vhWho','vhGo','vhRide','vhCamera','vhQuality'])assert.match(app,new RegExp(`sel\\('${k}',`),k);assert.match(app,/vhGarage/);
+ for(const bad of [{vhSteps:'5'},{vhSteps:3},{vhCells:'5'},{vhCells:4},{vhWho:'mestre'},{vhGo:'tecla'},{vhRide:'infinit'},{vhCamera:'fixa'},{vhGarage:'si'},{vhQuality:'ultra'}])assert.throws(()=>validateProfile(S(bad)),JSON.stringify(bad));
+ const app=read('../dist/app.js');for(const k of ['vhSteps','vhCells','vhWho','vhGo','vhRide','vhCamera','vhQuality'])assert.match(app,new RegExp(`sel\\('${k}',`),k);assert.match(app,/vhGarage/);
  assert.match(app,/if\(id==='vehicles'\)out\.push\(vhSettings\(\)\)/);});
 
-test('the «Informació» panel and the catalogue: the ten pieces by their long names and the four lights of the room, with a picture each; the card of the home is a picture',async()=>{
+test('the «Informació» panel and the catalogue: the eighteen pieces by their long names and the four lights of the room, with a picture each; the card of the home is a picture',async()=>{
  const {SCENE_INFO,SCENE_INFO_HEAD,CARD_IMG}=await import('../dist/info-escenes.js');
- assert.equal(SCENE_INFO.vehicles.length,14);assert.ok(SCENE_INFO_HEAD.vehicles.length>10);
- SCENE_INFO.vehicles.slice(0,10).forEach((e,i)=>{assert.equal(e.t,VH_NAME[PIECES[i]]);assert.equal(e.l.length,3);});
- SCENE_INFO.vehicles.slice(10).forEach((e,i)=>assert.equal(e.t,VH_LIGHT_NAME[VH_LIGHTS[C][i]]));
+ assert.equal(SCENE_INFO.vehicles.length,22);assert.ok(SCENE_INFO_HEAD.vehicles.length>10);
+ SCENE_INFO.vehicles.slice(0,18).forEach((e,i)=>{assert.equal(e.t,VH_NAME[PIECES[i]]);assert.equal(e.l.length,3);});
+ SCENE_INFO.vehicles.slice(18).forEach((e,i)=>assert.equal(e.t,VH_LIGHT_NAME[VH_LIGHTS[C][i]]));
  assert.match(CARD_IMG.vehicles||'',/^data:image\/jpeg;base64,\/9j\//);
  assert.match(read('../production/info/make_info.py'),/'vehicles'/);
  const act=read('../ACTIVITATS.md');assert.match(act,/\| EN07 \| El taller de vehicles \| Composició creativa \| \(Refeta del tot a la 0\.53/);
- assert.match(read('../package.json'),/"version":\s*"0\.53/);});
+ assert.match(read('../package.json'),/"version":\s*"0\.5[4-9]/);});

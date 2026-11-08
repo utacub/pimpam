@@ -1,3 +1,41 @@
+# Pim Pam 0.54 · El taller de vehicles: xassís amagat, passeig vist des de fora, sis peces de cada família i safata de quatre
+
+Base: 0.53 (commit e5714e7). Demanat per en Marc el 8 de novembre de 2026: «Està bé, però els xassís haurien de quedar més ben encaixats als vestits, que no es vegi tant l’estructura de sota, i quan fa el passeig millor que no sigui una perspectiva POV, millor des de l’exterior i a més distància, perquè es vegi l’habitació. També hi hauria d’haver més diversitat de carrosseries, rodes i accessoris, 6 de cada. I que l’encercament es faci entre quatre elements, en comptes de tres. Quan tinguis tot això ja pots fer les fases 1 a 4.»
+
+## Què canvia
+
+- **El xassís, amagat sota la carrosseria.** La carrosseria seu més avall sobre el banc i és més ampla (17 unitats en lloc de 14), de manera que tapa la placa grisa del xassís pels dos costats i pel davant i el darrere; els pius de la placa s’amaguen quan hi ha carrosseria (i ja mentre aterra). Només queden a la vista els dos eixos on van les rodes, fins que les rodes hi són.
+- **El passeig, vist des de fora i de lluny.** Les tres càmeres del recorregut són exteriors i allunyades: la baixada de la rampa es veu des de la dreta de l’habitació, la volta des del davant (la càmera llisca una mica seguint el vehicle i mira entre el vehicle i el centre de l’habitació) i l’arribada des de l’esquerra, cap al garatge. En cap moment la càmera va dins del vehicle ni enganxada darrere seu, i l’habitació sencera (llit, catifa amb els blocs, banc amb la rampa, garatge) es veu tota l’estona. La càmera del banc també s’ha allunyat una mica, perquè hi càpiguen els accessoris alts.
+- **Sis carrosseries, sis jocs de rodes, sis accessoris.** Noves carrosseries: la camioneta de caixa oberta (taronja, amb baranes i porta del darrere) i el cotxe escarabat (lila, tot rodó). Rodes noves: amples de goma (grises, el vehicle flota i fa un so tou de goma), de radis (sis radis, tic-tic ràpid amb les claves) i amb tapacubs (gris lluent amb botó groc, silencioses, només un buf en arrencar). Accessoris nous, cadascun amb el seu gag i el seu so: el llum giratori (gira tot el recorregut i a partir de la meitat s’encén i respira a 1 Hz, amb un ni-no suau de clarinet), l’escala de bombers (al garatge s’aixeca i el segon tram s’allarga: tres clics de fusta i un estirament) i el globus lligat (lligat al darrere del vehicle amb un fil que s’inclina cap enrere, es gronxa durant la volta i al garatge el fil es deixa anar i el globus puja fins a perdre’s de vista, amb la tela que s’infla, tres notes de piano i una campaneta). Els sis colors de pintura (quan hi ha quatre passos) afegeixen lila i taronja. Dos tints nous a la paleta tancada del concepte (lila 7D5FD8, taronja FF8C3A): per revisar.
+- **La safata, de quatre peces.** Ajust nou «Peces a la safata» (dues, tres o quatre; quatre per defecte) a la pestanya «Aquesta activitat». Aquesta activitat ja no segueix «Opcions de contingut» de la configuració general (abans en prenia les tres peces). Cada ronda ofereix quatre de les sis peces de cada família, i les peces van rodant de ronda en ronda: en sis rondes cada peça s’ha ofert exactament quatre vegades, de manera que totes passen.
+- **Panell ⓘ i catàleg.** Vint-i-dues entrades (les divuit peces, amb el que fa cadascuna, i les quatre hores del dia), amb la imatge de cada peça posada al xassís. La imatge de la fitxa de portada s’ha tornat a fer (el cotxe familiar amb la baca al banc). `ACTIVITATS.md` actualitzat.
+
+## Regles que es mantenen
+
+- Cap paraula escrita durant l’encercament, ordre d’esquerra a dreta, ressaltat clar de la suite, pista del commutador després d’una volta en blanc, senyal d’espera; cap cara a les joguines (una sola franja de vidre, una sola barra groga de para-xocs; el llum giratori és una sola cúpula, no dos fars).
+- Fotosensibilitat: el llum giratori respira a 1 Hz com a màxim (una pujada i una baixada d’intensitat per segon), per sota dels tres canvis per segon del criteri 2.3.1 (W3C, 2023); cap altre element parpelleja.
+- Música i sons només dels bancs de la suite (cap enregistrament nou).
+
+## Proves
+
+- **Automàtiques.** `node --test tests/*.test.mjs`: 425 proves, 422 passen; les 3 que fallen són les d’abans (enregistraments de la masia, dels instruments i de Detectius de sons que no són al disc d’aquest entorn), sense relació amb aquesta versió. `tests/vehicles.test.mjs` (10 proves, actualitzades): sis peces de cada família amb identificadors únics i noms llargs, rotació de l’oferta (amb quatre caselles, cada peça i cada color surten exactament quatre vegades en sis rondes), `vhCells` i la seva validació, flux dins el motor d’encercament amb quatre opcions, sons dins l’efecte de cada peça nova, panell ⓘ de 22 entrades, catàleg.
+- **Al navegador (Chromium sense GPU, SwiftShader), des del fitxer construït.** Portada, carpeta «Encercament: triar i crear» amb la fitxa nova, panell ⓘ (22 entrades), cortina de càrrega, el taller amb la safata de quatre caselles, la pestanya «Aquesta activitat» amb l’ajust «Peces a la safata», la pausa. Cap error de pàgina. Els moments de dins de l’activitat (`imatges/09` a `25`) són fotogrames deterministes de `tools/vehicles-frames.mjs` a DPR 2: xassís sol i amb carrosseria, les peces noves, els tres plans exteriors del passeig, el llum encès en arribar, l’escala aixecada al garatge, la safata de nit i la safata de tres (ajust).
+- **No provat:** tauletes i ordinadors reals (rendiment amb sis peces més per família, tacte), Safari i Firefox.
+
+## Per revisar (en Marc)
+
+1. Els dos tints nous (lila i taronja) i les sis peces noves, especialment el globus lligat al darrere (a l’habitació no hi cabia a sobre del sostre de l’autobús).
+2. La distància de les tres càmeres del passeig: es poden allunyar o acostar més.
+3. Les fases 1 a 4 del pla segueixen tot seguit, cadascuna com una versió nova per revisar.
+4. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula.
+
+## Referències
+
+- three.js authors. (2026). *three.js* (versió r187) [Programari]. https://threejs.org
+- W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2* (W3C Recommendation, 5 d’octubre de 2023). https://www.w3.org/TR/WCAG22/
+
+---
+
 # Pim Pam 0.53 · El taller de vehicles en tres dimensions (fase 0)
 
 Base: 0.52.4 (commit e705207). Demanat per en Marc el 8 de novembre de 2026: «M'agradaria que fos una activitat elaborada amb three.js, la primera activitat de Pim Pam en 3D. Que es construeixin vehicles joguina, que en acabar circulen una mica per un circuit […] una mica com si es construïssin joguines de vehicles de Toy Story i després les veiem circular per la casa (sense que les joguines tinguin ulls ni res semblant)». Pla aprovat a les 10:18 («D'acord, ja pots començar a construir l'activitat»): https://claude.ai/artifact/Vp8456GkEm26qbjLEgGKXh. Estil: les quatre imatges de concepte d’en Marc del mateix dia («Joguina de vinil tou»).

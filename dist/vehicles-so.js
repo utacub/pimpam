@@ -58,6 +58,9 @@ export function vhFinalScore(corner,picks,s,go=null,round=0){const P=VH_PIECE[co
 function vhWheelSounds(kind,TL){const out=[],t0=TL.start+TL.ride*.2,t1=TL.rideEnd-.4;
  if(kind==='fusta')for(let t=t0;t<t1;t+=.46)out.push(vhNote('woodblockRec',[0],t,.12,.13,{variant:'claves'}));
  else if(kind==='tacs')for(let t=t0;t<t1;t+=.62)out.push(vhNote('tamborRec',[0],t,.2,.12,{variant:'baix'}));
+ else if(kind==='amples')for(let t=t0;t<t1;t+=.7)out.push(vhNote('toonRec',[0],t,.3,.1,{variant:'boing'}));
+ else if(kind==='radis')for(let t=t0;t<t1;t+=.3)out.push(vhNote('woodblockRec',[0],t,.1,.08,{variant:'claves'}));
+ else if(kind==='tapacubs')out.push(vhNote('masiaRec',[0],TL.start+.3,.6,.25,{variant:'rafega'}));
  else out.push(vhNote('masiaRec',[0],TL.start+.3,.5,.3,{variant:'whoosh'}),vhNote('masiaRec',[0],TL.start+TL.ride*.55,.5,.22,{variant:'whoosh'}));
  // the ramp: a soft rumble of the drum as the vehicle rolls down
  out.push(vhNote('tamborRec',[0],TL.start+TL.ride*.08,.3,.2,{variant:'mig'}),vhNote('tamborRec',[0],TL.start+TL.ride*.14,.3,.24,{variant:'baix'}));return out;}
@@ -65,16 +68,19 @@ function vhWheelSounds(kind,TL){const out=[],t0=TL.start+TL.ride*.2,t1=TL.rideEn
 function vhGagSounds(kind,TL){const out=[],G=VH_GAG[kind];if(!G)return out;const tt=u=>TL.start+TL.ride*u;
  if(kind==='baca'){out.push(vhNote('toonRec',[0],tt(G.at),.4,.4,{variant:'doorOpen'}));[0,.03,.06].forEach((d,i)=>{out.push(vhNote('toonRec',[0],tt(G.at+.04+d),.3,.38-i*.05,{variant:'boing'}),vhNote('toonRec',[0],tt(G.at+.12+d*1.3),.3,.26,{variant:'knock'}));});}
  else if(kind==='remolc'){[.08,.22,.36].forEach((u,i)=>{out.push(vhNote('toonRec',[0],TL.rideEnd+TL.park*u,.3,.34,{variant:'boing'}),vhNote('toonRec',[0],TL.rideEnd+TL.park*(u+.11),.3,.4,{variant:'knock'}));});}
+ else if(kind==='sirena'){const P=VH_PIECE.habitacio;for(let i=0;i<4;i++)out.push(vhNote('dsClarinet',[vhDeg(P,i%2?2:4,0)],tt(G.at)+i*.38,.34,.3));}
+ else if(kind==='escala'){[.08,.2,.32].forEach(u=>out.push(vhNote('woodblockRec',[0],TL.rideEnd+TL.park*u,.12,.3,{variant:'claves'})));out.push(vhNote('toonRec',[0],TL.rideEnd+TL.park*.34,.6,.34,{variant:'stretch'}));}
+ else if(kind==='globus'){const P=VH_PIECE.habitacio;out.push(vhNote('masiaRec',[0],TL.rideEnd+TL.park*.12,.6,.35,{variant:'telainfla'}));[0,2,4].forEach((d,i)=>out.push(vhNote('dsPiano',[vhDeg(P,d,1)],TL.rideEnd+TL.park*(.2+i*.07),.5,.3)));out.push(vhNote('masiaRec',[0],TL.rideEnd+TL.park*.7,.5,.3,{variant:'campaneta'}));}
  else{out.push(vhNote('masiaRec',[0],tt(G.at-.12),.6,.4,{variant:'telainfla'}),vhNote('pintaRec',[0],tt(G.at-.02),.6,.4,{variant:'campana'}));}
  return out.map(e=>({...e,vel:Math.min(1,e.vel*VH_GAG_LOUD)}));}
 // From seconds to the fractions of the effect that app.js plays (at and length over its duration).
 export const vhPattern=(events,D)=>events.filter(e=>e.t<D-.02).map(e=>({inst:e.inst,midi:e.midi,at:e.t/D,length:Math.max(.01,Math.min(e.len,D-e.t))/D,vel:e.vel,...(e.variant?{variant:e.variant}:{}),...(e.strum?{strum:e.strum}:{})}));
 // The taste of a piece in focus: a short sound of its own (under 1.2 s).
 export function vhTaste(kind,id){const P=VH_PIECE.habitacio;
- if(kind==='body'){const d={familiar:0,autobus:2,furgoneta:3,curses:4}[id]||0;return [vhNote('dsPiano',[vhDeg(P,d,0),vhDeg(P,d+2,0),vhDeg(P,d+4,0)],0,.7,.34,{strum:.03})];}
- if(kind==='wheels')return id==='fusta'?[vhNote('woodblockRec',[0],0,.15,.4,{variant:'claves'}),vhNote('woodblockRec',[0],.22,.15,.34,{variant:'claves'})]:id==='primes'?[vhNote('masiaRec',[0],0,.5,.36,{variant:'whoosh'})]:[vhNote('toonRec',[0],0,.4,.38,{variant:'boing'})];
- if(kind==='top')return id==='baca'?[vhNote('toonRec',[0],0,.4,.36,{variant:'clink'})]:id==='remolc'?[vhNote('toonRec',[0],0,.4,.32,{variant:'clatter'})]:[vhNote('masiaRec',[0],0,.5,.36,{variant:'telainfla'})];
- const d={blau:0,corall:2,groc:4,verd:5}[id]||0;return [vhNote('dsPiano',vhDeg(P,d,1),0,.6,.36)];}
+ if(kind==='body'){const d={familiar:0,autobus:2,furgoneta:3,curses:4,camioneta:1,escarabat:5}[id]||0;return [vhNote('dsPiano',[vhDeg(P,d,0),vhDeg(P,d+2,0),vhDeg(P,d+4,0)],0,.7,.34,{strum:.03})];}
+ if(kind==='wheels')return id==='fusta'?[vhNote('woodblockRec',[0],0,.15,.4,{variant:'claves'}),vhNote('woodblockRec',[0],.22,.15,.34,{variant:'claves'})]:id==='primes'?[vhNote('masiaRec',[0],0,.5,.36,{variant:'whoosh'})]:id==='amples'?[vhNote('toonRec',[0],0,.4,.3,{variant:'blub'}),vhNote('toonRec',[0],.3,.4,.26,{variant:'blub'})]:id==='radis'?[0,.14,.28].map(t=>vhNote('woodblockRec',[0],t,.1,.3,{variant:'claves'})):id==='tapacubs'?[vhNote('masiaRec',[0],0,.6,.3,{variant:'rafega'})]:[vhNote('toonRec',[0],0,.4,.38,{variant:'boing'})];
+ if(kind==='top')return id==='baca'?[vhNote('toonRec',[0],0,.4,.36,{variant:'clink'})]:id==='remolc'?[vhNote('toonRec',[0],0,.4,.32,{variant:'clatter'})]:id==='sirena'?[vhNote('dsClarinet',[vhDeg(P,4,0)],0,.3,.3),vhNote('dsClarinet',[vhDeg(P,2,0)],.34,.3,.3)]:id==='escala'?[vhNote('woodblockRec',[0],0,.12,.34,{variant:'claves'}),vhNote('toonRec',[0],.2,.5,.3,{variant:'stretch'})]:id==='globus'?[vhNote('toonRec',[0],0,.6,.34,{variant:'inflate'})]:[vhNote('masiaRec',[0],0,.5,.36,{variant:'telainfla'})];
+ const d={blau:0,corall:2,groc:4,verd:5,lila:1,taronja:3}[id]||0;return [vhNote('dsPiano',vhDeg(P,d,1),0,.6,.36)];}
 // The air of the room by its light: birds through the window in the morning, the meadow in the afternoon, crickets at dusk and at night.
 export function vhAmbience(corner,light){const A=(name,level,lowpass=7000)=>({name,level,lowpass});
  if(light==='mati')return [A('blackbird',.12,6000)];if(light==='tarda')return [A('meadow',.1,5500)];if(light==='capvespre')return [A('crickets',.09,5000)];return [A('crickets',.11,4000)];}

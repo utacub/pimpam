@@ -1,5 +1,13 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.54 · El taller de vehicles: sis peces per família, safata de quatre, càmeres exteriors
+
+- **Model.** `VH_BODIES`, `VH_WHEELS` i `VH_TOPS` tenen sis identificadors per racó (han de ser únics entre famílies: la roda és `amples` i l’accessori `globus`); `VH_COLORS` en té sis. `vhCells(s)` llegeix l’ajust `vhCells` (2, 3 o 4; 4 per defecte) i `vhOptions` ofereix `n` de les sis peces a partir de `(ronda+etapa) mod 6`, de manera que les peces van rodant (amb quatre caselles, cada peça surt quatre vegades cada sis rondes). L’activitat no llegeix `scanOptions`.
+- **Escena.** `VH_BODY_Y` (4,6) és l’alçada de la carrosseria sobre el xassís; la carrosseria fa 17 de fons i amaga la placa; els pius (`userData.peg`) només es veuen sense carrosseria. `vhTopMount(cos, accessori)` dona el punt de muntatge (sostre `roof`; el remolc al darrere; el globus lligat al darrere a mitja alçada, amb el fil inclinat `VH_BAL_LEAN` 1,1 rad perquè el globus quedi dins del quadre de la càmera del banc). Rodes amb paràmetres `spokes` (radis) i `cap` (tapacubs). Gags nous a `vhGag`: `llum` (rotor i cúpula emissiva a 1 Hz), `escala` (gira i s’allarga al garatge), `globus` (puja 120 unitats al garatge). `VH_CAM`: `bench` més lluny (z 372), `ramp`, `tour` i `garage` exteriors; durant la volta la càmera llisca `toy.x·0,22` i mira a mig camí entre el vehicle i el centre; al garatge torna al banc quan `park.u ≥ 0,7`.
+- **Ajust.** `vhCells` a `input.js` (per defecte `'4'`, enumeració 2/3/4) i `vhSettings()` a `app.js` (`Peces a la safata`).
+- **Eines.** `tools/vehicles-frames.mjs`: les banderes `n2`, `n3`, `n4` fixen `vhCells`. `tools/vehicles-info.mjs`: vint-i-dues imatges; una peça sense ronda es busca a la primera ronda que l’ofereix.
+- Proves: `tests/vehicles.test.mjs` (10, actualitzades: sis de cada, rotació de les peces, `vhCells`, panell de 22).
+
 ## 0.53 · El taller de vehicles en tres dimensions (EN07)
 
 - **three.js dins del fitxer únic.** `dist/vendor/three-taller.js` és la part de three.js (0.187.0) que fa servir l’activitat, empaquetada amb esbuild com un sol script IIFE que defineix `globalThis.PP3` (`tools/vendor-three.mjs` la regenera; `tools/vendor-three-entry.js` enumera les classes). three.js no es pot concatenar amb la resta de mòduls (el constructor del fitxer únic treu els `import`/`export` i tots els noms de dalt de tot han de ser únics), així que va en un `<script>` a part abans del mòdul de l’app, i `build_standalone.py` l’incrusta.
