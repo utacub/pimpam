@@ -80,5 +80,5 @@ if(process.argv[1]&&fileURLToPath(import.meta.url)===process.argv[1]){
     if(window.nextPress<P&&x>=.45+gap*window.nextPress-1e-6){window.pressLog.push(window.press(window.nextPress,x));window.nextPress++;}
     window.PL.pljDilute(x>=dil?.66:1,dt);window.PL.pljStep(dt);x+=dt;}window.PL.pljRender();window.PL.PLJ.gl.finish();const lg=window.pressLog.splice(0);return [x,performance.now()-t0,lg,window.PL.PLJ.lost||window.PL.PLJ.gl.isContextLost()];},[t,at,dt,dilStart,+(look.gap||2.6),+(look.presses||10)]);
   for(const l of ms[2])console.log('press',JSON.stringify(l));
-  t=ms[0];const buf=await page.screenshot({type:'jpeg',quality:90,timeout:180000});writeFileSync(`${out}/${name}${top?'_des_de_dalt':''}.jpg`,buf);console.log(name,'t',t.toFixed(2),'chunk ms',ms[1].toFixed(0),'lost',ms[3]);}
+  t=ms[0];const buf=await page.screenshot({type:'jpeg',quality:90,timeout:900000});writeFileSync(`${out}/${name}${top?'_des_de_dalt':''}.jpg`,buf);console.log(name,'t',t.toFixed(2),'chunk ms',ms[1].toFixed(0),'lost',ms[3]);}
  console.log('total s',((Date.now()-t1)/1000).toFixed(1));if(errors.length)console.log('ERRORS',errors.slice(0,6));await browser.close();}

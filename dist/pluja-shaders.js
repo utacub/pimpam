@@ -39,7 +39,9 @@ void main(){float h=uTx.y;float L=texture(uP,vUv-vec2(uTx.x,0.)).x,R=texture(uP,
  o=vec4((L+R+B+T-h*h*texture(uDiv,vUv).x)*.25,0.,0.,1.);}`;
 export const PLJ_FS_GRAD=PLJ_HEAD+`out vec4 o;uniform sampler2D uVel,uP;uniform vec2 uTx;
 void main(){float h=uTx.y;float L=texture(uP,vUv-vec2(uTx.x,0.)).x,R=texture(uP,vUv+vec2(uTx.x,0.)).x,B=texture(uP,vUv-vec2(0.,uTx.y)).x,T=texture(uP,vUv+vec2(0.,uTx.y)).x;
- o=vec4(texture(uVel,vUv).xy-vec2(R-L,T-B)/(2.*h),0.,1.);}`;
+ vec2 v=texture(uVel,vUv).xy-vec2(R-L,T-B)/(2.*h);
+ // the edges of the screen are walls: the liquid slides along them but does not cross them (no black flows in, no paint smears)
+ vec2 w=clamp(vec2(min(vUv.x,1.-vUv.x)/uTx.x,min(vUv.y,1.-vUv.y)/uTx.y)/2.,0.,1.);o=vec4(v*w,0.,1.);}`;
 // the ink: traced back through the liquid and through every drop that is growing (newest last), read with a five-tap Catmull–Rom
 // filter (sharper than bilinear, so the edges stay crisp for minutes); new ink, with its cells, where the trace lands inside a drop
 export const PLJ_FS_DYE=PLJ_HEAD+`layout(location=0) out vec4 o0;layout(location=1) out vec4 o1;
@@ -65,7 +67,7 @@ void main(){vec2 f=vec2(vUv.x*uAR,vUv.y),pos=f-uDt*texture(uVel,vUv).xy;
    int k=int(uQ[i].y),ku=int(uQ[i].z);vec4 A=vec4(0),B=vec4(0);
    if(s<0.&&ku>=0){float pl=.18+.32*clamp(-s/.3,0.,1.);put(ku,1.-pl,A,B);put(7,pl,A,B);}
    else if(s<uRing&&ku>=0){put(7,.6,A,B);put(k,.4,A,B);}
-   else{float ang=atan(d.y,d.x),st=smoothstep(.55,.92,vn(vec2(sqrt(F)*uStreak+.7*sin(ang*3.+uQ[i].w),uQ[i].w)))*.3;put(k,1.-st,A,B);put(7,st,A,B);}
+   else{float rr=sqrt(F)*uStreak+1.3*vn(fin*11.+uQ[i].w),st=smoothstep(.55,.92,vn(vec2(rr,uQ[i].w*7.)))*.3;put(k,1.-st,A,B);put(7,st,A,B);}
    o0=A;o1=B;return;}
   pos=uP[i].xy+d*sqrt(1.-dA/d2);}
  // beyond the edge of the screen the floor is like its edge (no black flows in from outside)
