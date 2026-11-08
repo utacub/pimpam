@@ -9,7 +9,7 @@ import {SELVA_NAMES} from '../dist/selva.js';
 import {SABANA_NAMES} from '../dist/sabana.js';
 import {POU_NAMES} from '../dist/pou.js';
 import {GG_NAMES} from '../dist/gegants.js';
-const expected={jelly:20,jungle:20,savanna:20,well:21,pot:11,castells:11,orchestra:6,sounds:8,sources:9,giants:20,pinta:5,masia:6,viatge:7,encaix:20,fira:5,flower:20,'color-rain':20,vehicles:22};
+const expected={jelly:20,jungle:20,savanna:20,well:21,pot:11,castells:11,orchestra:6,sounds:8,sources:9,giants:20,pinta:5,masia:6,viatge:7,encaix:20,fira:5,flower:20,'color-rain':20,vehicles:44};
 test('each dive has every scene, with a picture and one to three short lines',()=>{
   assert.deepEqual(Object.keys(SCENE_INFO).sort(),Object.keys(expected).sort());
   for(const [id,n] of Object.entries(expected)){

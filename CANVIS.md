@@ -1,3 +1,39 @@
+# Pim Pam 0.56 · El taller de vehicles: els racons de la casa i la sala dels vehicles d’emergències (fase 1)
+
+Base: 0.54 (commit a23842a, en local). Primera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil; per això aquesta versió és la 0.56.
+
+## Què canvia
+
+- **Els racons de la casa.** El taller ja no és només l’habitació: cada quatre vehicles (una volta sencera de matí, tarda, capvespre i nit) el banc, el tauler d’eines, el prestatge, el llum, la rampa i el garatge passen al racó següent de la casa, que té la seva pròpia paret, terra, mobles, circuit, música i aire. Ajust nou «Primer racó» a la pestanya «Aquesta activitat» (l’habitació per defecte; o la sala), que tria per on comença; la resta de racons arriben per torn. Les peces d’un racó es construeixen la primera vegada que hi arribem (sense cortina ni aturada perceptible: entre un vehicle i el següent), i les de l’habitació es conserven.
+- **La sala.** Paret color préssec amb cercles suaus, un rellotge i un quadre amb turons, finestra a la dreta (amb la lluna de nit), rajoles hidràuliques crema amb quarts de cercle menta i un rombe corall, un sofà gran corall pàl·lid amb coixins crema i un coixí groc, una tauleta baixa de fusta sobre una catifa lila pàl·lida, una pila de dos llibres (marina i corall, amb les pàgines i el llom) i un test corall amb una poncella groga. El circuit baixa la rampa, voreja el sofà, puja la pila de llibres (l’única pujada de tota la casa), passa per sota la tauleta, s’acosta al test i arriba al garatge, sempre vist des de fora i de lluny; les càmeres de la volta i de la vista tranquil·la són més enrere que a l’habitació perquè el circuit s’acosta més al davant de la sala.
+- **Sis vehicles d’emergències.** Camió de bombers (corall, cabina alta i caixa llarga amb franja crema), ambulància (groga, caixa alta amb franja i creus corall), camió plataforma (taronja, plataforma baixa amb capçal i baranes: els accessoris hi van a la plataforma), tot terreny de rescat (verd, quadrat, amb roda de recanvi i barra al sostre), cotxe de policia (blau, baix, franja crema) i furgó de rescat (lila, alt, amb finestra del darrere). Cada un té el seu color, com a l’habitació. Cap cara: una sola franja de vidre i una sola barra groga de para-xocs.
+- **Sis rodes.** Noves: bessones de camió (dues rodes primes juntes, tam-tam lleuger), erugues (dues cintes amb dents crema sobre tres corrons corall; les dents van passant mentre el vehicle avança i fan cruixir el terra), de globus (liles, grosses i toves, boten i fan un so de gelatina) i de ferro (grises amb quatre forats i cub corall, dringuen a les rajoles); i, compartides amb l’habitació, les de tacs i les de tapacubs.
+- **Sis accessoris.** Nous: el braç de grua (mira cap enrere; al garatge puja, baixa el cable fins a terra, agafa un bloc lila i l’aixeca a poc a poc), el canó d’aigua (a mig camí engega catorze gotes blaves en arc cap al test, i la flor del test s’obre), la campana (es gronxa i repica quatre vegades quan el vehicle puja els llibres) i la mànega enrotllada (al garatge el rodet gira i la mànega es desenrotlla pel terra fins al broc groc); i, compartits, l’escala i el llum giratori (a la sala sona amb la trompeta).
+- **La marxa de la sala.** Música pròpia: una marxa de metalls en Si♭ major a 116 pulsacions per minut, sense swing: la tuba a l’u i al tres, la trompa al dos i al quatre (i, amb la banda plena, un contratemps suau), la caixa i el tambor, la trompeta amb la tonada i una campaneta (glockenspiel) que dobla la primera nota de cada compàs; la cadència del garatge acaba amb la campaneta. Els tasts de les carrosseries de la sala els fa la trompa. L’aire de la sala dona al carrer: una merla llunyana al matí, coloms a la tarda, grills al capvespre i la nit.
+- **El garatge.** Els dos circuits acaben ara sobre la placa del garatge (abans el vehicle quedava vuit unitats enfonsat dins la placa): les rodes, la torre de blocs, la grua i la mànega hi seuen bé.
+- **Panell ⓘ i catàleg.** 44 entrades: les divuit peces i les quatre hores de cada racó («L’habitació, matí», «La sala, nit»…), amb una imatge cadascuna. `ACTIVITATS.md` actualitzat.
+
+## Regles que es mantenen
+
+- Cap paraula escrita durant l’encercament, ordre d’esquerra a dreta, ressaltat clar de la suite, pista del commutador després d’una volta en blanc, senyal d’espera; cap cara a les joguines (una sola franja de vidre, una sola barra groga de para-xocs; el llum giratori és una sola cúpula, no dos fars). Criteris de disseny propis, no evidència.
+- Fotosensibilitat: el llum giratori respira a 1 Hz com a màxim; el gag de l’aigua i el de la campana no fan parpellejar res; tot per sota dels tres canvis per segon del criteri 2.3.1 (W3C, 2023), que és el llindar de referència per a la fotosensibilitat en contingut web (Harding i Jeavons, 1994, per a la base clínica del llindar).
+- Música i sons només dels bancs de la suite (cap enregistrament nou): tuba, trompa, trompeta i glockenspiel dels instruments ja mostrejats; cruixits, gelatina, plats, xiulets d’aigua i campana dels bancs de foley existents.
+
+## Proves
+
+- `node --test tests/*.test.mjs`: 422 proves passen i 3 fallen, les mateixes tres de sempre (enregistraments de la masia, dels instruments i dels Detectius de sons que no són al disc d’aquest entorn); `tests/vehicles.test.mjs` (10) i `tests/info.test.mjs` actualitzades i verdes.
+- Fotogrames de la sala amb three.js (SwiftShader, 1280×720 i 2560×1440): el banc amb les quatre safates, la carrosseria que aterra, la rampa, la pujada dels llibres amb la campana, el canó regant el test, el pas per sota la tauleta, la vista tranquil·la, la grua i la mànega al garatge (capvespre i nit), l’arribada del cotxe de policia, el banc de nit i la sala com a primer racó (construcció de les peces en calent). Dibuix pla sense WebGL comprovat per a totes les peces noves. Presentació del decorat «sense» i «atenuat» comprovades.
+- Fitxer construït (`Pim_Pam_44_activitats_v0_56.html`, 64,3 MB) obert a Chromium sense errors de consola: portada, carpeta, fitxa, panell ⓘ (44 entrades), càrrega, pestanya «Aquesta activitat» amb «Primer racó», pausa i safata del taller.
+- Les 44 imatges del panell ⓘ renderitzades de nou (`tools/vehicles-info.mjs`) i `production/info/make_info.py` executat.
+
+## Referències
+
+- Harding, G. F. A., i Jeavons, P. M. (1994). *Photosensitive epilepsy* (2a ed.). Mac Keith Press.
+- three.js authors. (2026). *three.js* (versió r187) [Programari]. https://threejs.org
+- W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2* (W3C Recommendation, 5 d’octubre de 2023). https://www.w3.org/TR/WCAG22/
+
+---
+
 # Pim Pam 0.54 · El taller de vehicles: xassís amagat, passeig vist des de fora, sis peces de cada família i safata de quatre
 
 Base: 0.53 (commit e5714e7). Demanat per en Marc el 8 de novembre de 2026: «Està bé, però els xassís haurien de quedar més ben encaixats als vestits, que no es vegi tant l’estructura de sota, i quan fa el passeig millor que no sigui una perspectiva POV, millor des de l’exterior i a més distància, perquè es vegi l’habitació. També hi hauria d’haver més diversitat de carrosseries, rodes i accessoris, 6 de cada. I que l’encercament es faci entre quatre elements, en comptes de tres. Quan tinguis tot això ja pots fer les fases 1 a 4.»

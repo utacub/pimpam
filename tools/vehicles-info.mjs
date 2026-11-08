@@ -1,8 +1,8 @@
-// El taller de vehicles (0.53; eighteen pieces since 0.54): the pictures of the «Informació» panel (the pieces on the bench, the room at its four lights) and of
+// El taller de vehicles (0.53; eighteen pieces per corner since 0.54; two corners since 0.56): the pictures of the «Informació» panel (the pieces on the bench, each room at its four lights) and of
 // the home card (the finished family car on the bench), into production/info/. Rendered with three.js in headless Chromium (SwiftShader).
 // Usage: node tools/vehicles-info.mjs  (then python3 production/info/make_info.py)
 import {openVh} from './vehicles-frames.mjs';
-import {VH_BODIES,VH_WHEELS,VH_TOPS} from '../dist/vehicles.js';
+import {VH_BODIES,VH_WHEELS,VH_TOPS,VH_CORNERS} from '../dist/vehicles.js';
 import {writeFileSync,mkdtempSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
@@ -14,20 +14,31 @@ const GO=2.6,START=3.1,RIDE=14,PARK=17.1;
 // the eighteen pieces (0.54), each settled on the chassis at the end of its snap: a body on the bare chassis, wheels under a body, an accessory on a
 // vehicle with four steps (so the accessory is a step, not the final); no round given: the first round that offers the piece is used
 const SHOTS=[];
-const WHEEL_ON={tacs:'familiar',primes:'curses',fusta:'autobus',amples:'escarabat',radis:'camioneta',tapacubs:'furgoneta'};
-const TOP_ON={baca:'familiar+tacs',remolc:'furgoneta+fusta',bandera:'curses+primes',sirena:'autobus+tapacubs',escala:'camioneta+radis',globus:'escarabat+amples'};
-for(const id of VH_BODIES.habitacio)SHOTS.push({kind:'result',picks:'-',id,t:2.35});
-for(const id of VH_WHEELS.habitacio)SHOTS.push({kind:'result',picks:WHEEL_ON[id],id,t:2.35});
-for(const id of VH_TOPS.habitacio)SHOTS.push({kind:'result',picks:TOP_ON[id],id,t:2.35,flag:'steps4'});
-// the room at its four lights: morning on the ride with the balloon, afternoon with the roof box, dusk arriving with the trailer, night in the garage
-SHOTS.push({kind:'final',round:0,picks:'familiar+tacs',id:'globus',t:START+RIDE*.62,flag:`go=${GO},tranquila`},
- {kind:'final',round:1,picks:'autobus+fusta',id:'baca',t:START+RIDE*.42,flag:`go=${GO},tranquila`},
- {kind:'final',round:2,picks:'curses+primes',id:'remolc',t:START+RIDE*.9,flag:`go=${GO}`},
- {kind:'final',round:3,picks:'furgoneta+fusta',id:'remolc',t:PARK+1.6,flag:`go=${GO}`});
+const WHEEL_ON={tacs:'familiar',primes:'curses',fusta:'autobus',amples:'escarabat',radis:'camioneta',tapacubs:'furgoneta',
+ bessones:'bombers',erugues:'totterreny',balons:'furgo',ferro:'plataforma'};
+const TOP_ON={baca:'familiar+tacs',remolc:'furgoneta+fusta',bandera:'curses+primes',sirena:'autobus+tapacubs',escala:'camioneta+radis',globus:'escarabat+amples',
+ brac:'plataforma+bessones',cano:'bombers+erugues',campana:'ambulancia+balons',manega:'furgo+ferro'};
+// the pieces of the sala sit on its own bodies (0.56); the shared wheels and accessories are shown on the sala's vehicles there
+const WHEEL_ON_SALA={...WHEEL_ON,tacs:'totterreny',tapacubs:'policia'},TOP_ON_SALA={...TOP_ON,escala:'bombers+bessones',sirena:'policia+tapacubs'};
+// each corner is shown as the first corner («Primer racó», flag sala), so its rounds are 0 to 3
+for(const corner of VH_CORNERS){const flag=corner==='sala'?'sala':'',W=corner==='sala'?WHEEL_ON_SALA:WHEEL_ON,T=corner==='sala'?TOP_ON_SALA:TOP_ON;
+ for(const id of VH_BODIES[corner])SHOTS.push({kind:'result',picks:'-',id,t:2.35,flag});
+ for(const id of VH_WHEELS[corner])SHOTS.push({kind:'result',picks:W[id],id,t:2.35,flag});
+ for(const id of VH_TOPS[corner])SHOTS.push({kind:'result',picks:T[id],id,t:2.35,flag:flag?'steps4,sala':'steps4'});
+ if(corner==='habitacio')// the room at its four lights: morning on the ride with the balloon, afternoon with the roof box, dusk arriving with the trailer, night in the garage
+  SHOTS.push({kind:'final',round:0,picks:'familiar+tacs',id:'globus',t:START+RIDE*.62,flag:`go=${GO},tranquila`},
+   {kind:'final',round:1,picks:'autobus+fusta',id:'baca',t:START+RIDE*.42,flag:`go=${GO},tranquila`},
+   {kind:'final',round:2,picks:'curses+primes',id:'remolc',t:START+RIDE*.9,flag:`go=${GO}`},
+   {kind:'final',round:3,picks:'furgoneta+fusta',id:'remolc',t:PARK+1.6,flag:`go=${GO}`});
+ else// the sala: morning crossing the books with the bell, afternoon under the table with the ladder, dusk watering the pot, night with the crane at the garage
+  SHOTS.push({kind:'final',round:0,picks:'ambulancia+balons',id:'campana',t:START+RIDE*.3,flag:`go=${GO},sala`},
+   {kind:'final',round:1,picks:'totterreny+tapacubs',id:'escala',t:START+RIDE*.6,flag:`go=${GO},tranquila,sala`},
+   {kind:'final',round:2,picks:'bombers+erugues',id:'cano',t:START+RIDE*.5,flag:`go=${GO},tranquila,sala`},
+   {kind:'final',round:3,picks:'plataforma+bessones',id:'brac',t:PARK+1.4,flag:`go=${GO},sala`});}
 
 const {browser,page,errors}=await openVh(768,432,1);
 console.log('load',await page.evaluate(()=>load()));
-const paint=async(o)=>{for(const round of(o.round===undefined?[0,1,2,3,4,5]:[o.round])){const first=await page.evaluate(o=>paint(o),{...o,round,a:0});const a=first.ids.indexOf(o.id);if(a>=0)return page.evaluate(o=>paint(o),{...o,round,a});}throw new Error(`${o.id} is not offered${o.round===undefined?'':' at round '+o.round} with ${o.picks}`);};
+const paint=async(o)=>{for(const round of(o.round===undefined?[0,1,2,3]:[o.round])){const first=await page.evaluate(o=>paint(o),{...o,round,a:0});const a=first.ids.indexOf(o.id);if(a>=0)return page.evaluate(o=>paint(o),{...o,round,a});}throw new Error(`${o.id} is not offered${o.round===undefined?'':' at round '+o.round} with ${o.picks}`);};
 const shot=async(o,file)=>{const r=await paint(o);writeFileSync(file,await page.locator('#c').screenshot({type:'png'}));return r;};
 for(let i=0;i<SHOTS.length;i++){const o=SHOTS[i];const r=await shot({kind:o.kind,round:o.round,picks:o.picks,b:o.t,flag:o.flag||'',id:o.id},tmp+`vehicles_${String(i+1).padStart(2,'0')}.png`);console.log(i+1,o.id,r.kind,r.ms.toFixed(0)+'ms');}
 await browser.close();

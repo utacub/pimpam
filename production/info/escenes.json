@@ -1996,7 +1996,7 @@
    ]
   },
   {
-   "t": "Matí",
+   "t": "L’habitació, matí",
    "l": [
     "Entra llum clara per la finestra i el taller es veu sencer: el banc, el tauler d’eines i el prestatge.",
     "Se senten merles a fora.",
@@ -2004,7 +2004,7 @@
    ]
   },
   {
-   "t": "Tarda",
+   "t": "L’habitació, tarda",
    "l": [
     "Una llum més daurada i ombres més llargues.",
     "Se sent el prat a través de la finestra.",
@@ -2012,7 +2012,7 @@
    ]
   },
   {
-   "t": "Capvespre",
+   "t": "L’habitació, capvespre",
    "l": [
     "El cel de la finestra s’enrogeix i l’habitació queda en penombra càlida.",
     "Els grills comencen a cantar.",
@@ -2020,11 +2020,187 @@
    ]
   },
   {
-   "t": "Nit",
+   "t": "L’habitació, nit",
    "l": [
     "El llum de taula s’encén i il·lumina el banc; la lluna es veu per la finestra.",
     "L’habitació fosca només té el llum càlid del taller.",
     "Els grills de la nit acompanyen la volta."
+   ]
+  },
+  {
+   "t": "Camió de bombers",
+   "l": [
+    "Corall, amb la cabina alta al davant i una caixa llarga al darrere amb una franja crema i el llit de la mànega al sostre.",
+    "És el gran de la sala: alt i pesant, es nota a cada bony.",
+    "El vidre de la cabina és una sola franja fosca; al davant, només la barra groga de para-xocs."
+   ]
+  },
+  {
+   "t": "Ambulància",
+   "l": [
+    "Groga, amb la caixa alta i quadrada, una franja corall i una creu corall a cada costat.",
+    "Porta el que calgui: amb la campana o la sirena al sostre fa d’ambulància de debò.",
+    "El parabrisa és una sola franja fosca a la cabina."
+   ]
+  },
+  {
+   "t": "Camió plataforma",
+   "l": [
+    "Taronja, amb la cabina al davant i una plataforma plana i baixa al darrere, amb capçal i baranes.",
+    "Els accessoris s’hi posen a la plataforma, no al sostre: la grua hi queda com a casa.",
+    "La plataforma baixa fa que el vehicle sembli més llarg."
+   ]
+  },
+  {
+   "t": "Tot terreny de rescat",
+   "l": [
+    "Verd, quadrat i alt, amb una roda de recanvi al darrere i una barra al sostre.",
+    "És el que passa per tot arreu: amb les erugues puja els llibres sense immutar-se.",
+    "Una sola franja de vidre fa la volta a la cabina."
+   ]
+  },
+  {
+   "t": "Cotxe de policia",
+   "l": [
+    "Blau, baix i allargat, amb una franja crema a tot volt.",
+    "Amb el llum giratori al sostre, és el cotxe de policia de la sala.",
+    "Una sola franja fosca de finestres envolta el sostre."
+   ]
+  },
+  {
+   "t": "Furgó de rescat",
+   "l": [
+    "Lila, alt i quadrat, com una caixa amb rodes, amb una franja crema i una finestra fosca al darrere.",
+    "És el més alt de tots: la campana o la mànega al sostre es veuen de lluny.",
+    "El parabrisa és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Rodes bessones de camió",
+   "l": [
+    "Rodes primes de dues en dues, com les del darrere d’un camió, amb el cub gris.",
+    "Fan un tam-tam lleuger i regular a les rajoles.",
+    "Gairebé no s’inclinen: el camió va recte."
+   ]
+  },
+  {
+   "t": "Erugues",
+   "l": [
+    "Dues cintes de goma amb dents crema sobre tres corrons corall, com les d’una excavadora de joguina.",
+    "Les dents de la cinta van passant mentre el vehicle avança, i fan cruixir el terra.",
+    "Són les que pugen millor els llibres: lentes i segures."
+   ]
+  },
+  {
+   "t": "Rodes de globus",
+   "l": [
+    "Rodes liles grosses i inflades, com globus, amb el cub crema.",
+    "El vehicle bota i es gronxa a cada bony, i fa un soroll tou de gelatina.",
+    "Són les més altes de la sala."
+   ]
+  },
+  {
+   "t": "Rodes de ferro",
+   "l": [
+    "Rodes grises de ferro amb quatre forats i el cub corall, com les d’un tractor antic.",
+    "Dringuen a cada volta sobre les rajoles.",
+    "Boten una mica i gairebé no s’inclinen."
+   ]
+  },
+  {
+   "t": "Rodes de tacs",
+   "l": [
+    "Les mateixes rodes amples de goma amb tacs de l’habitació.",
+    "Pel camí, el vehicle bota una mica a cada bony i fa un tam-tam suau.",
+    "Passen per les rajoles, la catifa i els llibres."
+   ]
+  },
+  {
+   "t": "Rodes amb tapacubs",
+   "l": [
+    "Les rodes clàssiques amb tapacubs gris i botó groc, també a la sala.",
+    "Rodolen fines i silencioses: només un buf d’aire quan arrenquen.",
+    "Gairebé no boten."
+   ]
+  },
+  {
+   "t": "Braç de grua",
+   "l": [
+    "Una torreta grisa amb un braç groc que mira cap enrere, un cable i un ganxo corall.",
+    "Al garatge, el braç puja, el cable baixa fins a terra, agafa un bloc lila i l’aixeca a poc a poc.",
+    "Al camió plataforma hi va posat a la plataforma."
+   ]
+  },
+  {
+   "t": "Canó d’aigua",
+   "l": [
+    "Una torreta grisa amb un canó corall que apunta amunt i endavant.",
+    "A mig camí engega un raig de gotes blaves cap al test de la sala, i la flor del test s’obre.",
+    "Se senten tres xiulets d’aigua, un esquitx i una campaneta."
+   ]
+  },
+  {
+   "t": "Campana",
+   "l": [
+    "Una campana groga penjada d’un suport gris, amb el batall blau.",
+    "Quan el vehicle passa pels llibres, la campana es gronxa i repica quatre vegades.",
+    "És la campana d’avís de les ambulàncies antigues."
+   ]
+  },
+  {
+   "t": "Mànega enrotllada",
+   "l": [
+    "Un rodet gris amb la mànega corall enrotllada i el broc groc.",
+    "Al garatge, el rodet gira i la mànega es desenrotlla pel terra fins al broc.",
+    "Fa el so de lliscar, un fil que es desenrotlla i un plop final."
+   ]
+  },
+  {
+   "t": "Escala de bombers",
+   "l": [
+    "La mateixa escala groga de l’habitació, que al garatge s’aixeca i s’allarga.",
+    "Als bombers i al furgó de rescat hi queda com a casa.",
+    "Puja graó a graó, amb les claves, i s’estira."
+   ]
+  },
+  {
+   "t": "Llum giratori",
+   "l": [
+    "El mateix llum giratori corall de l’habitació, que gira a poc a poc i s’encén suaument (mai més d’una pampallugada per segon).",
+    "A la sala sona amb la trompeta: dues notes, com una campana de dos tons.",
+    "Al cotxe de policia i a l’ambulància és l’accessori de debò."
+   ]
+  },
+  {
+   "t": "La sala, matí",
+   "l": [
+    "Llum clara des de la finestra de la dreta sobre la paret color préssec, les rajoles hidràuliques i el sofà corall.",
+    "Se sent una merla llunyana al carrer.",
+    "El vehicle baixa la rampa, puja els llibres, passa per sota la tauleta i arriba al garatge."
+   ]
+  },
+  {
+   "t": "La sala, tarda",
+   "l": [
+    "Llum daurada i ombres llargues sobre les rajoles.",
+    "Se senten coloms al carrer.",
+    "El circuit voreja el sofà, puja els llibres i passa per sota la tauleta."
+   ]
+  },
+  {
+   "t": "La sala, capvespre",
+   "l": [
+    "La finestra s’enrogeix i la sala queda en penombra càlida; el rellotge i el quadre es veuen contra la paret.",
+    "Els grills comencen a cantar.",
+    "El canó d’aigua rega el test al vespre."
+   ]
+  },
+  {
+   "t": "La sala, nit",
+   "l": [
+    "El llum del taller s’encén; la lluna es veu per la finestra i la sala queda fosca.",
+    "La nit se sent a fora.",
+    "Al garatge, la grua i la mànega treballen amb el llum del taller."
    ]
   }
  ]
