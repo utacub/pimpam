@@ -9,8 +9,8 @@
 import {PLJ_VS,PLJ_FS_ADVECT,PLJ_FS_CURL,PLJ_FS_FORCE,PLJ_FS_DIV,PLJ_FS_JACOBI,PLJ_FS_GRAD,PLJ_FS_DYE,PLJ_FS_RIPPLE,PLJ_FS_RENDER,PLJ_VS_SPRITE,PLJ_FS_SPRITE} from './pluja-shaders.js';
 export const PLJ={gl:null,cv:null,failed:false,lost:false,par:null,P:null,quad:null,spr:null,S:null,t:0,drops:[],keep:1,lvl:1,fill:0,view:null,pal:null,look:null};
 // the look (the style trial tunes these): liquid, cells, relief and light
-export const PLJ_LOOK=Object.freeze({damp:1.3,eps:.012,drift:.035,jacobi:24,swirl:.12,rim:.09,cell:.05,ring:.09,streak:45,level:.08,gap:.014,fill:.05,cellsOn:.85,cellsBlack:0,
- bump:.0015,rip:.004,ripAmp:.05,ripC:.45,ripF:22,ripTau:.09,ripT:.3,ripDamp:.996,ripSteps:4,spec:.7,floor:.0005,soft:1.1,sharp:1.6,gloss:.02,glint:1.2,fog:[.55,1],grow:.9,fall:.33,fallH:.55,crown:.36});
+export const PLJ_LOOK=Object.freeze({damp:1.3,eps:0,drift:.035,jacobi:24,swirl:.12,rim:.06,cell:.05,ring:.09,streak:45,level:.08,gap:.014,fill:.05,cellsOn:.85,cellsBlack:0,
+ bump:.0015,rip:.006,ripAmp:.05,ripC:.3,ripF:12,ripTau:.12,ripT:.3,ripDamp:.996,ripSteps:4,spec:.7,floor:.0005,soft:.75,sharp:1.6,gloss:.02,glint:1.2,fog:[.55,1],grow:.9,fall:.33,fallH:.55,crown:.36});
 function pljInit(){if(PLJ.gl||PLJ.failed)return PLJ.gl;if(typeof document==='undefined')return null;
  try{const cv=document.createElement('canvas');cv.width=4;cv.height=4;const gl=cv.getContext('webgl2',{alpha:false,antialias:false,depth:false,stencil:false,premultipliedAlpha:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
   if(!gl||!gl.getExtension('EXT_color_buffer_float')){PLJ.failed=true;return null;}PLJ.par=gl.getExtension('KHR_parallel_shader_compile');
@@ -77,6 +77,10 @@ export function pljDrop(d){const L=PLJ.look||PLJ_LOOK;PLJ.drops.push({grow:L.gro
 const pljEase=x=>1-(1-x)**3;
 export function pljStep(dt){const gl=PLJ.gl,S=PLJ.S,V=PLJ.view,L=PLJ.look;if(!gl||!S||PLJ.lost)return false;const t=PLJ.t+dt;PLJ.t=t;
  const grow=[],swirl=[],imp=[];
+ // a drop that lands inside a drop still spreading stops that one (its source is covered) and takes over the rest of its paint:
+ // two sources at one spot would otherwise lay a ring of each colour every frame (a fine striped spiral)
+ for(const d of PLJ.drops){if(d.hit||t<d.t0)continue;for(const o of PLJ.drops){if(o===d||!o.hit||o.A>=o.R2)continue;
+   if(Math.hypot(d.x-o.x,d.y-o.y)<Math.sqrt(o.A)+.5*d.R){const rem=o.R2-o.A;o.R2=o.A;d.R2+=rem;d.R=Math.sqrt(d.R2);}}}
  for(const d of PLJ.drops){const tau=(t-d.t0)/d.grow;if(tau>0&&d.A<d.R2){const A=d.R2*pljEase(Math.min(1,tau)),dA=A-d.A;d.A=A;if(dA>0)grow.push([d,dA]);}
   if(t>=d.t0&&t<d.t0+d.grow*1.6)swirl.push([d,1-(t-d.t0)/(d.grow*1.6)]);if(!d.hit&&t>=d.t0){d.hit=true;imp.push(d);}}
  grow.splice(0,Math.max(0,grow.length-8));swirl.splice(0,Math.max(0,swirl.length-8));
@@ -94,7 +98,7 @@ export function pljStep(dt){const gl=PLJ.gl,S=PLJ.S,V=PLJ.view,L=PLJ.look;if(!gl
   uN:grow.length,'uP[0]':{v4:p},'uQ[0]':{v4:q},'uQ2[0]':{v4:q2}});pljPass(gl,S.dye[1],V.DW,V.DH);S.dye.reverse();
  // the rings: each impact shakes the surface for a moment (a damped oscillation at the point), so several rings leave it
  o=pljUse(gl,'ripple');const im=new Float32Array(32),ia=new Float32Array(8),act=PLJ.drops.filter(d=>t-dt>=d.t0-1e-9&&t-dt<d.t0+L.ripT).slice(-8);
- act.forEach((d,i)=>{im.set([d.x,d.y,Math.max(.004,d.R*.06),-L.ripAmp*Math.sqrt(d.size)],i*4);ia[i]=t-dt-d.t0;});
+ act.forEach((d,i)=>{im.set([d.x,d.y,Math.max(.011,d.R*.08),-L.ripAmp*Math.sqrt(d.size)],i*4);ia[i]=t-dt-d.t0;});
  for(let k=0;k<L.ripSteps;k++){pljSet(gl,o,{uH:{tex:S.rip[0].texs[0],unit:0},uTx:[1/V.RW,1/V.RH],uC:L.ripC,uDamp:L.ripDamp,uAR:V.AR,uN:act.length,'uI[0]':{v4:im},'uAge[0]':{f1:ia.map(x=>x+k*dt/L.ripSteps)},uF:L.ripF,uTau:L.ripTau});pljPass(gl,S.rip[1],V.RW,V.RH);S.rip.reverse();}
  PLJ.drops=PLJ.drops.filter(d=>d.A<d.R2||t<d.t0+1.2);return true;}
 // after the last drop of a scene the paint flows on into the black that is left, until the floor is full

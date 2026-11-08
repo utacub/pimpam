@@ -26,27 +26,32 @@ export function pljPlanner(o={}){const PL=window.PL,V=PL.PLJ.view,G=48,Hs=27,P=o
  function state(){const cv=PL.pljCoverage(5);if(!vis){vis=new Uint8Array(cv.w*cv.h);for(let y=0;y<cv.h;y++)for(let x=0;x<cv.w;x++){const c=PL.pljFloorToClip(V,(x+.5)/cv.w*V.AR,(y+.5)/cv.h,0);vis[y*cv.w+x]=Math.abs(c[0])<=1&&Math.abs(c[1])<=1?1:0;}}
   let black=0,all=0;const ca=V.AR/cv.w/cv.h;for(let i=0;i<cv.w*cv.h;i++)if(vis[i]){all+=ca;if(cv.c[i]<.5)black+=ca*(1-cv.c[i]*2);}
   const sc=new Float32Array(G*Hs);S2F.forEach((f,i)=>{if(!f){sc[i]=1;return;}const x=Math.min(cv.w-1,Math.max(0,Math.floor(f[0]/V.AR*cv.w))),y=Math.min(cv.h-1,Math.max(0,Math.floor(f[1]*cv.h)));sc[i]=cv.c[y*cv.w+x];});
-  return {black,all,sc};}
+  // what counts is what the eye sees: the black share of the screen (the top rows fade into the dark far away and do not count)
+  let bn=0,nn=0;for(let j=TOP;j<Hs;j++)for(let i=0;i<G;i++){if(!S2F[j*G+i])continue;nn++;if(sc[j*G+i]<.5)bn++;}
+  return {black,all,sc,bs:bn/Math.max(1,nn),cells:nn};}
+ const TOP=3;
+ // floor area of one screen cell around cell (i, j)
+ const ca=(i,j)=>{const i2=Math.min(G-1,i+1),i1=i2-1,j2=Math.max(0,j-1),j1=j2+1,a=S2F[j*G+i1],b=S2F[j*G+i2],c=S2F[j2*G+i],d=S2F[j1*G+i];if(!a||!b||!c||!d)return 1e-4;return Math.abs(b[0]-a[0])*Math.abs(c[1]-d[1]);};
  function drop(f,R,t0,under){const ink=notes[ni++%notes.length];PL.pljDrop({x:f[0],y:f[1],R:Math.min(.24,Math.max(.022,R)),ink,under,t0,seed:rnd(),size:Math.min(1.6,Math.max(.4,R/.07))});return ink;}
  return function press(k,now){const st=state(),left=P-k,first=k===0,fall=PL.PLJ.look.fall+.05;
-  if(first){const f=S2F[Math.floor(.55*Hs)*G+G/2];const A=st.black/P*.55;drop(f,Math.sqrt(A/Math.PI),now+fall,-1);return {k,black:st.black/st.all};}
-  const far=sc=>{let best=null;for(let j=0;j<Hs;j++)for(let i=0;i<G;i++){if(sc[j*G+i]>=.5||!S2F[j*G+i])continue;let d=99;
+  if(first){const jc=Math.floor(.55*Hs),f=S2F[jc*G+G/2];const A=st.cells/P*.5*ca(G/2,jc);drop(f,Math.sqrt(A/Math.PI),now+fall,-1);return {k,bs:st.bs};}
+  const far=sc=>{let best=null;for(let j=TOP;j<Hs;j++)for(let i=0;i<G;i++){if(sc[j*G+i]>=.5||!S2F[j*G+i])continue;let d=99;
     for(let q=-10;q<=10;q++)for(let r=-10;r<=10;r++){const ii=i+r,jj=j+q;if(ii<0||jj<0||ii>=G||jj>=Hs)continue;if(sc[jj*G+ii]>=.5){const dd=Math.hypot(r,q);if(dd<d)d=dd;}}
     if(!best||d>best.d)best={d,i,j};}return best;};
   const cellR=(b)=>{const f=S2F[b.j*G+b.i],c=PL.pljFloorToClip(V,f[0],f[1],0);return (b.d+.8)/G*2*V.asp/c[2];};
-  const R=rh[(k-1)%rh.length],last=left===1||(left===2&&st.black/st.all<.15);
+  const R=rh[(k-1)%rh.length],last=left===1||(left===2&&st.bs<.12);
   if(last){// fill the holes: the black cell farthest from the paint, again and again
    const sc=st.sc.slice(),out=[];for(let n=0;n<10;n++){const best=far(sc);
     if(!best)break;const f=S2F[best.j*G+best.i],Rf=Math.max(.03,Math.min(.2,cellR(best)*1.3));
     drop(f,Rf,now+fall+n*.18,-1);out.push(best);const rs=best.d+1.5;for(let q=-12;q<=12;q++)for(let r=-12;r<=12;r++){const ii=best.i+r,jj=best.j+q;if(ii>=0&&jj>=0&&ii<G&&jj<Hs&&Math.hypot(r,q)<=rs)sc[jj*G+ii]=1;}}
-   if(left===1)PL.pljFill(true);return {k,black:st.black/st.all,holes:out.length};}
+   if(left===1)PL.pljFill(true);return {k,bs:st.bs,holes:out.length};}
   // the anchor: a painted cell at the edge of the paint with much black around it, turning around the middle (golden angle)
-  const late=st.black/st.all<.4;let best=late?far(st.sc):null;const ta=k*2.4;if(!best)for(let j=0;j<Hs;j++)for(let i=0;i<G;i++){if(st.sc[j*G+i]<.6||!S2F[j*G+i])continue;let b=0,n=0;
+  const late=st.bs<.4;let best=late?far(st.sc):null;const ta=k*2.4;if(!best)for(let j=0;j<Hs;j++)for(let i=0;i<G;i++){if(st.sc[j*G+i]<.6||!S2F[j*G+i])continue;let b=0,n=0;
    for(let q=-5;q<=5;q++)for(let r=-5;r<=5;r++){const ii=i+r,jj=j+q;if(ii<0||jj<0||ii>=G||jj>=Hs||r*r+q*q>25)continue;n++;if(st.sc[jj*G+ii]<.4)b++;}
    if(!b)continue;const a=Math.atan2(((j+.5)/Hs-.55)*9/16,(i+.5)/G-.5),da=Math.abs(Math.atan2(Math.sin(a-ta),Math.cos(a-ta)));const sco=b/n-da*.12+rnd()*.15;if(!best||sco>best.s)best={s:sco,i,j};}
   if(!best){for(let j=0;j<Hs&&!best;j++)for(let i=0;i<G;i++)if(st.sc[j*G+i]<.4&&S2F[j*G+i]){best={i,j};break;}}
   if(!best)return {k,black:0};
-  const shape=late?(k%2?'diana':'parella'):shapes[(k-1)%shapes.length],A=Math.min(st.black/Math.max(1,left-1)*1.6,late?Math.PI*cellR(best)**2*2.2:9),w=R.map((_,n)=>n===0?1.5:.55+.5*rnd()),ws=w.reduce((x,y)=>x+y,0);
+  const shape=late?(k%2?'diana':'parella'):shapes[(k-1)%shapes.length],A=Math.min(st.bs*st.cells/Math.max(1,left-1)*1.5*ca(best.i,best.j),late?Math.PI*cellR(best)**2*2.2:9),w=R.map((_,n)=>n===0?1.5:.55+.5*rnd()),ws=w.reduce((x,y)=>x+y,0);
   const f0=S2F[best.j*G+best.i];let cen=[0,0],cn=0;st.sc.forEach((v,i)=>{if(v>.6&&S2F[i]){cen[0]+=S2F[i][0];cen[1]+=S2F[i][1];cn++;}});cen=cn?[cen[0]/cn,cen[1]/cn]:f0;
   let out=[f0[0]-cen[0],f0[1]-cen[1]];const ol=Math.hypot(...out)||1;out=[out[0]/ol,out[1]/ol];const tan=[-out[1],out[0]],sg=rnd()<.5?-1:1;
   let cx=f0[0],cy=f0[1],prevR=0,under=-1;const R0=Math.sqrt(A*w[0]/ws/Math.PI);const other=[f0[0]+tan[0]*R0*1.3*sg,f0[1]+tan[1]*R0*1.3*sg];
@@ -56,7 +61,7 @@ export function pljPlanner(o={}){const PL=window.PL,V=PL.PLJ.view,G=48,Hs=27,P=o
    else{const q=n%2?other:[f0[0],f0[1]];f=[q[0]+(rnd()-.5)*.2*Rn,q[1]+(rnd()-.5)*.2*Rn];}
    f=[Math.min(V.AR-.01,Math.max(.01,f[0])),Math.min(.99,Math.max(.01,f[1]))];
    const ink=drop(f,Rn,now+fall+R[n],n===0?0:under);under=ink;prevR=Rn;}
-  return {k,shape,late,black:st.black/st.all,A:+A.toFixed(3)};};}
+  return {k,shape,late,bs:+st.bs.toFixed(3),A:+A.toFixed(3)};};}
 if(process.argv[1]&&fileURLToPath(import.meta.url)===process.argv[1]){
  const [out,mode='persp',W0='1280',H0='720',D0='2']=process.argv.slice(2),W=+W0,H=+H0,dpr=+D0,top=mode==='top';mkdirSync(out,{recursive:true});
  const browser=await playwright.chromium.launch(),page=await browser.newPage({viewport:{width:W,height:H},deviceScaleFactor:dpr});const errors=[];

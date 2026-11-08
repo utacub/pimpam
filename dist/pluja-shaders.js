@@ -68,8 +68,8 @@ void main(){vec2 f=vec2(vUv.x*uAR,vUv.y),pos=f-uDt*texture(uVel,vUv).xy;
    else{float ang=atan(d.y,d.x),st=smoothstep(.55,.92,vn(vec2(sqrt(F)*uStreak+.7*sin(ang*3.+uQ[i].w),uQ[i].w)))*.3;put(k,1.-st,A,B);put(7,st,A,B);}
    o0=A;o1=B;return;}
   pos=uP[i].xy+d*sqrt(1.-dA/d2);}
- vec2 uv=vec2(pos.x/uAR,pos.y);
- if(uv.x<0.||uv.y<0.||uv.x>1.||uv.y>1.){o0=vec4(0);o1=vec4(0);return;}
+ // beyond the edge of the screen the floor is like its edge (no black flows in from outside)
+ vec2 uv=clamp(vec2(pos.x/uAR,pos.y),.5/uDS,1.-.5/uDS);
  vec4 A=clamp(cr(uD0,uv),0.,1.),B=clamp(cr(uD1,uv),0.,1.);float s=dot(A,vec4(1))+dot(B,vec4(1));if(s>1.){A/=s;B/=s;s=1.;}
  // the paint levels out: a thin black gap between paint on both sides closes slowly (an open edge does not grow); after the
  // last drop of a scene (uFill) every edge flows on until the floor is full
@@ -83,8 +83,9 @@ void main(){vec2 f=vec2(vUv.x*uAR,vUv.y),pos=f-uDt*texture(uVel,vUv).xy;
  o0=A*uKeep;o1=B*uKeep;}`;
 // the relief of the liquid: rings from each impact (a damped wave equation, several steps a frame)
 export const PLJ_FS_RIPPLE=PLJ_HEAD+`out vec4 o;uniform sampler2D uH;uniform vec2 uTx;uniform float uC,uDamp,uAR,uF,uTau;uniform int uN;uniform vec4 uI[8];uniform float uAge[8];
-void main(){vec2 s=texture(uH,vUv).xy;float lap=texture(uH,vUv+vec2(uTx.x,0.)).x+texture(uH,vUv-vec2(uTx.x,0.)).x+texture(uH,vUv+vec2(0.,uTx.y)).x+texture(uH,vUv-vec2(0.,uTx.y)).x-4.*s.x;
- float hn=(2.*s.x-s.y+uC*lap)*uDamp;vec2 f=vec2(vUv.x*uAR,vUv.y);
+void main(){vec2 s=texture(uH,vUv).xy;vec2 nb=texture(uH,vUv+vec2(uTx.x,0.)).xy+texture(uH,vUv-vec2(uTx.x,0.)).xy+texture(uH,vUv+vec2(0.,uTx.y)).xy+texture(uH,vUv-vec2(0.,uTx.y)).xy,lap=nb-4.*s;
+ // a little viscosity damps the waves as short as the grid (they shimmer); the real rings are much longer and keep going
+ float hn=(2.*s.x-s.y+uC*lap.x+.08*(lap.x-lap.y))*uDamp;vec2 f=vec2(vUv.x*uAR,vUv.y);
  for(int i=0;i<8;i++){if(i>=uN)break;vec2 d=f-uI[i].xy;float g=uAge[i];hn+=uI[i].w*cos(6.2832*uF*g)*exp(-g/uTau)*exp(-dot(d,d)/(uI[i].z*uI[i].z));}
  o=vec4(hn,s.x,0.,1.);}`;
 // the picture: each pixel of the screen finds its point of the floor (in perspective or from above), mixes its inks in OKLab keeping
