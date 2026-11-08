@@ -1,6 +1,6 @@
 # Pim Pam 0.60 · El taller de vehicles: la desfilada de final de racó
 
-Base: 0.59 (commit c533919, en local). Tanca el pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»): després de les quatre fases (els racons), el final de racó. El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.59 (commit c533919). **Publicada** el 8 de novembre de 2026 a les 20:11 (hora de Catalunya) a https://utacub.github.io/pimpam/ , fusionada amb la 0.55 (Pluja de colors nova) en el commit 16a6b3d; el fitxer autònom passa a dir-se Pim_Pam_45_activitats_v0_60.html. Tanca el pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»): després de les quatre fases (els racons), el final de racó. El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -30,7 +30,7 @@ Base: 0.59 (commit c533919, en local). Tanca el pla aprovat per en Marc el 8 de 
 1. La durada de la desfilada (9/12/15 s) i la distància de la càmera: si convé veure els vehicles més grossos (càmera més a prop) o més habitació.
 2. L’ordre del comboi (el més nou al davant) i la sortida per la dreta: també podrien fer el circuit sencer, però és més llarg.
 3. El garatge obert pels dos caps.
-4. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil ha publicat la 0.55 (Pluja de colors nova) i el fitxer passa a dir-se Pim_Pam_45_activitats.
+4. ~~Publicar a GitHub Pages~~ Fet el 8 de novembre a les 20:11 (hora de Catalunya), dins la fusió 16a6b3d amb la 0.55.
 
 ## Referències
 
@@ -40,7 +40,7 @@ W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2*. World Wide Web C
 
 # Pim Pam 0.59 · El taller de vehicles: el bany, aigua i aire (fase 4)
 
-Base: 0.58 (commit c66d692, en local). Quarta i última de les fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.58 (commit c66d692). Quarta i última de les fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -73,7 +73,7 @@ Base: 0.58 (commit c66d692, en local). Quarta i última de les fases del pla apr
 3. Les rodes que no són rodes (flotadors, salvavides i boies): si es prefereix que els flotadors també tinguin rodetes petites a sota.
 4. La barcarola: si convé més o menys volum de l’arpa o de la flauta.
 5. Tot seguit ve la 0.60: el final de racó (cada quatre vehicles, els quatre vehicles fets desfilen junts) i el polit de rendiment.
-6. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil ha publicat la 0.55 (Pluja de colors nova).
+6. ~~Publicar a GitHub Pages~~ Fet el 8 de novembre a les 20:11 (hora de Catalunya), dins la fusió 16a6b3d amb la 0.55.
 
 ## Referències
 
@@ -85,7 +85,7 @@ W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2*. World Wide Web C
 
 # Pim Pam 0.58 · El taller de vehicles: el passadís del tren (fase 3)
 
-Base: 0.57 (commit 20b5fa4, en local). Tercera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.57 (commit 20b5fa4). Tercera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -119,7 +119,7 @@ Base: 0.57 (commit 20b5fa4, en local). Tercera de les quatre fases del pla aprov
 3. La via de fusta: si es prefereix una via més discreta (només travesses) o més marcada, és un canvi petit.
 4. La cançó de tren: si convé més o menys volum de la vora del tambor.
 5. La fase 4 (el bany, amb els vehicles d’aigua i aire) segueix tot seguit com a 0.59.
-6. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil ha publicat la 0.55 (Pluja de colors nova).
+6. ~~Publicar a GitHub Pages~~ Fet el 8 de novembre a les 20:11 (hora de Catalunya), dins la fusió 16a6b3d amb la 0.55.
 
 ## Referències
 
@@ -129,7 +129,7 @@ Base: 0.57 (commit 20b5fa4, en local). Tercera de les quatre fases del pla aprov
 
 # Pim Pam 0.57 · El taller de vehicles: el pati dels vehicles d’obres (fase 2)
 
-Base: 0.56 (commit 67e1006, en local). Segona de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.56 (commit 67e1006). Segona de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -161,7 +161,7 @@ Base: 0.56 (commit 67e1006, en local). Segona de les quatre fases del pla aprova
 3. El tub de formigó: el vehicle hi desapareix menys d’un segon; si es prefereix veure’l sempre, es pot fer el tub més curt o obert per dalt.
 4. La cançó de feina: si convé més o menys volum de les claus.
 5. La fase 3 (el passadís, amb el tren) segueix tot seguit com a 0.58.
-6. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil publica la 0.55 (Pluja de colors nova).
+6. ~~Publicar a GitHub Pages~~ Fet el 8 de novembre a les 20:11 (hora de Catalunya), dins la fusió 16a6b3d amb la 0.55.
 
 ## Referències
 
@@ -173,7 +173,7 @@ Base: 0.56 (commit 67e1006, en local). Segona de les quatre fases del pla aprova
 
 # Pim Pam 0.56 · El taller de vehicles: els racons de la casa i la sala dels vehicles d’emergències (fase 1)
 
-Base: 0.54 (commit 406dea7, en local). Primera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil; per això aquesta versió és la 0.56.
+Base: 0.54 (commit 406dea7). Primera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil; per això aquesta versió és la 0.56.
 
 ## Què canvia
 
@@ -255,7 +255,7 @@ Base: 0.53 (commit 18c1b01). Demanat per en Marc el 8 de novembre de 2026: «Est
 1. Els dos tints nous (lila i taronja) i les sis peces noves, especialment el globus lligat al darrere (a l’habitació no hi cabia a sobre del sostre de l’autobús).
 2. La distància de les tres càmeres del passeig: es poden allunyar o acostar més.
 3. Les fases 1 a 4 del pla segueixen tot seguit, cadascuna com una versió nova per revisar.
-4. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula.
+4. ~~Publicar a GitHub Pages~~ Fet el 8 de novembre a les 20:11 (hora de Catalunya), dins la fusió 16a6b3d amb la 0.55.
 
 ## Referències
 
@@ -316,7 +316,7 @@ Aquesta versió és la **fase 0** del pla: el motor en tres dimensions dins del 
 1. L’art de la fase 0: les peces, el taller, l’habitació, les quatre llums i les càmeres. Qualsevol canvi d’estil és millor ara, abans dels quatre racons següents.
 2. Si la base agrada, les fases 1 a 4 del pla (sala, pati, passadís i bany; més rodes i accessoris; final de racó cada quatre vehicles; poliment i rendiment).
 3. Quines tauletes fa servir l’escola, per ajustar els nivells de qualitat.
-4. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula.
+4. ~~Publicar a GitHub Pages~~ Fet el 8 de novembre a les 20:11 (hora de Catalunya), dins la fusió 16a6b3d amb la 0.55.
 
 ## Referències
 
