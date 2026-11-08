@@ -1,6 +1,6 @@
 # Pim Pam 0.60 · El taller de vehicles: la desfilada de final de racó
 
-Base: 0.59 (commit 750b235, en local). Tanca el pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»): després de les quatre fases (els racons), el final de racó. El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.59 (commit c533919, en local). Tanca el pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»): després de les quatre fases (els racons), el final de racó. El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -40,7 +40,7 @@ W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2*. World Wide Web C
 
 # Pim Pam 0.59 · El taller de vehicles: el bany, aigua i aire (fase 4)
 
-Base: 0.58 (commit d7dce8d, en local). Quarta i última de les fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.58 (commit c66d692, en local). Quarta i última de les fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -85,7 +85,7 @@ W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2*. World Wide Web C
 
 # Pim Pam 0.58 · El taller de vehicles: el passadís del tren (fase 3)
 
-Base: 0.57 (commit 33239bb, en local). Tercera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.57 (commit 20b5fa4, en local). Tercera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -129,7 +129,7 @@ Base: 0.57 (commit 33239bb, en local). Tercera de les quatre fases del pla aprov
 
 # Pim Pam 0.57 · El taller de vehicles: el pati dels vehicles d’obres (fase 2)
 
-Base: 0.56 (commit ca97478, en local). Segona de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+Base: 0.56 (commit 67e1006, en local). Segona de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
 
 ## Què canvia
 
@@ -173,7 +173,7 @@ Base: 0.56 (commit ca97478, en local). Segona de les quatre fases del pla aprova
 
 # Pim Pam 0.56 · El taller de vehicles: els racons de la casa i la sala dels vehicles d’emergències (fase 1)
 
-Base: 0.54 (commit a23842a, en local). Primera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil; per això aquesta versió és la 0.56.
+Base: 0.54 (commit 406dea7, en local). Primera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil; per això aquesta versió és la 0.56.
 
 ## Què canvia
 
@@ -209,7 +209,7 @@ Base: 0.54 (commit a23842a, en local). Primera de les quatre fases del pla aprov
 
 # Pim Pam 0.54 · El taller de vehicles: xassís amagat, passeig vist des de fora, sis peces de cada família i safata de quatre
 
-Base: 0.53 (commit e5714e7). Demanat per en Marc el 8 de novembre de 2026: «Està bé, però els xassís haurien de quedar més ben encaixats als vestits, que no es vegi tant l’estructura de sota, i quan fa el passeig millor que no sigui una perspectiva POV, millor des de l’exterior i a més distància, perquè es vegi l’habitació. També hi hauria d’haver més diversitat de carrosseries, rodes i accessoris, 6 de cada. I que l’encercament es faci entre quatre elements, en comptes de tres. Quan tinguis tot això ja pots fer les fases 1 a 4.»
+Base: 0.53 (commit 18c1b01). Demanat per en Marc el 8 de novembre de 2026: «Està bé, però els xassís haurien de quedar més ben encaixats als vestits, que no es vegi tant l’estructura de sota, i quan fa el passeig millor que no sigui una perspectiva POV, millor des de l’exterior i a més distància, perquè es vegi l’habitació. També hi hauria d’haver més diversitat de carrosseries, rodes i accessoris, 6 de cada. I que l’encercament es faci entre quatre elements, en comptes de tres. Quan tinguis tot això ja pots fer les fases 1 a 4.»
 
 ## Què canvia
 
