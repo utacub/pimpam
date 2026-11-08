@@ -43,7 +43,7 @@ Des de la 0.51, Flor de paper no té vint patrons: té vint flors reals en cinc 
 
 A la segona volta, el jardí surt a l’inrevés i les flors que en tenen mostren una varietat real de color (per exemple, la rosella rosa, el gira-sol vermell, la camèlia blanca o l’hibisc groc). Les flors són de paper i s’inspiren en la forma, l’obertura i els visitants de cada espècie; no són il·lustracions botàniques.
 
-## Pluja de colors
+## Gotes de pintura (abans Pluja de colors)
 
 Des de la 0.52, Pluja de colors no té vint composicions: té vint fulls de paper marbrejat en cinc tallers (`dist/marbre-tallers.js`). Cada pulsació és un pas del full, i l’últim pas és l’estampa.
 

@@ -1,5 +1,13 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.52.3 · Gotes de pintura
+
+- L’activitat del paper marbrejat (CE03, id `color-rain`) es diu **Gotes de pintura** (`PC_CAUSE.name`). L’identificador, el codi, els ajustos `mb…` i els registres no canvien. El nom «Pluja de colors» queda per a l’activitat nova que es planifica.
+
+## 0.52.2 · Pluja de colors al final de «Formes, llum i música»
+
+- `HOME_GROUPS`: `color-rain` passa al final de la carpeta `espectacles`.
+
 ## 0.52.1 · Pluja de colors: colors i motius propis de cada full
 
 - **Colors per full.** Cada full de `MB_TALLERS` porta `pal` amb dues paletes (`mbPals`: aigua fosca, aigua clara i 3–5 tintes) i el taller ja no en té. `mbPalette(g,j,lap)` torna la del full; a partir de la tercera volta gira el to en OKLCH (`mbTurn`, `MB_TURNED`, 60°·(k mod 6) + 17°·⌊k/6⌋ amb k = ⌊volta/2⌋, retallant el croma perquè no surti de la gamma). Alt contrast: `MB_CONTRAST` té 8 colors per fons i `mbContrastSet(g,j,lap)` en tria 4 per full (com a màxim 1 en comú amb el full anterior si es pot, i 2 com a molt; el primer color mai no és del veí).
