@@ -2554,6 +2554,182 @@
     "La nit se sent a fora.",
     "Al garatge el fanal queda encès i els troncs roden fins a la placa."
    ]
+  },
+  {
+   "t": "Hidroavió",
+   "l": [
+    "Groc, amb l’ala alta al damunt, dos flotadors petits a les puntes de l’ala, la cua amb el timó i una punta d’hèlix fosca al nas.",
+    "És l’avió de l’aigua: hi van bé els flotadors a sota i la màquina de bombolles a l’ala.",
+    "El vidre de la cabina és una sola franja fosca davant de l’ala; al davant, només la barra groga de para-xocs."
+   ]
+  },
+  {
+   "t": "Barca de pesca",
+   "l": [
+    "Blava, amb la proa alçada, una franja crema al buc, la caseta del timó al darrere i un salvavides corall a cada costat.",
+    "Hi van bé les rodes de pales i l’àncora.",
+    "El vidre de la caseta és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Submarí",
+   "l": [
+    "Lila, llarg i arrodonit pels dos caps, amb la torreta al mig, una franja crema, les aletes de popa i l’hèlix al darrere.",
+    "Hi van bé les boies i el periscopi, que surt de la torreta.",
+    "El vidre de la torreta és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Helicòpter",
+   "l": [
+    "Corall, amb la cabina rodona al davant, la cua llarga amb l’aleta, el rotor petit de la cua i el rotor gran al damunt, que gira a poc a poc tot el camí.",
+    "Els accessoris s’enganxen a la cua.",
+    "El vidre de la cabina és una sola franja fosca; al davant, només la barra groga."
+   ]
+  },
+  {
+   "t": "Avioneta",
+   "l": [
+    "Verda, amb l’ala baixa a mitja alçada, la cua amb el timó i l’hèlix de dues pales al nas, que gira a poc a poc quan avança.",
+    "Hi van bé les rodes amples i l’hèlix del sostre.",
+    "El vidre de la cabina és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Vaixell de rodes",
+   "l": [
+    "Taronja, amb dues cobertes, la xemeneia marina amb la cinta crema i les caixes de les rodes de pales als costats.",
+    "Hi van bé les rodes de pales i l’àncora.",
+    "El vidre de la coberta és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Flotadors",
+   "l": [
+    "Dos flotadors crema, llargs i arrodonits, amb una ratlla blava, un a cada costat del xassís.",
+    "No giren: el vehicle llisca i es gronxa una mica.",
+    "Se sent un xiuxiueig d’aire a cada tram."
+   ]
+  },
+  {
+   "t": "Rodes de pales",
+   "l": [
+    "Rodes corall amb el cub crema i vuit pales crema al voltant.",
+    "Quan giren esquitxen: se senten esquitxos petits i regulars.",
+    "El vehicle bota una mica i s’inclina a les corbes."
+   ]
+  },
+  {
+   "t": "Salvavides",
+   "l": [
+    "Rodes que són salvavides: anelles crema amb quatre franges corall.",
+    "Boten força, com una pilota tova, i se sent un boing a cada bot.",
+    "Es gronxen una mica a les corbes."
+   ]
+  },
+  {
+   "t": "Boies",
+   "l": [
+    "Rodes que són boies: boles taronja amb una cinta crema al mig.",
+    "Boten i es gronxen molt; a cada bot se sent un plof.",
+    "Són les rodes més rodones del taller."
+   ]
+  },
+  {
+   "t": "Rodes amples de goma",
+   "l": [
+    "Les mateixes rodes amples grises de l’habitació, amb el cub corall.",
+    "Boten i es gronxen força; se sent un boing a cada bot.",
+    "Van bé amb l’avioneta."
+   ]
+  },
+  {
+   "t": "Rodes de globus",
+   "l": [
+    "Les mateixes rodes liles i molt grosses de la sala, amb el cub crema.",
+    "Boten molt, com una gelatina, i se sent un tremolor a cada bot.",
+    "Van bé amb el vaixell de rodes."
+   ]
+  },
+  {
+   "t": "Hèlix",
+   "l": [
+    "Un pal marina amb tres pales crema al capdamunt.",
+    "Tot el camí les pales giren a poc a poc (mitja volta per segon) i es veu un disc clar; quietes, si es demana menys moviment.",
+    "Al començar se sent una ràfega d’aire i després un brunzit suau."
+   ]
+  },
+  {
+   "t": "Periscopi",
+   "l": [
+    "Una caixa marina amb un tub gris a dins.",
+    "A la meitat del camí el tub puja, fa una volta sencera mirant l’habitació i torna a baixar.",
+    "Se sent lliscar amunt, un clic i lliscar avall."
+   ]
+  },
+  {
+   "t": "Àncora",
+   "l": [
+    "Una àncora grisa penjada d’un petit braç crema.",
+    "Al garatge el braç gira cap a fora, s’allarga i l’àncora baixa amb la cadena fins a la placa.",
+    "Se sent el gir, la cadena i el cop en tocar a terra."
+   ]
+  },
+  {
+   "t": "Màquina de bombolles",
+   "l": [
+    "Una caixa blava amb una anella crema al damunt i una maneta groga.",
+    "Tot el camí, i també al garatge, en surten bombolles de sabó que pugen, es gronxen i peten.",
+    "Se sent un blub a cada bombolla."
+   ]
+  },
+  {
+   "t": "Bandereta",
+   "l": [
+    "La mateixa bandereta corall de l’habitació, sobre el pal crema.",
+    "Oneja tot el camí i al final cau la pancarta d’arribada.",
+    "Se sent la fanfara d’arribada."
+   ]
+  },
+  {
+   "t": "Globus lligat",
+   "l": [
+    "El mateix globus lila de l’habitació, lligat al darrere.",
+    "Al garatge es deslliga i se’n va volant.",
+    "Al bany, la seva cançoneta la fa l’arpa."
+   ]
+  },
+  {
+   "t": "El bany, matí",
+   "l": [
+    "Llum clara sobre la paret blavosa amb la franja de rajoles blanques, el terra de rajoles blanques i blaves, la banyera amb escuma i l’ànec, la pica i el tovalloler.",
+    "Se senten les gotes que cauen.",
+    "El vehicle baixa la rampa, passa per davant del tovalloler, travessa l’estora blava, puja la tarima de fusta i arriba al garatge."
+   ]
+  },
+  {
+   "t": "El bany, tarda",
+   "l": [
+    "Llum blanca de tarda; se senten bombolles.",
+    "La cançó del bany és una barcarola en sis per vuit: marimba, arpa, glockenspiel i una flauta llarga cada dos compassos, a 84 pulsacions.",
+    "El cistell de la roba i el tamboret són a prop de la pica i de la banyera."
+   ]
+  },
+  {
+   "t": "El bany, capvespre",
+   "l": [
+    "Llum taronja i baixa, amb ombres llargues sobre les rajoles.",
+    "Se senten gotes grosses.",
+    "Si el vehicle porta periscopi, puja a la meitat del camí; l’hèlix gira tot el camí."
+   ]
+  },
+  {
+   "t": "El bany, nit",
+   "l": [
+    "El llum del taller s’encén; la lluna es veu per la finestra i el bany queda fosc i blavós.",
+    "La nit se sent a fora.",
+    "Al garatge l’àncora baixa fins a la placa i les bombolles continuen pujant."
+   ]
   }
  ]
 }

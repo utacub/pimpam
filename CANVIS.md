@@ -1,3 +1,48 @@
+# Pim Pam 0.59 · El taller de vehicles: el bany, aigua i aire (fase 4)
+
+Base: 0.58 (commit d7dce8d, en local). Quarta i última de les fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+
+## Què canvia
+
+- **El bany, cinquè racó de la casa.** El cicle és ara habitació → sala → pati → passadís → bany → habitació… L’ajust «Primer racó» (pestanya «Aquesta activitat») admet el bany. El bany té una paret blavosa amb una franja de rajoles blanques amb juntes grises i una tira menta al damunt, el terra d’escaquer de rajoles blanques i blau clar, una finestra a la dreta, una banyera blanca amb l’aixeta, l’aigua, l’escuma i un ànec de goma groc (sense ulls, com totes les joguines del taller), una pica de peu amb el sabó i el got dels raspalls, un prestatge amb flascons de colors, un tamboret menta, un tovalloler de fusta amb una tovallola corall i una menta, un cistell de la roba, una estora blava i una tarima de fusta de llistons.
+- **El circuit del bany.** Baixa la rampa, passa per davant del tovalloler, travessa l’estora blava, puja la tarima de fusta (una mica amunt, com el pont del passadís però baix) i arriba al garatge.
+- **Sis vehicles de l’aigua i de l’aire.** Hidroavió (groc, amb l’ala alta i prima al damunt, dos flotadors petits a les puntes de l’ala, la cua amb el timó i la punta d’hèlix al nas), barca de pesca (blava, amb la proa alçada, una franja crema, la caseta del timó al darrere i un salvavides corall a cada costat), submarí (lila, arrodonit pels dos caps, amb la torreta, una franja crema, les aletes de popa i l’hèlix al darrere), helicòpter (corall, amb la cabina rodona, la cua llarga amb l’aleta i el rotor petit, i el rotor gran que gira a poc a poc quan avança; els accessoris s’hi enganxen a la cua), avioneta (verda, amb l’ala baixa, la cua i l’hèlix de dues pales al nas, que gira a poc a poc quan avança) i vaixell de rodes (taronja, amb dues cobertes, la xemeneia amb la cinta crema i les caixes de les rodes de pales). Tots amb una sola franja de vidre fosc i una sola barra groga de para-xocs: cap cara.
+- **Sis rodes.** Noves: flotadors (dues càpsules crema amb una ratlla blava, una a cada costat; no giren, i el vehicle llisca i es gronxa una mica), rodes de pales (corall amb el cub crema i vuit pales al voltant; esquitxen), salvavides (anelles crema amb quatre franges corall; boten força) i boies (boles taronja amb una cinta crema; boten i es gronxen). Compartides: les amples de goma de l’habitació i les de globus de la sala.
+- **Sis accessoris.** Nous: l’hèlix (tres pales crema sobre un pal, que giren a poc a poc tot el camí —mitja volta per segon— amb un disc clar; quietes si es demana menys moviment i al garatge), el periscopi (a la meitat del camí el tub puja, fa una volta sencera i torna a baixar; a la safata es mostra pujat perquè es reconegui), l’àncora (al garatge el petit braç gira cap a la càmera, s’allarga i l’àncora marina baixa amb la cadena fins a la placa) i la màquina de bombolles (tot el camí, i també al garatge, en surten bombolles de sabó translúcides que pugen, es gronxen i peten). Compartits: la bandereta i el globus (al bany, la cançoneta del globus la fa l’arpa i no el piano).
+- **La barcarola del bany.** Música pròpia en Mi bemoll major, en sis per vuit (la negra amb punt a 84): el sonall marca l’u i el quatre i la vora del tambor el tres i el sis quan la banda és sencera, la marimba fa el baix a l’u i al quatre, l’arpa arpegia totes les corxeres, el glockenspiel porta la tonada i la flauta canta una nota llarga a la quinta cada dos compassos; la cadència del garatge resol al quatre amb un acord d’arpa i de glockenspiel i la flauta. Els tastos de les peces: les carrosseries amb l’arpa, els flotadors amb un xiuxiueig, les pales amb esquitxos, els salvavides amb boings, les boies amb plofs, l’hèlix amb una ràfega, el periscopi lliscant, l’àncora amb l’estrebada i el xoc, les bombolles amb blubs. L’aire del bany: gotes al matí, bombolles a la tarda, gotes grosses al capvespre i la nit.
+- **Panell ⓘ i catàleg.** 110 entrades: les divuit peces i les quatre hores de cada racó, amb una imatge cadascuna (22 de noves). `ACTIVITATS.md` actualitzat.
+
+## Regles que es mantenen
+
+- Cap paraula escrita durant l’encercament, ordre d’esquerra a dreta, ressaltat clar de la suite, pista del commutador després d’una volta en blanc, senyal d’espera; cap cara a les joguines ni a l’ànec (una sola franja de vidre, una sola barra groga de para-xocs). Criteris de disseny propis, no evidència.
+- Fotosensibilitat: cap gag nou fa parpellejar res. Els rotors i l’hèlix giren a menys d’una volta per segon (l’hèlix de tres pales a mitja volta per segon, el rotor de l’helicòpter a un terç, l’hèlix de l’avioneta a tres quarts) i les bombolles, el periscopi i l’àncora són moviments lents; tot per sota dels tres canvis per segon del criteri 2.3.1 (W3C, 2023), que és el llindar de referència per a la fotosensibilitat en contingut web (Harding i Jeavons, 1994, per a la base clínica del llindar). Amb «menys moviment» els rotors i l’hèlix queden quiets i les bombolles, repartides i quietes.
+- Música i sons només dels bancs de la suite (cap enregistrament nou): marimba, arpa, glockenspiel i flauta dels instruments ja mostrejats; sonall, vora de tambor, xiuxiueigs, esquitxos, boings, plofs, lliscades, estrebades i xocs dels bancs de foley existents; gotes, bombolles i nit dels paisatges sonors existents.
+- El vehicle es veu sempre: el tovalloler és al costat del circuit, no al damunt, i al bany no hi ha cap tub ni túnel.
+
+## Proves
+
+- `node --test tests/*.test.mjs`: 422 de 425 verdes (les 3 vermelles són les de sempre: enregistraments de la masia, dels instruments i dels detectius que no són al disc); `tests/vehicles.test.mjs` (10) i `tests/info.test.mjs` actualitzades i verdes.
+- Fotogrames del bany amb three.js (SwiftShader, 1280×720 i 2560×1440): el banc amb les quatre safates (carrosseries, flotadors i rodes, accessoris amb el periscopi pujat), l’hidroavió aterrant, les bombolles sobre l’estora, l’avioneta amb l’hèlix a la rampa, el submarí amb el periscopi pujat a la tarima, la barca amb les pales i l’àncora, l’àncora baixant al garatge (nit), les bombolles al garatge (nit), la vista tranquil·la del bany sencer, l’helicòpter amb el globus, el capvespre amb decoració atenuada, sense decoració, i el dibuix pla (safata i passeig).
+- Fitxer construït (`Pim_Pam_44_activitats_v0_59.html`, 65.579.130 bytes) obert a Chromium sense errors de consola: portada, carpeta, fitxa, panell ⓘ (110 entrades), càrrega, pestanya «Aquesta activitat» amb «Primer racó», pausa i safata del taller.
+- Les 110 imatges del panell ⓘ renderitzades de nou (`tools/vehicles-info.mjs`) i `production/info/make_info.py` executat.
+
+## Per revisar (en Marc)
+
+1. El bany: els colors (paret blavosa, rajoles blanques i blaves, estora blava), la banyera amb l’ànec, la pica, el tovalloler, la tarima i el cistell; qualsevol moble es pot canviar.
+2. Els sis vehicles nous i els quatre accessoris nous, sobretot l’hèlix (si convé més o menys velocitat), el periscopi i l’àncora al garatge.
+3. Les rodes que no són rodes (flotadors, salvavides i boies): si es prefereix que els flotadors també tinguin rodetes petites a sota.
+4. La barcarola: si convé més o menys volum de l’arpa o de la flauta.
+5. Tot seguit ve la 0.60: el final de racó (cada quatre vehicles, els quatre vehicles fets desfilen junts) i el polit de rendiment.
+6. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil ha publicat la 0.55 (Pluja de colors nova).
+
+## Referències
+
+Harding, G. F. A., i Jeavons, P. M. (1994). *Photosensitive epilepsy* (2a ed.). Mac Keith Press.
+
+W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2*. World Wide Web Consortium. https://www.w3.org/TR/WCAG22/
+
+---
+
 # Pim Pam 0.58 · El taller de vehicles: el passadís del tren (fase 3)
 
 Base: 0.57 (commit 33239bb, en local). Tercera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.

@@ -24,8 +24,10 @@ const WHEEL_ON_SALA={...WHEEL_ON,tacs:'totterreny',tapacubs:'policia'},TOP_ON_SA
 const WHEEL_ON_PATI={...WHEEL_ON,corrons:'piconadora',grans:'tractor',massisses:'carreto',gegants:'buldozer',tacs:'bolquet',erugues:'excavadora'},TOP_ON_PATI={...TOP_ON,pala:'excavadora+erugues',caixa:'bolquet+grans',tambor:'piconadora+corrons',cons:'carreto+massisses',remolc:'tractor+gegants',sirena:'buldozer+tacs'};
 // the hallway (0.58): its pieces on its own train bodies (each body and wheel set is offered in the round the tool finds for the shot)
 const WHEEL_ON_PASSADIS={...WHEEL_ON,pestanya:'mercaderies',bieles:'locomotora',vagoneta:'vago',faldons:'tramvia',fusta:'cua',radis:'maniobres'},TOP_ON_PASSADIS={...TOP_ON,xemeneia:'locomotora+bieles',xiulet:'tramvia+faldons',fanal:'vago+vagoneta',troncs:'mercaderies+vagoneta',campana:'cua+fusta',bandera:'maniobres+radis'};
+// the bathroom (0.59): its pieces on its own water and air bodies
+const WHEEL_ON_BANY={...WHEEL_ON,flotadors:'hidroavio',pales:'barca',salvavides:'submari',boies:'helicopter',amples:'avioneta',balons:'vapor'},TOP_ON_BANY={...TOP_ON,helix:'avioneta+amples',periscopi:'submari+boies',ancora:'barca+pales',bombolles:'hidroavio+salvavides',bandera:'vapor+balons',globus:'helicopter+boies'};
 // each corner is shown as the first corner («Primer racó», flag sala), so its rounds are 0 to 3
-for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={habitacio:WHEEL_ON,sala:WHEEL_ON_SALA,pati:WHEEL_ON_PATI,passadis:WHEEL_ON_PASSADIS}[corner],T={habitacio:TOP_ON,sala:TOP_ON_SALA,pati:TOP_ON_PATI,passadis:TOP_ON_PASSADIS}[corner];
+for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={habitacio:WHEEL_ON,sala:WHEEL_ON_SALA,pati:WHEEL_ON_PATI,passadis:WHEEL_ON_PASSADIS,bany:WHEEL_ON_BANY}[corner],T={habitacio:TOP_ON,sala:TOP_ON_SALA,pati:TOP_ON_PATI,passadis:TOP_ON_PASSADIS,bany:TOP_ON_BANY}[corner];
  for(const id of VH_BODIES[corner])SHOTS.push({kind:'result',picks:'-',id,t:2.35,flag});
  for(const id of VH_WHEELS[corner])SHOTS.push({kind:'result',picks:W[id],id,t:2.35,flag});
  for(const id of VH_TOPS[corner])SHOTS.push({kind:'result',picks:T[id],id,t:2.35,flag:flag?`steps4,${flag}`:'steps4'});
@@ -44,6 +46,11 @@ for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={hab
    {kind:'final',round:1,picks:'maniobres+radis',id:'xemeneia',t:START+RIDE*.35,flag:`go=${GO},passadis`},
    {kind:'final',round:2,picks:'cua+pestanya',id:'xiulet',t:START+RIDE*.53,flag:`go=${GO},tranquila,passadis`},
    {kind:'final',round:3,picks:'locomotora+bieles',id:'fanal',t:PARK+1.4,flag:`go=${GO},passadis`});
+ else if(corner==='bany')// the bathroom (the tops a round offers: 0 ancora/bombolles/bandera/globus, 1 bombolles…helix, 2 bandera…periscopi, 3 globus/helix/periscopi/ancora): morning blowing bubbles on the mat, afternoon with the propeller, dusk with the periscope up on the duckboard, night with the anchor down at the garage
+  SHOTS.push({kind:'final',round:0,picks:'hidroavio+pales',id:'bombolles',t:START+RIDE*.5,flag:`go=${GO},tranquila,bany`},
+   {kind:'final',round:1,picks:'avioneta+salvavides',id:'helix',t:START+RIDE*.4,flag:`go=${GO},bany`},
+   {kind:'final',round:2,picks:'submari+flotadors',id:'periscopi',t:START+RIDE*.55,flag:`go=${GO},tranquila,bany`},
+   {kind:'final',round:3,picks:'vapor+pales',id:'ancora',t:PARK+1.4,flag:`go=${GO},bany`});
  else// the sala: morning crossing the books with the bell, afternoon under the table with the ladder, dusk watering the pot, night with the crane at the garage
   SHOTS.push({kind:'final',round:0,picks:'ambulancia+balons',id:'campana',t:START+RIDE*.3,flag:`go=${GO},sala`},
    {kind:'final',round:1,picks:'totterreny+tapacubs',id:'escala',t:START+RIDE*.6,flag:`go=${GO},tranquila,sala`},
