@@ -83,7 +83,7 @@ function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('sh
 const keyName=k=>({Space:'Espai',Enter:'Retorn',ArrowRight:'→',ArrowLeft:'←',ArrowUp:'↑',ArrowDown:'↓'}[k]||k.replace('Key','').replace('Digit',''));
 const sourceName=()=>({keyboard:'Teclat / adaptador USB o Bluetooth',pointer:'Botons de ratolí / adaptador',gamepad:'Comandament / adaptador Gamepad'}[settings.source]);
 // 0.50.5: the version, small, next to the Pim Pam logo on the home page (Marc, 7 November 2026)
-const APP_VERSION='0.52.2';
+const APP_VERSION='0.52.4';
 function brands(version=false){return `<a class="brands" href="#" data-home aria-label="UTAC · Pim Pam, inici"><img class="utac-logo" src="./assets/utac.png" alt="UTAC"><span class="brand-divider"></span><img class="pim-logo" src="./assets/pim-pam.png" alt="Pim Pam">${version?`<span class="app-version" aria-label="Versió ${APP_VERSION}">v${APP_VERSION}</span>`:''}</a>`}
 function header(){return `<header class="topbar">${brands(true)}<nav class="nav" aria-label="Principal">${userChip()}<button class="settings-button" data-settings aria-label="Configuració">${icon('settings')}<span>Configuració</span></button></nav></header>`}
 // 0.46: who is playing, at the top of the menu; it opens the users of this device.
@@ -390,8 +390,11 @@ function openInfo(id){const it=id?catalog.find(g=>g.id===id):page==='game'&&game
  const d=document.createElement('dialog');d.className='dialog info-dialog';d.id='scene-info';d.setAttribute('aria-label',`Les escenes de ${it.name}`);
  d.innerHTML=`<div class="dialog-head info-head"><div><h2>${esc(it.name)}</h2><p>${esc(SCENE_INFO_HEAD[it.id]||'')} Són dibuixos: alguns colors i gestos són una interpretació artística.</p></div><button class="icon-button" data-close-info aria-label="Tanca" title="Tanca">${icon('close')}</button></div><div class="dialog-body info-grid">${items.map((it,i)=>`<article class="info-card"><img src="${it.img}" alt="" loading="lazy"><h3><span>${i+1}</span>${esc(it.t)}</h3>${it.l.map(x=>`<p>${esc(x)}</p>`).join('')}</article>`).join('')}</div>`;
  (document.fullscreenElement||document.body).append(d);d.addEventListener('cancel',e=>{e.preventDefault();closeInfo();});d.showModal();d.querySelector('[data-close-info]')?.focus();}
-function closeInfo(){const d=$('#scene-info');if(d){d.close();d.remove();}engine.cancel();engine.resume();if(page==='game'&&infoResume)resumeGame();infoResume=false;if(lastFocus?.isConnected)lastFocus.focus();}
-function closeSettings(){learn=null;const d=$('#settings');if(d){d.close();d.remove();}engine.cancel();engine.resume();scan.elapsed=0;if(page==='home'){home();}else if(page==='game'){$('.switch-buttons').innerHTML=switchButtons(game.item);updateGameUI();}if(lastFocus?.isConnected)lastFocus.focus();}
+// 0.52.4: a button touched with the finger or the mouse must not keep the blue focus frame. Focus goes back to the button that opened a
+// window only when the person moves with the keyboard (Tab); otherwise nothing keeps the focus, and a switch press later cannot light it
+function returnFocus(){if(keyboardNavigation&&lastFocus?.isConnected)lastFocus.focus();else document.activeElement?.blur?.();lastFocus=null;}
+function closeInfo(){const d=$('#scene-info');if(d){d.close();d.remove();}engine.cancel();engine.resume();if(page==='game'&&infoResume)resumeGame();infoResume=false;returnFocus();}
+function closeSettings(){learn=null;const d=$('#settings');if(d){d.close();d.remove();}engine.cancel();engine.resume();scan.elapsed=0;if(page==='home'){home();}else if(page==='game'){$('.switch-buttons').innerHTML=switchButtons(game.item);updateGameUI();}returnFocus();}
 function segmented(key,values){return `<div class="segmented" role="group">${values.map(([v,label])=>`<button data-setting="${key}" data-value="${v}" class="${settings[key]===v?'active':''}" aria-pressed="${settings[key]===v}">${label}</button>`).join('')}</div>`}
 function range(key,label,min,max,step,unit=''){return `<div class="field"><label for="${key}">${label} <output id="out-${key}">${settings[key]}${unit}</output></label><input id="${key}" data-range="${key}" type="range" min="${min}" max="${max}" step="${step}" value="${settings[key]}"></div>`}
 function checkbox(key,title,hint){return `<label class="check-row"><span>${title}<small>${hint}</small></span><input type="checkbox" data-check="${key}" ${settings[key]?'checked':''}></label>`}
@@ -481,7 +484,7 @@ function switchUser(id){if(id===usCurrent())return;logEnd();if(!usSwitch(id))ret
 let usersCounts=new Map(),usersMsg='';
 async function openUsers(){if($('dialog[open]'))return;lastFocus=document.activeElement;const d=document.createElement('dialog');d.className='dialog users-dialog';d.id='users';d.setAttribute('aria-label','Usuaris d’aquest dispositiu');document.body.append(d);
  d.addEventListener('cancel',e=>{if(e.target!==d)return;e.preventDefault();closeUsers();});usersMsg='';drawUsers();d.showModal();usersCounts=await ufCounts();drawUsers();}
-function closeUsers(focus=true){const d=$('#users');if(d){d.close();d.remove();}engine.cancel();engine.resume();if(focus&&lastFocus?.isConnected)lastFocus.focus();}
+function closeUsers(focus=true){const d=$('#users');if(d){d.close();d.remove();}engine.cancel();engine.resume();if(focus)returnFocus();}
 const fmtDate=t=>{try{return new Date(t).toLocaleDateString('ca',{day:'numeric',month:'long',year:'numeric'});}catch{return usDay(t);}};
 function userRow(id){const cur=id===usCurrent(),u=usUser(id),guest=id===US_GUEST,acts=usersCounts.get(id)||0,log=guest?[]:usLog(id),last=log.length?log[log.length-1].t:0;
  const meta=guest?'Per defecte. Els ajustos es desen al dispositiu; no guarda registre.':`${acts} ${acts===1?'activitat personalitzada':'activitats personalitzades'} · ${log.length} ${log.length===1?'sessió':'sessions'}${last?' · última: '+fmtDate(last):''}`;
@@ -546,7 +549,9 @@ document.addEventListener('contextmenu',e=>{if(settings.source==='pointer'&&(e.t
 document.addEventListener('keydown',e=>{if(e.code==='Tab')keyboardNavigation=true;if(keyboardNavigation&&['Space','Enter'].includes(e.code)&&e.target.closest('button,a')&&!e.target.closest('[data-switch],[data-test]')&&learn===null)return;if(learn!==null){e.preventDefault();if(e.code==='Escape'){learn=null;drawSettings();return;}const keys=[...settings.keys];keys[learn]=e.code;if(changeSetting('keys',keys)){learn=null;drawSettings();}return;}
  if(e.code==='Escape'&&page==='game'&&!$('dialog[open]')){e.preventDefault();home();return;}if(settings.source!=='keyboard'||e.ctrlKey||e.metaKey||e.altKey)return;
  if(e.target.closest('input,select,textarea')||e.target.isContentEditable)return;if($('dialog[open]')&&!$('#test-log'))return;
- const i=settings.keys.indexOf(e.code);if(i<0)return;e.preventDefault();if(e.repeat)return;audioStart();engine.down(i,'key-'+e.code);});
+ const i=settings.keys.indexOf(e.code);if(i<0)return;e.preventDefault();if(!keyboardNavigation&&document.activeElement?.matches?.('button,a'))document.activeElement.blur();if(e.repeat)return;audioStart();engine.down(i,'key-'+e.code);});
+// 0.52.4: after a click with the finger or the mouse on a button outside a window, the button lets the focus go (no frame left behind)
+document.addEventListener('click',e=>{if(keyboardNavigation||e.detail===0)return;const b=e.target.closest?.('button,a');if(b&&!b.closest('dialog')&&document.activeElement===b)b.blur();});
 document.addEventListener('keyup',e=>{const i=settings.keys.indexOf(e.code);if(i>=0)engine.up(i,'key-'+e.code);});
 window.addEventListener('pagehide',()=>{if(page==='game')logEnd();});
 window.addEventListener('blur',()=>{engine.cancel();if(page==='game')pauseGame();engine.cancel();stopSound();});

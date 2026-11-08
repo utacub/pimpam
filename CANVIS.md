@@ -1,3 +1,15 @@
+# Pim Pam 0.52.4 · Sense marc blau als botons tocats
+
+Base: 0.52.2 (commit 1ebe3ec). Demanat per en Marc el 8 de novembre de 2026: «A les activitats que tenen un punt d'informació, si el toques durant l'activitat, tendeix a quedar marcat amb un marc blau, que no marxa fins que fas clic en un altre botó».
+
+- **Causa (verificada al navegador).** En tancar la finestra ⓘ, el focus tornava al botó ⓘ. Quan després es premia el commutador (una tecla), Chrome passava a mostrar el focus de teclat (`:focus-visible`) i dibuixava el marc blau al voltant del botó. Reproduït amb Chromium: abans, després de tocar ⓘ, tancar i prémer Espai, el botó quedava amb `:focus-visible`; ara no.
+- **Correcció.** Un botó tocat amb el dit o el ratolí deixa anar el focus després del clic (també la pausa, el so i els altres botons de l'activitat i de la portada). En tancar les finestres d'informació, d'ajustos i d'usuaris, el focus només torna al botó d'origen si s'està navegant amb el teclat (Tab). Si una tecla del commutador es prem mentre un botó té el focus sense navegació de teclat, el botó el deixa anar.
+- **Accessibilitat de teclat.** Qui navega amb Tab continua veient el marc blau i, en tancar una finestra, el focus torna al botó que l'havia obert (comprovat).
+- **Proves.** 412 de 415 superades; les 3 que fallen ja fallaven a la 0.52.2 (mida dels fitxers de so de la masia, dels instruments gravats i de Detectius de sons) i no tenen relació amb aquest canvi.
+- **Pendent.** La 0.52.3 (Gotes de pintura, local en un altre fil) s'haurà d'ajuntar amb aquesta abans de publicar.
+
+---
+
 # Pim Pam 0.52.2 · Pluja de colors al final de la carpeta
 
 Base: 0.52.1. Demanat per en Marc el 8 de novembre de 2026: «PUblica-ho, i posa aquesta activitat al final de la carpeta».
