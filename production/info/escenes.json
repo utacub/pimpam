@@ -2202,6 +2202,182 @@
     "La nit se sent a fora.",
     "Al garatge, la grua i la mànega treballen amb el llum del taller."
    ]
+  },
+  {
+   "t": "Camió bolquet",
+   "l": [
+    "Taronja, amb la cabina alta al davant i una caixa baixa al darrere amb baranes marina.",
+    "És el camió de les obres: hi va bé la caixa basculant, que bolca la sorra al garatge.",
+    "El parabrisa és una sola franja fosca; al davant, només la barra groga de para-xocs."
+   ]
+  },
+  {
+   "t": "Excavadora",
+   "l": [
+    "Groga, amb la cabina alta al darrere i el motor llarg i baix al davant, amb una reixa marina.",
+    "Amb el braç amb pala al sostre fa d’excavadora de debò: excava al sorral.",
+    "El vidre de la cabina és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Buldòzer amb pala frontal",
+   "l": [
+    "Corall, quadrat, amb la cabina al mig i una pala grisa inclinada al davant, amb dos braços.",
+    "Empeny el que troba; amb les erugues és el més lent i segur.",
+    "El parabrisa és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Piconadora",
+   "l": [
+    "Verda, amb la cabina alta al darrere, un sostre crema sobre la cabina i el capó baix al davant.",
+    "És la que millor va amb els corrons: aplana el terra a poc a poc.",
+    "El vidre de la cabina és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Carretó elevador",
+   "l": [
+    "Blau i curt, amb la cabina al mig, un màstil marina al davant i dues forquilles grises arran de terra.",
+    "Les forquilles van al davant de tot: el carretó és més curt que els altres i la barra groga queda darrere les forquilles.",
+    "El vidre de la cabina és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Tractor",
+   "l": [
+    "Lila, amb la cabina alta al darrere, el capó llarg al davant i un tub d’escapament marina que puja del capó.",
+    "Amb les rodes grans del darrere és el tractor de la masia; amb les gegants, un tractor de tacs.",
+    "El vidre de la cabina és una sola franja fosca."
+   ]
+  },
+  {
+   "t": "Corrons de piconadora",
+   "l": [
+    "Dos cilindres grisos amples com el vehicle, amb els caps marina, en lloc de rodes.",
+    "Roden lents i fan un retruny greu i regular, sense bots ni inclinació.",
+    "Són els de la piconadora, però es poden posar a qualsevol vehicle del pati."
+   ]
+  },
+  {
+   "t": "Rodes grans del darrere",
+   "l": [
+    "Dues rodes grans marina amb tacs i cub corall al darrere, i dues de petites al davant, com les d’un tractor.",
+    "Fan un tum-tum lent i el vehicle bota i s’inclina a cada bony.",
+    "Són les rodes del tractor de debò."
+   ]
+  },
+  {
+   "t": "Rodes massisses",
+   "l": [
+    "Quatre rodes petites i gruixudes, marina amb el cub groc, com les d’un carretó.",
+    "Fan un tic-tic ràpid de claus sobre les rajoles; gairebé no boten.",
+    "Són les del carretó elevador."
+   ]
+  },
+  {
+   "t": "Rodes gegants de tacs",
+   "l": [
+    "Quatre rodes grosses grises amb tacs i cub corall, com les d’un camió de muntanya.",
+    "El vehicle va alt, bota molt i fa un so de molla a cada bot.",
+    "Són les més altes del pati."
+   ]
+  },
+  {
+   "t": "Rodes de tacs",
+   "l": [
+    "Quatre rodes marina amb tacs i cub groc.",
+    "Són les de l’habitació, aquí posades als vehicles d’obres: tam-tam a les rajoles.",
+    "Compartides amb l’habitació i la sala."
+   ]
+  },
+  {
+   "t": "Erugues",
+   "l": [
+    "Dues cintes de goma amb dents crema sobre tres corrons corall.",
+    "Les dents van passant mentre el vehicle avança i fan cruixir el terra.",
+    "Compartides amb la sala; al pati són les de l’excavadora i el buldòzer."
+   ]
+  },
+  {
+   "t": "Braç amb pala",
+   "l": [
+    "Una torreta grisa amb un braç groc, un segon braç articulat i una pala grisa a la punta.",
+    "Quan el vehicle passa pel sorral, el braç baixa, la pala rasca la sorra, aixeca un grapat i el torna a deixar.",
+    "Se sent rascar i cruixir la sorra, i un «plop»."
+   ]
+  },
+  {
+   "t": "Caixa basculant",
+   "l": [
+    "Una caixa grisa oberta amb tres grapats de sorra a dins, articulada al darrere.",
+    "Al garatge, la caixa s’aixeca pel davant i els tres grapats de sorra roden cap enrere fins a la placa.",
+    "Se sent la caixa pujar i la sorra caure tres vegades."
+   ]
+  },
+  {
+   "t": "Tambor de formigonera",
+   "l": [
+    "Un tambor crema en forma de pera amb dos cèrcols corall, inclinat sobre un suport gris.",
+    "Gira tota l’estona mentre el vehicle camina i, al garatge, s’inclina i deixa anar una bola grisa de formigó.",
+    "Se sent el glu-glu del tambor pel camí i una sacsejada al garatge."
+   ]
+  },
+  {
+   "t": "Cons de senyalització",
+   "l": [
+    "Tres cons taronja amb una franja crema, apilats en una safata grisa.",
+    "Pel camí cauen un a un (a un terç, a la meitat i a dos terços) i es queden a terra vora el circuit fins a l’arribada.",
+    "Cada con fa un cop sec en caure."
+   ]
+  },
+  {
+   "t": "Remolc de blocs",
+   "l": [
+    "Un remolc gris amb tres blocs de colors que va enganxat al darrere.",
+    "Al garatge els blocs s’apilen en una torre.",
+    "Compartit amb l’habitació."
+   ]
+  },
+  {
+   "t": "Llum giratori",
+   "l": [
+    "Una sola cúpula taronja sobre un peu gris.",
+    "S’encén i respira a poc a poc a mig camí: al pati, amb la marimba.",
+    "Compartit amb l’habitació i la sala; mai dos fars."
+   ]
+  },
+  {
+   "t": "El pati, matí",
+   "l": [
+    "Llum clara sobre la paret ocre amb el sòcol de maons, les rajoles de terrissa, la porta de fusta amb l’enfiladissa i la roba estesa.",
+    "Se sent una merla.",
+    "El vehicle baixa la rampa, travessa el tub de formigó, creua el sorral i arriba al garatge."
+   ]
+  },
+  {
+   "t": "El pati, tarda",
+   "l": [
+    "Llum daurada i ombres llargues sobre la terrissa; la pila de pneumàtics i la galleda amb la pala.",
+    "Se senten cigales.",
+    "El circuit passa pel tub, pel sorral i vora el test fins al garatge."
+   ]
+  },
+  {
+   "t": "El pati, capvespre",
+   "l": [
+    "Llum rogenca; el llum del taller comença a notar-se sobre el banc.",
+    "Se senten grills.",
+    "Els accessoris treballen igual: la pala al sorral, els cons pel camí, la caixa i el tambor al garatge."
+   ]
+  },
+  {
+   "t": "El pati, nit",
+   "l": [
+    "El llum del taller s’encén; la lluna es veu per la finestra i el pati queda fosc.",
+    "La nit se sent a fora.",
+    "Al garatge, la caixa bolca la sorra i el tambor deixa anar el formigó amb el llum del taller."
+   ]
   }
  ]
 }

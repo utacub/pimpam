@@ -4,7 +4,7 @@
 //   board,ROUND,PICKS,FOCUS,PROGRESS[,flags]   the board at rest (PICKS: ids joined by +, or -; FOCUS: index in the tray)
 //   result,ROUND,PICKS,CHOSEN,T[,flags]        the piece CHOSEN (index in the tray) clicks on, T seconds into the effect
 //   final,ROUND,PICKS,CHOSEN,T[,flags]         the last piece: the wait, the ride and the garage at T seconds (flag go=N: pressed at N s)
-//   flags: none dim white waiting reduced sorpresa auto tranquila curt llarg steps2 steps4 n2 n3 n4 (peces a la safata; quatre per defecte) alta mitjana baixa flat sala (primer racó la sala, 0.56)
+//   flags: none dim white waiting reduced sorpresa auto tranquila curt llarg steps2 steps4 n2 n3 n4 (peces a la safata; quatre per defecte) alta mitjana baixa flat sala pati (primer racó la sala o el pati)
 import {createRequire} from 'node:module';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
@@ -22,7 +22,7 @@ export async function openVh(width,height,dpr=1,{gl=true}={}){const browser=awai
  await page.addScriptTag({content:`window.DPR=${dpr};window.game={board:{lights:[],clock:0}};
  window.load=()=>{const t0=performance.now();let n=0;while(VH.vhLoad()<1&&n++<40);return {ms:performance.now()-t0,ready:VH.vhReady(),steps:n};};
  window.paint=o=>{const cv=document.getElementById('c'),c=cv.getContext('2d'),w=cv.width/DPR,h=cv.height/DPR;c.setTransform(DPR,0,0,DPR,0,0);c.globalAlpha=1;c.fillStyle='#000';c.fillRect(0,0,w,h);const t0=performance.now();
-  const flag=o.flag||'',white=flag.includes('white'),s={...VH.defaults,reduced:flag.includes('reduced'),scanOptions:3,vhCells:flag.includes('n2')?'2':flag.includes('n3')?'3':'4',vhCorner:flag.includes('sala')?'sala':'habitacio',vhSteps:flag.includes('steps2')?'2':flag.includes('steps4')?'4':'3',vhWho:flag.includes('sorpresa')?'sorpresa':'alumne',vhGo:flag.includes('auto')?'auto':'puls',vhRide:flag.includes('curt')?'curt':flag.includes('llarg')?'llarg':'mitja',vhCamera:flag.includes('tranquila')?'tranquila':'dinamica',vhGarage:!flag.includes('nogarage'),vhQuality:flag.includes('mitjana')?'mitjana':flag.includes('baixa')?'baixa':flag.includes('alta')?'alta':'auto'};
+  const flag=o.flag||'',white=flag.includes('white'),s={...VH.defaults,reduced:flag.includes('reduced'),scanOptions:3,vhCells:flag.includes('n2')?'2':flag.includes('n3')?'3':'4',vhCorner:flag.includes('sala')?'sala':flag.includes('pati')?'pati':'habitacio',vhSteps:flag.includes('steps2')?'2':flag.includes('steps4')?'4':'3',vhWho:flag.includes('sorpresa')?'sorpresa':'alumne',vhGo:flag.includes('auto')?'auto':'puls',vhRide:flag.includes('curt')?'curt':flag.includes('llarg')?'llarg':'mitja',vhCamera:flag.includes('tranquila')?'tranquila':'dinamica',vhGarage:!flag.includes('nogarage'),vhQuality:flag.includes('mitjana')?'mitjana':flag.includes('baixa')?'baixa':flag.includes('alta')?'alta':'auto'};
   const decor=flag.includes('none')?{mode:'none',full:false,fade:0,base:white?'#ffffff':'#000000',white}:flag.includes('dim')?{mode:'dim',full:false,fade:.25,base:white?'#ffffff':'#000000',white}:{mode:'full',full:true,fade:1,base:'#000000',white:false};
   const round=o.round|0,picks=o.picks==='-'||!o.picks?[]:o.picks.split('+'),state={id:'vehicles',round,stage:picks.length,picks:picks.map(value=>({id:value,value})),status:'choose',pending:null,armed:!flag.includes('waiting'),hint:false,errors:0};
   const ids=VH.vhOptions(state,s),content=ids.map(value=>({id:value,value,label:value})),zones=VH.vhLayout(state,content,w,h);

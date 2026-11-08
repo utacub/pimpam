@@ -20,16 +20,23 @@ const TOP_ON={baca:'familiar+tacs',remolc:'furgoneta+fusta',bandera:'curses+prim
  brac:'plataforma+bessones',cano:'bombers+erugues',campana:'ambulancia+balons',manega:'furgo+ferro'};
 // the pieces of the sala sit on its own bodies (0.56); the shared wheels and accessories are shown on the sala's vehicles there
 const WHEEL_ON_SALA={...WHEEL_ON,tacs:'totterreny',tapacubs:'policia'},TOP_ON_SALA={...TOP_ON,escala:'bombers+bessones',sirena:'policia+tapacubs'};
+// the yard (0.57): its pieces on its own works vehicles
+const WHEEL_ON_PATI={...WHEEL_ON,corrons:'piconadora',grans:'tractor',massisses:'carreto',gegants:'buldozer',tacs:'bolquet',erugues:'excavadora'},TOP_ON_PATI={...TOP_ON,pala:'excavadora+erugues',caixa:'bolquet+grans',tambor:'piconadora+corrons',cons:'carreto+massisses',remolc:'tractor+gegants',sirena:'buldozer+tacs'};
 // each corner is shown as the first corner («Primer racó», flag sala), so its rounds are 0 to 3
-for(const corner of VH_CORNERS){const flag=corner==='sala'?'sala':'',W=corner==='sala'?WHEEL_ON_SALA:WHEEL_ON,T=corner==='sala'?TOP_ON_SALA:TOP_ON;
+for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={habitacio:WHEEL_ON,sala:WHEEL_ON_SALA,pati:WHEEL_ON_PATI}[corner],T={habitacio:TOP_ON,sala:TOP_ON_SALA,pati:TOP_ON_PATI}[corner];
  for(const id of VH_BODIES[corner])SHOTS.push({kind:'result',picks:'-',id,t:2.35,flag});
  for(const id of VH_WHEELS[corner])SHOTS.push({kind:'result',picks:W[id],id,t:2.35,flag});
- for(const id of VH_TOPS[corner])SHOTS.push({kind:'result',picks:T[id],id,t:2.35,flag:flag?'steps4,sala':'steps4'});
+ for(const id of VH_TOPS[corner])SHOTS.push({kind:'result',picks:T[id],id,t:2.35,flag:flag?`steps4,${flag}`:'steps4'});
  if(corner==='habitacio')// the room at its four lights: morning on the ride with the balloon, afternoon with the roof box, dusk arriving with the trailer, night in the garage
   SHOTS.push({kind:'final',round:0,picks:'familiar+tacs',id:'globus',t:START+RIDE*.62,flag:`go=${GO},tranquila`},
    {kind:'final',round:1,picks:'autobus+fusta',id:'baca',t:START+RIDE*.42,flag:`go=${GO},tranquila`},
    {kind:'final',round:2,picks:'curses+primes',id:'remolc',t:START+RIDE*.9,flag:`go=${GO}`},
    {kind:'final',round:3,picks:'furgoneta+fusta',id:'remolc',t:PARK+1.6,flag:`go=${GO}`});
+ else if(corner==='pati')// the yard (the tops a round offers: 0 tambor/cons/remolc/sirena, 1 +pala, 2 pala/caixa, 3 caixa/tambor): morning out of the pipe with the cones, afternoon digging in the sandpit, dusk tipping the box at the garage, night with the drum at the garage
+  SHOTS.push({kind:'final',round:0,picks:'carreto+massisses',id:'cons',t:START+RIDE*.48,flag:`go=${GO},pati`},
+   {kind:'final',round:1,picks:'excavadora+erugues',id:'pala',t:START+RIDE*.58,flag:`go=${GO},tranquila,pati`},
+   {kind:'final',round:2,picks:'bolquet+grans',id:'caixa',t:PARK+1.5,flag:`go=${GO},tranquila,pati`},
+   {kind:'final',round:3,picks:'piconadora+corrons',id:'tambor',t:PARK+1.4,flag:`go=${GO},pati`});
  else// the sala: morning crossing the books with the bell, afternoon under the table with the ladder, dusk watering the pot, night with the crane at the garage
   SHOTS.push({kind:'final',round:0,picks:'ambulancia+balons',id:'campana',t:START+RIDE*.3,flag:`go=${GO},sala`},
    {kind:'final',round:1,picks:'totterreny+tapacubs',id:'escala',t:START+RIDE*.6,flag:`go=${GO},tranquila,sala`},

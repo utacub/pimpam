@@ -1,3 +1,47 @@
+# Pim Pam 0.57 · El taller de vehicles: el pati dels vehicles d’obres (fase 2)
+
+Base: 0.56 (commit ca97478, en local). Segona de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+
+## Què canvia
+
+- **El pati, tercer racó de la casa.** Cada quatre vehicles el taller passa al racó següent: habitació → sala → pati → habitació… L’ajust «Primer racó» (pestanya «Aquesta activitat») admet ara el pati. El pati té una paret ocre amb un sòcol de maons, rajoles de terrissa, una finestra a l’esquerra (amb la lluna de nit), una porta de fusta crema amb el marc corall i una enfiladissa verda al damunt, un estenedor amb tres peces de roba (crema, menta i groga), un sorral de fusta ple de sorra que el circuit creua, un tub de formigó que el vehicle travessa per dins just després de la rampa, una pila de pneumàtics (un de recolzat), un test amb planta, una galleda corall amb sorra i una pala blava.
+- **Sis vehicles d’obres.** Camió bolquet (taronja, cabina alta i caixa baixa amb baranes), excavadora (groga, cabina alta al darrere i motor llarg al davant), buldòzer amb pala frontal (corall, amb la pala grisa inclinada i dos braços), piconadora (verda, amb sostre crema sobre la cabina), carretó elevador (blau, curt, amb màstil i dues forquilles arran de terra: la barra groga queda darrere les forquilles) i tractor (lila, amb tub d’escapament). Com sempre: una sola franja de vidre, una sola barra groga de para-xocs, cap cara.
+- **Sis rodes.** Noves: corrons de piconadora (dos cilindres grisos amples com el vehicle, retruny greu i regular, ni bots ni inclinació), rodes grans del darrere (dues grans marina amb tacs al darrere i dues de petites al davant, com un tractor; també a la safata), massisses (petites i gruixudes, tic-tic ràpid de claus) i gegants de tacs (grises, el vehicle va alt i bota amb un so de molla); compartides amb els altres racons: tacs i erugues.
+- **Sis accessoris.** Nous: el braç amb pala (torreta, braç, segon braç i pala; quan el vehicle creua el sorral, el braç baixa, la pala rasca la sorra, aixeca un grapat i el torna a deixar), la caixa basculant (al garatge s’aixeca pel davant i tres grapats de sorra roden cap enrere fins a la placa), el tambor de formigonera (gira tota l’estona pel camí, tret de la vista tranquil·la; al garatge s’inclina i deixa anar una bola grisa) i els cons de senyalització (tres cons apilats que cauen un a un a un terç, a la meitat i a dos terços del camí i es queden a terra vora el circuit fins que comença la ronda següent); compartits: remolc i llum giratori.
+- **La cançó de feina del pati.** Música pròpia en Re dòric a 100 pulsacions per minut, sense swing: les claus marquen els cops de martell (a l’u, al dos i mig i al tres), el tambor al dos i al quatre, el violoncel pinçat a l’u, al tres i al final del compàs, el fagot respon als contratemps i la marimba porta la tonada; la cadència del garatge acaba amb les claus. Els tastos de les peces del pati van amb la marimba, els tambors, les claus i la molla. Aire del pati: merla al matí, cigales a la tarda, grills al capvespre i la nit.
+- **Panell ⓘ i catàleg.** 66 entrades: les divuit peces i les quatre hores de cada racó, amb una imatge cadascuna. `ACTIVITATS.md` actualitzat.
+
+## Regles que es mantenen
+
+- Cap paraula escrita durant l’encercament, ordre d’esquerra a dreta, ressaltat clar de la suite, pista del commutador després d’una volta en blanc, senyal d’espera; cap cara a les joguines (una sola franja de vidre, una sola barra groga de para-xocs; el llum giratori és una sola cúpula, no dos fars). Criteris de disseny propis, no evidència.
+- Fotosensibilitat: cap gag nou fa parpellejar res (la pala, la caixa, el tambor i els cons són moviments lents); el llum giratori continua respirant a 1 Hz com a màxim; tot per sota dels tres canvis per segon del criteri 2.3.1 (W3C, 2023), que és el llindar de referència per a la fotosensibilitat en contingut web (Harding i Jeavons, 1994, per a la base clínica del llindar).
+- Música i sons només dels bancs de la suite (cap enregistrament nou): violoncel, fagot i marimba dels instruments ja mostrejats; claus, tambors, cruixits de terra, rascar, sacsejada, molla, cops secs i «plop» dels bancs de foley existents; merla, cigales, grills i nit dels paisatges sonors existents.
+- El tub de formigó amaga el vehicle durant menys d’un segon de cada volta; és l’únic moment en què no es veu.
+
+## Proves
+
+- `node --test tests/*.test.mjs`: 422 proves passen i 3 fallen, les mateixes tres de sempre (enregistraments de la masia, dels instruments i dels Detectius de sons que no són al disc d’aquest entorn); `tests/vehicles.test.mjs` (10) i `tests/info.test.mjs` actualitzades i verdes.
+- Fotogrames del pati amb three.js (SwiftShader, 1280×720 i 2560×1440): el banc amb les quatre safates (carrosseries, rodes amb les grans del darrere, accessoris), el bolquet amb els corrons, la baixada de la rampa cap al tub, l’excavadora excavant al sorral, el tractor deixant caure els cons, la piconadora amb el tambor, el carretó sortint del tub, la caixa bolcant la sorra al garatge (nit), el tambor al garatge, la vista tranquil·la, el capvespre amb decoració atenuada i sense decoració, i el dibuix pla sense WebGL.
+- Fitxer construït (`Pim_Pam_44_activitats_v0_57.html`, 64,7 MB) obert a Chromium sense errors de consola: portada, carpeta, fitxa, panell ⓘ (66 entrades), càrrega, pestanya «Aquesta activitat» amb «Primer racó», pausa i safata del taller.
+- Les 66 imatges del panell ⓘ renderitzades de nou (`tools/vehicles-info.mjs`) i `production/info/make_info.py` executat.
+
+## Per revisar (en Marc)
+
+1. El pati: els colors (paret ocre i terrissa), la porta, l’estenedor, el sorral, el tub i els pneumàtics; qualsevol moble es pot canviar.
+2. Els sis vehicles d’obres i els quatre accessoris nous, sobretot la pala al sorral i els cons que es queden a terra.
+3. El tub de formigó: el vehicle hi desapareix menys d’un segon; si es prefereix veure’l sempre, es pot fer el tub més curt o obert per dalt.
+4. La cançó de feina: si convé més o menys volum de les claus.
+5. La fase 3 (el passadís, amb el tren) segueix tot seguit com a 0.58.
+6. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil publica la 0.55 (Pluja de colors nova).
+
+## Referències
+
+- Harding, G. F. A., i Jeavons, P. M. (1994). *Photosensitive epilepsy* (2a ed.). Mac Keith Press.
+- three.js authors. (2026). *three.js* (versió r187) [Programari]. https://threejs.org
+- W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2* (W3C Recommendation, 5 d’octubre de 2023). https://www.w3.org/TR/WCAG22/
+
+---
+
 # Pim Pam 0.56 · El taller de vehicles: els racons de la casa i la sala dels vehicles d’emergències (fase 1)
 
 Base: 0.54 (commit a23842a, en local). Primera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil; per això aquesta versió és la 0.56.
