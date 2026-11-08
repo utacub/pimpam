@@ -1,13 +1,13 @@
-// La nova Pluja de colors (0.53, phase 1: the style trial) · the WebGL2 engine of the floor of liquid paint.
+// La nova Pluja de colors (CE45, 0.55) · the WebGL2 engine of the floor of liquid paint.
 // The floor is a rectangle of thick liquid seen from a fixed camera (in perspective, about 48° down, or from above). The liquid is a
 // velocity grid (stable fluids); the ink is up to eight colours (seven of the scene and a pale one for the lace of the cells), kept as
 // amounts in two RGBA16F textures moved by the liquid and pushed by every drop (pluja-shaders.js). The relief (paint thickness + the
 // rings of the impacts) and two soft window lights make the wet gloss. Drops in the air, splash droplets and the thread above a falling
 // drop are sprites drawn over the floor. Every scene uses the same programs; a scene only changes the palette and the drops.
 // Coordinates: the floor ("f") runs x ∈ [0, AR], y ∈ [0, 1] (y = depth, 0 = near); the screen (s) runs [0, 1] from the top left.
-// Needs WebGL2 and EXT_color_buffer_float; pljSetup returns false otherwise (the activity then draws its 2D picture).
+// Needs WebGL2 and EXT_color_buffer_float; pljSetup returns false otherwise (Marc, 8 November 2026: no other picture for now).
 import {PLJ_VS,PLJ_FS_ADVECT,PLJ_FS_CURL,PLJ_FS_FORCE,PLJ_FS_DIV,PLJ_FS_JACOBI,PLJ_FS_GRAD,PLJ_FS_DYE,PLJ_FS_RIPPLE,PLJ_FS_RENDER,PLJ_VS_SPRITE,PLJ_FS_SPRITE} from './pluja-shaders.js';
-export const PLJ={gl:null,cv:null,failed:false,lost:false,par:null,P:null,quad:null,spr:null,S:null,t:0,drops:[],keep:1,lvl:1,fill:0,view:null,pal:null,look:null};
+export const PLJ={gl:null,cv:null,failed:false,lost:false,par:null,P:null,quad:null,spr:null,S:null,t:0,drops:[],keep:1,lvl:1,dil:1,fill:0,view:null,pal:null,look:null,tOff:Math.random()*500};
 // the look (the style trial tunes these): liquid, cells, relief and light
 export const PLJ_LOOK=Object.freeze({damp:1.3,eps:0,drift:.035,jacobi:24,swirl:.12,rim:.06,cell:.05,ring:.09,streak:45,level:.08,gap:.014,fill:.05,cellsOn:.85,cellsBlack:0,
  bump:.0015,rip:.006,ripAmp:.05,ripC:.3,ripF:12,ripTau:.12,ripT:.3,ripDamp:.996,ripSteps:4,spec:.7,floor:.0005,soft:.75,sharp:1.6,gloss:.02,glint:1.2,fog:[.55,1],grow:.9,fall:.33,fallH:.55,crown:.36});
@@ -24,6 +24,9 @@ function pljPrograms(gl){if(PLJ.P)return PLJ.P;PLJ.P={};for(const [k,[vs,fs]] of
 export function pljPrograms_list(){const gl=pljInit();return gl?Object.values(pljPrograms(gl)):[];}
 function pljUse(gl,name){const o=PLJ.P[name];if(o.ok===null){o.ok=!!gl.getProgramParameter(o.p,gl.LINK_STATUS);if(!o.ok&&typeof console!=='undefined')console.warn('Pluja de colors: shader',name,gl.getShaderInfoLog(o.v)||'',gl.getShaderInfoLog(o.f)||'',gl.getProgramInfoLog(o.p));}
  if(!o.ok)return null;gl.useProgram(o.p);return o;}
+// a program settled (linked or failed) for the loading cover (carrega.js): the cover calls it once the browser has linked it
+export function pljSettle(o){const gl=PLJ.gl;if(!gl||o.ok!==null)return;o.ok=!!gl.getProgramParameter(o.p,gl.LINK_STATUS);if(!o.ok&&typeof console!=='undefined')console.warn('Pluja de colors: shader',o.name,gl.getShaderInfoLog(o.v)||'',gl.getShaderInfoLog(o.f)||'',gl.getProgramInfoLog(o.p));}
+export const pljReady=()=>{const gl=pljInit();return !!gl&&!PLJ.lost;};
 const pljLoc=(gl,o,n)=>n in o.U?o.U[n]:(o.U[n]=gl.getUniformLocation(o.p,n));
 function pljSet(gl,o,u){for(const [n,v] of Object.entries(u)){const l=pljLoc(gl,o,n);if(l===null)continue;
  if(typeof v==='number'){if(/^u[NI]$|^uN$/.test(n))gl.uniform1i(l,v);else gl.uniform1f(l,v);}else if(v.tex){gl.activeTexture(gl.TEXTURE0+v.unit);gl.bindTexture(gl.TEXTURE_2D,v.tex);gl.uniform1i(l,v.unit);}
@@ -59,23 +62,28 @@ export function pljFloorToClip(V,fx,fy,h=0){if(V.top){const k=2*(1+h*1.6);return
  const w=V.rect[3],P=[V.rect[0]+fx*w,h*w,V.rect[1]+fy*w],d=[P[0]-V.cam[0],P[1]-V.cam[1],P[2]-V.cam[2]],x=d[0],y=d[1]*V.up[1]+d[2]*V.up[2],z=d[1]*V.fwd[1]+d[2]*V.fwd[2];
  return [x/(z*V.tx),y/(z*V.ty),w/(z*V.ty)];}
 // textures for a view; kept while the sizes do not change
+// The textures for a view; kept (with the paint on them) while their sizes do not change, so a new size of the picture alone (the
+// adaptive scale) keeps the floor as it is. Returns 'new' when the floor was made again (and is black), true when it was kept.
 export function pljSetup(W,H,o={}){const gl=pljInit();if(!gl||PLJ.lost)return false;pljPrograms(gl);pljQuad(gl);
  const V=pljView(W,H,o),dyeH=o.dyeH||864,velH=o.velH||144,ripH=o.ripH||288,DW=Math.round(dyeH*V.AR),VW=Math.round(velH*V.AR),RW=Math.round(ripH*V.AR),key=[DW,dyeH,VW,velH,RW,ripH].join();
- PLJ.cv.width=W;PLJ.cv.height=H;PLJ.view={...V,DW,DH:dyeH,VW,VH:velH,RW,RH:ripH};PLJ.look={...PLJ_LOOK,...(o.look||{})};
+ if(PLJ.cv.width!==W||PLJ.cv.height!==H){PLJ.cv.width=W;PLJ.cv.height=H;}PLJ.view={...V,DW,DH:dyeH,VW,VH:velH,RW,RH:ripH};PLJ.look={...PLJ_LOOK,...(o.look||{})};
+ if(PLJ.S&&PLJ.S.key===key&&PLJ.pal&&!o.clear)return true;
  if(!PLJ.S||PLJ.S.key!==key){const F=gl.RGBA16F,G=gl.RG16F,R=gl.R16F,S={key};
   S.vel=[pljFbo(gl,[pljTex(gl,VW,velH,G)]),pljFbo(gl,[pljTex(gl,VW,velH,G)])];S.curl=pljFbo(gl,[pljTex(gl,VW,velH,R)]);S.div=pljFbo(gl,[pljTex(gl,VW,velH,R)]);
   S.pres=[pljFbo(gl,[pljTex(gl,VW,velH,R)]),pljFbo(gl,[pljTex(gl,VW,velH,R)])];
   S.dye=[pljFbo(gl,[pljTex(gl,DW,dyeH,F,true),pljTex(gl,DW,dyeH,F,true)]),pljFbo(gl,[pljTex(gl,DW,dyeH,F,true),pljTex(gl,DW,dyeH,F,true)])];
   S.rip=[pljFbo(gl,[pljTex(gl,RW,ripH,G)]),pljFbo(gl,[pljTex(gl,RW,ripH,G)])];PLJ.S=S;}
- pljPalette(o.pal||PLJ_TRIAL_PAL,o.hgt);pljClear();return true;}
+ pljPalette(o.pal||PLJ_TRIAL_PAL,o.hgt);pljClear();return 'new';}
+export function pljLook(over){PLJ.look={...PLJ_LOOK,...(over||{})};}
 export function pljPalette(pal,hgt){PLJ.pal={hex:pal.slice(0,8),lab:new Float32Array(pal.slice(0,8).flatMap(pljLab)),lin:pal.slice(0,8).map(pljLin),hgt:new Float32Array(hgt||[.9,.7,1,.6,.85,.75,.95,1.25])};}
 export function pljClear(){const gl=PLJ.gl,S=PLJ.S;if(!gl||!S)return;const z=new Float32Array([0,0,0,0]);
  for(const fb of [...S.vel,S.curl,S.div,...S.pres,...S.dye,...S.rip]){gl.bindFramebuffer(gl.FRAMEBUFFER,fb.f);fb.texs.forEach((_,i)=>gl.clearBufferfv(gl.COLOR,i,z));}
- PLJ.t=0;PLJ.drops=[];PLJ.keep=1;PLJ.lvl=1;PLJ.fill=0;}
+ PLJ.t=0;PLJ.drops=[];PLJ.keep=1;PLJ.lvl=1;PLJ.dil=1;PLJ.fill=0;PLJ.tOff=Math.random()*500;}
 // a drop: {x, y (floor), R (final radius, floor units), ink (0–6), under (colour below it, −1 on bare floor), t0 (impact), seed, size}
 export function pljDrop(d){const L=PLJ.look||PLJ_LOOK;PLJ.drops.push({grow:L.grow,swirl:L.swirl,rim:L.rim,seed:Math.random(),under:-1,size:1,...d,A:0,R2:d.R*d.R,hit:false});}
 const pljEase=x=>1-(1-x)**3;
 export function pljStep(dt){const gl=PLJ.gl,S=PLJ.S,V=PLJ.view,L=PLJ.look;if(!gl||!S||PLJ.lost)return false;const t=PLJ.t+dt;PLJ.t=t;
+ if(PLJ.dil<1){PLJ.keep=Math.pow(PLJ.dil,dt);PLJ.lvl*=PLJ.keep;}else{PLJ.keep=1;PLJ.lvl=1;}
  const grow=[],swirl=[],imp=[];
  // a drop that lands inside a drop still spreading stops that one (its source is covered) and takes over the rest of its paint:
  // two sources at one spot would otherwise lay a ring of each colour every frame (a fine striped spiral)
@@ -86,32 +94,37 @@ export function pljStep(dt){const gl=PLJ.gl,S=PLJ.S,V=PLJ.view,L=PLJ.look;if(!gl
  grow.splice(0,Math.max(0,grow.length-8));swirl.splice(0,Math.max(0,swirl.length-8));
  const tx=[1/V.VW,1/V.VH];
  let o=pljUse(gl,'advect');if(!o)return false;pljSet(gl,o,{uVel:{tex:S.vel[0].texs[0],unit:0},uDt:dt,uAR:V.AR,uDamp:Math.exp(-L.damp*dt)});pljPass(gl,S.vel[1],V.VW,V.VH);
- o=pljUse(gl,'curl');pljSet(gl,o,{uVel:{tex:S.vel[1].texs[0],unit:0},uTx:tx});pljPass(gl,S.curl,V.VW,V.VH);
- o=pljUse(gl,'force');const s1=new Float32Array(32),s2=new Float32Array(32);swirl.forEach(([d,k],i)=>{s1.set([d.x,d.y,d.R,d.swirl*k*(d.seed<.5?-1:1)],i*4);s2.set([d.seed,d.rim*k,0,0],i*4);});
- pljSet(gl,o,{uVel:{tex:S.vel[1].texs[0],unit:0},uCurl:{tex:S.curl.texs[0],unit:1},uTx:tx,uAR:V.AR,uDt:dt,uEps:L.eps,uT:t,uDrift:L.drift,uN:swirl.length,'uS[0]':{v4:s1},'uS2[0]':{v4:s2}});pljPass(gl,S.vel[0],V.VW,V.VH);
- o=pljUse(gl,'div');pljSet(gl,o,{uVel:{tex:S.vel[0].texs[0],unit:0},uTx:tx});pljPass(gl,S.div,V.VW,V.VH);
- o=pljUse(gl,'jacobi');for(let i=0;i<L.jacobi;i++){pljSet(gl,o,{uP:{tex:S.pres[0].texs[0],unit:0},uDiv:{tex:S.div.texs[0],unit:1},uTx:tx});pljPass(gl,S.pres[1],V.VW,V.VH);S.pres.reverse();}
- o=pljUse(gl,'grad');pljSet(gl,o,{uVel:{tex:S.vel[0].texs[0],unit:0},uP:{tex:S.pres[0].texs[0],unit:1},uTx:tx});pljPass(gl,S.vel[1],V.VW,V.VH);S.vel.reverse();
- o=pljUse(gl,'dye');const p=new Float32Array(32),q=new Float32Array(32),q2=new Float32Array(32);
+ o=pljUse(gl,'curl');if(!o)return false;pljSet(gl,o,{uVel:{tex:S.vel[1].texs[0],unit:0},uTx:tx});pljPass(gl,S.curl,V.VW,V.VH);
+ o=pljUse(gl,'force');if(!o)return false;const s1=new Float32Array(32),s2=new Float32Array(32);swirl.forEach(([d,k],i)=>{s1.set([d.x,d.y,d.R,d.swirl*k*(d.seed<.5?-1:1)],i*4);s2.set([d.seed,d.rim*k,0,0],i*4);});
+ pljSet(gl,o,{uVel:{tex:S.vel[1].texs[0],unit:0},uCurl:{tex:S.curl.texs[0],unit:1},uTx:tx,uAR:V.AR,uDt:dt,uEps:L.eps,uT:t+PLJ.tOff,uDrift:L.drift,uN:swirl.length,'uS[0]':{v4:s1},'uS2[0]':{v4:s2}});pljPass(gl,S.vel[0],V.VW,V.VH);
+ o=pljUse(gl,'div');if(!o)return false;pljSet(gl,o,{uVel:{tex:S.vel[0].texs[0],unit:0},uTx:tx});pljPass(gl,S.div,V.VW,V.VH);
+ o=pljUse(gl,'jacobi');if(!o)return false;for(let i=0;i<L.jacobi;i++){pljSet(gl,o,{uP:{tex:S.pres[0].texs[0],unit:0},uDiv:{tex:S.div.texs[0],unit:1},uTx:tx});pljPass(gl,S.pres[1],V.VW,V.VH);S.pres.reverse();}
+ o=pljUse(gl,'grad');if(!o)return false;pljSet(gl,o,{uVel:{tex:S.vel[0].texs[0],unit:0},uP:{tex:S.pres[0].texs[0],unit:1},uTx:tx});pljPass(gl,S.vel[1],V.VW,V.VH);S.vel.reverse();
+ o=pljUse(gl,'dye');if(!o)return false;const p=new Float32Array(32),q=new Float32Array(32),q2=new Float32Array(32);
  grow.forEach(([d,dA],i)=>{p.set([d.x,d.y,dA,d.A],i*4);q.set([d.R2,d.ink,d.under,d.seed*97.13],i*4);q2.set([d.under>=0?L.cellsOn:L.cellsBlack,0,0,0],i*4);});
- pljSet(gl,o,{uD0:{tex:S.dye[0].texs[0],unit:0},uD1:{tex:S.dye[0].texs[1],unit:1},uVel:{tex:S.vel[0].texs[0],unit:2},uDS:[V.DW,V.DH],uAR:V.AR,uDt:dt,uKeep:PLJ.keep,uCell:L.cell,uRing:L.ring,uStreak:L.streak,uLevel:PLJ.keep<1?0:L.level,uGap:L.gap,uFill:PLJ.keep<1?0:PLJ.fill*L.fill,
+ pljSet(gl,o,{uD0:{tex:S.dye[0].texs[0],unit:0},uD1:{tex:S.dye[0].texs[1],unit:1},uVel:{tex:S.vel[0].texs[0],unit:2},uDS:[V.DW,V.DH],uAR:V.AR,uDt:dt,uKeep:PLJ.keep,uCell:L.cell,uRing:L.ring,uStreak:L.streak,uLevel:PLJ.keep<1?0:L.level,uGap:L.gap,uFill:PLJ.keep<1?0:PLJ.fill*L.fill,uT:t,
   uN:grow.length,'uP[0]':{v4:p},'uQ[0]':{v4:q},'uQ2[0]':{v4:q2}});pljPass(gl,S.dye[1],V.DW,V.DH);S.dye.reverse();
  // the rings: each impact shakes the surface for a moment (a damped oscillation at the point), so several rings leave it
- o=pljUse(gl,'ripple');const im=new Float32Array(32),ia=new Float32Array(8),act=PLJ.drops.filter(d=>t-dt>=d.t0-1e-9&&t-dt<d.t0+L.ripT).slice(-8);
+ o=pljUse(gl,'ripple');if(!o)return false;const im=new Float32Array(32),ia=new Float32Array(8),act=PLJ.drops.filter(d=>t-dt>=d.t0-1e-9&&t-dt<d.t0+L.ripT).slice(-8);
  act.forEach((d,i)=>{im.set([d.x,d.y,Math.max(.011,d.R*.08),-L.ripAmp*Math.sqrt(d.size)],i*4);ia[i]=t-dt-d.t0;});
  for(let k=0;k<L.ripSteps;k++){pljSet(gl,o,{uH:{tex:S.rip[0].texs[0],unit:0},uTx:[1/V.RW,1/V.RH],uC:L.ripC,uDamp:L.ripDamp,uAR:V.AR,uN:act.length,'uI[0]':{v4:im},'uAge[0]':{f1:ia.map(x=>x+k*dt/L.ripSteps)},uF:L.ripF,uTau:L.ripTau});pljPass(gl,S.rip[1],V.RW,V.RH);S.rip.reverse();}
  PLJ.drops=PLJ.drops.filter(d=>d.A<d.R2||t<d.t0+1.2);return true;}
+// the floor brought to the time t of the activity, in steps of at most 1/30 s (at most n steps per frame; far behind, as after a
+// pause, the floor skips the time it missed instead of running it)
+export function pljAdvance(t,n=3){if(!PLJ.gl||!PLJ.S||PLJ.lost)return false;if(t-PLJ.t>n/30)PLJ.t=t-n/30;let k=0;while(PLJ.t<t-1e-6&&k<n){if(!pljStep(Math.min(1/30,t-PLJ.t)))return false;k++;}return true;}
 // after the last drop of a scene the paint flows on into the black that is left, until the floor is full
 export function pljFill(on){PLJ.fill=on?1:0;}
 // how much paint lies on each cell of a small grid of the floor (0 = bare, 1 = covered): a small mipmap level of the ink read back
 // (once per press, to choose where the next drops fall and to know when the floor is full)
-export function pljCoverage(lv=5){const gl=PLJ.gl,S=PLJ.S,V=PLJ.view;if(!gl||!S||PLJ.lost)return null;const w=Math.max(1,V.DW>>lv),h=Math.max(1,V.DH>>lv),c=new Float32Array(w*h),buf=new Float32Array(w*h*4);
+// (and which of the seven colours lies most on each cell: the colour a drop falls on, for the colour of its cells)
+export function pljCoverage(lv=5){const gl=PLJ.gl,S=PLJ.S,V=PLJ.view;if(!gl||!S||PLJ.lost)return null;const w=Math.max(1,V.DW>>lv),h=Math.max(1,V.DH>>lv),c=new Float32Array(w*h),best=new Float32Array(w*h),ink=new Int8Array(w*h).fill(-1),buf=new Float32Array(w*h*4);
  const fb=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,fb);
- for(const t of S.dye[0].texs){gl.bindTexture(gl.TEXTURE_2D,t);gl.generateMipmap(gl.TEXTURE_2D);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,lv);gl.readBuffer(gl.COLOR_ATTACHMENT0);
-  gl.readPixels(0,0,w,h,gl.RGBA,gl.FLOAT,buf);for(let i=0;i<w*h;i++)c[i]+=buf[4*i]+buf[4*i+1]+buf[4*i+2]+buf[4*i+3];}
- gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.deleteFramebuffer(fb);return {w,h,c};}
-// the dilution at the end of a scene: every ink fades a little each frame (keep = the part kept per second)
-export function pljDilute(perSecond,dt){PLJ.keep=perSecond===1?1:Math.pow(perSecond,dt);if(perSecond===1)PLJ.lvl=1;else PLJ.lvl*=PLJ.keep;}
+ S.dye[0].texs.forEach((t,g)=>{gl.bindTexture(gl.TEXTURE_2D,t);gl.generateMipmap(gl.TEXTURE_2D);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,lv);gl.readBuffer(gl.COLOR_ATTACHMENT0);
+  gl.readPixels(0,0,w,h,gl.RGBA,gl.FLOAT,buf);for(let i=0;i<w*h;i++)for(let k=0;k<4;k++){const v=buf[4*i+k];c[i]+=v;if(g*4+k<7&&v>best[i]){best[i]=v;ink[i]=g*4+k;}}});
+ gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.deleteFramebuffer(fb);return {w,h,c,ink};}
+// the dilution at the end of a scene: every ink fades a little each step
+// (perSecond: the part of the paint kept each second; 1 = no dilution); each step of the floor applies it
+export function pljDilute(perSecond){PLJ.dil=perSecond;}
 // the sprites: falling drops with their thread, splash droplets
 function pljSprites(V,t){const L=PLJ.look,out=[];const col=(k,l=0)=>{const c=PLJ.pal.lin[Math.max(0,k)]||[1,1,1];return [c[0]+(1-c[0])*l,c[1]+(1-c[1])*l,c[2]+(1-c[2])*l];};
  for(const d of PLJ.drops){const r=.012*Math.sqrt(d.size)+.006;

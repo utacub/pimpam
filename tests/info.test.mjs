@@ -37,7 +37,7 @@ test('the game header (both tool rows) and the home cards offer the panel',()=>{
 // 0.35: the home cards of the four dives are pictures; drawing them live compiled their WebGL shaders while the menu opened (it hung).
 test('the dives have a picture for their home card, and the previews are painted a few per frame',async()=>{
   const {CARD_IMG}=await import('../dist/info-escenes.js');
-  for(const id of ['jelly','jungle','savanna','well','giants','pinta','masia','viatge','flower','color-rain'])assert.match(CARD_IMG[id]||'',/^data:image\/jpeg;base64,\/9j\//,id);
+  for(const id of ['jelly','jungle','savanna','well','giants','pinta','masia','viatge','flower','color-rain','pluja-colors'])assert.match(CARD_IMG[id]||'',/^data:image\/jpeg;base64,\/9j\//,id);
   const src=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
   assert.match(src,/function paintPreview\(canvas\)\{[^\n]*CARD_IMG\[id\]/);assert.match(src,/performance\.now\(\)-t0<12/);
 });

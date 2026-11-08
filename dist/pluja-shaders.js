@@ -1,4 +1,4 @@
-// La nova Pluja de colors (0.53, phase 1: the style trial) · the GPU programs of the engine (pluja-gl.js).
+// La nova Pluja de colors (0.55; made in phase 1, the style trial) · the GPU programs of the engine (pluja-gl.js).
 // The floor is a thick liquid simulated on a grid (stable fluids: Stam, 1999; on the GPU as Harris, 2004), with vorticity confinement
 // (Fedkiw et al., 2001) and a very slow curl-noise current (Bridson et al., 2007). The ink is up to eight colours, kept as amounts
 // (two RGBA textures), moved by the liquid. A drop pushes the ink around it outward with the exact marbling drop (Lu et al., 2012):
@@ -45,7 +45,7 @@ void main(){float h=uTx.y;float L=texture(uP,vUv-vec2(uTx.x,0.)).x,R=texture(uP,
 // the ink: traced back through the liquid and through every drop that is growing (newest last), read with a five-tap Catmull–Rom
 // filter (sharper than bilinear, so the edges stay crisp for minutes); new ink, with its cells, where the trace lands inside a drop
 export const PLJ_FS_DYE=PLJ_HEAD+`layout(location=0) out vec4 o0;layout(location=1) out vec4 o1;
-uniform sampler2D uD0,uD1,uVel;uniform vec2 uDS;uniform float uAR,uDt,uKeep,uCell,uRing,uStreak,uLevel,uGap,uFill;
+uniform sampler2D uD0,uD1,uVel;uniform vec2 uDS;uniform float uAR,uDt,uKeep,uCell,uRing,uStreak,uLevel,uGap,uFill,uT;
 uniform int uN;uniform vec4 uP[8];uniform vec4 uQ[8];uniform vec4 uQ2[8];
 float h1(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 vec2 h2(vec2 p){return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);}
@@ -76,7 +76,10 @@ void main(){vec2 f=vec2(vUv.x*uAR,vUv.y),pos=f-uDt*texture(uVel,vUv).xy;
  // the paint levels out: a thin black gap between paint on both sides closes slowly (an open edge does not grow); after the
  // last drop of a scene (uFill) every edge flows on until the floor is full
  if(uLevel>0.&&s<.98){vec4 nA=vec4(0),nB=vec4(0);float nt=0.;
-  for(int k=0;k<4;k++){vec2 o=(k==0?vec2(1.,0.):k==1?vec2(0.,1.):k==2?vec2(.7071,.7071):vec2(.7071,-.7071))*uGap;o.x/=uAR;
+  // four directions turned by a new random angle at every pixel and every step, and a random reach: with fixed directions the gaps
+  // closed into straight fronts along them (0.55); turning, the closing follows the real shape of the gap and its fronts stay round
+  float a0=6.2832*h1(gl_FragCoord.xy*.731+fract(uT*vec2(.6180,.4142))*97.),r0=.65+.35*h1(gl_FragCoord.yx*.517+fract(uT*vec2(.3247,.7549))*89.);
+  for(int k=0;k<4;k++){float an=a0+float(k)*.7854;vec2 o=vec2(cos(an),sin(an))*uGap*r0;o.x/=uAR;
    vec4 a1=textureLod(uD0,uv+o,0.),b1=textureLod(uD1,uv+o,0.),a2=textureLod(uD0,uv-o,0.),b2=textureLod(uD1,uv-o,0.);
    float t1=dot(a1,vec4(1))+dot(b1,vec4(1)),t2=dot(a2,vec4(1))+dot(b2,vec4(1));
    if(t1>.5&&t2>.5&&t1+t2>nt){nt=t1+t2;nA=a1+a2;nB=b1+b2;}

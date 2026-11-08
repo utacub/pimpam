@@ -1,4 +1,4 @@
-// La nova Pluja de colors (0.53, phase 1): the style trial. Runs the real engine (dist/pluja-gl.js) in Chromium with a fixed sequence
+// La nova Pluja de colors (0.55, made in phase 1): the style trial. Runs the real engine (dist/pluja-gl.js) in Chromium with a fixed sequence
 // of drops (a first drop in the middle, then phrases of drops spreading out until the floor is full, then the dilution) and writes
 // still frames at the chosen moments, as JPEG files.
 // Usage: node tools/pluja-prova.mjs OUTDIR [top] [W H DPR]   (top = seen from above)
