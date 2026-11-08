@@ -108,7 +108,7 @@ export const VH_PATH=Object.freeze({habitacio:Object.freeze([[0,0,0],[130,0,30],
 // The living room (0.55): the same bench, ramp and garage; over the stack of books (a small climb), under the low table, round the rug,
 // past the plant pot and up to the garage.
 // Both circuits end 8 units up, on the plate of the garage shelf (0.56), so the wheels and the gags at the garage sit on it.
-const VH_PATH_SALA=Object.freeze([[0,0,0],[130,0,30],[250,0,80],[310,-30,110],[400,-120,230],[470,-200,330],[430,-200,430],[330,-172,480],[250,-172,500],[150,-200,540],[-40,-200,575],[-220,-200,560],[-330,-200,470],[-300,-200,330],[-160,-200,250],[20,-200,260],[130,-200,340],[170,-200,460],[80,-200,650],[-100,-200,700],[-300,-200,680],[-470,-200,560],[-610,-192,420]]);
+const VH_PATH_SALA=Object.freeze([[0,0,0],[130,0,30],[250,0,80],[310,-30,110],[400,-120,230],[470,-200,330],[430,-200,430],[330,-172,480],[250,-172,500],[150,-200,540],[-40,-200,575],[-220,-200,560],[-330,-200,470],[-300,-200,330],[-160,-200,250],[20,-200,260],[125,-200,340],[125,-200,440],[140,-200,600],[100,-200,735],[-100,-200,765],[-300,-200,775],[-510,-200,720],[-590,-200,540],[-610,-192,420]]);
 // The yard (0.57): down the ramp, round the tyre stack, across the sandpit (a little up, on the sand), through the concrete pipe, to the garage.
 const VH_PATH_PATI=Object.freeze([[0,0,0],[130,0,30],[250,0,80],[310,-30,110],[400,-120,230],[470,-200,330],[430,-200,450],[300,-200,540],[150,-190,580],[-60,-190,585],[-250,-200,580],[-400,-200,600],[-530,-200,600],[-610,-192,420]]);
 // the hallway (0.58): down the ramp, along the runner, over the wooden bridge (y −172) and on to the garage; the wooden track follows it

@@ -303,3 +303,19 @@ test('the finale of a corner (0.60): the fourth vehicle ends with the parade of 
  assert.equal(chooseScan(stateAt(2,['familiar','tacs'],s),s,0).duration,vhTimes(s,2).final);assert.equal(chooseScan(stateAt(3,['familiar'],s),s,0).duration,VH_SNAP);
  // 0.60.1: the vehicle on the bench leads the convoy, so putting the convoy away after the parade must never hide it (the toy of the next corner was invisible)
  const src3d=read('../dist/vehicles-3d.js');assert.match(src3d,/parade\.groups\)if\(g!==toy\)g\.visible=false/);assert.doesNotMatch(src3d,/parade\.groups\)g\.visible=false/);});
+
+test('the circuits keep clear of the room objects (0.60.2): the living room plant pot and coffee table legs, the yard tyres, the bathroom towel rail',()=>{
+ // where the room code puts them (tools/vehicles-sweep.mjs sweeps the real footprint of every body with its wheels and accessories; these are the
+ // numbers it was run with, so moving one of these objects or a circuit asks for the sweep again)
+ const src=read('../dist/vehicles-3d.js');assert.match(src,/pot\.position\.set\(-380,VH_FLOOR,640\)/);assert.match(src,/table\.position\.set\(-40,VH_FLOOR,575\)/);
+ assert.match(src,/tyres\.position\.set\(700,VH_FLOOR,300\)/);assert.match(src,/rail\.position\.set\(250,VH_FLOOR,360\)/);
+ for(const k of ['books','pit','tub','bridge','rails','sleepers','board'])assert.match(src,new RegExp(k+'\\.userData\\.drive=true'),k);
+ const seg=(p,a,b)=>{const dx=b[0]-a[0],dz=b[2]-a[2],L=dx*dx+dz*dz||1,t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[2])*dz)/L));return Math.hypot(a[0]+t*dx-p[0],a[2]+t*dz-p[1]);};
+ const clear=(path,p)=>Math.min(...path.slice(1).map((b,i)=>seg(p,path[i],b)));
+ // the living room: its second lap went through the plant pot, a leg of the coffee table and the corner of the books (0.60.1 and before)
+ const sala=vhPathOf(SALA);assert.ok(clear(sala,[-380,640])>=110,'the plant pot');for(const x of[-145,65])for(const z of[505,645])assert.ok(clear(sala,[x,z])>=45,`the table leg at ${x},${z}`);
+ assert.ok(clear(sala.slice(sala.findIndex(p=>p[0]===125&&p[2]===440)),[65,645])>=55,'the second lap passes the front leg with room to spare');
+ assert.ok(clear(VH_PARADE_PATH,[-380,640])>=110,'the parade and the plant pot');
+ // the yard: the stack and the tyre leaning on it, away from the foot of the ramp; the bathroom: the towel rail, back from the turn after the ramp
+ const pati=vhPathOf(PATI);assert.ok(clear(pati,[700,300])>=180&&clear(pati,[628,320])>=140,'the tyres');
+ const bany=vhPathOf(BANY);for(const x of[170,330])assert.ok(clear(bany,[x,360])>=95,`the towel rail leg at ${x}`);});

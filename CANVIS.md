@@ -1,3 +1,21 @@
+# Pim Pam 0.60.2 · El taller de vehicles: el recorregut ja no travessa la planta
+
+Base: 0.60.1 (commit a809d62, publicada). Correcció que en Marc va trobar a la versió publicada el 8 de novembre de 2026 a les 22:08 (hora de Catalunya): «Al segon escenari tots els vehicles passen a través de la planta a la segona volta».
+
+## Què canvia
+
+- **La segona volta de la sala.** El recorregut de la sala fa dues voltes; a la segona, de tornada cap al garatge, passava per dins del test de la planta (la flor sortia pel sostre del vehicle), fregava una pota de la tauleta i el cantó dels llibres. Ara la segona volta baixa entre la tauleta i els llibres, passa per davant de la tauleta i fa el revolt més obert, per davant de la planta, abans d’entrar al garatge. La primera volta (la pujada als llibres, el pas per sota de la tauleta i el raig del canó d’aigua cap a la planta) no canvia.
+- **El pati.** El pneumàtic recolzat a la pila tocava la cantonada del vehicle en baixar de la rampa: la pila es mou una mica a la dreta i enrere.
+- **El bany.** Amb l’hidroavió (les ales) i els flotadors, el vehicle fregava una pota del tovalloler després de la rampa: el tovalloler s’aparta una mica cap a la paret.
+- **Sense canvis** a la resta de racons ni a la desfilada, que ja passaven nets.
+- Les imatges del panell ⓘ no s’han tornat a pintar: el pneumàtic del pati i el tovalloler del bany s’hi veuen una mica més a prop del camí que ara.
+
+## Proves
+
+- Una eina nova, tools/vehicles-sweep.mjs, passa la silueta del vehicle més ample possible de cada racó (cada carrosseria amb totes les rodes i tots els accessoris del racó) per tot el recorregut de cada racó i per la ruta de la desfilada, i llista qualsevol objecte de l’habitació que toqui. Els objectes per on el camí ha de passar (llibres, sorral, tub, pont, via, tarima) estan marcats i no compten. Abans: 4 contactes (planta i tauleta de la sala, pneumàtics del pati, tovalloler del bany). Ara: cap.
+- Una prova nova a tests/vehicles.test.mjs comprova les distàncies del camí a la planta, a les potes de la tauleta, als pneumàtics i al tovalloler, i que aquests objectes són on l’eina els va comprovar.
+- Imatges de la segona volta de la sala (càmera dinàmica i tranquil·la) i del raig del canó d’aigua, que encara arriba a la planta.
+
 # Pim Pam 0.60.1 · El taller de vehicles: el vehicle torna a veure’s després de la desfilada
 
 Base: 0.60 (commit 7e0d539, publicada). Correcció que en Marc va trobar a la versió publicada el 8 de novembre de 2026 a les 21:03 (hora de Catalunya): «Al 2on escenari els vehicles i totes les peces són invisibles».

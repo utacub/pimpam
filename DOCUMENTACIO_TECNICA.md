@@ -1,5 +1,13 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.60.2 · El taller de vehicles: recorreguts nets d’objectes
+
+- **Sala (`dist/vehicles.js`, `VH_PATH_SALA`).** La segona volta passava a 13 unitats del centre del test (−380,640), per sobre de la pota davantera dreta de la tauleta (65,645) i pel cantó dels llibres. Els punts nous després de (125,340): (125,440) (140,600) (100,735) (−100,765) (−300,775) (−510,720) (−590,540), i el garatge (−610,−192,420). El raig del canó (`cano`, u .44) apunta al test amb la seva posició real i no canvia.
+- **Pati i bany (`dist/vehicles-3d.js`).** Pila de pneumàtics de (620,330) a (700,300); tovalloler de z 420 a z 360.
+- **Marques.** Els objectes que un camí ha de pujar o travessar porten `userData.drive=true`: llibres, sorral (`pit`), tub, pont, rails i travesses de la via (InstancedMesh), tarima (`board`).
+- **Eina (`tools/vehicles-sweep.mjs`).** Per a cada racó: la caixa de cada carrosseria unida a les de totes les rodes i tots els accessoris del racó, orientada amb la tangent, cada 4 unitats del recorregut i de `VH_PARADE_PATH`; contra la caixa de cada malla de l’habitació (sense terra, parets ni objectes `drive`), confirmada amb els vèrtexs quan la malla és gran. Surt amb 1 si hi ha cap contacte. Cal tornar-la a passar quan es mogui un objecte o un camí.
+- **Prova.** `tests/vehicles.test.mjs` (prova 12): distàncies de la polilínia als objectes i posicions dels objectes al codi.
+
 ## 0.60.1 · El taller de vehicles: el vehicle del banc després de la desfilada
 
 - **Error.** `vhParadeGroups` fa servir `VH_3D.parts.toy` com a primer grup del comboi (el vehicle que s’acaba de fer). A `vhPose`, quan la fase no és `parade`, el bucle que amaga els grups del comboi també amagava aquest grup just després de `toy.visible=true`, i des de la primera desfilada (ronda 3) el vehicle del banc no es tornava a veure (el racó següent: banc buit, peces invisibles, passeig sense vehicle).
