@@ -33,6 +33,16 @@ export const VH_BODY_COLOR=Object.freeze({familiar:'blau',autobus:'groc',furgone
 export const VH_SNAP=2.4,VH_WAIT=8,VH_AUTO=.8,VH_GO=.5,VH_GARAGE=2.8,VH_OUT=1.2;
 export const VH_RIDE=Object.freeze({curt:8,mitja:14,llarg:20});
 export const VH_ROUNDS=4;
+// 0.60, the finale of a corner: after the fourth vehicle parks, the vehicles made in the corner come out of the garage one after another and
+// parade across the front of the room (the newest leads), seen from far away, and leave by the right; then the next corner. Its length goes
+// with «Durada del passeig»; the vehicles keep VH_PARADE_GAP between them. The route is the same in every room: it starts where the vehicle
+// parked inside the garage (the ones behind queue off screen, left of the garage, which is open at both ends), out of its door, a bend
+// towards the front and along the front of the room past everything (and past the living room's flower pot), off screen right.
+export const VH_PARADE=Object.freeze({curt:9,mitja:12,llarg:15}),VH_PARADE_GAP=150;
+export const VH_PARADE_PATH=Object.freeze([[-680,-192,420],[-590,-196,430],[-540,-200,520],[-520,-200,660],[-420,-200,790],[-200,-200,845],[40,-200,862],[300,-200,866],[560,-200,856],[800,-200,834],[1000,-200,800]]);
+export const vhParadeTime=s=>VH_PARADE[s?.vhRide]??VH_PARADE.mitja;
+// Whether a round is the last of its corner (the fourth vehicle), the one that ends with the parade.
+export const vhFinale=(round,s=null)=>round!==null&&round!==undefined&&vhRoundOf(round,s).li===VH_ROUNDS-1;
 export const vhClamp=(x,a=0,b=1)=>x<a?a:x>b?b:x;
 export const vhEase=u=>{u=vhClamp(u);return u*u*(3-2*u);};
 export const vhOut=u=>{u=vhClamp(u);return 1-(1-u)*(1-u);};
@@ -70,12 +80,12 @@ export const vhRide=s=>VH_RIDE[s?.vhRide]??VH_RIDE.mitja;
 export const vhWaitTime=s=>s?.vhGo==='auto'?VH_AUTO:VH_WAIT;
 export const vhPark=s=>s?.vhGarage===false?VH_OUT:VH_GARAGE;
 // The durations of a pick: a step (the piece clicks on) and the final one (the piece, the wait, the ride and the garage).
-export function vhTimes(s){const wait=vhWaitTime(s),ride=vhRide(s),park=vhPark(s);return {wrong:1,step:VH_SNAP,final:VH_SNAP+wait+ride+park,wait,ride,park};}
+export function vhTimes(s,round=null){const wait=vhWaitTime(s),ride=vhRide(s),park=vhPark(s),parade=vhFinale(round,s)?vhParadeTime(s):0;return {wrong:1,step:VH_SNAP,final:VH_SNAP+wait+ride+park+parade,wait,ride,park,...(parade?{parade}:{})};}
 // The timeline of the final effect: when the ride starts (alone after the wait, or VH_GO after the press at time go), when it ends and
 // when the effect ends.
-export function vhTimeline(s,go=null){const T=vhTimes(s),start=go===null?VH_SNAP+T.wait:Math.max(VH_SNAP,go)+VH_GO;return {snap:VH_SNAP,start,ride:T.ride,rideEnd:start+T.ride,end:start+T.ride+T.park,park:T.park,pressed:go!==null};}
+export function vhTimeline(s,go=null,round=null){const T=vhTimes(s,round),start=go===null?VH_SNAP+T.wait:Math.max(VH_SNAP,go)+VH_GO,parkEnd=start+T.ride+T.park,parade=T.parade||0;return {snap:VH_SNAP,start,ride:T.ride,rideEnd:start+T.ride,parkEnd,park:T.park,parade,finale:parade>0,end:parkEnd+parade,pressed:go!==null};}
 // The phase of the final effect at time t and the progress within it (0..1).
-export function vhPhase(TL,t){if(t<TL.snap)return {phase:'snap',u:vhClamp(t/TL.snap)};if(t<TL.start)return {phase:'wait',u:vhClamp((t-TL.snap)/Math.max(.001,TL.start-TL.snap))};if(t<TL.rideEnd)return {phase:'ride',u:vhClamp((t-TL.start)/TL.ride)};return {phase:'park',u:vhClamp((t-TL.rideEnd)/Math.max(.001,TL.end-TL.rideEnd))};}
+export function vhPhase(TL,t){if(t<TL.snap)return {phase:'snap',u:vhClamp(t/TL.snap)};if(t<TL.start)return {phase:'wait',u:vhClamp((t-TL.snap)/Math.max(.001,TL.start-TL.snap))};if(t<TL.rideEnd)return {phase:'ride',u:vhClamp((t-TL.start)/TL.ride)};const pe=TL.parkEnd??TL.end;if(t<pe||!TL.parade)return {phase:'park',u:vhClamp((t-TL.rideEnd)/Math.max(.001,pe-TL.rideEnd))};return {phase:'parade',u:vhClamp((t-pe)/TL.parade)};}
 // Whether a press now starts the engine: the final effect is on, the vehicle is finished and waits (the press is asked for, or allowed early).
 export function vhCanStart(state,s,time,go=null){if(!state?.pending?.final||time===null||time===undefined)return false;if(go!==null)return false;const TL=vhTimeline(s,null);return time>=VH_SNAP*.75&&time<TL.start-.05;}
 // «Qui tria»: in mode sorpresa every press picks a piece of the tray at random (for whom scanning is not yet possible).

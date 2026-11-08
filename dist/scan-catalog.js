@@ -69,7 +69,7 @@ export function chooseScan(state,s,index){const options=scanChoices(state,s),opt
  state.lastChoice=option;state.outcome=null;
  const ext=scanExt(state.id),guided=['sounds','sources'].includes(state.id)||state.id==='encaix'&&s.exMode!=='lliure'||ext&&!!SCAN_EXT.guided(state.id),correct=!guided||option.id===scanTarget(state,s).id;
  const stages=ext?[[]]:stagePlan(state.id,s),length=stages.length||1;
- const final=correct&&(state.stage>=length-1||guided&&state.id!=='encaix');state.pending={option,correct,final};state.status='effect';if(ext){const d=SCAN_EXT.times(state,option,final,correct);return {accepted:true,action:'effect',duration:d};}const times=state.id==='encaix'?exTimes(s):state.id==='vehicles'?vhTimes(s):BOARD_TIMES[state.id]||{wrong:1.15,final:5.5,step:1.65};return {accepted:true,action:'effect',duration:!correct?times.wrong:final?times.final:times.step};
+ const final=correct&&(state.stage>=length-1||guided&&state.id!=='encaix');state.pending={option,correct,final};state.status='effect';if(ext){const d=SCAN_EXT.times(state,option,final,correct);return {accepted:true,action:'effect',duration:d};}const times=state.id==='encaix'?exTimes(s):state.id==='vehicles'?vhTimes(s,state.round):BOARD_TIMES[state.id]||{wrong:1.15,final:5.5,step:1.65};return {accepted:true,action:'effect',duration:!correct?times.wrong:final?times.final:times.step};
 }
 export function finishScan(state,s){const pending=state.pending;if(!pending)return {sameChoices:true};state.pending=null;
  if(pending.repeat){state.status='done';return {sameChoices:false};}

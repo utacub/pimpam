@@ -31,6 +31,6 @@ vendor=(dist/'vendor'/'three-taller.js').read_text()
 assert '</script' not in vendor and vendor.startswith('// three.js')
 html=html.replace('<script src="./vendor/three-taller.js"></script>','<script>\n'+vendor+'\n</script>')
 html=html.replace('<script type="module" src="./app.js"></script>','<script>\n(()=>{\n'+code+'\n})();\n</script>')
-target=dist/'Pim_Pam_44_activitats_v0_59.html'
+target=dist/'Pim_Pam_44_activitats_v0_60.html'
 target.write_text(html)
 print(f'{target}: {target.stat().st_size} bytes, self-contained')

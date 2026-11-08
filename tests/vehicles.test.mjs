@@ -6,12 +6,14 @@
 // and the panel of information; the three.js picture itself is checked in a browser (tools/vehicles-frames.mjs, tools/vehicles-app.mjs).
 // 0.56: the corners of the house (the room and the living room with its emergency vehicles), each with its own eighteen pieces, circuit,
 // march and air; the corners turn every four vehicles from «Primer racó».
+// 0.60: the finale of a corner: after the fourth vehicle parks, the vehicles made in the corner come out of the garage and parade across
+// the front of the room (newest first) with the band once more; its own phase, times, route, music and flat drawing.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {VH_CORNERS,VH_LIGHTS,VH_BODIES,VH_WHEELS,VH_TOPS,VH_COLORS,VH_STAGES,VH_WORD,VH_NAME,VH_LIGHT_NAME,VH_BODY_COLOR,VH_PALETTE,VH_SNAP,VH_WAIT,VH_RIDE,VH_ROUNDS,VH_ROLL,VH_GAG,VH_CORNER_NAME,vhLightTitle,vhFirstCorner,vhRoundOf,vhSteps,vhCells,vhStageKinds,vhStageKind,vhFamily,vhOptions,vhPicks,vhTimes,vhTimeline,vhPhase,vhCanStart,vhSurprise,vhPathOf} from '../dist/vehicles.js';
+import {VH_CORNERS,VH_LIGHTS,VH_BODIES,VH_WHEELS,VH_TOPS,VH_COLORS,VH_STAGES,VH_WORD,VH_NAME,VH_LIGHT_NAME,VH_BODY_COLOR,VH_PALETTE,VH_SNAP,VH_WAIT,VH_RIDE,VH_ROUNDS,VH_ROLL,VH_GAG,VH_CORNER_NAME,VH_PARADE,VH_PARADE_GAP,VH_PARADE_PATH,vhLightTitle,vhFirstCorner,vhRoundOf,vhSteps,vhCells,vhStageKinds,vhStageKind,vhFamily,vhOptions,vhPicks,vhTimes,vhTimeline,vhPhase,vhCanStart,vhSurprise,vhPathOf,vhFinale,vhParadeTime} from '../dist/vehicles.js';
 import {VH_CLAC,vhStepScore,vhFinalScore,vhPattern,vhTaste,vhAmbience} from '../dist/vehicles-so.js';
-import {VH_TRAY_MIN,VH_TRAY_MAX,vhGeom,vhSlots,vhLayout,vhBoard,vhResult} from '../dist/vehicles-art.js';
+import {VH_TRAY_MIN,VH_TRAY_MAX,vhGeom,vhSlots,vhLayout,vhBoard,vhResult,vhParadeList} from '../dist/vehicles-art.js';
 import {SCAN_ACTIVITIES,createScanState,scanChoices,scanContent,chooseScan,finishScan} from '../dist/scan-catalog.js';
 import {renderScanActivity} from '../dist/scan-art.js';
 import {TL_BOARDS} from '../dist/tauler.js';
@@ -28,7 +30,7 @@ function ctx(){const calls=[],fills=[],gradient={addColorStop(){}};return new Pr
 test('EN07 is still El taller de vehicles, creative, recorded, in the folder of choosing and creating, heavy to load; the old drawing of it is gone and three.js travels inside the single file',()=>{
  const row=SCAN_ACTIVITIES.find(a=>a.id==='vehicles');assert.ok(row);assert.equal(row.code,'EN07');assert.equal(row.name,'El taller de vehicles');assert.equal(row.task,'creative');assert.equal(row.recorded,true);assert.match(row.desc,/tres dimensions/);
  assert.equal(SCAN_ACTIVITIES.length,11);assert.ok(TL_BOARDS.includes('vehicles'));
- const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.5[4-9]/);
+ const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.(5[4-9]|6[0-9])/);
  for(const name of ['vhPressStart','vhRetime','vhSettings','vhAirUpdate','vhAirStop'])assert.match(app,new RegExp(`function ${name}\\(`),name);
  const art=read('../dist/scan-art.js');assert.doesNotMatch(art,/Svehicle|vehicle-body|vehicle-wheels|vehicle-top/);assert.match(art,/vhBoard\(c,w,h,state,game,s/);assert.match(art,/vhResult\(c,w,h,state,game,s/);
  const build=read('../build_standalone.py');assert.match(build,/'vehicles\.js','vehicles-so\.js','vehicles-3d\.js','vehicles-art\.js'/);assert.match(build,/three-taller\.js/);assert.match(build,/startswith\('\/\/ three\.js'\)/);
@@ -261,4 +263,41 @@ test('the «Informació» panel and the catalogue: for each corner its eighteen 
  assert.match(CARD_IMG.vehicles||'',/^data:image\/jpeg;base64,\/9j\//);
  assert.match(read('../production/info/make_info.py'),/'vehicles'/);
  const act=read('../ACTIVITATS.md');assert.match(act,/\| EN07 \| El taller de vehicles \| Composició creativa \| \(Refeta del tot a la 0\.53/);
- assert.match(read('../package.json'),/"version":\s*"0\.5[4-9]/);});
+ assert.match(read('../package.json'),/"version":\s*"0\.(5[4-9]|6[0-9])/);});
+test('the finale of a corner (0.60): the fourth vehicle ends with the parade of the vehicles made in the corner, with its own phase, time, route, music and flat drawing',()=>{
+ assert.deepEqual(VH_PARADE,{curt:9,mitja:12,llarg:15});assert.equal(VH_PARADE_GAP,150);assert.equal(vhParadeTime(S()),12);assert.equal(vhParadeTime(S({vhRide:'curt'})),9);
+ for(let r=0;r<40;r++)assert.equal(vhFinale(r,S()),r%4===3,`round ${r}`);assert.equal(vhFinale(null,S()),false);assert.equal(vhFinale(undefined,S()),false);assert.equal(vhFinale(3,S({vhCorner:'bany'})),true);
+ // the times: only a round 3, 7, … carries the parade; the other rounds are as before
+ assert.deepEqual(vhTimes(S()),vhTimes(S(),2));assert.deepEqual(vhTimes(S(),3),{wrong:1,step:VH_SNAP,final:VH_SNAP+8+14+2.8+12,wait:8,ride:14,park:2.8,parade:12});
+ assert.equal(vhTimes(S({vhRide:'curt'}),7).parade,9);assert.equal(vhTimes(S({vhRide:'llarg'}),11).parade,15);assert.equal(vhTimes(S({vhRide:'llarg'}),11).final,VH_SNAP+8+20+2.8+15);
+ const TL=vhTimeline(S(),null,3),plain=vhTimeline(S(),null,2);assert.ok(TL.finale&&!plain.finale);assert.equal(TL.parkEnd,plain.end);assert.equal(TL.end,plain.end+12);assert.equal(plain.parade,0);assert.equal(plain.parkEnd,plain.end);assert.deepEqual(vhTimeline(S(),null),vhTimeline(S(),null,0));
+ // the phases in order, the parade last, each from 0 to 1; a plain round never reaches it
+ const order=['snap','wait','ride','park','parade'];let last='snap';const seen=[];for(let t=0;t<=TL.end+.5;t+=.05){const P=vhPhase(TL,t);if(!seen.includes(P.phase))seen.push(P.phase);assert.ok(P.u>=0&&P.u<=1);if(P.phase!==last){assert.ok(order.indexOf(P.phase)>order.indexOf(last),`${last} then ${P.phase}`);last=P.phase;}}
+ assert.deepEqual(seen,order);assert.equal(vhPhase(TL,TL.end+1).phase,'parade');assert.equal(vhPhase(TL,TL.end+1).u,1);assert.equal(vhPhase(plain,plain.end+1).phase,'park');assert.equal(vhPhase(plain,plain.end+1).u,1);
+ assert.equal(vhPhase(TL,TL.parkEnd-.01).phase,'park');assert.ok(vhPhase(TL,TL.parkEnd-.01).u>.99);assert.equal(vhPhase(TL,TL.parkEnd).phase,'parade');assert.ok(vhPhase(TL,TL.parkEnd+6).u>.49&&vhPhase(TL,TL.parkEnd+6).u<.51);
+ // a press shortens the wait, never the parade; without the garage the parade still comes
+ const pressed=vhTimeline(S(),2.6,3);assert.equal(pressed.parade,12);assert.ok(Math.abs(pressed.end-pressed.parkEnd-12)<1e-9);assert.ok(pressed.end<TL.end);assert.equal(vhTimeline(S({vhGarage:false}),null,3).parade,12);
+ // the route: it starts inside the garage where the vehicle parked, goes out by its door towards the front of the room, along the front and off to the right, always on the floor
+ const P=VH_PARADE_PATH;assert.ok(P.length>=8);assert.deepEqual(P[0],[-680,-192,420]);assert.ok(P.every(p=>p[1]<=-192&&p[1]>=-200),'on the floor');assert.ok(P[P.length-1][0]>=1000,'off to the right');for(let i=1;i<P.length;i++)assert.ok(P[i][0]>P[i-1][0],'always towards the right');
+ assert.ok(P.some(p=>p[2]>=850),'along the front of the room');assert.ok(Math.max(...P.map(p=>p[2]))<1000,'inside the room');assert.ok(P.every(p=>Math.hypot(p[0]+380,p[2]-640)>90),'clear of the living room flower pot');
+ // the vehicles of the parade: the one just finished first, then the earlier ones of this corner, newest first; a round without a vehicle is skipped, another corner's never comes
+ const made={0:{body:'familiar',wheels:'tacs',top:'baca',color:null},1:{body:'autobus',wheels:'fusta',top:'remolc',color:'groc'},2:{body:'curses',wheels:'primes',top:null,color:null},4:{body:'bombers',wheels:'erugues',top:'cano',color:null},6:{body:'policia',wheels:'tacs',top:null,color:null}};
+ const cur={body:'furgoneta',wheels:'amples',top:'sirena',color:null},list=vhParadeList(stateAt(3,['furgoneta','amples']),{vhMade:made},S(),cur);
+ assert.deepEqual(list.map(v=>v.body),['furgoneta','curses','autobus','familiar']);assert.equal(list[2].color,'groc');assert.equal(list[3].color,VH_BODY_COLOR.familiar);assert.equal(list[0].color,VH_BODY_COLOR.furgoneta);assert.equal(list[1].top,null);assert.equal(list[0].top,'sirena');
+ const partial=vhParadeList(stateAt(7,['ambulancia','balons']),{vhMade:made},S(),{body:'ambulancia',wheels:'balons',top:'campana',color:null});assert.deepEqual(partial.map(v=>v.body),['ambulancia','policia','bombers']);
+ assert.deepEqual(vhParadeList(stateAt(3,[]),{},S(),cur).map(v=>v.body),['furgoneta']);assert.deepEqual(vhParadeList(stateAt(3,[]),null,S(),cur).length,1);
+ // the music: after the garage the claves count the parade in, the whole band plays once more with the wheels of the leader under it, and the cadence closes before the end
+ const picks={body:'familiar',wheels:'fusta',top:'baca',color:'blau'},sc=vhFinalScore(C,picks,S(),null,3),plainSc=vhFinalScore(C,picks,S(),null,2);
+ assert.ok(sc.every(e=>e.t<TL.end-.05));assert.ok(plainSc.every(e=>e.t<plain.end-.05));const after=sc.filter(e=>e.t>=TL.parkEnd),before=sc.filter(e=>e.t<plain.end-.05);assert.ok(after.length>40,'the band of the parade');assert.ok(Math.abs(before.length-plainSc.length)<=4,'up to the garage a finale round sounds as any other (the bars of the band turn with the round)');assert.deepEqual([...new Set(before.map(e=>e.inst))].sort(),[...new Set(plainSc.map(e=>e.inst))].sort());assert.ok(sc.filter(e=>e.t>=plain.end-.05&&e.t<TL.parkEnd+.25).length<=1,'at most one late note of the garage, then nothing until the claves');
+ assert.ok(after.filter(e=>e.inst==='woodblockRec'&&e.t<TL.parkEnd+.6).length>=2,'the claves count in');assert.ok(after.some(e=>e.inst==='dsClarinet'),'the tune');assert.ok(after.some(e=>e.inst==='dsBaix')&&after.some(e=>e.inst==='dsPiano'));
+ assert.ok(after.filter(e=>e.inst==='woodblockRec'&&e.variant==='claves'&&e.t>TL.parkEnd+1.5&&e.t<TL.end-2.5).length>5,'the wooden wheels of the leader');assert.ok(after.some(e=>e.t>TL.end-2.5&&e.inst==='dsPiano'),'the cadence');
+ assert.ok(after.every(e=>e.vel<=1&&e.vel>0));const pat=vhPattern(sc,TL.end);assert.ok(pat.every(e=>e.at>=0&&e.at<1&&e.length>0));
+ for(const [K,w] of [[SALA,'ferro'],[PATI,'corrons'],[PASSADIS,'bieles'],[BANY,'pales']]){const s2=vhFinalScore(K,{body:VH_BODIES[K][0],wheels:w,top:VH_TOPS[K][0],color:null},S(),null,3);assert.ok(s2.filter(e=>e.t>=TL.parkEnd).length>30,K);assert.ok(s2.every(e=>e.t<TL.end-.05));}
+ // the flat drawing of the parade: every vehicle of the convoy, finite everywhere; a plain round keeps its single car
+ const item=SCAN_ACTIVITIES.find(a=>a.id==='vehicles'),opt=id=>({id,value:id,label:VH_WORD[id],kind:'vehicles'});
+ const draw=(round,time,game={})=>{const s=S(),st=stateAt(round,['familiar','tacs'],s);st.pending={option:opt('baca'),correct:true,final:true};st.status='effect';const c=ctx();renderScanActivity(c,1280,720,'vehicles',{item,scanState:st,time,vhGo:null,focusedChoice:scanChoices(st,s)[0],board:{focus:0,lights:[1,.6,.6],clock:3.2},...game},s);return c;};
+ for(const t of [TL.parkEnd-.1,TL.parkEnd+.1,TL.parkEnd+3,TL.parkEnd+6,TL.parkEnd+9,TL.end-.1,TL.end+.5])draw(3,t,{vhMade:made});
+ draw(3,TL.parkEnd+4,{});draw(7,TL.parkEnd+4,{vhMade:made});draw(2,plain.end-.1,{vhMade:made});
+ // the engine: the last pick of a round 3 lasts the parade too, the others as before
+ const s=S(),st=stateAt(3,['familiar','tacs'],s),res=chooseScan(st,s,0);assert.ok(res.accepted&&res.action==='effect');assert.equal(res.duration,vhTimes(s,3).final);assert.equal(res.duration,TL.end);
+ assert.equal(chooseScan(stateAt(2,['familiar','tacs'],s),s,0).duration,vhTimes(s,2).final);assert.equal(chooseScan(stateAt(3,['familiar'],s),s,0).duration,VH_SNAP);});

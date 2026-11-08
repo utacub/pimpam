@@ -7,7 +7,7 @@
 // 0.56: the corners of the house are rooms (one group each, built when first shown) round the same bench, ramp and garage; the pieces of a
 // corner are built when the corner starts. 0.57: the yard (works vehicles) with its sandpit, pipe and tyre stack. 0.58: the hallway (the train) with its parquet, wooden
 // track and bridge. 0.59: the bathroom (water and air) with its tiles, bathtub, towel rail and duckboard.
-import {VH_PALETTE,VH_BODY_COLOR,VH_BODIES,VH_WHEELS,VH_TOPS,VH_CORNERS,VH_ROLL,VH_GAG,vhClamp,vhEase,vhOut,vhIn,vhSettle,vhPathOf} from './vehicles.js';
+import {VH_PALETTE,VH_BODY_COLOR,VH_BODIES,VH_WHEELS,VH_TOPS,VH_CORNERS,VH_ROLL,VH_GAG,VH_PARADE_PATH,VH_PARADE_GAP,vhClamp,vhEase,vhOut,vhIn,vhSettle,vhPathOf} from './vehicles.js';
 const vhP3=()=>globalThis.PP3||null;
 export const vhGLAvailable=()=>!!vhP3()&&typeof document!=='undefined';
 // The world (units of a toy world, like centimetres): the bench top is y=0, the floor FLOOR_Y below; the toy group is TOY times a chassis of 30.
@@ -276,7 +276,7 @@ function vhWorkshop(scene){const T=vhP3(),DEC=new T.Group();DEC.name='decor';sce
  const catcher=vhM(new T.PlaneGeometry(4400,1600),new T.ShadowMaterial({opacity:.22}),scene,{cast:false});catcher.rotation.x=-Math.PI/2;catcher.position.set(-500,VH_FLOOR+.3,400);catcher.visible=false;VH_3D.parts.catcher=catcher;
  // the ramp from the bench to the floor, and the garage shelf where the vehicle parks
  const a=new T.Vector3(265,2,86),b=new T.Vector3(492,-200,352);const ramp=new T.Group();scene.add(ramp);VH_3D.parts.ramp=ramp;const len=a.distanceTo(b)+40,mid=a.clone().add(b).multiplyScalar(.5);ramp.position.copy(mid);ramp.lookAt(b);const bed2=vhM(vhRB(60,6,len,3),vhV(vhC.verd,.6),ramp);bed2.position.y=-6;for(const x of[-31,31])vhM(vhRB(5,10,len,2),vhV(vhC.groc,.6),ramp).position.set(x,-3,0);
- const gar=new T.Group();gar.position.set(-690,VH_FLOOR,420);scene.add(gar);VH_3D.parts.garage=gar;vhM(vhRB(170,8,150,4),vhV(vhC.verd,.6),gar).position.y=4;vhM(vhRB(170,8,150,4),vhV(vhC.verd,.6),gar).position.y=118;vhM(vhRB(8,118,150,3),vhV(vhC.verd,.6),gar).position.set(-81,61,0);vhM(vhRB(170,118,8,3),vhV(vhC.crema,.8),gar).position.set(0,61,-71);vhM(vhRB(150,26,6,3),vhV(vhC.corall,.6),gar).position.set(0,100,74);}
+ const gar=new T.Group();gar.position.set(-690,VH_FLOOR,420);scene.add(gar);VH_3D.parts.garage=gar;vhM(vhRB(170,8,150,4),vhV(vhC.verd,.6),gar).position.y=4;vhM(vhRB(170,8,150,4),vhV(vhC.verd,.6),gar).position.y=118;for(const z of[-71,71])vhM(vhRB(8,118,10,2.4),vhV(vhC.verd,.6),gar).position.set(-81,61,z);vhM(vhRB(170,118,8,3),vhV(vhC.crema,.8),gar).position.set(0,61,-71);vhM(vhRB(150,26,6,3),vhV(vhC.corall,.6),gar).position.set(0,100,74);}
 // ── the rooms, one per corner: the wall with its window and frieze, the floor and the furniture of the circuit ────────────────────
 function vhRoomBuild(corner){const T=vhP3(),room=new T.Group();room.name='room-'+corner;VH_3D.parts.decor.add(room);const R={group:room,glass:null,moon:null,pot:null};VH_3D.rooms[corner]=R;
  const RS=VH_ROOM_STYLE[corner]||VH_ROOM_STYLE.habitacio;const wall=vhM(new T.PlaneGeometry(4400,520),vhD(RS.wall,1),room,{cast:false,recv:true});wall.position.set(-500,60,-100);wall.material.userData.wall=true;vhM(vhRB(4400,14,6,2),vhD(vhC.crema,.8),room,{cast:false}).position.set(-500,VH_FLOOR+7,-96);
@@ -432,7 +432,7 @@ function vhMeasure(view){if(view.quality&&view.quality!=='auto')return;const now
  if(VH_3D.frames>=90){if(VH_3D.slow>VH_3D.frames*.4&&VH_3D.tier!=='baixa'){VH_3D.tier=VH_3D.tier==='alta'?'mitjana':'baixa';}VH_3D.frames=VH_3D.slow=VH_3D.fast=0;}}
 export const vhTierNow=()=>VH_3D.tier;
 // The toy on the chassis: which body, wheels and accessory are on, the pending piece on its flight, the paint of the colour pick.
-function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pending,toy=VH_3D.parts.toy,t=view.t||0;
+function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pending,toy=VH_3D.parts.toy,t=view.t||0;toy.visible=true;if(VH_3D.parts.parade&&view.phase!=='parade')for(const g of VH_3D.parts.parade.groups)g.visible=false;
  for(const k in VH_3D.parts.bodies)VH_3D.parts.bodies[k].visible=false;for(const k in vhBodyCache)vhBodyCache[k].visible=false;for(const k in VH_3D.parts.wheels)VH_3D.parts.wheels[k].visible=false;for(const k in VH_3D.parts.tops)VH_3D.parts.tops[k].visible=false;
  const flyer=VH_3D.parts.flyer;while(flyer.children.length)flyer.remove(flyer.children[0]);
  const color=P.color||(P.body?VH_BODY_COLOR[P.body]:'blau');let body=null;if(P.body){body=vhBodyCached(P.body,color);body.visible=true;body.position.set(0,VH_BODY_Y,0);body.rotation.set(0,0,0);body.scale.setScalar(1);}
@@ -442,7 +442,7 @@ function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pen
  let top=null;if(P.top&&P.body){top=VH_3D.parts.tops[P.top];top.visible=true;const M=vhTopMount(P.body,P.top);top.position.set(M[0],M[1],0);top.rotation.set(0,0,0);vhGagRest(top);if(top.userData.balloon&&!view.reduced){top.userData.balloon.rotation.z=VH_BAL_LEAN+Math.sin(t*1.3)*.06;top.userData.balloon.rotation.x=Math.cos(t*.9)*.05;}}
  // the ride: the toy along the circuit; otherwise at rest on the bench
  toy.position.set(0,0,0);toy.rotation.set(0,0,0);VH_3D.parts.meta.visible=false;const pot=VH_3D.room?.pot;if(pot){pot.userData.bud.scale.setScalar(.35);pot.userData.petals.scale.setScalar(.001);}if(VH_3D.parts.balls)for(const b of VH_3D.parts.balls)b.visible=false;
- if(view.phase==='ride'||view.phase==='park')vhRideStep(view,top);
+ if(view.phase==='ride'||view.phase==='park')vhRideStep(view,top);else if(view.phase==='parade')vhParadeStep(view);
  // the pending piece flies from the tray to its place (or the tin paints the body)
  if(pend&&view.phase==='snap'){vhFlight(view,pend,body,wheels);}
  // idle life of the workshop: the wrench swings on its hook
@@ -467,10 +467,10 @@ function vhFlight(view,pend,body,wheels){const T=vhP3(),tmp=vhTmps(),u=vhClamp(p
 // ride (0.54, Marc: never from behind the toy) are all from outside the circuit and at a distance, so that the room is seen: the ramp from
 // the right of the room, the tour from the front of the room (the camera slides a little with the vehicle and pans to keep it in view), the
 // arrival from the front left.
-const VH_CAM=Object.freeze({bench:{p:[0,212,372],l:[0,-22,-24]},wait:{p:[50,160,300],l:[0,8,-6]},room:{p:[0,520,1500],l:[-150,-150,380]},ramp:{p:[820,120,960],l:[330,-90,240]},tour:{p:[40,300,1080],l:[-40,-150,400]},garage:{p:[-120,110,1120],l:[-560,-170,430]}});
+const VH_CAM=Object.freeze({bench:{p:[0,212,372],l:[0,-22,-24]},wait:{p:[50,160,300],l:[0,8,-6]},room:{p:[0,520,1500],l:[-150,-150,380]},ramp:{p:[820,120,960],l:[330,-90,240]},tour:{p:[40,300,1080],l:[-40,-150,400]},garage:{p:[-120,110,1120],l:[-560,-170,430]},parade:{p:[220,760,2350],l:[120,-200,520]}});
 const VH_CAM_SALA=Object.freeze({...VH_CAM,room:{p:[0,600,1800],l:[-150,-150,420]},tour:{p:[60,430,1420],l:[-40,-150,430]},garage:{p:[-60,150,1260],l:[-560,-170,440]}});
 const vhCamOf=corner=>corner==='habitacio'?VH_CAM:VH_CAM_SALA;
-function vhCamera(view){const T=vhP3(),tmp=vhTmps(),cam=VH_3D.cam,VH_CAM=vhCamOf(view.corner);cam.aspect=view.w/view.h;cam.fov=view.w/view.h<1.1?34:26;
+function vhCamera(view){const T=vhP3(),tmp=vhTmps(),cam=VH_3D.cam,VH_CAM=vhCamOf(view.corner);cam.aspect=view.w/view.h;cam.fov=view.phase==='parade'?(view.w/view.h<1.1?38:28):(view.w/view.h<1.1?34:26);
  const set=(S)=>{cam.position.set(...S.p);cam.lookAt(...S.l);};
  if(view.phase==='choose'||view.phase==='snap'){set(VH_CAM.bench);}
  else if(view.phase==='wait'){const k=vhEase(vhClamp(view.waitU*3));cam.position.set(...VH_CAM.bench.p).lerp(tmp.v.set(...VH_CAM.wait.p),k);tmp.v2.set(...VH_CAM.bench.l).lerp(tmp.v.set(...VH_CAM.wait.l),k);cam.lookAt(tmp.v2);}
@@ -479,8 +479,10 @@ function vhCamera(view){const T=vhP3(),tmp=vhTmps(),cam=VH_3D.cam,VH_CAM=vhCamOf
   else if(u<.2){cam.position.set(...VH_CAM.ramp.p);cam.lookAt(toyPos.x*.5+VH_CAM.ramp.l[0]*.5,toyPos.y*.5+VH_CAM.ramp.l[1]*.5,toyPos.z*.5+VH_CAM.ramp.l[2]*.5);}
   else if(u<.8){const C=VH_CAM.tour;cam.position.set(C.p[0]+toyPos.x*.22,C.p[1],C.p[2]);cam.lookAt(toyPos.x*.55+C.l[0]*.45,VH_FLOOR+50,toyPos.z*.45+C.l[2]*.55);}
   else{const C=VH_CAM.garage;cam.position.set(...C.p);cam.lookAt(toyPos.x*.35+C.l[0]*.65,VH_FLOOR+40,toyPos.z*.35+C.l[2]*.65);}}
- else{// park: the garage, then back to the bench for the next round
-  const u=view.park?.u||0;if(u<.7)set(VH_CAM.garage);else set(VH_CAM.bench);}
+ else if(view.phase==='parade'){// the parade (0.60): the whole room from far away, the look drifting a little with the convoy (still when less motion is asked)
+  const C=VH_CAM.parade,fx=view.reduced?0:vhClamp(VH_3D.parts.paradeFocus||0,-600,600);cam.position.set(C.p[0]+fx*.06,C.p[1],C.p[2]);cam.lookAt(C.l[0]+fx*.22,C.l[1],C.l[2]);}
+ else{// park: the garage, then back to the bench for the next round (in a finale the garage stays until the parade)
+  const u=view.park?.u||0;if(u<.7||view.finale)set(VH_CAM.garage);else set(VH_CAM.bench);}
  cam.updateProjectionMatrix();}
 // The ride: the toy follows the circuit of the room with the pace of its wheels; the wheels turn; the accessory plays its gag.
 let vhCurve=null,vhCurveLen=0;const vhCurves={};
@@ -496,8 +498,22 @@ function vhRideStep(view,top){const T=vhP3(),tmp=vhTmps(),toy=VH_3D.parts.toy,R=
   const d2=vhCurve.getTangentAt(vhClamp(d+.01)),curv=Math.atan2(d2.x,d2.z)-Math.atan2(tan.x,tan.z);toy.rotateX(-vhClamp(curv*speed*3,-.3,.3)*roll.lean);}
  if(park){const pu=vhClamp(view.park?.u||0);toy.position.x-=vhOut(vhClamp(pu/.5))*70;}
  // the wheels turn with the distance gone; the trailer's too
- const r=(VH_3D.parts.wheels[R.roll]?.userData.r||3.6)*VH_TOY,ang=dist/r;toy.traverse(o=>{if(o.userData.wheel)o.rotation.z=-ang*(o.rotation.y?-1:1)*(o.parent?.userData?.trailer?-1:1);if(o.userData.rod){const Rd=o.userData.rod,th=-ang+Rd.ph;o.position.x=Rd.rc*Math.cos(th);o.position.y=Rd.cy+Rd.rc*Math.sin(th);}if(o.userData.ridges){const sh=(dist/VH_TOY)%3;for(const k of o.userData.ridges.children)k.position.x=-12+((k.userData.ridge*3+sh)%27);}if(o.userData.spin){const S=o.userData.spin;o.rotation[S.axis]=view.reduced?0:-ang*S.k;}});
+ vhSpinParts(toy,dist,(VH_3D.parts.wheels[R.roll]?.userData.r||3.6)*VH_TOY,view.reduced);
  if(top)vhGag(view,top,u,park);}
+// the wheels turn with the distance gone (the trailer's too), the coupling rods ride their crank pins, the tracks' ridges run, the rotors spin
+function vhSpinParts(g,dist,r,reduced){const ang=dist/r;g.traverse(o=>{if(o.userData.wheel)o.rotation.z=-ang*(o.rotation.y?-1:1)*(o.parent?.userData?.trailer?-1:1);if(o.userData.rod){const Rd=o.userData.rod,th=-ang+Rd.ph;o.position.x=Rd.rc*Math.cos(th);o.position.y=Rd.cy+Rd.rc*Math.sin(th);}if(o.userData.ridges){const sh=(dist/VH_TOY)%3;for(const k of o.userData.ridges.children)k.position.x=-12+((k.userData.ridge*3+sh)%27);}if(o.userData.spin){const S=o.userData.spin;o.rotation[S.axis]=reduced?0:-ang*S.k;}});}
+// ── the parade (0.60): the vehicles of the corner in convoy along VH_PARADE_PATH, the newest (the toy of the bench) leading ──────────
+let vhParadeC=null;function vhParadeCurve(){if(!vhParadeC){const T=vhP3(),curve=new T.CatmullRomCurve3(VH_PARADE_PATH.map(p=>new T.Vector3(...p)),false,'centripetal',.5);vhParadeC={curve,len:curve.getLength()};}return vhParadeC;}
+// a vehicle of an earlier round, built whole (chassis without pegs, body, wheels, accessory at rest); shares every geometry and material cache
+function vhParadeVehicle(P){const T=vhP3(),g=new T.Group();g.scale.setScalar(VH_TOY);const ch=vhChassis();for(const o of ch.children)if(o.userData.peg)o.visible=false;g.add(ch);const b=vhBody(P.body,P.color);b.position.set(0,VH_BODY_Y,0);g.add(b);const w=vhWheelSet(P.wheels);g.add(w);g.userData.wheelR=w.userData.r||3.6;
+ if(P.top){const t=vhTop(P.top),M=vhTopMount(P.body,P.top);t.position.set(M[0],M[1],0);g.add(t);vhGagRest(t);}g.visible=false;VH_3D.scene.add(g);return g;}
+// the groups of the convoy for this list of vehicles: the toy for the first, a built vehicle for each other one (kept while the list lasts)
+function vhParadeGroups(made){const key=made.map(P=>`${P.body}/${P.wheels}/${P.top}/${P.color}`).join('|');let PR=VH_3D.parts.parade;if(!PR||PR.key!==key){if(PR){const shared=new Set([...Object.values(vhBodyGeo),...Object.values(vhGlassGeo)]);for(const g of PR.groups)if(g!==VH_3D.parts.toy){VH_3D.scene.remove(g);g.traverse(o=>{if(o.geometry&&!shared.has(o.geometry))o.geometry.dispose();if(o.userData.paint&&o.material)o.material.dispose();});}}PR=VH_3D.parts.parade={key,groups:made.map((P,i)=>i===0?VH_3D.parts.toy:vhParadeVehicle(P))};}return PR.groups;}
+function vhParadeStep(view){const PA=view.parade||{u:0,made:[]},made=PA.made&&PA.made.length?PA.made:[{body:view.picks?.body,wheels:view.picks?.wheels||'tacs',top:view.picks?.top||null,color:view.picks?.color||'blau'}],u=vhClamp(PA.u),CU=vhParadeCurve(),len=CU.len,n=made.length,total=len+(n-1)*VH_PARADE_GAP,groups=vhParadeGroups(made);let fx=0,nv=0;
+ groups.forEach((g,i)=>{const sd=u*total-i*VH_PARADE_GAP;if(sd>len){g.visible=false;return;}g.visible=true;const d=vhClamp(sd/len),pos=CU.curve.getPointAt(d),tan=CU.curve.getTangentAt(d);if(sd<0){pos.addScaledVector(tan,sd);if(pos.x<-775)pos.y=VH_FLOOR;if(pos.x<-760){g.visible=false;return;}}g.position.copy(pos);if(g.position.y<VH_FLOOR)g.position.y=VH_FLOOR;
+  const yaw=Math.atan2(tan.x,tan.z)-Math.PI/2,pitch=Math.asin(vhClamp(tan.y,-1,1));g.rotation.set(0,0,0);g.rotateY(yaw);g.rotateZ(pitch);const roll=VH_ROLL[made[i].wheels]||VH_ROLL.tacs,r=(i===0?(VH_3D.parts.wheels[made[0].wheels]?.userData.r||3.6):(g.userData.wheelR||3.6))*VH_TOY;
+  if(!view.reduced){g.position.y+=Math.abs(Math.sin(sd/(2*Math.PI*r)*Math.PI*2))*2.2*roll.bounce;g.rotateX(Math.sin(sd/40)*.05*roll.wobble);}vhSpinParts(g,sd,r,view.reduced);fx+=pos.x;nv++;});
+ VH_3D.parts.paradeFocus=nv?fx/nv:700;}
 // The gags: the lid opens and the three balls hop out and roll; the blocks jump off the trailer into a tower at the garage; the finish
 // banner is up in front of the garage and the flag waves.
 function vhGag(view,top,u,park){const G=VH_GAG[view.picks.top];if(!G)return;const t=view.t||0,T=vhP3(),tmp=vhTmps();

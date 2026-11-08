@@ -3,7 +3,7 @@
 // highlight of the focus over it (tlRing, as every board), the veil of the wait and, while the finished vehicle waits for the press that
 // starts it, a breathing ring round the vehicle. Without WebGL (old devices, the tests) a flat bench is drawn instead with the same layout.
 import {TL_STRIP,TL_DIM,tlRound,tlRing} from './tauler.js';
-import {VH_PALETTE,VH_BODY_COLOR,VH_SNAP,vhRoundOf,vhPicks,vhStageKind,vhTimeline,vhPhase,vhColorOf,vhHex,vhSurprise,vhClamp,vhEase,vhOut,vhSettle,vhPathOf} from './vehicles.js';
+import {VH_PALETTE,VH_BODY_COLOR,VH_SNAP,VH_ROUNDS,vhRoundOf,vhPicks,vhStageKind,vhTimeline,vhPhase,vhColorOf,vhHex,vhSurprise,vhClamp,vhEase,vhOut,vhSettle,vhPathOf} from './vehicles.js';
 import {vhRender,vhVehicleRect} from './vehicles-3d.js';
 export const VH_TRAY_MIN=104,VH_TRAY_MAX=264;
 // The geometry of the screen (CSS pixels): the bench panel above, the tray at the bottom over the strip of the commands.
@@ -30,11 +30,12 @@ export function vhBoard(c,w,h,state,game,s,view){const preview=!!view.preview,G=
 export function vhResult(c,w,h,state,game,s,view,time){const G=vhGeom(w,h,false),kind=vhStageKind(state,s),id=view.pendingId,final=!!view.final,options=(view.options||[]).map(o=>o?.value??o?.id??o),zones=view.zones||vhSlots(G,Math.max(1,options.length)),chosen=Math.max(0,view.chosen??options.indexOf(id));
  const placed=vhPicks(state,s),full=vhPicks(state,s,id),base={options,lights:options.map((_,i)=>i===chosen?1:TL_DIM),tray:{...G.tray,cells:zones}};
  let v;if(!final){v=vhView(c,G,state,s,view,{...base,phase:'snap',picks:placed,kind,pending:{kind,id,index:chosen,u:vhClamp(time/VH_SNAP)}});}
- else{const TL=vhTimeline(s,game?.vhGo??null),ph=vhPhase(TL,time);
+ else{const TL=vhTimeline(s,game?.vhGo??null,state?.round),ph=vhPhase(TL,time);
   if(ph.phase==='snap')v=vhView(c,G,state,s,view,{...base,phase:'snap',picks:placed,kind,pending:{kind,id,index:chosen,u:ph.u}});
   else if(ph.phase==='wait')v=vhView(c,G,state,s,view,{...base,phase:'wait',picks:full,kind,waitU:ph.u});
   else if(ph.phase==='ride')v=vhView(c,G,state,s,view,{...base,phase:'ride',picks:full,kind,ride:{u:ph.u,roll:full.wheels||'tacs',camera:s?.vhCamera||'dinamica'}});
-  else v=vhView(c,G,state,s,view,{...base,phase:'park',picks:full,kind,park:{u:ph.u}});}
+  else if(ph.phase==='park')v=vhView(c,G,state,s,view,{...base,phase:'park',picks:full,kind,finale:TL.finale,park:{u:ph.u}});
+  else v=vhView(c,G,state,s,view,{...base,phase:'parade',picks:full,kind,finale:true,parade:{u:ph.u,made:vhParadeList(state,game,s,full)}});}
  const drawn=vhRender(c,v);if(!drawn)vhFlat(c,G,v);
  // the invitation to press: a ring round the finished vehicle that breathes slowly (never faster than one breath a second)
  if(v.phase==='wait'&&s?.vhGo!=='auto'){const rect=drawn?vhVehicleRect(v):vhFlatCarRect(G),t=view.clock||0;if(rect){const pad=Math.max(14,G.w*.012),a=.62+.38*Math.sin(t*VH_TAU*.7),pts=tlRound(rect.x-pad,rect.y-pad,rect.w+2*pad,rect.h+2*pad,Math.min(34,rect.h*.3));tlRing(c,pts,null,vhClamp(v.waitU*4)*a,Math.max(.6,Math.min(1.2,G.w/1280)),{...(view.ring||{}),frame:'whole',fill:'none'});}}}
@@ -45,6 +46,10 @@ function vhVeilRing(c,G,view,v){const wait=view.wait??(view.waiting?1:0);if(wait
 const vhHx=vhHex;
 function vhRR(c,x,y,w,h,r,fill){c.beginPath();c.roundRect(x,y,w,h,Math.min(r,w/2,h/2));c.fillStyle=fill;c.fill();}
 function vhMix(a,b,k){const A=parseInt(a.slice(1),16),B=parseInt(b.slice(1),16),ch=s=>Math.round(((A>>s)&255)*(1-k)+((B>>s)&255)*k);return '#'+[16,8,0].map(s=>ch(s).toString(16).padStart(2,'0')).join('');}
+// The vehicles of the parade (0.60): the one just finished and, after it, the ones made in the earlier rounds of this corner that the app
+// remembered (game.vhMade, by round); a round skipped or left without a vehicle is simply not in the parade.
+export function vhParadeList(state,game,s,current){const R=vhRoundOf(state?.round|0,s),r0=R.round-R.li,made=game?.vhMade||{},out=[];
+ for(let i=R.li;i>=0;i--){const P=i===R.li?current:made[r0+i];if(P&&P.body&&P.wheels)out.push({body:P.body,wheels:P.wheels,top:P.top||null,color:vhColorOf(P)});}return out;}
 function vhFlatCarRect(G){const k=Math.min(G.panel.w/900,G.panel.h/520);return {x:G.w/2-20*k*3.2,y:G.panel.y+G.panel.h*.62-22*k*3.2,w:40*k*3.2,h:24*k*3.2};}
 // The bench seen from the front: a wall, the bench and a side view of the toy; the cells of the tray with a glyph of each piece.
 function vhFlat(c,G,v){const d=v.decor||{fade:1,base:'#000000',white:false},wall=vhMix(vhHx(VH_PALETTE.paret),d.base,1-d.fade);c.fillStyle=d.fade>0?wall:d.base;c.fillRect(0,0,G.w,G.h);
@@ -53,7 +58,8 @@ function vhFlat(c,G,v){const d=v.decor||{fade:1,base:'#000000',white:false},wall
  vhRR(c,G.w/2-430*k,by-6*k,860*k,G.panel.h-by+G.panel.y+40*k,16*k,vhHx(VH_PALETTE.verd));vhRR(c,G.w/2-410*k,by-2*k,820*k,30*k,10*k,vhHx(VH_PALETTE.crema));
  const P=v.picks||{},ride=v.phase==='ride'?v.ride.u:0,park=v.phase==='park'?v.park.u:0;let cx=G.w/2,cy=by,kk=k*3.2;
  if(v.phase==='ride'){const u=ride;cx=G.w/2+Math.sin(u*VH_TAU)*G.w*.3;cy=by+vhEase(vhClamp(u*3))*G.panel.h*.25;}if(v.phase==='park'){cx=G.w/2-G.w*.36*vhOut(vhClamp(park/.5));cy=by+G.panel.h*.25;}
- vhFlatCar(c,cx,cy,kk,P,v.pending,v.t||0,v.phase==='ride'?ride:0);
+ if(v.phase==='parade'){const u=vhClamp(v.parade?.u||0),made=v.parade?.made||[P],n=made.length,gap=52*kk,span=G.w+n*gap+80*kk;made.forEach((Q,i)=>{const x=-60*kk+u*span-i*gap;if(x<-40*kk||x>G.w+40*kk)return;vhFlatCar(c,x,by+G.panel.h*.25,kk*.9,Q,null,v.t||0,u*4);});}
+ else vhFlatCar(c,cx,cy,kk,P,v.pending,v.t||0,v.phase==='ride'?ride:0);
  if(v.tray&&(v.phase==='choose'||v.phase==='snap')){const T=v.tray;vhRR(c,T.x,T.y,T.w,T.h,Math.min(26,T.h*.12),vhHx(VH_PALETTE.verd));(T.cells||[]).forEach((cell,i)=>{const light=v.lights?.[i]??1,kq=vhClamp((light-TL_DIM)/(1-TL_DIM));vhRR(c,cell.x,cell.y,cell.w,cell.h,Math.min(18,cell.h*.1),vhMix(vhHx(VH_PALETTE.crema),d.white?'#ffffff':'#2a2f45',(1-kq)*(v.surprise?0:.16)));
   const id=(v.options||[])[i];if(id===undefined||(v.pending&&(v.pending.index|0)===i))return;vhFlatGlyph(c,v.kind,id,cell.x+cell.w/2,cell.y+cell.h/2-(4+kq*6),Math.min(cell.w/44,cell.h/30));});}}
 // A side view of the vehicle: the chassis, the body in its colour, two wheels, the accessory (the pending piece arrives from above).

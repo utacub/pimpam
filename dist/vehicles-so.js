@@ -68,14 +68,19 @@ const vhClac=(at,vel=1)=>VH_CLAC.map(e=>vhNote(e.inst,[0],at+e.dt,.25,e.vel*vel,
 export function vhStepScore(corner,k,round=0){const P=VH_PIECE[corner]||VH_PIECE.habitacio,land=VH_SNAP*.62;return [...vhClac(land),...vhBand(P,k,land+.05,VH_SNAP+1.2,.9,{bar0:(round*2+k)%P.chords.length})].filter(e=>e.t<VH_SNAP-.05);}
 // The final pick: the «clac», the soft vamp of the wait, the two claves that start the engine, the band for the whole ride, the sounds of
 // the wheels and of the gag of the accessory, and the cadence and the «clac» of the garage. go is the moment of the press (null: alone).
-export function vhFinalScore(corner,picks,s,go=null,round=0){const P=VH_PIECE[corner]||VH_PIECE.habitacio,TL=vhTimeline(s,go),land=VH_SNAP*.62,out=[...vhClac(land)];
+export function vhFinalScore(corner,picks,s,go=null,round=0){const P=VH_PIECE[corner]||VH_PIECE.habitacio,TL=vhTimeline(s,go,round),land=VH_SNAP*.62,out=[...vhClac(land)];
  const k=picks.top?3:2;out.push(...vhBand(P,k,land+.05,Math.min(TL.start-.3,land+2.4),.9,{bar0:(round*2+k)%P.chords.length}));
  if(TL.start-.3>land+2.6)out.push(...vhBand(P,1,land+2.6,TL.start-.35,1,{wait:true}));
  out.push(vhNote('woodblockRec',[0],TL.start-.42,.2,.42,{variant:'claves'}),vhNote('woodblockRec',[0],TL.start-.21,.2,.5,{variant:'claves'}));
  out.push(...vhBand(P,3,TL.start,TL.rideEnd-.2,1,{full:true}));
  out.push(...vhWheelSounds(picks.wheels,TL),...vhGagSounds(picks.top,TL,P));
  out.push(...vhCadence(P,TL.rideEnd+.1),...vhClac(TL.rideEnd+.75,.8));if(TL.park>2)out.push(vhNote('pintaRec',[0],TL.rideEnd+1.6,.6,.35,{variant:'campana'}));
+ if(TL.parade)out.push(...vhParadeScore(P,TL,picks));
  return out.filter(e=>e.t<TL.end-.05).sort((a,b)=>a.t-b.t);}
+// The parade (0.60), after the garage of the fourth vehicle: the «un, dos» of the claves, the whole band once more (fuller, as a street
+// band passing by), the wheels of the vehicle that leads under it, and the cadence as the last one leaves.
+function vhParadeScore(P,TL,picks){const t0=TL.parkEnd+.3,from=t0+.5,to=TL.end-2.3,out=[vhNote('woodblockRec',[0],t0,.2,.42,{variant:'claves'}),vhNote('woodblockRec',[0],t0+.21,.2,.5,{variant:'claves'})];
+ out.push(...vhBand(P,3,from,to,1,{full:true,bar0:4}));out.push(...vhWheelSounds(picks.wheels,{start:from,ride:to-from,rideEnd:to}).map(e=>({...e,vel:e.vel*.6})));out.push(...vhCadence(P,to+.1));return out;}
 // The wheels on the floor: the knobbly ones thump softly on every bounce; the wooden ones clack with every turn; the racing ones hiss once at
 // the start. All of it quiet, under the band, and only on the floor (after the ramp, the first fifth of the ride).
 function vhWheelSounds(kind,TL){const out=[],t0=TL.start+TL.ride*.2,t1=TL.rideEnd-.4;

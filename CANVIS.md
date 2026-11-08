@@ -1,3 +1,43 @@
+# Pim Pam 0.60 · El taller de vehicles: la desfilada de final de racó
+
+Base: 0.59 (commit 750b235, en local). Tanca el pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»): després de les quatre fases (els racons), el final de racó. El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+
+## Què canvia
+
+- **La desfilada.** Quan el quart vehicle d’un racó arriba al garatge (rondes 4, 8, 12…, sempre la de nit), la càmera no torna al banc: es queda al garatge i tot seguit s’allunya a una vista sencera de l’habitació, des de més lluny que el passeig tranquil. Els vehicles que s’han fet al racó surten del garatge un darrere l’altre —el que s’acaba de fer al davant, i darrere els de les tres rondes anteriors, del més nou al més vell—, fan un revolt cap endavant i travessen tot el davant de l’habitació, per davant dels mobles i del circuit, fins a sortir per la dreta. Després el taller passa al racó següent, com fins ara. Si alguna ronda del racó s’ha saltat o no s’ha acabat, hi desfilen els vehicles que hi ha (encara que només sigui un).
+- **Durada.** La desfilada dura 9, 12 o 15 segons segons la «Durada del passeig» (curt, mitjà, llarg), després del garatge; la resta de rondes no canvia gens. Una pulsació abans d’hora escurça l’espera, no la desfilada.
+- **El garatge.** Ara és obert pels dos caps (dos pals aguanten el sostre pel costat esquerre): el vehicle aparcat s’hi veu igual, i els altres vehicles de la desfilada hi entren per darrere i en surten per la porta.
+- **Com es mouen.** Cada vehicle va amb les seves rodes (rebot i balanceig segons la mena de roda; les rodes, les bieles, les erugues i els rotors giren amb el camí fet), a 150 unitats del següent, a la velocitat del passeig. Els accessoris van en repòs (cap gag durant la desfilada). Amb «menys moviment» la càmera és fixa i no hi ha rebots; si no, la vista deriva molt a poc a poc seguint el comboi.
+- **La música.** Després de la cadència del garatge, dues claus marquen «un, dos» i la banda del racó torna a tocar sencera (com una banda de carrer que passa), amb el so de les rodes del vehicle del davant a sota, i la cadència del racó tanca quan l’últim vehicle se’n va. Cap so nou: tot dels bancs de la suite.
+- **Dibuix pla (sense WebGL).** El comboi travessa el panell d’esquerra a dreta amb els dibuixos plans de cada vehicle.
+- **Panell ⓘ.** El text de capçalera del taller esmenta la desfilada; les 110 entrades es mantenen. `ACTIVITATS.md` i `DOCUMENTACIO_TECNICA.md` actualitzats.
+
+## Regles que es mantenen
+
+- Cap paraula escrita durant l’encercament; la desfilada és només la part final de l’efecte de l’última tria, i no demana cap pulsació. Criteris de disseny propis, no evidència.
+- Fotosensibilitat: cap parpelleig; només hi ha moviment continu de vehicles petits vistos de lluny i una deriva lenta de càmera, per sota dels tres canvis per segon del criteri 2.3.1 (W3C, 2023), amb base clínica a Harding i Jeavons (1994).
+- Música i sons només dels bancs de la suite (cap enregistrament nou).
+- Cap cara a les joguines; els vehicles de la desfilada són els mateixos models de cada racó.
+
+## Proves
+
+- `node --test tests/*.test.mjs`: 423 de 426 verdes (les 3 vermelles són les de sempre: enregistraments de la masia, dels instruments i dels detectius que no són al disc); `tests/vehicles.test.mjs` passa d’10 a 11 proves (la ronda final: temps, fases, ruta, llista de vehicles, música i dibuix pla).
+- Fotogrames amb three.js (SwiftShader, 1280×720 i 2560×1440): el quart vehicle al garatge obert, la sortida del garatge (el primer vehicle surt mentre el segon travessa el garatge), el revolt cap endavant, el comboi pel davant de l’habitació (nit), l’últim vehicle sortint per la dreta, i la desfilada a la sala (esquivant el test), al pati, al passadís i al bany; el dibuix pla del comboi.
+- Fitxer construït (`Pim_Pam_44_activitats_v0_60.html`, 65.586.968 bytes) obert a Chromium sense errors de consola: portada, carpeta, fitxa, panell ⓘ, càrrega, pestanya «Aquesta activitat», pausa i safata del taller.
+
+## Per revisar (en Marc)
+
+1. La durada de la desfilada (9/12/15 s) i la distància de la càmera: si convé veure els vehicles més grossos (càmera més a prop) o més habitació.
+2. L’ordre del comboi (el més nou al davant) i la sortida per la dreta: també podrien fer el circuit sencer, però és més llarg.
+3. El garatge obert pels dos caps.
+4. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil ha publicat la 0.55 (Pluja de colors nova) i el fitxer passa a dir-se Pim_Pam_45_activitats.
+
+## Referències
+
+Harding, G. F. A., i Jeavons, P. M. (1994). *Photosensitive epilepsy* (2a ed.). Mac Keith Press.
+
+W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2*. World Wide Web Consortium. https://www.w3.org/TR/WCAG22/
+
 # Pim Pam 0.59 · El taller de vehicles: el bany, aigua i aire (fase 4)
 
 Base: 0.58 (commit d7dce8d, en local). Quarta i última de les fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
