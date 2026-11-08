@@ -1,3 +1,18 @@
+# Pim Pam 0.61 · Fora la Pluja musical
+
+Base: 0.60.3 (commit 3616cdf, publicada). Petició d’en Marc el 8 de novembre de 2026 a les 23:09 (hora de Catalunya): «pots eliminar Pluja musical de la carpeta Per revisar».
+
+## Què canvia
+
+- **Fora «Pluja musical» (CE07).** Era una de les activitats fetes amb ChatGPT al començament que es guardaven a «Per revisar». La carpeta queda amb «La granota bombollaire» i «El vestidor fantàstic». El codi CE07 queda lliure i no es reaprofita, com els de les activitats tretes abans.
+- **Fora el seu codi.** Se suprimeix el mòdul dist/musical-rain.js (dibuix, vint composicions i els seus vuit instruments sintetitzats `rain-…`). L’app arrencava el so a través d’aquest mòdul; ara ho fa directament amb el sintetitzador del Fons marí (ocean.js), que ja era el que hi havia a sota, de manera que la resta d’activitats sonen igual.
+- **Portada:** 44 activitats (33 de causa-efecte i 11 d’encercament). Fitxer autònom: dist/Pim_Pam_44_activitats_v0_61.html.
+
+## Proves
+
+- Les proves del catàleg comproven que «Pluja musical» ja no hi és (31 activitats de causa-efecte més les dues pel·lícules, 11 d’encercament) i que els codis de la resta no canvien. Resultat: 431 correctes i 3 errors, els mateixos tres que ja fallaven a la 0.60.3 (fitxers de so de la masia, instruments enregistrats i Detectius de sons, que no són al repositori).
+- Fitxer autònom obert a Chromium: 44 fitxes, cap error; La granota bombollaire, El vestidor fantàstic, el Fons marí, el Caleidoscopi i les Gotes de pintura s’obren i responen al commutador.
+
 # Pim Pam 0.60.3 · El taller de vehicles sense panell d’informació
 
 Base: 0.60.2 (commit ee5cbed, publicada). Petició d’en Marc el 8 de novembre de 2026 a les 22:30 (hora de Catalunya): «Pots eliminar la Info dins d’aquesta activitat, és completament irrellevant».

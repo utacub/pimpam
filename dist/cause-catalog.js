@@ -13,7 +13,6 @@ import {SELVA_N,SELVA_START,SELVA_STIM,selvaCamera,selvaDuration,selvaRest,selva
 import {SABANA_N,SABANA_START,SABANA_STIM,sabanaCamera,sabanaDuration,sabanaRest,sabanaScore} from './sabana.js';
 import {POU_N,POU_START,POU_STIM,pouCamera,pouDuration,pouRest,pouScore} from './pou.js';
 import {GG_N,GG_START,GG_STIM,ggCamera,ggDuration,ggRest,ggScore} from './gegants.js';
-import {MR_CAUSE,MR_MIN,mrScore} from './musical-rain.js';
 import {DIA_MIN_DURATION,DIA_STOPS,diaNext,diaPhase,diaScore,diaStart} from './dia.js';
 import {OQ_STEP_MIN,OQ_FINAL_MIN,oqScore} from './orquestra.js';
 import {SK_STEP_MIN,SK_FINAL_MIN,skScore} from './constel.js';
@@ -72,7 +71,7 @@ const stageSpan=(item,game,s,duration)=>game.count>=ceSteps(item,s).steps?Math.m
 // Dibuixos que ballen (and its two sister collections) keeps the speed chosen when the drawing began (game.dbSpeed), so that the music
 // and the dance stay together.
 const ownScore=(item,game,span)=>item.kind==='cycle'?diaScore(game.diaTarget,span):DB_SETS[item.id]?dbScore(game.variant,span,game.completed,game.dbSpeed,DB_SETS[item.id]):OWN_SCORES[item.id](game.variant,span,game.completed);
-const CAUSE_MAP=new Map([...EXTRA_CAUSES,...NEW_CAUSES,MR_CAUSE].map(x=>[x.id,x]));
+const CAUSE_MAP=new Map([...EXTRA_CAUSES,...NEW_CAUSES].map(x=>[x.id,x]));
 const causeDefinition=id=>CAUSE_MAP.get(id);
 function causePalette(id,variant=0){const item=causeDefinition(id),n=((variant+(item?.seed||0)*3)%20+20)%20;return INK_PATTERNS[n].palette;}
 function causeBusy(game,s){if(game.time===null)return false;const item=causeDefinition(game.item.id);
@@ -139,7 +138,7 @@ function beginCause(game,s,now=causeNow()){
  if(item.continuous&&['hold','toggle'].includes(game.control)){game.audioDuration=Math.max(item.minDuration||0,s.duration);game.duration=Infinity;}
  if(item.kind==='toggle'){game.previousDay=!!game.day;game.day=!game.previousDay;}
  const scoreIndex=(game.variant+item.seed*3)%20;
- game.score=item.id==='rain'?mrScore(game.variant,game.audioDuration,game.completed):item.dive?DIVES[item.id].score(game.variant,s.duration):item.stage?STAGE_SCORES[item.id](game.variant,game.count,s.steps,game.duration):item.kind==='cycle'||OWN_SCORES[item.id]?ownScore(item,game,game.duration):patternScore('tinta',scoreIndex).map(e=>({...e,midi:[...e.midi]}));
+ game.score=item.dive?DIVES[item.id].score(game.variant,s.duration):item.stage?STAGE_SCORES[item.id](game.variant,game.count,s.steps,game.duration):item.kind==='cycle'||OWN_SCORES[item.id]?ownScore(item,game,game.duration):patternScore('tinta',scoreIndex).map(e=>({...e,midi:[...e.midi]}));
  const addNoise=(at,length,level,noise)=>game.score.push({at,length,level,noise,midi:[],voice:'velvet'});
  game.score.sort((a,b)=>a.at-b.at);
  return true;
@@ -182,12 +181,6 @@ function finishCause(game,s,now=causeNow()){const item=causeDefinition(game.item
  if(item.kind==='cycle'){game.diaFrom=game.diaTarget;const stops=DIA_STOPS[s.dayMoments]||DIA_STOPS[8];if((((game.diaTarget%8)+8)%8)===stops[stops.length-1])game.completed=(game.completed||0)+1;return true;}
 if(item.kind!=='toggle'&&(item.kind!=='sequence'||game.count>=s.steps)){game.count=0;game.completed=(game.completed||0)+1;}return true;}
 function retimeCause(game,s,duration){const item=causeDefinition(game?.item.id);if(!item||game.time===null||item.wind||item.beam||item.knock||item.ready)return false;s=ceSteps(item,s);
- if(item.id==='rain'){
-  const old=game.audioDuration||game.duration,span=Math.max(MR_MIN,duration),cycling=['hold','toggle'].includes(game.control),released=game.releaseTime!==null&&game.releaseTime!==undefined,tail=released?game.time-game.releaseTime:0;
-  if(released){game.releaseTime*=span/old;game.time=game.releaseTime+tail;game.duration=game.releaseTime+.85;}else{game.time*=span/old;if(!cycling)game.duration=span;}
-  game.audioDuration=span;game.audioCycle=cycling?Math.floor(game.time/span):0;game.score=mrScore(game.variant,span,game.completed);
-  const pos=cycling?(game.time%span)/span:game.time/span,i=game.score.findIndex(e=>e.at>pos+1e-6);game.soundEvent=i<0?game.score.length:i;return true;
- }
  // The dives: the travelling keeps its two seconds; a new «Durada» lengthens or shortens the stimulus from where it is.
  if(item.dive){
   const D=DIVES[item.id],span=D.duration(game.variant,duration),old=game.audioDuration||game.duration;game.time=game.time/old*span;game.duration=span;game.audioDuration=span;game.fonsStim=Math.max(D.STIM,duration);game.score=D.score(game.variant,duration);

@@ -3,15 +3,14 @@ import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import {EXTRA_CAUSES,beamTick,beginCause,finishCause,causeBusy,releaseCause,causePalette,retimeCause} from '../dist/cause-catalog.js';
 import {PC_CAUSE} from '../dist/color-rain.js';
-import {MR_CAUSE} from '../dist/musical-rain.js';
 import {renderExtraCause} from '../dist/cause-art.js';
 import {defaults} from '../dist/input.js';
 const settings={...defaults};
 const setup=id=>({item:EXTRA_CAUSES.find(x=>x.id===id),time:null,count:0,completed:0,nextVariant:0,control:'effect',releaseTime:null});
 function ctx(){const calls=[],gradient={addColorStop(){}};return new Proxy({calls},{get(o,k){if(k in o)return o[k];return(...args)=>{for(const n of args)if(typeof n==='number')assert.ok(Number.isFinite(n),`${k}: non-finite coordinate`);calls.push([k,...args.filter(x=>typeof x==='number')]);return k.startsWith('create')?gradient:undefined;};},set(o,k,v){o[k]=v;return true;}});}
-// Since 0.11 Pluja de colors (CE03) and Pluja musical (CE07) are their own modules; the earlier Pluja musical stays in this list as 'rain-original', also CE07.
+// Since 0.11 Pluja de colors (CE03) is its own module. Pluja musical (CE07, 'rain') was taken out in 0.61, at Marc's request; its earlier version 'rain-original' had gone in 0.26.1.
 // The activities of phase 2 of the redesign (CE25 onwards) are added to the same list; this test keeps to the first twenty codes.
-test('the cause-effect activities of the first twenty codes that stay keep their codes, and Pluja de colors and Pluja musical keep theirs',()=>{const EXTRA=EXTRA_CAUSES.filter(x=>x.code<='CE20');assert.deepEqual(EXTRA.map(x=>x.id),['bubbles','jelly','daynight','constellations','orchestra']);assert.equal(MR_CAUSE.code,'CE07');assert.ok(!EXTRA_CAUSES.some(x=>x.id==='rain-original'));const codes=['CE02',...EXTRA.map(x=>x.code),PC_CAUSE.code,MR_CAUSE.code];assert.equal(new Set(codes).size,8);assert.ok(!EXTRA_CAUSES.some(x=>x.id==='garden'));});
+test('the cause-effect activities of the first twenty codes that stay keep their codes, and Pluja de colors keeps its own; Pluja musical is gone',()=>{const EXTRA=EXTRA_CAUSES.filter(x=>x.code<='CE20');assert.deepEqual(EXTRA.map(x=>x.id),['bubbles','jelly','daynight','constellations','orchestra']);assert.ok(!EXTRA_CAUSES.some(x=>x.id==='rain-original'||x.id==='rain'));const codes=['CE02',...EXTRA.map(x=>x.code),PC_CAUSE.code];assert.equal(new Set(codes).size,7);assert.ok(!EXTRA_CAUSES.some(x=>x.id==='garden'));});
 test('each new complete effect cycles over twenty variants without accepting busy input',()=>{for(const item of EXTRA_CAUSES.filter(x=>x.kind==='burst')){const g=setup(item.id);for(let i=0;i<22;i++){assert.equal(beginCause(g,settings),true);assert.equal(g.variant,i%20);assert.equal(beginCause(g,settings),false);finishCause(g,settings);assert.equal(g.count,0);assert.equal(g.time,null);}}});
 test('Fem castells always goes one level per press, seven presses whatever the steps setting',()=>{const item=EXTRA_CAUSES.find(x=>x.id==='castells');for(const steps of [3,5,7]){const s={...settings,steps},g=setup(item.id);for(let step=1;step<=7;step++){assert.ok(beginCause(g,s));assert.equal(g.count,step);finishCause(g,s);assert.equal(g.count,step===7?0:step);assert.equal(g.completed,step===7?1:0);}}});
 

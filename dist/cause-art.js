@@ -34,7 +34,6 @@ import {drawGegants,gegantsPrewarm,gegantsLoad} from './gegants-gl.js';
 import {drawVent,vtStamp} from './vent-art.js';
 
 import {Cocean} from './ocean.js';
-import {CmusicalRain} from './musical-rain.js';
 import {causeClock,causeDefinition,causePalette,fonsTau} from './cause-catalog.js';
 
 const C_PI=Math.PI,C_TAU=Math.PI*2;
@@ -196,7 +195,7 @@ function renderExtraCause(c,w,h,id,game,s,preview=false){const item=causeDefinit
  const g=preview?{...game,item,variant:game.variant||0,count:item.kind==='sequence'?Math.min(4,s.steps):1,day:true,time:item.preview?.time??3,duration:item.preview?.duration??6,audioDuration:item.preview?.duration??6,control:'effect',releaseTime:null}:game;
  const clock=causeClock(g,s),p=causePalette(id,g.variant||0).map(color=>s.base==='white'&&item.kind==='burst'?Cmix(color,'#2c4256',.2):color);if(!clock.running&&!g.count&&item.kind!=='cycle'&&!item.stage&&!item.wind&&!item.beam&&!item.knock&&!item.ready&&!item.dive)return true;
  c.save();if(item.kind==='burst'&&!item.ownPhases)c.globalAlpha*=clock.envelope;if(item.kind==='sequence'&&!item.stage&&g.count>=s.steps&&clock.running)c.globalAlpha*=1-Csmooth((clock.u-.87)/.13);
- const drawers={bubbles:Cbubbles,jelly:Cfons,jungle:Cselva,savanna:Csabana,well:Cpou,giants:Cgegants,rain:CmusicalRain,daynight:Cdaynight,constellations:Cstage('constellations',drawConstel),orchestra:Cstage('orchestra',drawOrquestra),castells:Cstage('castells',drawCastells,fmStamp),balloons:Cstage('balloons',drawGlobus),magician:Cstage('magician',drawMag),waiter:Cstage('waiter',drawCambrer),lighthouse:Cfar,door:Ctoc,fira:Cfira,wind:Cwind,kaleido:Ckaleido,drawings:Cdibuixos(DB_SET),toys:Cdibuixos(JG_SET),kitchen:Cdibuixos(CN_SET),vitrall:Cvitrall,natura:Cnatura,piro:Cpiro};drawers[id](c,w,h,g,s,p,clock,preview);c.restore();return true;
+ const drawers={bubbles:Cbubbles,jelly:Cfons,jungle:Cselva,savanna:Csabana,well:Cpou,giants:Cgegants,daynight:Cdaynight,constellations:Cstage('constellations',drawConstel),orchestra:Cstage('orchestra',drawOrquestra),castells:Cstage('castells',drawCastells,fmStamp),balloons:Cstage('balloons',drawGlobus),magician:Cstage('magician',drawMag),waiter:Cstage('waiter',drawCambrer),lighthouse:Cfar,door:Ctoc,fira:Cfira,wind:Cwind,kaleido:Ckaleido,drawings:Cdibuixos(DB_SET),toys:Cdibuixos(JG_SET),kitchen:Cdibuixos(CN_SET),vitrall:Cvitrall,natura:Cnatura,piro:Cpiro};drawers[id](c,w,h,g,s,p,clock,preview);c.restore();return true;
 }
 
 export {Cbubble,Cellipse,Cgrad,Cmix,Cround,Cscene,Cshape,CshapeAt,Cstar,Cstroke,Cwheel,renderExtraCause};
