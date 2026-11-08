@@ -1,5 +1,11 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.60.3 · El taller de vehicles sense panell ⓘ
+
+- **Contingut.** Fora la clau `vehicles` de `production/info/escenes.json` (110 entrades), la seva capçalera a `HEAD` de `production/info/make_info.py` i les 110 imatges `production/info/img/vehicles_NN.jpg`. `CARD_IMG.vehicles` (la fitxa de la portada, `production/info/cards/vehicles.jpg`) es queda. `dist/info-escenes.js` regenerat: les altres entrades, capçaleres i fitxes són idèntiques.
+- **App.** Cap canvi de codi: els tres botons ⓘ (barra del joc, eines de la pantalla, fitxa de la portada) només es pinten si `SCENE_INFO[id]` existeix, com ja passa amb la Pluja de colors.
+- **Eina.** `tools/vehicles-info.mjs` pinta només la fitxa; `PANEL=1` encara dibuixa les imatges del panell a la carpeta temporal (no les copia).
+
 ## 0.60.2 · El taller de vehicles: recorreguts nets d’objectes
 
 - **Sala (`dist/vehicles.js`, `VH_PATH_SALA`).** La segona volta passava a 13 unitats del centre del test (−380,640), per sobre de la pota davantera dreta de la tauleta (65,645) i pel cantó dels llibres. Els punts nous després de (125,340): (125,440) (140,600) (100,735) (−100,765) (−300,775) (−510,720) (−590,540), i el garatge (−610,−192,420). El raig del canó (`cano`, u .44) apunta al test amb la seva posició real i no canvia.

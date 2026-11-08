@@ -1,3 +1,18 @@
+# Pim Pam 0.60.3 · El taller de vehicles sense panell d’informació
+
+Base: 0.60.2 (commit ee5cbed, publicada). Petició d’en Marc el 8 de novembre de 2026 a les 22:30 (hora de Catalunya): «Pots eliminar la Info dins d’aquesta activitat, és completament irrellevant».
+
+## Què canvia
+
+- **Sense ⓘ.** «El taller de vehicles» ja no té el botó d’informació: ni a la barra de dalt de l’activitat, ni a les eines de la pantalla, ni a la seva fitxa de la portada. Com la Pluja de colors, la fitxa conserva la seva imatge.
+- **Fora els continguts del panell.** Les 110 entrades (les divuit peces i les quatre llums de cada racó, amb la seva imatge i tres línies) i la capçalera del panell. El mòdul d’informació passa de 6,9 MB a 4,9 MB, i el fitxer autònom s’aprima en la mateixa mesura.
+- **La resta d’activitats** conserven el seu panell tal com era (comprovat entrada per entrada).
+
+## Proves
+
+- La prova del panell del taller passa a comprovar que no n’hi ha cap: ni entrades, ni capçalera, ni imatges a production/info/img, i que els tres botons ⓘ de l’app depenen de tenir panell. La prova general del panell ja no compta el taller.
+- tools/vehicles-info.mjs només pinta la imatge de la fitxa de la portada (les imatges del panell, només amb PANEL=1 i mai a production/info).
+
 # Pim Pam 0.60.2 · El taller de vehicles: el recorregut ja no travessa la planta
 
 Base: 0.60.1 (commit a809d62, publicada). Correcció que en Marc va trobar a la versió publicada el 8 de novembre de 2026 a les 22:08 (hora de Catalunya): «Al segon escenari tots els vehicles passen a través de la planta a la segona volta».

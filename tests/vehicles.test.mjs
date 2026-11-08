@@ -256,10 +256,13 @@ test('the settings of the activity are validated, with their defaults: three pie
  const app=read('../dist/app.js');for(const k of ['vhSteps','vhCells','vhCorner','vhWho','vhGo','vhRide','vhCamera','vhQuality'])assert.match(app,new RegExp(`sel\\('${k}',`),k);assert.match(app,/vhRoundOf\(0,settings\)\.corner/,'the first corner is the one built under the loading cover');assert.match(app,/vhGarage/);
  assert.match(app,/if\(id==='vehicles'\)out\.push\(vhSettings\(\)\)/);});
 
-test('the «Informació» panel and the catalogue: for each corner its eighteen pieces by their long names and its four lights, with a picture each; the card of the home is a picture',async()=>{
+test('no «Informació» panel since 0.60.3 (Marc: «és completament irrellevant»), neither in the activity nor on its home card; the home card is still a picture',async()=>{
  const {SCENE_INFO,SCENE_INFO_HEAD,CARD_IMG}=await import('../dist/info-escenes.js');
- assert.equal(SCENE_INFO.vehicles.length,110);assert.ok(SCENE_INFO_HEAD.vehicles.length>10);assert.match(SCENE_INFO_HEAD.vehicles,/la sala/);assert.match(SCENE_INFO_HEAD.vehicles,/el pati/);assert.match(SCENE_INFO_HEAD.vehicles,/el passadís/);assert.match(SCENE_INFO_HEAD.vehicles,/el bany/);
- VH_CORNERS.forEach((k,ci)=>{const E=SCENE_INFO.vehicles.slice(ci*22,ci*22+22),P=piecesOf(k);E.slice(0,18).forEach((e,i)=>{assert.equal(e.t,VH_NAME[P[i]],`${k} ${i}`);assert.equal(e.l.length,3);});E.slice(18).forEach((e,i)=>{assert.equal(e.t,vhLightTitle(k,VH_LIGHTS[k][i]));assert.equal(e.l.length,3);});});
+ assert.equal(SCENE_INFO.vehicles,undefined);assert.equal(SCENE_INFO_HEAD.vehicles,undefined);
+ // the ⓘ buttons of the game bar, of the stage tools and of the home card all ask SCENE_INFO first, so none of them shows for this activity
+ const app=read('../dist/app.js');assert.match(app,/\$\{SCENE_INFO\[g\.id\]\?`<button class="favorite card-info" data-info/);assert.equal((app.match(/\$\{SCENE_INFO\[item\.id\]\?`<button[^`]*data-info/g)||[]).length,2);
+ assert.ok(!fs.readdirSync(new URL('../production/info/img/',import.meta.url)).some(f=>f.startsWith('vehicles_')),'no panel pictures left');
+ assert.ok(!JSON.parse(read('../production/info/escenes.json')).vehicles);assert.doesNotMatch(read('../tools/vehicles-info.mjs'),/img\/vehicles_/);
  assert.match(CARD_IMG.vehicles||'',/^data:image\/jpeg;base64,\/9j\//);
  assert.match(read('../production/info/make_info.py'),/'vehicles'/);
  const act=read('../ACTIVITATS.md');assert.match(act,/\| EN07 \| El taller de vehicles \| Composició creativa \| \(Refeta del tot a la 0\.53/);

@@ -1,5 +1,7 @@
-// El taller de vehicles (0.53; eighteen pieces per corner since 0.54; two corners since 0.56): the pictures of the «Informació» panel (the pieces on the bench, each room at its four lights) and of
-// the home card (the finished family car on the bench), into production/info/. Rendered with three.js in headless Chromium (SwiftShader).
+// El taller de vehicles (0.53; eighteen pieces per corner since 0.54; two corners since 0.56): the picture of the home card (the finished family car on
+// the bench), into production/info/cards/. Rendered with three.js in headless Chromium (SwiftShader). Until 0.60.2 it also drew the 110 pictures of
+// the «Informació» panel (the pieces on the bench, each room at its four lights); since 0.60.3 the activity has no panel (Marc: «és completament
+// irrellevant»), and those shots are drawn only with PANEL=1, into the scratch folder (KEEP=1 keeps it), never into production/info/img/.
 // Usage: node tools/vehicles-info.mjs  (then python3 production/info/make_info.py)
 import {openVh} from './vehicles-frames.mjs';
 import {VH_BODIES,VH_WHEELS,VH_TOPS,VH_CORNERS} from '../dist/vehicles.js';
@@ -57,6 +59,7 @@ for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={hab
    {kind:'final',round:2,picks:'bombers+erugues',id:'cano',t:START+RIDE*.5,flag:`go=${GO},tranquila,sala`},
    {kind:'final',round:3,picks:'plataforma+bessones',id:'brac',t:PARK+1.4,flag:`go=${GO},sala`});}
 
+if(process.env.PANEL!=='1')SHOTS.length=0;
 const {browser,page,errors}=await openVh(768,432,1);
 console.log('load',await page.evaluate(()=>load()));
 const paint=async(o)=>{for(const round of(o.round===undefined?[0,1,2,3]:[o.round])){const first=await page.evaluate(o=>paint(o),{...o,round,a:0});const a=first.ids.indexOf(o.id);if(a>=0)return page.evaluate(o=>paint(o),{...o,round,a});}throw new Error(`${o.id} is not offered${o.round===undefined?'':' at round '+o.round} with ${o.picks}`);};
@@ -73,14 +76,7 @@ execFileSync('python3',['-c',`
 from PIL import Image
 import os
 d='${tmp}';out='${root}production/info/'
-for i in range(1,${SHOTS.length+1}):
-    im=Image.open(d+'vehicles_%02d.png'%i).convert('RGB').resize((384,216),Image.LANCZOS)
-    q=84
-    while True:
-        im.save(out+'img/vehicles_%02d.jpg'%i,quality=q,optimize=True)
-        if os.path.getsize(out+'img/vehicles_%02d.jpg'%i)<28500 or q<=60:break
-        q-=4
 im=Image.open(d+'card.png').convert('RGB').resize((488,273),Image.LANCZOS);im.save(out+'cards/vehicles.jpg',quality=84,optimize=True)
-print('ok',[os.path.getsize(out+'img/vehicles_%02d.jpg'%i) for i in range(1,${SHOTS.length+1})],os.path.getsize(out+'cards/vehicles.jpg'))
+print('ok',os.path.getsize(out+'cards/vehicles.jpg'))
 `],{stdio:'inherit'});
-if(!process.env.KEEP)rmSync(tmp,{recursive:true,force:true});
+if(!process.env.KEEP&&process.env.PANEL!=='1')rmSync(tmp,{recursive:true,force:true});
