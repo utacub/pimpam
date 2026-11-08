@@ -27,6 +27,6 @@ assert all(z in embedded for z in re.findall(r'\["([A-Za-z]+/[A-Za-z0-9-]+\.mp3)
 assert './assets/' not in code.replace("'./assets/samples/'+file",'').replace("'./assets/cinc/'+name",'')
 assert '</script' not in code
 html=html.replace('<script type="module" src="./app.js"></script>','<script>\n(()=>{\n'+code+'\n})();\n</script>')
-target=dist/'Pim_Pam_44_activitats_v0_52.html'
+target=dist/'Pim_Pam_44_activitats_v0_52_1.html'
 target.write_text(html)
 print(f'{target}: {target.stat().st_size} bytes, self-contained')

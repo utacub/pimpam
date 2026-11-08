@@ -1,5 +1,5 @@
 // La nova Pluja de colors (0.52): the pictures of the «Informació» panel (one per sheet: the bath once its gesture is done, as the
-// paper is about to take it) and of the home card (the card's preview: Barcelona's «Cua de paó»), into production/info/.
+// paper is about to take it) and of the home card (the card's preview: Istanbul's «Cadena de cors», since 0.52.1), into production/info/.
 // Usage: node tools/marbre-info.mjs  (then python3 production/info/make_info.py)
 import {openMb} from './marbre-frames.mjs';
 import {writeFileSync,mkdtempSync,rmSync} from 'node:fs';

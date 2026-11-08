@@ -1,4 +1,4 @@
-// La nova Pluja de colors (CE03), 0.52 · the model: the steps of a sheet of marbled paper, the print, the clothesline, the change
+// La nova Pluja de colors (CE03), 0.52.1 · the model: the steps of a sheet of marbled paper, the print, the clothesline, the change
 // of workshop, the wait for the next press; and (further down) the music and the sounds, which drive the ink: every drop touches
 // the water exactly on its note.
 // Marc, 7 November 2026: plan «La nova Pluja de colors» approved («ja pots començar a programar la pluja de colors, una part molt
@@ -6,9 +6,14 @@
 // One press is one step of a sheet: the first rain, a second colour that makes rings, a fine spray, the stylus or the comb, and the
 // print (a sheet of paper is laid on the water, lifted, shown and hung on the line). Settings: steps of a sheet (3, 5, 7), gestures
 // (only drops, drops and combs, complete with flowers), size of the drops, colours, clothesline, first workshop.
+// 0.52.1 (Marc, 7 November 2026: «molta més diversitat de colors i de motius… Sigues més creatiu en els colors, l'estructura per
+// crear la pintura, i la diversitat de resultats»): every sheet has its own palette, its own layout for the first rain (stones,
+// big and small stones, rows, a chequer, stripes, slanting or wavy rows, targets, a chain of targets, a spiral, a frame, a
+// corona) and its own gesture (new: a comb on a slant, a breath on a slant, an S of the stylus, a stroke through a row of
+// targets, the spokes of a star, rings drawn each the other way).
 import {escWaitTurn,escWaitClock,escFit,escInto} from './escenari.js';
 import {sampleZone} from './sampler.js';
-import {MB_TALLERS,mbNote} from './marbre-tallers.js';
+import {MB_TALLERS,mbNote,mbPalette} from './marbre-tallers.js';
 import {mbInk,mbQueue,mbAdvance,mbView} from './marbre-tinta.js';
 
 // The catalogue's card: the activity keeps its id, its name and its code (CE03) and goes to «Formes, llum i música».
@@ -41,7 +46,54 @@ const mbX=(F,fx)=>(F.lap%2?1-fx:fx)*MB_A;
 function mbScatter(n,rng,margin,avoid=[]){const pts=[];for(let i=0;i<n;i++){let best=null,bd=-1;for(let c=0;c<16;c++){const x=margin+rng()*(MB_A-2*margin),y=margin+rng()*(1-2*margin);let d=1e9;for(const p of pts)d=Math.min(d,(p[0]-x)**2+(p[1]-y)**2);for(const p of avoid)d=Math.min(d,((p[0]-x)**2+(p[1]-y)**2)*2);if(d>bd){bd=d;best=[x,y];}}pts.push(best);}
  return mbPath(pts);}
 function mbPath(pts){if(pts.length<3)return pts;const left=pts.reduce((a,p)=>p[0]<a[0]?p:a,pts[0]),out=[left],rest=pts.filter(p=>p!==left);while(rest.length){const l=out[out.length-1];let k=0,d=1e9;rest.forEach((p,i)=>{const dd=(p[0]-l[0])**2+(p[1]-l[1])**2;if(dd<d){d=dd;k=i;}});out.push(rest.splice(k,1)[0]);}return out;}
-function mbGrid(n,rng){const cols=Math.max(2,Math.round(Math.sqrt(n*MB_A))),rows=Math.ceil(n/cols),out=[];for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){if(out.length>=n)break;const cc=r%2?cols-1-c:c;out.push([(cc+.5+(rng()-.5)*.25)*MB_A/cols,(r+.5+(rng()-.5)*.25)/rows]);}return out;}
+function mbScatterIn(n,rng,x0,y0,x1,y1){const pts=[];for(let i=0;i<n;i++){let best=null,bd=-1;for(let c=0;c<16;c++){const x=x0+rng()*(x1-x0),y=y0+rng()*(y1-y0);let d=1e9;for(const p of pts)d=Math.min(d,(p[0]-x)**2+(p[1]-y)**2);if(d>bd){bd=d;best=[x,y];}}pts.push(best);}return mbPath(pts);}
+// a point at distance d along a polyline
+function mbAt(P,d){for(let i=1;i<P.length;i++){const L=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);if(d<=L||i===P.length-1){const u=L?Math.min(1,d/L):0;return [P[i-1][0]+(P[i][0]-P[i-1][0])*u,P[i-1][1]+(P[i][1]-P[i-1][1])*u];}d-=L;}return P[0];}
+// N drops spread evenly along some lines (one after another, every other one the other way, as a hand would go); col(line, drop)
+function mbLines(curves,N,col,rng){const len=curves.map(P=>{let L=0;for(let i=1;i<P.length;i++)L+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);return L;}),tot=len.reduce((a,b)=>a+b,0)||1,out=[];let cum=0,k=0;
+ curves.forEach((P0,ci)=>{const a=Math.round(N*cum/tot);cum+=len[ci];const n=Math.round(N*cum/tot)-a,P=ci%2?P0.slice().reverse():P0;
+  for(let i=0;i<n;i++){const [x,y]=mbAt(P,(i+.5)/n*len[ci]);out.push({x:x+(rng()-.5)*.012,y:y+(rng()-.5)*.012,c:col(ci,k++),s:1,j:0});}});
+ return out;}
+// the part of a line (through p, along m) inside a rectangle
+function mbClip(px,py,mx,my,x0,x1,y0,y1){let a=-1e9,b=1e9;for(const [p,d,lo,hi] of [[px,mx,x0,x1],[py,my,y0,y1]]){if(Math.abs(d)<1e-9){if(p<lo||p>hi)return null;continue;}let t1=(lo-p)/d,t2=(hi-p)/d;if(t1>t2)[t1,t2]=[t2,t1];a=Math.max(a,t1);b=Math.min(b,t2);}
+ return b-a>.05?[[px+mx*a,py+my*a],[px+mx*b,py+my*b]]:null;}
+function mbRoundRect(x,y,w,h,r){const P=[],arc=(cx,cy,a0)=>{for(let i=0;i<=6;i++){const a=a0+i/6*Math.PI/2;P.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r]);}};
+ arc(x+w-r,y+r,-Math.PI/2);arc(x+w-r,y+h-r,0);arc(x+r,y+h-r,Math.PI/2);arc(x+r,y+r,Math.PI);P.push(P[0].slice());return P;}
+// The layout of the first rain: where its N drops fall (bath units, before the mirror of odd laps), in order, with their colours
+// (c) and sizes (s, relative; j: a little uneven, like stones). The colours are the sheet's rain colours, in turn.
+function mbLayout(L,N,rng,cols){const A=MB_A,C=i=>cols[((i%cols.length)+cols.length)%cols.length];let out=[];
+ switch(L.k){
+ case 'mixed':{// a few big stones first, then many small ones between them
+  const nb=Math.max(2,Math.round(N/5)),big=mbScatter(nb,rng,.24);out=big.map(p=>({x:p[0],y:p[1],c:C(0),s:2,j:1}));
+  mbScatter(N-nb,rng,.05,big).forEach((p,i)=>out.push({x:p[0],y:p[1],c:cols.length>1?C(1+i%(cols.length-1)):C(0),s:.72,j:1}));break;}
+ case 'grid':{// rows (or a chequer, or rows set half a drop apart like a honeycomb); a grid as close to the shape of the bath as N allows
+  const pairs=[];for(let r=1;r<=N;r++){const c=Math.ceil(N/r);pairs.push([c,r,(c*r-N)*.35+Math.abs(Math.log(c/r/A))]);}pairs.sort((a,b)=>a[2]-b[2]);const [nc,nr]=pairs[0];
+  for(let r=0;r<nr;r++){const n=Math.min(nc,N-out.length),o=(nc-n)/2;for(let c=0;c<n;c++){const cc=r%2?n-1-c:c,hx=L.hex?(r%2?.25:-.25):0;
+   out.push({x:(cc+o+.5+hx+(rng()-.5)*.16)*A/nc,y:(r+.5+(rng()-.5)*.16)/nr,c:L.chk?C(r+cc):C(r),s:1,j:1});}}break;}
+ case 'bands':{// stripes: one colour per stripe, the drops close together along it
+  const v=L.dir==='v',k=cols.length,nb=k*Math.max(1,Math.round((v?Math.sqrt(N*A):Math.sqrt(N/A))/k)),m=.06,cur=[];
+  for(let b=0;b<nb;b++){const u=(b+.5)/nb;cur.push(v?[[u*A,m],[u*A,1-m]]:[[m,u],[A-m,u]]);}out=mbLines(cur,N,ci=>C(ci),rng);break;}
+ case 'diag':{// slanting rows (th degrees), one colour per row
+  const th=(L.th??-30)*Math.PI/180,mx=Math.cos(th),my=Math.sin(th),nx=-my,ny=mx,m=.06,qs=[[m,m],[A-m,m],[m,1-m],[A-m,1-m]].map(([x,y])=>x*nx+y*ny),q0=Math.min(...qs),q1=Math.max(...qs),n=L.n||5,cur=[];
+  for(let l=0;l<n;l++){const q=q0+(l+.5)*(q1-q0)/n,sg=mbClip(nx*q,ny*q,mx,my,m,A-m,m,1-m);if(sg)cur.push(sg);}out=mbLines(cur,N,ci=>C(ci),rng);break;}
+ case 'ones':{// wavy rows
+  const n=L.n||4,m=.06,cur=[];for(let l=0;l<n;l++){const y0=(l+.5)/n,P=[];for(let i=0;i<=24;i++){const x=m+(A-2*m)*i/24;P.push([x,y0+(L.amp??.07)*Math.sin(2*Math.PI*x/(L.wl||.6))]);}cur.push(P);}
+  out=mbLines(cur,N,ci=>C(ci),rng);break;}
+ case 'spiral':{// one spiral from the centre outwards, the colours in turn along it
+  const turns=L.turns||2.5,P=[];for(let i=0;i<=240;i++){const u=i/240,th=.4+u*turns*2*Math.PI,r=.03+.45*u;P.push([A/2+r*Math.cos(th)*1.5,.5+r*Math.sin(th)]);}out=mbLines([P],N,(ci,i)=>C(i),rng);break;}
+ case 'frame':{// a few big drops in the middle, then stones all round the edge that close in on them like a frame
+  const nC=Math.max(2,Math.round(N*.25));out=mbScatterIn(nC,rng,A*.32,.36,A*.68,.64).map(p=>({x:p[0],y:p[1],c:C(0),s:1.7,j:1}));
+  out.push(...mbLines([mbRoundRect(.09,.09,A-.18,.82,.12)],N-nC,(ci,i)=>cols.length>1?C(1+i%(cols.length-1)):C(0),rng).map(d=>({...d,s:.85,j:1})));break;}
+ case 'corona':{// one big drop in the middle and rings of drops round it, one colour per ring
+  const cur=[.19,.34,.49].map(r=>{const P=[];for(let i=0;i<=48;i++){const a=i/48*2*Math.PI-Math.PI/2;P.push([A/2+r*1.25*Math.cos(a),.5+r*Math.sin(a)]);}return P;});
+  out=[{x:A/2,y:.5,c:C(0),s:1.7,j:0}].concat(mbLines(cur,N-1,ci=>C(ci+1),rng));break;}
+ case 'bull':{// targets: every drop falls on a centre (the centres in turn); each round of drops is the next colour
+  const cs=L.cs.map(([fx,fy])=>[fx*A,fy]),nc=cs.length;for(let i=0;i<N;i++){const c=cs[i%nc];out.push({x:c[0],y:c[1],c:C(Math.floor(i/nc)),s:1,j:0});}out.centres=cs;break;}
+ default:{mbScatter(N,rng,.06).forEach((p,i)=>out.push({x:p[0],y:p[1],c:C(i),s:1,j:1}));}}
+ return out;}
+// The colours of the steps of a sheet: the first rain takes the sheet's own (rc); the other steps take the colours the rain did not
+// use, in order, and then the rain's again.
+export function mbStepCols(F){const sh=mbSheet(F),n=mbPalette(F.g,F.j,F.lap).inks.length,r0=(sh.rc||[0]).filter(c=>c<n),rc=r0.length?r0:[0];return {rc,o:[...Array(n).keys()].filter(c=>!rc.includes(c)).concat(rc)};}
 
 // ── Notes ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Every note is an event at a time of the model; the audio plays each one when its time comes (half a second ahead). Notes are
@@ -63,31 +115,49 @@ function mbPerc(F,T,bar,t0,k=1){for(const [s0,name,lv] of T.perc.hits)mbFx(F,t0+
 function mbGliss(T,t0,t1,out,{from=2,span=9,vel=.11,inst=T.inst.gliss}={}){const n=Math.max(2,Math.round((t1-t0)/T.sub));for(let i=0;i<n;i++){const u=i/(n-1),d=from+Math.round(span*(u<.6?u/.6:(1-u)/.4*.6));out.push([t0+i*(t1-t0)/n,inst,mbNote(T.key,T.scale,d)+12,vel*(i===0?1.2:1),.9]);}}
 
 // ── The steps ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
-function mbDrop(F,t,x,y,r,col,dur=.9,small=false){mbQueue(F.ink,{kind:'drop',cx:x,cy:y,r,col,t0:t,dur});F.falls.push({x,y,r,col,t0:t-(small?.22:MB_FALL),t1:t,small,g:F.g,lap:F.lap});}
+function mbDrop(F,t,x,y,r,col,dur=.9,small=false){mbQueue(F.ink,{kind:'drop',cx:x,cy:y,r,col,t0:t,dur});F.falls.push({x,y,r,col,t0:t-(small?.22:MB_FALL),t1:t,small,g:F.g,j:F.j,lap:F.lap});}
 function mbTimes(T,t0,bars,pos=T.arp){const out=[];for(let b=0;b<bars;b++)for(const p of pos)out.push([t0+(b*T.subs+p)*T.sub,b]);return out;}
 const mbBrush=(F,pts,kind='brush')=>{if(pts.length)F.tools.push({kind,pts,t0:pts[0][2]-.6,t1:pts[pts.length-1][2]+.5});};
 
-// The first rain (and the second, rain2): the drops land on the arpeggio, one colour (or two, when the sheet has only three steps).
-function mbRain(F,s,T0,{cols=[0],cover=1.25,k=0,mel=false}={}){const T=mbTaller(F),sh=mbSheet(F),rng=mbRng(F,k),bars=2,times=mbTimes(T,T0,bars),sz=MB_SIZE[s?.mbSize]||MB_SIZE.grans,notes=[],brush=[];
- if(T.rings&&sh.layout==='rings'){// suminagashi: rings of ink and of clear water at a few centres, one drop at every centre on every note
-  const nc=sz.rings,cs=mbScatter(nc,rng,.22),rr=.46/Math.sqrt(times.length)*Math.sqrt(2/nc);
-  times.forEach(([t],i)=>{const ink=i%2===0,col=ink?(sh.two?cols.concat([1])[(i/2)%2|0]:cols[(i/2|0)%cols.length]):-1;cs.forEach((c,ci)=>mbDrop(F,t+ci*.015,c[0],c[1],rr,col,1.1));brush.push([cs[i%nc][0],cs[i%nc][1],t]);});
+// The first rain (and the second, rain2): the drops land on the arpeggio, laid out as the sheet says, in the sheet's colours.
+function mbRain(F,s,T0,{cols=[0],cover=1.25,k=0,mel=false,lay=null}={}){const T=mbTaller(F),rng=mbRng(F,k),bars=2,times=mbTimes(T,T0,bars),sz=MB_SIZE[s?.mbSize]||MB_SIZE.grans,notes=[],brush=[],L=lay||{k:'scatter'};
+ if(L.k==='rings'){// suminagashi: rings of ink and of clear water at a few centres, one drop at every centre on every note
+  const cs=L.cs?L.cs.map(([fx,fy])=>[mbX(F,fx),fy]):mbScatter(sz.rings,rng,.22),nc=cs.length,rr=.46/Math.sqrt(times.length)*Math.sqrt(2/nc),st=nc>1?Math.min(.015,.04/(nc-1)):0;
+  times.forEach(([t],i)=>{const col=i%2===0?cols[(i>>1)%cols.length]:-1;cs.forEach((c,ci)=>mbDrop(F,t+ci*st,c[0],c[1],rr,col,1.1));brush.push([cs[i%nc][0],cs[i%nc][1],t]);});
   F.r0=rr;F.centres=cs;}
- else{const N=times.length*sz.per,pts=sh.layout==='grid'?mbGrid(N,rng):mbScatter(N,rng,.06),r=Math.sqrt(MB_A*cover/(N*Math.PI));
-  pts.forEach((p,i)=>{const [t]=times[Math.floor(i/sz.per)],x=F.lap%2?MB_A-p[0]:p[0];mbDrop(F,t+(i%sz.per)*.012,x,p[1],r*(.85+.3*rng()),cols[Math.floor(i/sz.per)%cols.length]);if(i%sz.per===0)brush.push([x,p[1],t]);});
-  F.r0=r;}
+ else if(L.k==='bands'){// stripes: on every note the brush lays a line of ink across the bath; it spreads into a stripe and pushes the
+  // others aside. Each line is laid just past the last stripe (a hair beyond its edge, so the edge is not torn), so they lie in
+  // order, centred on the bath.
+  const v=L.dir==='v',per=sz.per,n=times.length*per,ext=v?MB_A:1,d=ext*(L.cover||cover)/n,sg=F.lap%2?-1:1,st=per>1?Math.min(.012,.04/(per-1)):0;
+  for(let i=0;i<n;i++){const [t0]=times[Math.floor(i/per)],t=t0+(i%per)*st,u=ext/2+sg*(i*d/2+(i?.002:0)),x=v?u:MB_A/2,y=v?.5:u,col=cols[i%cols.length];
+   mbQueue(F.ink,{kind:'band',bx:x,by:y,nx:v?1:0,ny:v?0:1,d,col,t0:t,dur:.9});
+   for(let k=0;k<5;k++){const w=(k+.5)/5,fx=v?x:w*MB_A,fy=v?w:y;F.falls.push({x:fx,y:fy,r:d/2,col,t0:t-MB_FALL,t1:t,small:false,g:F.g,j:F.j,lap:F.lap});}
+   if(i%per===0)brush.push([x,y,t]);}
+  F.r0=d;F.centres=null;F.stripes={v,n,d};}
+ else{const per=Math.max(sz.per,L.dpn||1),N=times.length*per,D=mbLayout(L,N,rng,cols),ss=D.reduce((a,d)=>a+d.s*d.s,0),r0=Math.sqrt(MB_A*(lay&&L.cover||cover)/(Math.PI*ss)),st=per>1?Math.min(.012,.04/(per-1)):0,mx=x=>F.lap%2?MB_A-x:x;
+  D.forEach((d,i)=>{const [t]=times[Math.floor(i/per)],x=mx(d.x);mbDrop(F,t+(i%per)*st,x,d.y,r0*d.s*(d.j?.88+.24*rng():1),d.c);if(i%per===0)brush.push([x,d.y,t]);});
+  F.r0=r0;F.centres=D.centres?D.centres.map(([x,y])=>[mx(x),y]):null;}
  const arp=[];for(let b=0;b<bars;b++)arp.push(...mbArp(T,F.bar+b,T.arp.length));
  times.forEach(([t],i)=>{notes.push([t,T.inst.arp,arp[i],i%T.arp.length===0?.22:.16,1.6,-.3+.6*(brush[i]?.[0]??MB_A/2)/MB_A]);mbFx(F,t,'pintaRec','gota',.1+.05*rng(),(brush[i]?.[0]??MB_A/2)/MB_A*1.2-.6,.85+.35*rng());});
  for(let b=0;b<bars;b++){const t=T0+b*mbBarLen(T);mbBass(T,F.bar+b,t,notes);if(mel)mbMel(T,F.bar+b,t,notes,.13);}
  mbNotes(F,notes);mbBrush(F,brush);F.bar+=bars;return T0+bars*mbBarLen(T)+1;}
 
-// A second colour that falls inside the first drops and makes rings (rings2: a third colour inside those).
-function mbRings(F,s,T0,{col=1,k=1,scale=.55}={}){const T=mbTaller(F),sh=mbSheet(F),rng=mbRng(F,k),bars=2,times=mbTimes(T,T0,bars),sz=MB_SIZE[s?.mbSize]||MB_SIZE.grans,notes=[],brush=[];
- if(T.rings&&sh.layout==='rings'){const cs=mbScatter(Math.max(1,sz.rings-1),rng,.2,F.centres||[]),rr=(F.r0||.12)*.8;
-  times.forEach(([t],i)=>{const c=cs[i%cs.length],ink=Math.floor(i/cs.length)%2===0;mbDrop(F,t,c[0],c[1],rr,ink?col:-1,1.1);brush.push([c[0],c[1],t]);});}
- else{const N=times.length*sz.per,inView=F.ink.polys.filter(p=>p.col>=0&&p.cx>.06&&p.cx<MB_A-.06&&p.cy>.06&&p.cy<.94),cand=mbPath(inView.slice(-N).map(p=>[p.cx,p.cy]));
-  const extra=N>cand.length?mbScatter(N-cand.length,rng,.08,cand):[],pts=cand.concat(extra),r=(F.r0||.15)*scale;
-  pts.forEach((p,i)=>{const [t]=times[Math.floor(i/sz.per)];mbDrop(F,t+(i%sz.per)*.012,p[0],p[1],r*(.85+.3*rng()),col);if(i%sz.per===0)brush.push([p[0],p[1],t]);});}
+// A second colour that falls inside the first drops and makes rings (rings2: a third colour inside those); or between them, where it
+// leaves fine veins (mode 'veins'); or again on the centres of the targets (mode 'same'), the new colour and the first in turn.
+function mbRings(F,s,T0,{col=1,k=1,scale=.55,mode='in'}={}){const T=mbTaller(F),sh=mbSheet(F),rng=mbRng(F,k),bars=2,times=mbTimes(T,T0,bars),sz=MB_SIZE[s?.mbSize]||MB_SIZE.grans,notes=[],brush=[];
+ if(sh.lay?.k==='rings'){// new centres; or (mode 'same') the same centres again, water and ink in turn, so the middle ends in ink
+  const same=mode==='same'&&F.centres?.length,cs=same?F.centres:mbScatter(Math.max(1,sz.rings-1),rng,.2,F.centres||[]),rr=(F.r0||.12)*(same?.7:.8);
+  times.forEach(([t],i)=>{const c=cs[i%cs.length],k2=Math.floor(i/cs.length),ink=same?k2%2===1:k2%2===0;mbDrop(F,t,c[0],c[1],rr,ink?col:-1,1.1);brush.push([c[0],c[1],t]);});}
+ else if(sh.lay?.k==='bands'){// on stripes: thin lines of the new colour between them, one on every note
+  const v=sh.lay.dir==='v',N=times.length*sz.per,ext=v?MB_A:1,st=sz.per>1?Math.min(.012,.04/(sz.per-1)):0;
+  for(let i=0;i<N;i++){const [t0]=times[Math.floor(i/sz.per)],t=t0+(i%sz.per)*st,u=ext*(i+.5)/N,x=v?u:MB_A/2,y=v?.5:u;mbQueue(F.ink,{kind:'band',bx:x,by:y,nx:v?1:0,ny:v?0:1,d:ext*scale*.06,col,t0:t,dur:.8});
+   for(let k=0;k<4;k++){const w=(k+.5)/4;F.falls.push({x:v?x:w*MB_A,y:v?w:y,r:.02,col,t0:t-MB_FALL,t1:t,small:false,g:F.g,j:F.j,lap:F.lap});}if(i%sz.per===0)brush.push([x,y,t]);}}
+ else{const N=times.length*sz.per,same=mode==='same'&&F.centres?.length,rc0=mbStepCols(F).rc[0];let pts;
+  if(same)pts=Array.from({length:N},(_,i)=>F.centres[i%F.centres.length]);
+  else if(mode==='veins')pts=mbScatter(N,rng,.06,F.ink.polys.filter(p=>p.col>=0).map(p=>[p.cx,p.cy]));
+  else{const inView=F.ink.polys.filter(p=>p.col>=0&&p.cx>.06&&p.cx<MB_A-.06&&p.cy>.06&&p.cy<.94),cand=mbPath(inView.slice(-N).map(p=>[p.cx,p.cy]));pts=cand.concat(N>cand.length?mbScatter(N-cand.length,rng,.08,cand):[]);}
+  const r=(F.r0||.15)*(same?.62:mode==='veins'?.45:scale),st=sz.per>1?Math.min(.012,.04/(sz.per-1)):0;
+  pts.forEach((p,i)=>{const [t]=times[Math.floor(i/sz.per)],c=same&&Math.floor(i/F.centres.length)%2?rc0:col;mbDrop(F,t+(i%sz.per)*st,p[0],p[1],r*(same?1:.85+.3*rng()),c);if(i%sz.per===0)brush.push([p[0],p[1],t]);});}
  const arp=[];for(let b=0;b<bars;b++)arp.push(...mbArp(T,F.bar+b,T.arp.length,true));
  times.forEach(([t],i)=>{notes.push([t,T.inst.arp,arp[i],i%T.arp.length===0?.2:.15,1.6,-.3+.6*(brush[i]?.[0]??MB_A/2)/MB_A]);mbFx(F,t,'pintaRec','gota',.09+.04*rng(),0,1.1+.3*rng());});
  for(let b=0;b<bars;b++){const t=T0+b*mbBarLen(T);mbBass(T,F.bar+b,t,notes);mbMel(T,F.bar+b,t,notes);}
@@ -95,13 +165,13 @@ function mbRings(F,s,T0,{col=1,k=1,scale=.55}={}){const T=mbTaller(F),sh=mbSheet
 
 // The fine spray: the brush is tapped on a rod and a rain of small drops falls all over; each note of a quick run lets a few fall.
 function mbSpray(F,s,T0,{col=2,k=2}={}){const T=mbTaller(F),sh=mbSheet(F),rng=mbRng(F,k),bars=2,n=T.subs*bars,sz=MB_SIZE[s?.mbSize]||MB_SIZE.grans,notes=[],pts=[];
- const c=T.rings&&sh.layout==='rings'?-1:col,x0=F.lap%2?MB_A*.85:MB_A*.15,x1=F.lap%2?MB_A*.15:MB_A*.85;
+ const c=sh.lay?.k==='rings'?-1:col,x0=F.lap%2?MB_A*.85:MB_A*.15,x1=F.lap%2?MB_A*.15:MB_A*.85;
  for(let i=0;i<n;i++){const t=T0+i*T.sub,u=i/(n-1),bx=x0+(x1-x0)*u;pts.push([bx,.3,t]);
-  for(let j=0;j<sz.spray;j++){const x=Math.max(.04,Math.min(MB_A-.04,bx+(rng()-.5)*MB_A*.55)),y=.05+rng()*.9;mbDrop(F,t+j*.02,x,y,.02+.022*rng(),c,.45,true);}
+  for(let j=0;j<sz.spray;j++){const x=Math.max(.04,Math.min(MB_A-.04,bx+(rng()-.5)*MB_A*.55)),y=.05+rng()*.9;mbDrop(F,t+j*Math.min(.02,.04/Math.max(1,sz.spray-1)),x,y,.02+.022*rng(),c,.45,true);}
   const d=7+[0,1,2,3,4,3,2,1][i%8]+(Math.floor(i/8)%2?2:0);notes.push([t,T.inst.spark,mbNote(T.key,T.scale,d)+12,.075+(i%T.subs===0?.03:0),.6,-.5+u]);}
  mbFx(F,T0-.1,'pintaRec','pinzell2',.16,0,1.1);
  for(let b=0;b<bars;b++){const t=T0+b*mbBarLen(T);mbBass(T,F.bar+b,t,notes,.18);mbMel(T,F.bar+b,t,notes,.14);}
- mbNotes(F,notes);F.tools.push({kind:'spray',pts,t0:T0-.5,t1:T0+n*T.sub+.4});F.bar+=bars;return T0+bars*mbBarLen(T)+.6;}
+ mbNotes(F,notes);F.tools.push({kind:'spray',pts,col:c,t0:T0-.5,t1:T0+n*T.sub+.4});F.bar+=bars;return T0+bars*mbBarLen(T)+.6;}
 
 // The gesture: the passes of the sheet's stylus, comb or fan, each with its run of notes.
 const mbPassBars=(T,n)=>Math.max(1,Math.round((n>=3?2.1:2.6)/mbBarLen(T)));
@@ -125,10 +195,39 @@ function mbPass(F,T,p,t0,t1,notes,rng){const dur=t1-t0,mir=F.lap%2===1;
  case 'spiral':{const n=p.rings.length,step=dur/n,sg=mir?-1:1;mbQueue(F.ink,{kind:'circle',cx:mbX(F,p.x),cy:p.y,r:0,z:p.vz*sg,w:p.vw,t0,dur});p.rings.forEach((r,i)=>{mbQueue(F.ink,{kind:'circle',cx:mbX(F,p.x),cy:p.y,r,z:p.z*sg,w:p.w,t0:t0+i*step,dur:step*1.15});});
   F.tools.push({kind:'spiral',cx:mbX(F,p.x),cy:p.y,rings:p.rings,t0,t1,step});mbGliss(T,t0,t1,notes,{from:9,span:-7,vel:.11});break;}
  case 'fan':{mbQueue(F.ink,{kind:'shear',axis:p.axis,amp:p.amp,fr:2*Math.PI/p.wl,ph:rng()*6.283,t0,dur});F.tools.push({kind:'fan',axis:p.axis,t0:t0-.4,t1:t1+.3});
-  mbGliss(T,t0,t1,notes,{from:0,span:7,vel:.08,inst:T.inst.cad});mbFx(F,t0,'sabanaRec','aire',.16,0,.9);break;}}}
+  mbGliss(T,t0,t1,notes,{from:0,span:7,vel:.08,inst:T.inst.cad});mbFx(F,t0,'sabanaRec','aire',.16,0,.9);break;}
+ // a comb drawn on a slant (th degrees from across, downwards positive): it starts outside one corner and crosses the whole bath
+ case 'diag':{const th=p.th*Math.PI/180,mx=(mir?-1:1)*Math.cos(th),my=Math.sin(th),ss=[[0,0],[MB_A,0],[0,1],[MB_A,1]].map(([x,y])=>x*mx+y*my),s0=Math.min(...ss)-.15,s1=Math.max(...ss)+.15;
+  const o={kind:'tine',t0,dur,soft:.09,z:p.z,w:p.w,sp:p.sp,off:rng()*p.sp,alt:!!p.alt,amp:p.amp||0,fr:p.wl?2*Math.PI/p.wl:0,ph:rng()*6.283,tri:!!p.tri,bx:mx*s0,by:my*s0,mx,my,nx:-my,ny:mx,L:s1-s0};
+  mbQueue(F.ink,o);F.tools.push({kind:o.alt?'comb2':'comb',op:o,t0:t0-.4,t1:t1+.3});mbGliss(T,t0,t1,notes,{from:3});mbFx(F,t0,'pouRec','escombra',.08,0,.8+.2*rng(),Math.min(2.1,dur));break;}
+ // a breath on a slant: the water slides along slanting rows
+ case 'rock':{const th=p.th*Math.PI/180,mx=(mir?-1:1)*Math.cos(th),my=Math.sin(th);mbQueue(F.ink,{kind:'shear',axis:'d',mx,my,amp:p.amp,fr:2*Math.PI/p.wl,ph:rng()*6.283,t0,dur});
+  F.tools.push({kind:'fan',axis:'d',t0:t0-.4,t1:t1+.3});mbGliss(T,t0,t1,notes,{from:1,span:8,vel:.08,inst:T.inst.cad});mbFx(F,t0,'sabanaRec','aire',.16,0,.9);break;}
+ // the stylus drawn from side to side across the stripes in a zigzag: every stripe takes the zigzag
+ case 'zig':{const ph=rng()*6.283,fr=2*Math.PI/p.wl;mbQueue(F.ink,{kind:'shear',axis:'y',tri:true,amp:p.amp,fr,ph,t0,dur});
+  const n=Math.max(4,Math.round(MB_A/(p.wl/2))),strokes=[],xs=Array.from({length:n+1},(_,i)=>-.04+(MB_A+.08)*i/n),P=xs.map(x=>[x,.5+p.amp*1.6*Math.asin(.94*Math.sin(x*fr+ph))/Math.asin(.94)]);if(mir)P.reverse();
+  for(let i=0;i<n;i++){const [ax,ay]=P[i],[bx,by]=P[i+1],L=Math.hypot(bx-ax,by-ay),d=dur/n;strokes.push({op:{bx:ax,by:ay,mx:(bx-ax)/L,my:(by-ay)/L,L,soft:.01,t0:t0+i*d,dur:d},t0:t0+i*d,t1:t0+(i+1)*d});notes.push([t0+i*d,T.inst.gliss,mbNote(T.key,T.scale,i%2?3:7)+12,.12,.9]);}
+  F.tools.push({kind:'path',strokes,t0:t0-.4,t1:t1+.4});mbFx(F,t0,'pouRec','escombra',.07,0,.8,Math.min(2.4,dur));break;}
+ // the stylus along a line: straight (through a row of targets: hearts) or an S across the bath, in short straight strokes
+ case 'path':{const pts=(p.pts||mbCurve(p.curve)).map(([fx,fy])=>[mbX(F,fx),fy]),n=pts.length-1,lens=[];let tot=0;for(let i=0;i<n;i++){const L=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);lens.push(L);tot+=L;}
+  const strokes=[];let a=t0;for(let i=0;i<n;i++){const d=dur*lens[i]/tot,[ax,ay]=pts[i],[bx,by]=pts[i+1],mx=(bx-ax)/lens[i],my=(by-ay)/lens[i],o={kind:'tine',bx:ax,by:ay,mx,my,nx:-my,ny:mx,L:lens[i],soft:n>1?.03:.06,z:p.z,w:p.w,t0:a,dur:d};
+   mbQueue(F.ink,o);strokes.push({op:o,t0:a,t1:a+d});a+=d;}
+  F.tools.push({kind:'path',strokes,t0:t0-.4,t1:t1+.4});mbGliss(T,t0,t1,notes,{from:2,span:10,vel:.1});mbFx(F,t0,'pouRec','escombra',.07,0,.7,Math.min(2.4,dur));break;}
+ // the spokes of a star: one stroke after another round the centre, outwards (or from outside to the centre), each on its note
+ case 'star':{const cx=mbX(F,p.x),cy=p.y,n=p.n||12,step=dur/n,R=p.R||1.1,out=p.dir!=='in',strokes=[];
+  for(let i=0;i<n;i++){let a=((p.a0||0)+i*360/n)*Math.PI/180;if(mir)a=Math.PI-a;const ux=Math.cos(a),uy=Math.sin(a),t=t0+i*step;
+   const o=out?{kind:'tine',bx:cx+ux*.02,by:cy+uy*.02,mx:ux,my:uy,L:R}:{kind:'tine',bx:cx+ux*R,by:cy+uy*R,mx:-ux,my:-uy,L:R-.05};Object.assign(o,{nx:-o.my,ny:o.mx,soft:.03,z:p.z,w:p.w,t0:t,dur:step*1.15});
+   mbQueue(F.ink,o);strokes.push({op:o,t0:t,t1:t+o.dur});notes.push([t,T.inst.gliss,mbNote(T.key,T.scale,(out?3:10)+(out?1:-1)*[0,2,4,2,1,3][i%6])+12,.12,1.1]);}
+  F.tools.push({kind:'path',strokes,t0:t0-.4,t1:t1+.4});mbFx(F,t0,'pouRec','escombra',.06,0,1.1,Math.min(2.4,dur));break;}
+ // rings drawn round a centre one after another, each the other way round: a wheel of zigzags
+ case 'rosette':{const n=p.rings.length,step=dur/n,sg=p.rings.map((_,i)=>(i%2?-1:1)*(mir?-1:1)),cx=mbX(F,p.x);
+  p.rings.forEach((r,i)=>{mbQueue(F.ink,{kind:'circle',cx,cy:p.y,r,z:p.z*sg[i]*Math.max(.6,r/.25),w:p.w,t0:t0+i*step,dur:step*1.15});notes.push([t0+i*step,T.inst.gliss,mbNote(T.key,T.scale,2+2*i)+12,.13,1.4]);});
+  F.tools.push({kind:'spiral',cx,cy:p.y,rings:p.rings,sg,t0,t1,step});mbGliss(T,t0+step*.5,t1,notes,{from:6,span:-5,vel:.07,inst:T.inst.cad});break;}}}
+// an S across the bath (fractions of the bath)
+const mbCurve=()=>Array.from({length:17},(_,i)=>{const u=i/16;return [-.04+1.08*u,.5+.3*Math.sin(2*Math.PI*1.15*u+.35)];});
 
 // A flower: rings of colour dropped at each centre on the arpeggio, then the stylus draws through them on a run of notes.
-function mbFlower(F,T,fl,t0,t1,notes,rng){const R=fl.R||.25,pts=(fl.pts||[[.5,.5]]).map(([fx,fy])=>[mbX(F,fx),fy]),cols=[0,1,2,1],half=t0+(t1-t0)*.42,drops=[];
+function mbFlower(F,T,fl,t0,t1,notes,rng){const R=fl.R||.25,pts=(fl.pts||[[.5,.5]]).map(([fx,fy])=>[mbX(F,fx),fy]),C=mbStepCols(F),cols=[C.rc[0],C.o[0],C.o[1%C.o.length],C.o[0]],half=t0+(t1-t0)*.42,drops=[];
  for(let k=0;k<4;k++)for(const p of pts)drops.push([p,cols[k]]);
  const dt=(half-t0)/drops.length,brush=[];drops.forEach(([p,col],i)=>{const t=t0+i*dt;mbDrop(F,t,p[0],p[1],R/2,col,.8);brush.push([p[0],p[1],t]);});
  const arp=[];for(let b=0;b<3;b++)arp.push(...mbArp(T,F.bar+b,T.arp.length));drops.forEach((_,i)=>notes.push([t0+i*dt,T.inst.arp,arp[i%arp.length],.17,1.4]));mbBrush(F,brush);
@@ -164,13 +263,14 @@ function mbPrint(F,s,T0){const T=mbTaller(F),B=mbBarLen(T),notes=[],touch=T0+B,l
 
 // Begin a step of the sheet.
 function mbStepBegin(F,s,kind){const T0=F.t+(kind==='print'?.1:MB_LEAD),n=mbStepsN(s),g=mbGestures(s),sh=mbSheet(F),fl=MB_FLOWERS[sh.flower]||MB_FLOWERS.cor;const first=F.events.length;let end;
+ const C=mbStepCols(F),o=i=>C.o[i%C.o.length];
  switch(kind){
- case 'rain':end=mbRain(F,s,T0,{cols:n===3&&g!=='gotes'?[0,1]:[0],cover:1.25,k:0});break;
- case 'rings':end=mbRings(F,s,T0,{col:1,k:1});break;
- case 'spray':end=mbSpray(F,s,T0,{col:2,k:2});break;
- case 'rain2':end=mbRain(F,s,T0,{cols:[3],cover:.55,k:4,mel:true});break;
- case 'rings2':end=mbRings(F,s,T0,{col:3,k:5,scale:.42});break;
- case 'spray2':end=mbSpray(F,s,T0,{col:3,k:6});break;
+ case 'rain':end=mbRain(F,s,T0,{cols:n===3&&g!=='gotes'&&C.rc.length<2?[C.rc[0],o(0)]:C.rc,cover:1.25,k:0,lay:sh.lay});break;
+ case 'rings':end=mbRings(F,s,T0,{col:o(0),k:1,mode:sh.rm||'in'});break;
+ case 'spray':end=mbSpray(F,s,T0,{col:o(1),k:2});break;
+ case 'rain2':end=mbRain(F,s,T0,{cols:[o(2)],cover:.55,k:4,mel:true});break;
+ case 'rings2':end=mbRings(F,s,T0,{col:o(3),k:5,scale:.42});break;
+ case 'spray2':end=mbSpray(F,s,T0,{col:o(4),k:6});break;
  case 'gesture':end=mbGesture(F,s,T0,sh.gesture,3);break;
  case 'gesture2':end=mbGesture(F,s,T0,sh.gesture2,7);break;
  case 'flower':{const T=mbTaller(F),notes=[],B=mbBarLen(T),bars=Math.max(2,Math.round(5.2/B)),t1=T0+bars*B;mbFlower(F,T,fl,T0,t1,notes,mbRng(F,8));for(let b=0;b<bars;b++){mbBass(T,F.bar+b,T0+b*B,notes,.18);mbMel(T,F.bar+b,T0+b*B,notes,.14);}mbNotes(F,notes);F.bar+=bars;end=t1+.8;break;}

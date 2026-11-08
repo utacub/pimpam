@@ -1692,71 +1692,71 @@
   {
    "t": "Turc",
    "l": [
-    "Pedres de color amb vetes fines: el patró europeu més antic.",
-    "Es fa només amb gotes: cada color nou empeny els d’abans i els deixa en vetes primes.",
+    "Pedres grans i petites i, entre elles, vetes fines d’un altre color: el patró europeu més antic.",
+    "Primer cauen unes quantes gotes grans i moltes de petites; les del segon color cauen entre les pedres i les deixen separades per vetes.",
     "Taller d’enquadernació de Barcelona: guitarra, clarinet, contrabaix i pandereta, a tres temps."
    ]
   },
   {
    "t": "Espanyol",
    "l": [
-    "Pedres travessades per ones d’ombra en diagonal.",
-    "Després de les gotes, el punxó passa fent ones suaus d’un costat a l’altre.",
+    "Pedres de dos colors travessades per ones fines en diagonal.",
+    "Després de les gotes, un buf de vent en diagonal fa lliscar l’aigua en ones fines.",
     "Amb papers així es folraven les tapes i les guardes dels llibres."
    ]
   },
   {
    "t": "Pentinat",
    "l": [
-    "El punxó va i ve i després una pinta fina ho pentina tot.",
-    "Cada punta de la pinta deixa una ratlla de tots els colors.",
+    "Franges verticals que el punxó fa anar i venir i una pinta fina pentina.",
+    "Cada nota deixa una línia de tinta que s’eixampla en franja; el punxó les fa anar i venir i cada punta de la pinta hi deixa una ratlla de tots els colors.",
     "La guitarra sona quan cauen les gotes; l’arpa, quan passa la pinta."
    ]
   },
   {
    "t": "Cua de paó",
    "l": [
-    "Sobre les pedres, la pinta dibuixa plomes de paó.",
-    "Tres passades: el punxó, una pinta fina i una pinta que fa ones.",
+    "Un escaquer de dos colors pentinat que acaba en plomes de paó.",
+    "Les gotes cauen en escaquer de dos colors; després, tres passades: el punxó, una pinta fina i una pinta que fa ones.",
     "En acabar, el paper es posa sobre l’aigua i s’emporta l’estampa."
    ]
   },
   {
    "t": "Pedres amb vora",
    "l": [
-    "Gotes que es toquen i deixen una vora fosca entre elles.",
-    "Dos remolins suaus fan girar les pedres, un cap a cada costat.",
+    "Pedres de tres colors amb vora fosca i un traç lliure del punxó en forma d’essa.",
+    "La vora fosca és el pigment que s’acumula al límit de cada gota; després el punxó travessa el bany fent una essa.",
     "Taller d’ebru d’Istanbul: arpa, oboè, udu i tambor, en un compàs de 9/8."
    ]
   },
   {
    "t": "Anada i tornada",
    "l": [
-    "El punxó travessa el bany amunt i avall, una vegada i una altra.",
-    "Als fulls Pentinat i Cua de paó, aquest mateix gest va abans de la pinta.",
+    "Files de gotes en diagonal que el punxó travessa amunt i avall.",
+    "Les gotes cauen en files inclinades de dos colors; el punxó, amunt i avall, les converteix en flames.",
     "L’ebru és patrimoni cultural immaterial de la UNESCO des del 2014."
    ]
   },
   {
-   "t": "Onades",
+   "t": "Cadena de cors",
    "l": [
-    "El punxó fa ones d’un costat a l’altre del bany.",
-    "Les ones del costat van al revés, com l’aigua que va i torna a la riba.",
+    "Una filera de dianes de colors: un sol traç del punxó les converteix en cors.",
+    "Les gotes cauen per torns en quatre centres i fan dianes; el punxó passa una sola vegada pel mig de totes i cada diana es torna un cor.",
     "L’arpa llisca quan passa el punxó; l’udu fa el baix."
    ]
   },
   {
    "t": "Tulipa",
    "l": [
-    "Una tulipa gran dibuixada amb el punxó sobre les pedres.",
-    "Primer cauen gotes l’una dins de l’altra; després el punxó les estira en pètals.",
+    "Un marc de pedres al voltant i una tulipa gran dibuixada al mig.",
+    "Unes gotes grans al mig i pedres de colors tot al voltant, que s’hi tanquen com un marc; després el punxó estira els pètals de la tulipa.",
     "L’oboè canta la melodia i el tambor marca el compàs."
    ]
   },
   {
    "t": "Anells",
    "l": [
-    "Anells de tinta i d’aigua, l’un dins de l’altre.",
+    "Anells de tinta i d’aigua al voltant de pocs centres, moguts per un ventall.",
     "Al suminagashi, la tinta i l’aigua clara toquen el bany per torns i fan anells.",
     "Taller de suminagashi de Kyoto: arpa, marimba i claves."
    ]
@@ -1764,7 +1764,7 @@
   {
    "t": "Ventall",
    "l": [
-    "Un buf de vent deforma els anells com una tela.",
+    "Tres centres d’anells de dos colors que un buf de vent ondula com una tela.",
     "Al suminagashi no hi ha pinta: els anells es mouen bufant o amb un ventall.",
     "L’arpa sona a cada gota; les claves marquen els temps."
    ]
@@ -1772,80 +1772,80 @@
   {
    "t": "Ondulació",
    "l": [
-    "El punxó passa a poc a poc i ondula els anells.",
-    "Una sola passada lenta: els anells s’estiren però no es trenquen.",
+    "Centres en diagonal i el punxó que passa a poc a poc fent ones.",
+    "Quatre centres en diagonal; una sola passada lenta del punxó estira els anells però no els trenca.",
     "La marimba fa la melodia sobre l’arpa."
    ]
   },
   {
-   "t": "Ombra doble",
+   "t": "Roda",
    "l": [
-    "Dos colors de tinta en anells que giren lentament.",
-    "Un remolí ample al centre fa girar tots els anells alhora.",
+    "Un sol centre gran amb anells de tres colors, i el punxó que hi dona voltes, cada vegada en sentit contrari.",
+    "Totes les gotes cauen al mateix centre, tinta i aigua per torns; el punxó hi dona voltes, cada vegada en sentit contrari, i els anells fan ziga-zaga.",
     "Al Japó es conserven papers així del segle XII."
    ]
   },
   {
    "t": "Rodet francès",
    "l": [
-    "La pinta fina i després petits caragols arrenglerats.",
-    "Cada caragol és el punxó donant una volta petita, ara cap a un costat, ara cap a l’altre.",
+    "Files encavalcades de gotes de tres colors, una pinta fina i, a sobre, petits caragols arrenglerats.",
+    "Les gotes cauen en files encavalcades; cada caragol és el punxó donant una volta petita, ara cap a un costat, ara cap a l’altre.",
     "Taller de París: piano, violins i violoncels pessigats, glockenspiel i triangle."
    ]
   },
   {
    "t": "Ram",
    "l": [
-    "Un pentinat fi que una pinta ampla converteix en un ram.",
-    "Tres passades: el punxó, la pinta fina i una pinta ampla que fa ones.",
+    "Files ondulades de gotes, un pentinat fi i una pinta ampla que fa rams.",
+    "Les gotes cauen en files que fan ones; després, tres passades: el punxó, la pinta fina i una pinta ampla que fa ones.",
     "Quan passa la pinta, el piano fa una escala."
    ]
   },
   {
-   "t": "Plomes",
+   "t": "Estel",
    "l": [
-    "El punxó va amunt i avall alternant, com les barbes d’una ploma.",
-    "Primer passades amples d’un costat a l’altre; després, d’estretes de dalt a baix.",
+    "Una diana enorme de colors i el punxó que hi traça raigs del centre cap enfora i de fora cap al centre.",
+    "Totes les gotes cauen al centre i fan una diana enorme; el punxó la travessa en dotze raigs i després hi torna de fora cap a dins.",
     "Els violoncels pessigats fan el baix i el triangle marca el compàs."
    ]
   },
   {
    "t": "Rosa",
    "l": [
-    "Una rosa gran feta amb anells i el punxó.",
-    "Quatre gotes l’una dins de l’altra; el punxó hi dibuixa els pètals.",
+    "Una corona de gotes al voltant del centre i una rosa gran dibuixada amb el punxó.",
+    "Una gota grossa al mig i tres anells de gotes al voltant, cadascun d’un color; el punxó hi dibuixa els pètals.",
     "Després el paper s’asseca a l’estenedor amb els altres fulls."
    ]
   },
   {
    "t": "Holandès antic",
    "l": [
-    "Gotes en files, el punxó que va i ve i una pinta.",
-    "Les gotes cauen en quadrícula, ordenades com les lletres d’una pàgina.",
+    "Files de gotes de colors alterns, el punxó que va i ve, una pinta i una altra de través.",
+    "Les gotes cauen en files de colors alterns, ordenades com les lletres d’una pàgina; al final, una pinta de través.",
     "Taller de l’impressor de Nuremberg: marimba, fagot, flauta, glockenspiel i claves."
    ]
   },
   {
    "t": "Ziga-zaga",
    "l": [
-    "La pinta fa ziga-zaga i deixa puntes de colors.",
-    "Dues passades en ziga-zaga: una d’un costat a l’altre i una de dalt a baix.",
-    "Quan passa la pinta, la marimba fa una escala."
+    "Franges de quatre colors que el punxó, d’un costat a l’altre, converteix en ziga-zagues.",
+    "Cada nota deixa una línia de tinta que s’eixampla en franja; quan el punxó va d’un costat a l’altre fent ziga-zaga, totes les franges el segueixen.",
+    "Quan passa el punxó, la marimba fa una escala."
    ]
   },
   {
    "t": "Espiral",
    "l": [
-    "El punxó dona voltes al centre i tot es torna una espiral.",
-    "Al centre la tinta gira més que a la vora: per això surt una espiral.",
+    "Gotes en espiral des del centre i el punxó que hi dona voltes fins que tot gira.",
+    "Les gotes cauen seguint una espiral; al centre la tinta gira més que a la vora, i per això surt una espiral.",
     "La flauta canta la melodia i el fagot fa el baix."
    ]
   },
   {
    "t": "Remolí",
    "l": [
-    "Tres remolins que s’enduen els colors.",
-    "Els dels costats giren en un sentit i el del mig en l’altre.",
+    "Dues dianes de colors i tres remolins que se les enduen.",
+    "Dues dianes de tres colors; els remolins dels costats giren en un sentit i el del mig en l’altre.",
     "Cada gota i cada gest mouen la tinta, però no se’n fa ni se’n perd gens."
    ]
   }

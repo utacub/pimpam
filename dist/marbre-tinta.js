@@ -1,4 +1,4 @@
-// La nova Pluja de colors (CE03), 0.52 · the ink on the water: mathematical marbling.
+// La nova Pluja de colors (CE03), 0.52.1 · the ink on the water: mathematical marbling.
 // Every drop and every stroke is an exact function that moves every point of the ink (Lu, Jaffer, Jin, Zhao & Mao, 2012;
 // Jaffer, «Dropping paint», «The mathematics of marbling»): the ink is never created or lost, only moved, which is what makes
 // marbled paper look the way it does. The ink is a list of polygons (one for each drop) in bath units: the bath is 1 high and
@@ -22,6 +22,8 @@ export const mbBusy=(ink,t)=>ink.ops.some(o=>o.begun&&t<o.t0+o.dur);
 function mbMap(o,x,y,k,out){out[0]=x;out[1]=y;if(k<=0)return out;
  switch(o.kind){
  case 'drop':{const r=o.r*k,dx=x-o.cx,dy=y-o.cy,d2=dx*dx+dy*dy;if(d2<1e-14){out[0]=o.cx+r;out[1]=o.cy;return out;}const f=Math.sqrt(1+r*r/d2);out[0]=o.cx+dx*f;out[1]=o.cy+dy*f;return out;}
+ case 'band':{// a line of ink laid across the water: it spreads into a stripe d wide (n: across it) and pushes the two sides apart
+  const q=(x-o.bx)*o.nx+(y-o.by)*o.ny,h=o.d*k/2*(q>=0?1:-1);out[0]=x+o.nx*h;out[1]=y+o.ny*h;return out;}
  case 'tine':{// a stylus or a comb drawn along M, starting at B and travelling L; the tip has passed a point when it is behind it
   const dx=x-o.bx,dy=y-o.by,s=dx*o.mx+dy*o.my,q=dx*o.nx+dy*o.ny,soft=o.soft,tip=k*(o.L+2*soft)-soft;
   const W=mbSmooth(s/soft+1)*mbSmooth((tip-s)/soft);if(W<=0)return out;
@@ -37,16 +39,23 @@ function mbMap(o,x,y,k,out){out[0]=x;out[1]=y;if(k<=0)return out;
   const dx=x-o.cx,dy=y-o.cy,h=Math.sqrt(dx*dx+dy*dy);if(h<1e-9)return out;const d=o.r>0?Math.abs(h-o.r):h;let a=k*o.z*Math.exp(-d*MB_LN2/o.w)/Math.max(h,o.r>0?1e-6:o.w*.35);
   if(a>12.6)a=12.6;if(a<-12.6)a=-12.6;const c=Math.cos(a),sn=Math.sin(a);out[0]=o.cx+dx*c-dy*sn;out[1]=o.cy+dx*sn+dy*c;return out;}
  case 'shear':{// a breath of wind (a fan over the water): a wave that slides the rows (or the columns); it keeps the area
-  if(o.axis==='x'){out[0]=x+k*o.amp*Math.sin(y*o.fr+o.ph);}else{out[1]=y+k*o.amp*Math.sin(x*o.fr+o.ph);}return out;}}
+  // (axis 'd': the rows run along M = (mx, my), so the slide follows a slanting line and the wave runs across it)
+  // (tri: a zigzag instead of a wave, its corners very slightly rounded)
+  const wv=a=>o.tri?Math.asin(MB_TRI*Math.sin(a))/MB_TRIN:Math.sin(a);
+  if(o.axis==='x'){out[0]=x+k*o.amp*wv(y*o.fr+o.ph);}else if(o.axis==='y'){out[1]=y+k*o.amp*wv(x*o.fr+o.ph);}
+  else{const d=k*o.amp*wv((x*-o.my+y*o.mx)*o.fr+o.ph);out[0]=x+d*o.mx;out[1]=y+d*o.my;}return out;}}
  return out;}
 
 // The strength of an operation at time t (eased), and the operations that act now.
-function mbK(o,t){if(t<o.t0)return 0;const x=(t-o.t0)/o.dur;return o.kind==='drop'?mbEase(x):o.kind==='tine'?Math.min(1,Math.max(0,x)):mbSmooth(x);}
+function mbK(o,t){if(t<o.t0)return 0;const x=(t-o.t0)/o.dur;return o.kind==='drop'||o.kind==='band'?mbEase(x):o.kind==='tine'?Math.min(1,Math.max(0,x)):mbSmooth(x);}
 
 // A new drop: a circle of colour col (its polygon exists from its own operation on, and grows with it).
 function mbCircle(o,maxLen){const n=Math.max(48,Math.min(640,Math.ceil(2*Math.PI*o.r/maxLen))),p=new Array(2*n);
  for(let i=0;i<n;i++){const a=i/n*2*Math.PI;p[2*i]=o.cx+Math.cos(a)*o.r;p[2*i+1]=o.cy+Math.sin(a)*o.r;}return p;}
 
+// A new stripe: a long rectangle along its line, across the whole bath (it grows from the line outwards).
+function mbStripe(o,ink){const mx=-o.ny,my=o.nx,ss=[[0,0],[ink.a,0],[0,1],[ink.a,1]].map(([x,y])=>(x-o.bx)*mx+(y-o.by)*my),s0=Math.min(...ss)-.3,s1=Math.max(...ss)+.3,n=Math.ceil((s1-s0)/.015),p=[],h=o.d/2;
+ for(let i=0;i<=n;i++){const s=s0+(s1-s0)*i/n;p.push(o.bx+mx*s-o.nx*h,o.by+my*s-o.ny*h);}for(let i=n;i>=0;i--){const s=s0+(s1-s0)*i/n;p.push(o.bx+mx*s+o.nx*h,o.by+my*s+o.ny*h);}return p;}
 // Queue an operation: {kind, t0, dur, ...}. A drop also gives its colour (col) and adds its polygon when it begins.
 export function mbQueue(ink,o){o.seq=++ink.seq;o.begun=false;ink.ops.push(o);return o;}
 
@@ -81,6 +90,7 @@ function mbCommit(ink,o){const P=[0,0],a=ink.a,m=.25,L=ink.maxLen*.3,L2=L*L;let 
 export function mbAdvance(ink,t){let changed=false;
  for(const o of ink.ops){if(o.begun||t<o.t0)continue;o.begun=true;changed=true;
   if(o.kind==='drop'){const poly={p:mbCircle(o,ink.maxLen),col:o.col,born:o.seq,grow:o,cx:o.cx,cy:o.cy,id:++ink.born};ink.polys.push(poly);}
+  if(o.kind==='band'){const poly={p:mbStripe(o,ink),col:o.col,born:o.seq,grow:o,cx:o.bx,cy:o.by,id:++ink.born};ink.polys.push(poly);}
   const chain=ink.ops.filter(x=>x.begun).map(x=>[x,1]);mbRefine(ink,chain);}
  while(ink.ops.length){const o=ink.ops[0];if(!o.begun||t<o.t0+o.dur)break;ink.ops.shift();mbCommit(ink,o);changed=true;}
  return changed;}
@@ -88,7 +98,8 @@ export function mbAdvance(ink,t){let changed=false;
 // The polygons as they are seen at time t: [{p (bath units), col, id}] (the stored ones when nothing is under way).
 export function mbView(ink,t){const live=ink.ops.filter(o=>o.begun).map(o=>[o,mbK(o,t)]);if(!live.length)return ink.polys;const P=[0,0];
  return ink.polys.map(poly=>{const b=poly.p,n=b.length,out=new Array(n);let g=1;if(poly.grow){g=mbK(poly.grow,t);}
-  for(let i=0;i<n;i+=2){let x=b[i],y=b[i+1];if(g<1){x=poly.cx+(x-poly.cx)*g;y=poly.cy+(y-poly.cy)*g;}mbChain(live,poly.born,x,y,P);out[i]=P[0];out[i+1]=P[1];}
+  const st=poly.grow&&poly.grow.kind==='band'?poly.grow:null;// a stripe grows across its line only
+  for(let i=0;i<n;i+=2){let x=b[i],y=b[i+1];if(g<1){if(st){const q=(x-poly.cx)*st.nx+(y-poly.cy)*st.ny;x-=st.nx*q*(1-g);y-=st.ny*q*(1-g);}else{x=poly.cx+(x-poly.cx)*g;y=poly.cy+(y-poly.cy)*g;}}mbChain(live,poly.born,x,y,P);out[i]=P[0];out[i+1]=P[1];}
   return {p:out,col:poly.col,id:poly.id};});}
 
 // Where a point of the water (a drop's centre, say) has been carried by now: the committed operations have already moved the

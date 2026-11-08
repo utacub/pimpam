@@ -1,7 +1,7 @@
-// Review tool for La nova Pluja de colors (CE03, 0.52): still frames through the real scene, as JPEG files, with drawing times.
+// Review tool for La nova Pluja de colors (CE03, 0.52.1): still frames through the real scene, as JPEG files, with drawing times.
 // Usage: node tools/marbre-frames.mjs OUTDIR WIDTH HEIGHT [DPR] JSON ...
 //   each JSON is a paint order: {"name":"x","s":{settings},"sim":{"presses":[seconds…],"t":seconds}} runs the model from the start
-//   (pressing at those times) and paints the moment t; {"name":"x","sheet":[g,j,steps,lap]} paints a finished sheet (as the card and
+//   (pressing at those times) and paints the moment t; {"name":"x","sheet":[g,j,steps,lap,settings?]} paints a finished sheet (as the card and
 //   the ⓘ panel show it); "preview":true paints the card's picture. "flush":true includes the drawing reaching the pixels in the time.
 import {createRequire} from 'node:module';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
@@ -20,7 +20,7 @@ export async function openMb(width,height,dpr=1){const browser=await playwright.
  window.paint=o=>{const cv=document.getElementById('c'),c=cv.getContext('2d'),w=cv.width/DPR,h=cv.height/DPR;c.setTransform(DPR,0,0,DPR,0,0);c.globalAlpha=1;c.globalCompositeOperation='source-over';
   const S={...MB.defaults,background:'full',...(o.s||{})};let game=null;
   if(o.sim){game={count:0,completed:0};MB.mbStart(game,S);const P=o.sim.presses||[],T=o.sim.t||0;let k=0;for(let t=0;t<=T+1e-6;t+=1/60){while(k<P.length&&P[k]<=t+1e-6){MB.mbPress(game,{...S,lock:false});k++;}MB.mbTick(game,S,1/60);}}
-  else if(o.sheet){const [g,j,steps,lap]=o.sheet;game={marbre:MB.mbSimulate(g,j,{steps:steps??4,lap:lap??0})};}
+  else if(o.sheet){const [g,j,steps,lap,set]=o.sheet;game={marbre:MB.mbSimulate(g,j,{steps:steps??4,lap:lap??0,set:set||null})};}
   const t1=performance.now();MB.mbScene(c,w,h,game,S,!!o.preview);if(o.flush)c.getImageData(0,0,1,1);return performance.now()-t1;};`});
  return {browser,page,errors};}
 if(process.argv[1]&&fileURLToPath(import.meta.url)===process.argv[1]){

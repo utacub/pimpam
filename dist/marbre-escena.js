@@ -1,10 +1,10 @@
-// La nova Pluja de colors (CE03), 0.52 · the scene: the workshop around the bath, the water and its ink, the drops in the air, the
+// La nova Pluja de colors (CE03), 0.52.1 · the scene: the workshop around the bath, the water and its ink, the drops in the air, the
 // brush, the comb and the stylus, the sheet of paper that takes the print, the clothesline, and the wait for the next press.
 // Materials: the ink has a slightly darker rim (the pigment gathers at its edge), which is also the dark contour of every colour;
 // the water has a slow wet sheen (a window reflected, moving without any sudden change of light); the print is matte, on paper
 // with fibres and a deckled edge. Canvas 2D only. While nothing moves, the bath is a picture kept from the last frame.
 import {escDecor,escVeil,escBlit,escWaitClock,ESC_WAIT_START,escFrame,escCanvas,escGrain} from './escenari.js';
-import {MB_TALLERS,MB_CONTRAST} from './marbre-tallers.js';
+import {MB_TALLERS,MB_CONTRAST,mbPalette,mbContrastSet} from './marbre-tallers.js';
 import {MB_A,MB_FALL,MB_HANG,MB_SKIM,mbStart,mbPress,mbTick} from './color-rain.js';
 import {mbView,mbBusy} from './marbre-tinta.js';
 
@@ -18,14 +18,24 @@ export const mbMix=(a,b,f)=>{const A=mbRGB(a),B=mbRGB(b);return mbHex(A.map((v,i
 const mbRgba=(h,a)=>{const [r,g,b]=mbRGB(h);return `rgba(${r},${g},${b},${a})`;};
 function mbHSL(hex){const [r,g,b]=mbRGB(hex).map(v=>v/255),mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2;let h=0,s=0;if(mx!==mn){const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);h=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;h/=6;}return [h,s,l];}
 function mbFromHSL(h,s,l){const f=n=>{const k=(n+h*12)%12,a=s*Math.min(l,1-l);return l-a*Math.max(-1,Math.min(k-3,9-k,1));};return mbHex([f(0)*255,f(8)*255,f(4)*255]);}
-// The colours of a sheet: the water, the four inks and their rims. On light water the light inks become sumi (nearly black) and the
-// others darker, so the contrast with the water stays high; «Sense decorat» puts the ink on the base colour itself.
-export function mbColours(g,lap,s,decor){const T=MB_TALLERS[g],white=s?.base==='white',contrast=s?.mbColors==='contrast',water=decor?.mode==='none'?(white?'#ffffff':'#000000'):T.water[white?1:0];
- let cols=contrast?MB_CONTRAST[white?'light':'dark'].slice():T.pal[lap%2].slice();
- if(white&&!contrast)cols=cols.map(c=>{const [h,sa,l]=mbHSL(c);if(l>.72)return '#1d2236';let L=Math.min(l,.44),out=mbFromHSL(h,Math.min(1,sa*1.08),L);
-  while(mbContrast(out,water)<3&&L>.12){L-=.02;out=mbFromHSL(h,Math.min(1,sa*1.08),L);}return out;});
+// The colours of a sheet (g: workshop, j: sheet, lap): the water, the inks and their rims. Every sheet has its own palette; on
+// light water the light inks become a dark ink of their own hue (nearly black, like sumi) and the others darker, keeping their
+// order of lightness, so the contrast with the water stays high; «Sense decorat» puts the ink on the base colour itself. The high
+// contrast colours are four of eight, a different four for every sheet.
+export function mbColours(g,j,lap,s,decor){const P=mbPalette(g,j,lap),white=s?.base==='white',contrast=s?.mbColors==='contrast',water=decor?.mode==='none'?(white?'#ffffff':'#000000'):P.water[white?1:0];
+ let cols=contrast?mbContrastSet(g,j,lap).map(i=>MB_CONTRAST[white?'light':'dark'][i]):P.inks.slice();
+ if(white&&!contrast){let k=0;cols=cols.map(c=>{const [h,sa,l]=mbHSL(c);if(l>.8&&sa<.6||l>.86){const v=[[Math.min(.4,sa*.6+.1),.17],[.62,.3],[.35,.25]][Math.min(2,k++)];return mbFromHSL(h,v[0],v[1]);}
+  let L=Math.min(l,.22+.24*mbC((l-.3)/.5)),out=mbFromHSL(h,Math.min(1,sa*1.08),L);while(mbContrast(out,water)<3&&L>.1){L-=.02;out=mbFromHSL(h,Math.min(1,sa*1.08),L);}return out;});
+  // two inks of one sheet must not look alike once darkened: the later one goes lighter (or darker), keeping the contrast
+  for(let i=1;i<cols.length;i++){const [h,sa,l0]=mbHSL(cols[i]);for(let n=1;n<=10&&cols.slice(0,i).some(c=>mbDE(c,cols[i])<13);n++){const L=l0+(n%2?1:-1)*.045*Math.ceil(n/2),o=mbFromHSL((h+(n>6?.04*(n-6):0))%1,Math.max(.35,sa),Math.max(.08,L));if(mbContrast(o,water)>=3)cols[i]=o;}}}
  const rims=cols.map(c=>{const [h,sa,l]=mbHSL(c);return mbFromHSL(h,sa*.75,white?l*.42:Math.min(l*.4,.2));});
  return {water,cols,rims,white,key:water+cols.join('')};}
+// CIEDE2000 colour difference (Sharma, Wu & Dalal, 2005), from sRGB through CIELAB (D65): keeps two darkened inks apart
+function mbLab(h){const c=mbRGB(h).map(v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4);}),X=(.4124564*c[0]+.3575761*c[1]+.1804375*c[2])/.95047,Y=.2126729*c[0]+.7151522*c[1]+.072175*c[2],Z=(.0193339*c[0]+.119192*c[1]+.9503041*c[2])/1.08883,g=t=>t>216/24389?Math.cbrt(t):(24389/27*t+16)/116;return [116*g(Y)-16,500*(g(X)-g(Y)),200*(g(Y)-g(Z))];}
+export function mbDE(a,b){const [L1,a1,b1]=mbLab(a),[L2,a2,b2]=mbLab(b),d=Math.PI/180,C1=Math.hypot(a1,b1),C2=Math.hypot(a2,b2),Cm=(C1+C2)/2,G=.5*(1-Math.sqrt(Cm**7/(Cm**7+25**7))),A1=(1+G)*a1,A2=(1+G)*a2,c1=Math.hypot(A1,b1),c2=Math.hypot(A2,b2),hh=(y,x)=>{if(!x&&!y)return 0;const v=Math.atan2(y,x)/d;return v<0?v+360:v;},h1=hh(b1,A1),h2=hh(b2,A2);
+ let dh=0;if(c1*c2){dh=h2-h1;if(dh>180)dh-=360;else if(dh<-180)dh+=360;}const dH=2*Math.sqrt(c1*c2)*Math.sin(dh*d/2),Lm=(L1+L2)/2,cm=(c1+c2)/2;let hm=h1+h2;if(c1*c2)hm=Math.abs(h1-h2)<=180?(h1+h2)/2:(h1+h2+(h1+h2<360?360:-360))/2;
+ const T=1-.17*Math.cos((hm-30)*d)+.24*Math.cos(2*hm*d)+.32*Math.cos((3*hm+6)*d)-.2*Math.cos((4*hm-63)*d),RC=2*Math.sqrt(cm**7/(cm**7+25**7)),SL=1+.015*(Lm-50)**2/Math.sqrt(20+(Lm-50)**2),SC=1+.045*cm,SH=1+.015*cm*T,RT=-Math.sin(60*Math.exp(-(((hm-275)/25)**2))*d)*RC;
+ return Math.sqrt(((L2-L1)/SL)**2+((c2-c1)/SC)**2+(dH/SH)**2+RT*((c2-c1)/SC)*(dH/SH));}
 // luminance contrast (WCAG) between two colours, for the tests
 export function mbContrast(a,b){const L=h=>{const c=mbRGB(h).map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);});return .2126*c[0]+.7152*c[1]+.0722*c[2];},x=L(a),y=L(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
 
@@ -37,7 +47,7 @@ const mbPt=(M,x,y)=>[M.ox+x*M.sc,M.oy+y*M.sc];
 
 // ── The ink ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 function mbPolys(c,polys,pal,lw,paper=null){for(const P of polys){const p=P.p,n=p.length;if(n<6)continue;c.beginPath();c.moveTo(p[0],p[1]);for(let i=2;i<n;i+=2)c.lineTo(p[i],p[i+1]);c.closePath();
-  if(P.col<0){c.fillStyle=paper||pal.water;c.fill();continue;}const col=pal.cols[P.col%4];c.fillStyle=paper?mbMix(col,paper,.1):col;c.fill();c.strokeStyle=paper?mbMix(pal.rims[P.col%4],paper,.25):pal.rims[P.col%4];c.lineWidth=lw;c.stroke();}}
+  if(P.col<0){c.fillStyle=paper||pal.water;c.fill();continue;}const nc=pal.cols.length,col=pal.cols[P.col%nc];c.fillStyle=paper?mbMix(col,paper,.1):col;c.fill();c.strokeStyle=paper?mbMix(pal.rims[P.col%nc],paper,.25):pal.rims[P.col%nc];c.lineWidth=lw;c.stroke();}}
 // a sheet the size of a rectangle, at the resolution of the screen, drawn again only when its key changes
 const MB_CANVAS=new Map();
 function mbSheetOf(c,name,key,w,h,draw){const m=c.getTransform?c.getTransform():null;if(!m||Math.abs(m.b)>1e-6||Math.abs(m.c)>1e-6)return null;const k=Math.hypot(m.a,m.b)||1,W=Math.max(1,Math.round(w*k)),H=Math.max(1,Math.round(h*k));
@@ -91,13 +101,18 @@ function mbBrushAt(c,x,y,h,col,a=1){const ang=-1.05,L=h*.34,tw=h*.024,tl=h*.055;
 function mbStylusAt(c,x,y,h,a=1){c.save();c.globalAlpha*=a;c.translate(x,y);c.rotate(-1.1);c.lineWidth=Math.max(1.3,h*.0026);c.strokeStyle='#1d1209';c.fillStyle='#c9a96a';
  c.beginPath();c.moveTo(0,0);c.lineTo(h*.04,-h*.006);c.lineTo(h*.36,-h*.007);c.lineTo(h*.36,h*.007);c.lineTo(h*.04,h*.006);c.closePath();c.fill();c.stroke();
  c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.arc(0,0,h*.009,0,7);c.fill();c.restore();}
-// The comb: a wooden bar across the bath with its pins in the water, at the tip of the stroke.
-function mbComb(c,M,o,k,h,a=1){const tip=k*(o.L+2*o.soft)-o.soft,bx=o.bx+o.mx*tip,by=o.by+o.my*tip,h2=o.mx!==0;c.save();c.globalAlpha*=a;
- const bar=.02*M.sc,lw=Math.max(1.4,h*.003),[px,py]=mbPt(M,bx,by);c.lineWidth=lw;c.strokeStyle='#1d1209';c.fillStyle='#9b6a37';
- if(h2){c.fillRect(px-bar/2,M.oy-.03*M.sc,bar,1.06*M.sc);c.strokeRect(px-bar/2,M.oy-.03*M.sc,bar,1.06*M.sc);}else{c.fillRect(M.ox-.03*M.sc,py-bar/2,(MB_A+.06)*M.sc,bar);c.strokeRect(M.ox-.03*M.sc,py-bar/2,(MB_A+.06)*M.sc,bar);}
- const s=tip,wave=o.amp?o.amp*(o.tri?(2/Math.PI)*Math.asin(Math.sin(s*o.fr+o.ph)):Math.sin(s*o.fr+o.ph)):0,lim=h2?1:MB_A;c.fillStyle='#2b241c';
- for(let q=o.off-o.sp*Math.ceil(o.off/o.sp);q<=lim+o.sp;q+=o.sp){const qq=q+wave;if(qq<-.02||qq>lim+.02)continue;const [x,y]=h2?mbPt(M,bx,qq):mbPt(M,qq,by);c.beginPath();c.arc(x,y,Math.max(2,h*.0055),0,7);c.fill();c.stroke();}
+// The comb: a wooden bar across the bath (square to its way) with its pins in the water, at the tip of the stroke; it travels
+// across, down or on a slant, and its pins follow the wave or the zigzag of the stroke.
+function mbComb(c,M,o,k,h,a=1){const tip=k*(o.L+2*o.soft)-o.soft,bx=o.bx+o.mx*tip,by=o.by+o.my*tip;c.save();c.globalAlpha*=a;
+ const [x0,y0]=mbPt(M,-.03,-.03),[x1,y1]=mbPt(M,MB_A+.03,1.03);c.beginPath();c.rect(x0,y0,x1-x0,y1-y0);c.clip();
+ const qs=[[0,0],[MB_A,0],[0,1],[MB_A,1]].map(([x,y])=>(x-o.bx)*o.nx+(y-o.by)*o.ny),q0=Math.min(...qs)-.06,q1=Math.max(...qs)+.06,P=q=>mbPt(M,bx+o.nx*q,by+o.ny*q);
+ const lw=Math.max(1.4,h*.003),bar=.02*M.sc,[ax,ay]=P(q0),[ex,ey]=P(q1);c.lineCap='butt';
+ c.strokeStyle='#1d1209';c.lineWidth=bar+2*lw;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();c.strokeStyle='#9b6a37';c.lineWidth=bar;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
+ const sn=Math.sin(tip*(o.fr||0)+(o.ph||0)),wave=o.amp?o.amp*(o.tri?Math.asin(.94*sn)/Math.asin(.94):sn):0;c.fillStyle='#2b241c';c.strokeStyle='#1d1209';c.lineWidth=lw;
+ for(let i=Math.ceil((q0-o.off)/o.sp);i<=Math.floor((q1-o.off)/o.sp);i++){const q=o.off+i*o.sp+wave,px=bx+o.nx*q,py=by+o.ny*q;if(px<-.02||px>MB_A+.02||py<-.02||py>1.02)continue;const [x,y]=mbPt(M,px,py);c.beginPath();c.arc(x,y,Math.max(2,h*.0055),0,7);c.fill();c.stroke();}
  c.restore();}
+// where the stylus of a straight stroke is at time t
+const mbTipAt=(o,t)=>{const k=mbC((t-o.t0)/o.dur),tip=Math.max(0,Math.min(o.L,k*(o.L+2*o.soft)-o.soft));return [o.bx+o.mx*tip,o.by+o.my*tip];};
 // The fan: a round paper fan at the side of the bath, waving slowly.
 function mbFan(c,B,h,t,a=1){const x=B.x+B.w*.06,y=B.y+B.h*.55,ang=-.5+Math.sin(t*2.2)*.32,R=h*.1;c.save();c.globalAlpha*=a;c.translate(x,y);c.rotate(ang);c.lineWidth=Math.max(1.4,h*.003);c.strokeStyle='#1d1209';
  c.fillStyle='#7a5a32';c.fillRect(-h*.006,R*.6,h*.012,h*.2);c.strokeRect(-h*.006,R*.6,h*.012,h*.2);c.fillStyle='#efe2c4';c.beginPath();c.ellipse(0,-R*.15,R,R*.9,0,0,7);c.fill();c.stroke();
@@ -107,7 +122,7 @@ function mbFan(c,B,h,t,a=1){const x=B.x+B.w*.06,y=B.y+B.h*.55,ang=-.5+Math.sin(t
 // five pegs along the line, clear of the activity's buttons at the top right
 const MB_SLOTS=5;
 function mbSlot(w,h,B,i){const ph=B.top*.66,pw=ph*(B.w/B.h);return {x:w*(.1+i*.16)-pw/2,y:B.top*.2,w:pw,h:ph};}
-function mbHungSheet(c,H,w,h,B,M,s,decor){const sl=mbSlot(w,h,B,0),pal=mbColours(H.g,H.lap,s,decor);return mbPrintSheet(c,'hung'+H.id,H.uid+'/'+pal.key,sl.w,sl.h,B,M,H.polys,pal);}
+function mbHungSheet(c,H,w,h,B,M,s,decor){const sl=mbSlot(w,h,B,0),pal=mbColours(H.g,H.j,H.lap,s,decor);return mbPrintSheet(c,'hung'+H.id,H.uid+'/'+pal.key,sl.w,sl.h,B,M,H.polys,pal);}
 function mbDrawPaper(c,cv,x,y,pw,ph,seed,rot=0,shadow=.25){c.save();c.translate(x+pw/2,y+ph/2);c.rotate(rot);c.translate(-pw/2,-ph/2);
  if(shadow>0){c.fillStyle=`rgba(0,0,0,${shadow})`;mbDeckle(c,pw*.012,ph*.03,pw,ph,seed);c.fill();}
  mbDeckle(c,0,0,pw,ph,seed);c.save();c.clip();if(cv)c.drawImage(cv,0,0,pw,ph);else{c.fillStyle=MB_PAPER;c.fillRect(0,0,pw,ph);}c.restore();
@@ -125,7 +140,7 @@ export function mbScene(c,w,h,G,s,preview=false){const F=G?.marbre||mbPreviewSta
  if(decor.mode!=='none'){escBlit(c,'mb-wall-'+T.id,w,h,(sc,sw,sh)=>mbWall(sc,sw,sh,T));const ch=t-F.changeAt;if(F.prevG>=0&&ch<1.8){const PT=MB_TALLERS[F.prevG];escBlit(c,'mb-wall-'+PT.id,w,h,(sc,sw,sh)=>mbWall(sc,sw,sh,PT),1-mbS(ch/1.8));}
   mbTray(c,B,T,h);escVeil(c,decor,0,0,w,h);}
  // the bath and its ink
- const pal=mbColours(P?P.g:F.g,P?P.lap:F.lap,s,decor),size=Math.round(B.w)+'x'+Math.round(B.h);
+ const pal=mbColours(P?P.g:F.g,P?P.j:F.j,P?P.lap:F.lap,s,decor),size=Math.round(B.w)+'x'+Math.round(B.h);
  if(P&&t>=P.lift){c.save();c.fillStyle=pal.water;c.fillRect(B.x,B.y,B.w,B.h);const sx=t<P.skim?-1:B.x-w*.05+(B.w+w*.1)*mbS((t-P.skim)/MB_SKIM);
   c.beginPath();c.rect(Math.max(B.x,sx),B.y,B.x+B.w-Math.max(B.x,sx),B.h);c.clip();mbBathInk(c,B,M,P.polys,pal,'p'+P.uid+'/'+P.t0+pal.key+size,.16);c.restore();
   if(sx>=B.x-w*.05&&t<P.end){c.save();c.fillStyle=MB_PAPER;c.strokeStyle='#2a2116';c.lineWidth=Math.max(1.2,h*.003);c.fillRect(sx-w*.018,B.y-h*.02,w*.036,B.h+h*.04);c.strokeRect(sx-w*.018,B.y-h*.02,w*.036,B.h+h*.04);c.restore();}}
@@ -135,21 +150,23 @@ export function mbScene(c,w,h,G,s,preview=false){const F=G?.marbre||mbPreviewSta
  const ed=c.createLinearGradient(0,B.y,0,B.y+B.h*.08);ed.addColorStop(0,'rgba(0,0,0,.22)');ed.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=ed;c.fillRect(B.x,B.y,B.w,B.h*.08);c.restore();
  // the drops in the air (from the brush tip to the water) and their shadows
  // «Moviment reduït»: no drop falls through the air (each one just grows where it touches the water, on its note)
- for(const f of s.reduced?[]:F.falls){if(t<f.t0||t>=f.t1)continue;const u=(t-f.t0)/(f.t1-f.t0),e=u*u,fp=mbColours(f.g,f.lap,s,decor),col=f.col<0?(pal.white?'#bcd3e2':'#dfeaf2'):fp.cols[f.col%4],sx0=f.small?f.x:f.x+MB_TIP[0],sy0=f.small?f.y-.05:f.y+MB_TIP[1];
+ for(const f of s.reduced?[]:F.falls){if(t<f.t0||t>=f.t1)continue;const u=(t-f.t0)/(f.t1-f.t0),e=u*u,fp=mbColours(f.g,f.j,f.lap,s,decor),col=f.col<0?(pal.white?'#bcd3e2':'#dfeaf2'):fp.cols[f.col%fp.cols.length],sx0=f.small?f.x:f.x+MB_TIP[0],sy0=f.small?f.y-.05:f.y+MB_TIP[1];
   const [lx,ly]=mbPt(M,f.x,f.y),[x,y]=mbPt(M,mbL(sx0,f.x,e),mbL(sy0,f.y,e)),r=h*(f.small?.0045:.009)*(1+.25*u);
   c.fillStyle=`rgba(0,0,0,${(.22*u).toFixed(3)})`;c.beginPath();c.ellipse(lx,ly,r*(.5+.6*u),r*(.35+.4*u),0,0,7);c.fill();
-  c.save();c.translate(x,y);c.rotate(Math.atan2(ly-y,lx-x)-Math.PI/2);c.fillStyle=col;c.strokeStyle=f.col<0?'#3b5566':fp.rims[f.col%4];c.lineWidth=Math.max(1,h*.002);
+  c.save();c.translate(x,y);c.rotate(Math.atan2(ly-y,lx-x)-Math.PI/2);c.fillStyle=col;c.strokeStyle=f.col<0?'#3b5566':fp.rims[f.col%fp.rims.length];c.lineWidth=Math.max(1,h*.002);
   c.beginPath();c.moveTo(0,-r*1.8);c.quadraticCurveTo(r*1.05,-r*.2,0,r);c.quadraticCurveTo(-r*1.05,-r*.2,0,-r*1.8);c.fill();c.stroke();c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.arc(-r*.3,0,r*.25,0,7);c.fill();c.restore();}
  // the tools
  for(const To of F.tools){if(t<To.t0||t>To.t1)continue;const fade=mbS((t-To.t0)/.35)*mbS((To.t1-t)/.35);
   switch(To.kind){
-  case 'brush':{const p=mbAlong(To.pts,t+MB_FALL),[x,y]=mbPt(M,p[0]+MB_TIP[0],p[1]+MB_TIP[1]),col=pal.cols[(F.falls.find(f=>f.t1>=t&&!f.small)?.col??0)%4]||pal.cols[0];mbBrushAt(c,x,y,h,col,fade);break;}
-  case 'spray':{const p=mbAlong(To.pts,t),[x,y]=mbPt(M,p[0],p[1]),tap=Math.abs(Math.sin((t-To.t0)*Math.PI/.28))*h*.01;mbBrushAt(c,x,y-tap,h,pal.cols[2],fade);c.save();c.globalAlpha*=fade;c.strokeStyle='#1d1209';c.fillStyle='#a9783f';c.lineWidth=Math.max(1.3,h*.0026);c.translate(x+h*.01,y+h*.02);c.rotate(.12);c.fillRect(-h*.12,-h*.005,h*.24,h*.01);c.strokeRect(-h*.12,-h*.005,h*.24,h*.01);c.restore();break;}
+  case 'brush':{const p=mbAlong(To.pts,t+MB_FALL),[x,y]=mbPt(M,p[0]+MB_TIP[0],p[1]+MB_TIP[1]),col=pal.cols[Math.max(0,F.falls.find(f=>f.t1>=t&&!f.small)?.col??0)%pal.cols.length]||pal.cols[0];mbBrushAt(c,x,y,h,col,fade);break;}
+  case 'spray':{const p=mbAlong(To.pts,t),[x,y]=mbPt(M,p[0],p[1]),tap=Math.abs(Math.sin((t-To.t0)*Math.PI/.28))*h*.01;mbBrushAt(c,x,y-tap,h,pal.cols[Math.max(0,To.col??2)%pal.cols.length],fade);c.save();c.globalAlpha*=fade;c.strokeStyle='#1d1209';c.fillStyle='#a9783f';c.lineWidth=Math.max(1.3,h*.0026);c.translate(x+h*.01,y+h*.02);c.rotate(.12);c.fillRect(-h*.12,-h*.005,h*.24,h*.01);c.strokeRect(-h*.12,-h*.005,h*.24,h*.01);c.restore();break;}
   case 'comb':case 'comb2':{const o=To.op,k=mbC((t-o.t0)/o.dur);mbComb(c,M,o,k,h,fade);break;}
-  case 'stylus':{for(const st of To.strokes){if(t<st.t0-.25||t>st.t1+.25)continue;const a=mbS((t-st.t0+.25)/.25)*mbS((st.t1+.25-t)/.25);if(st.vortex){const ang=(t-st.t0)*6,[x,y]=mbPt(M,st.x+Math.cos(ang)*st.r,st.y+Math.sin(ang)*st.r);mbStylusAt(c,x,y,h,a);}else{const o=st.op,k=mbC((t-o.t0)/o.dur),tip=Math.max(0,Math.min(o.L,k*(o.L+2*o.soft)-o.soft)),[x,y]=mbPt(M,o.bx+o.mx*tip,o.by+o.my*tip);mbStylusAt(c,x,y,h,a);}}break;}
+  case 'stylus':{for(const st of To.strokes){if(t<st.t0-.25||t>st.t1+.25)continue;const a=mbS((t-st.t0+.25)/.25)*mbS((st.t1+.25-t)/.25);if(st.vortex){const ang=(t-st.t0)*6,[x,y]=mbPt(M,st.x+Math.cos(ang)*st.r,st.y+Math.sin(ang)*st.r);mbStylusAt(c,x,y,h,a);}else{const [x,y]=mbPt(M,...mbTipAt(st.op,t));mbStylusAt(c,x,y,h,a);}}break;}
+  // one stylus that follows its strokes one after another (an S across the bath, the spokes of a star)
+  case 'path':{let st=To.strokes[0];for(const q of To.strokes)if(t>=q.t0)st=q;const [x,y]=mbPt(M,...mbTipAt(st.op,t));mbStylusAt(c,x,y,h,fade);break;}
   case 'curl':{const p=mbAlong(To.pts,t),ang=(t-To.t0)*7,[x,y]=mbPt(M,p[0]+Math.cos(ang)*To.r,p[1]+Math.sin(ang)*To.r);mbStylusAt(c,x,y,h,fade);break;}
   case 'vortex':{for(const [cx,cy,sg] of To.pts){const ang=(t-To.t0)*3*sg,[x,y]=mbPt(M,cx+Math.cos(ang)*To.r,cy+Math.sin(ang)*To.r);mbStylusAt(c,x,y,h,fade);}break;}
-  case 'spiral':{const i=Math.min(To.rings.length-1,Math.max(0,Math.floor((t-To.t0)/To.step))),r=To.rings[i],ang=(t-To.t0)*2.5*(i%2?-1:1),[x,y]=mbPt(M,To.cx+Math.cos(ang)*r,To.cy+Math.sin(ang)*r);mbStylusAt(c,x,y,h,fade);break;}
+  case 'spiral':{const i=Math.min(To.rings.length-1,Math.max(0,Math.floor((t-To.t0)/To.step))),r=To.rings[i],ang=(t-To.t0)*2.5*(To.sg?To.sg[i]:i%2?-1:1),[x,y]=mbPt(M,To.cx+Math.cos(ang)*r,To.cy+Math.sin(ang)*r);mbStylusAt(c,x,y,h,fade);break;}
   case 'fan':mbFan(c,B,h,t,fade);break;}}
  // the sheet of paper that takes the print
  if(P){const pw=B.w*.9,ph=B.h*.9,x0=B.x+(B.w-pw)/2,y0=B.y+(B.h-ph)/2,cv=mbPrintSheet(c,'print',P.uid+'/'+P.t0+pal.key+size,pw,ph,B,M,P.polys,pal);
@@ -166,7 +183,7 @@ export function mbScene(c,w,h,G,s,preview=false){const F=G?.marbre||mbPreviewSta
 // ── A finished sheet, for the card, the home page and the ⓘ panel ──────────────────────────────────────────────────────────
 // The model is run without sound up to the end of the gesture of one sheet (g: workshop, j: sheet), and kept.
 const MB_PREV=new Map();
-export function mbSimulate(g=0,j=3,{steps=4,lap=0}={}){const key=g+'/'+j+'/'+steps+'/'+lap;if(MB_PREV.has(key))return MB_PREV.get(key);const s={mbSteps:5,mbGestures:'pintes',mbSize:'grans',mbFirst:MB_TALLERS[g].id,lock:true},game={};mbStart(game,s);const F=game.marbre;F.j=j;F.lap=lap;
+export function mbSimulate(g=0,j=3,{steps=4,lap=0,set=null}={}){const key=g+'/'+j+'/'+steps+'/'+lap+(set?JSON.stringify(set):'');if(MB_PREV.has(key))return MB_PREV.get(key);const s={mbSteps:5,mbGestures:'pintes',mbSize:'grans',...(set||{}),mbFirst:MB_TALLERS[g].id,lock:true},game={};mbStart(game,s);const F=game.marbre;F.j=j;F.lap=lap;
  for(let k=0;k<steps;k++){mbPress(game,s);let n=0;while(F.phase!=='rest'&&n++<3000)mbTick(game,s,1/30);}
- for(let n=0;n<30;n++)mbTick(game,s,1/30);F.wait=null;F.sim=true;F.cues.length=0;F.events.length=0;F.ev=0;F.falls=[];F.tools=[];MB_PREV.set(key,F);return F;}
-export const mbPreviewState=()=>mbSimulate(0,3);
+ for(let n=0;n<30;n++)mbTick(game,s,1/30);F.wait=null;F.sim=true;F.cues.length=0;F.events.length=0;F.ev=0;F.falls=[];F.tools=[];MB_PREV.set(key,F);if(MB_PREV.size>48)MB_PREV.delete(MB_PREV.keys().next().value);return F;}
+export const mbPreviewState=()=>mbSimulate(1,2);

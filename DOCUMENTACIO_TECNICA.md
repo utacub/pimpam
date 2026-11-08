@@ -1,5 +1,14 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.52.1 · Pluja de colors: colors i motius propis de cada full
+
+- **Colors per full.** Cada full de `MB_TALLERS` porta `pal` amb dues paletes (`mbPals`: aigua fosca, aigua clara i 3–5 tintes) i el taller ja no en té. `mbPalette(g,j,lap)` torna la del full; a partir de la tercera volta gira el to en OKLCH (`mbTurn`, `MB_TURNED`, 60°·(k mod 6) + 17°·⌊k/6⌋ amb k = ⌊volta/2⌋, retallant el croma perquè no surti de la gamma). Alt contrast: `MB_CONTRAST` té 8 colors per fons i `mbContrastSet(g,j,lap)` en tria 4 per full (com a màxim 1 en comú amb el full anterior si es pot, i 2 com a molt; el primer color mai no és del veí).
+- **Disposicions i gestos.** Cada full porta `lay` (com cauen les gotes: `mixed`, `scatter`, `grid` amb escaquer o hexagonal, `bands`, `diag`, `ones`, `frame`, `corona`, `bull`, `rings`, `spiral`), `rc` (quins colors fan la primera pluja), `rm` (com cau el segon color: `in`, `same`, `veins`) i el seu gest. Passades noves a `mbPass`: `diag`, `rock`, `zig`, `path` (traç lliure), `star` i `rosette`.
+- **Motor** (`dist/marbre-tinta.js`): `shear` admet un eix inclinat (`axis:'d'`, `mx`, `my`) i un perfil en ziga-zaga (`tri`); operació nova `band`, una línia de tinta que s’eixampla en franja d’amplada d i separa els dos semiplans ±d/2 (conserva l’àrea; `mbStripe` fa el polígon). Cada franja es posa 0,002 més enllà de la vora de l’anterior: posar-la exactament a la vora estripava les vores.
+- **Escena** (`dist/marbre-escena.js`): `mbColours(g,j,lap,s,decor)`; amb fons blanc, les tintes massa semblants (ΔE00 < 13) es mouen de lluminositat (`mbDE`, CIEDE2000). `mbComb` generalitzat a qualsevol direcció; eina nova `path`. `mbSimulate(g,j,{steps,lap,set})`. La fitxa és ara la «Cadena de cors».
+- **Noms.** `const n` de `mbPolys` xocava amb un altre mòdul del paquet: ara és `nc`.
+- Proves: `tests/marbre.test.mjs` (8). Les tirades amb gotes petites són lentes: la prova de sincronia només en fa dues.
+
 ## 0.52 · La nova Pluja de colors (CE03)
 
 - **Pluja de colors es refà (CE03, id `color-rain`)** com un taller de paper marbrejat: cada pulsació és un pas d’un full (pluja, segon color, pluja fina, gest, estampa; 3, 5 o 7 passos), vint fulls de cinc tallers, i cada gota toca l’aigua sobre una nota. Passa a «Formes, llum i música». Panell ⓘ amb els vint fulls.

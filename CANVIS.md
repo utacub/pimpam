@@ -1,3 +1,92 @@
+# Pim Pam 0.52.1 · Pluja de colors: cada full amb els seus colors i el seu motiu
+
+Base: 0.52 (commit aeac22e). Demanat per en Marc el 7 de novembre de 2026: «Està bé, però a pluja de colors hi hauria d'haver molta més diversitat de colors i de motius, que no hi hagi quatre dibuixos seguits amb els mateixos colors, cada dibuix ha de tenir colors diferents, no es poden repetir en cap cas. Sigues més creatiu en els colors, l'estructura per crear la pintura, i la diversitat de resultats.»
+
+## Colors
+
+- **Cada full té els seus colors.** A la 0.52, els quatre fulls d’un taller compartien paleta. Ara cada un dels vint fulls té dues paletes pròpies, una per a la primera volta i una altra per a la segona: 40 paletes de 3 a 5 tintes, amb la seva aigua fosca i la seva aigua clara.
+- **Cap tinta es repeteix.** Les 155 tintes de les 40 paletes són totes diferents.
+- **Com es mesura «diferent».** La distància entre dues paletes és la mitjana, en totes dues direccions, de la diferència de color ΔE00 de cada tinta amb la tinta més semblant de l’altra paleta (CIEDE2000; Sharma et al., 2005). Una prova automàtica comprova:
+  - dos fulls seguits, també en canviar de taller i de volta: almenys 18 (el mínim real és 18,9);
+  - el primer color, el que cobreix més aigua, de dos fulls seguits: almenys 25 (mínim real 27,0);
+  - dues paletes qualssevol de les 40: almenys 9 (mínim real 9,5);
+  - les tintes d’un mateix full entre elles: almenys 15 amb fons fosc, 12 amb fons blanc i 19 amb alt contrast.
+
+  Els llindars són decisions de disseny, no valors de la bibliografia. Com a referència, la mateixa fórmula dona 2,04 per al primer parell de proves de Sharma et al. (2005), dos colors que gairebé no es distingeixen, i 27,1 per al parell 17.
+- **Tercera volta i següents.** Per no tornar mai a la mateixa paleta, a partir de la tercera volta els colors giren el to en l’espai OKLCH (Ottosson, 2020): 60° per cada dues voltes, més 17° cada sis, amb el croma retallat perquè cap color no surti de la pantalla. Amb fulls seguits es manté una distància d’almenys 15 (mínim real 16,4), i el mateix full en dues voltes diferents es diferencia almenys 10 (mínim real 11,0).
+- **Fons blanc.** Les tintes es continuen enfosquint fins a un contrast mínim de 3:1 amb l’aigua (com a la 0.52), i ara, si dues tintes queden massa semblants, una canvia de lluminositat fins que es distingeixen.
+- **Alt contrast.** Hi ha 8 colors per a cada fons, i cada full en fa servir 4. El full següent en comparteix 1 com a màxim sempre que es pot, i 2 com a molt; el primer color no és mai un dels del full anterior. Tots tenen un contrast d’almenys 4,5:1 amb l’aigua (W3C, 2023).
+
+## Motius: com es posa la tinta i com es pentina
+
+Cada full té ara la seva manera de posar la tinta i el seu gest. No hi ha dues receptes iguals.
+
+| Taller | Full | Com cau la tinta | Gest |
+|---|---|---|---|
+| Barcelona | Turc | pedres grans i moltes de petites; el segon color fa vetes entre les pedres | punxó en diagonal |
+| | Espanyol | pedres de dos colors | un buf que fa ones fines en diagonal |
+| | Pentinat | franges verticals (línies de tinta que s’eixamplen) | punxó amunt i avall i pinta fina |
+| | Cua de paó | escaquer de dos colors | punxó, pinta fina i pinta d’ones |
+| Istanbul | Pedres amb vora | pedres de tres colors amb vora fosca | un traç lliure en essa |
+| | Anada i tornada | files de gotes en diagonal | punxó amunt i avall |
+| | **Cadena de cors** (nou) | quatre dianes en filera | un sol traç pel mig: cada diana es torna un cor |
+| | Tulipa | un marc de pedres i gotes grans al mig | tulipa feta amb el punxó |
+| Kyoto | Anells | pocs centres d’anells | ventall |
+| | Ventall | tres centres de dos colors | dos bufs |
+| | Ondulació | centres en diagonal | una ona lenta |
+| | **Roda** (abans «Ombra doble») | un sol centre gran de tres colors | voltes del punxó, cada vegada en sentit contrari |
+| París | Rodet francès | files encavalcades de tres colors | pinta fina i caragols |
+| | Ram | files ondulades | punxó, pinta fina i pinta d’ones |
+| | **Estel** (abans «Plomes») | una diana enorme | dotze raigs del centre enfora i després endins |
+| | Rosa | una corona de gotes al voltant del centre | rosa feta amb el punxó |
+| Nuremberg | Holandès antic | files de colors alterns | punxó, pinta i una altra pinta de través |
+| | Ziga-zaga | franges de quatre colors | ziga-zaga de punta a punta |
+| | Espiral | gotes en espiral | voltes del punxó |
+| | Remolí | dues dianes | tres remolins |
+
+- **Noms nous.** «Cadena de cors», «Roda» i «Estel» són descripcions, no noms tradicionals. «Onades» (Istanbul) deixa lloc a la Cadena de cors.
+- **Eines noves del marbrejat:**
+  - **Franja.** Una línia de tinta que s’eixampla i aparta l’aigua cap als dos costats. Segueix el mateix principi que la gota de Lu et al. (2012): la tinta només es desplaça, i l’àrea es conserva. És una extensió nostra, no una fórmula de l’article. Les franges fan els fulls Pentinat i Ziga-zaga.
+  - **Ones inclinades i ziga-zaga.** El ventall pot bufar en qualsevol direcció, i l’ona pot ser arrodonida o en ziga-zaga.
+  - **Pinta en qualsevol direcció** i **traç lliure** del punxó (l’essa de Pedres amb vora i el traç de la Cadena de cors).
+- **El segon color** pot caure dins de les primeres gotes (anells), sobre els mateixos centres (dianes) o entre les pedres (vetes).
+
+## Les gotes i les notes
+
+- La sincronia de la 0.52 es manté: la primera gota de cada nota cau exactament sobre la nota, i les altres la segueixen en 45 ms o menys (ITU-R, 1998). Les franges també cauen sobre la seva nota.
+- La prova automàtica ara repassa els vint fulls amb pintes i amb flors, i també amb gotes mitjanes i petites.
+
+## A l’aplicació
+
+- **Fitxa.** La imatge de la fitxa és ara la Cadena de cors, que es reconeix millor en petit.
+- **Informació (ⓘ).** Els vint textos i les vint imatges són nous: què es veu, com es fa i, quan hi és, el taller i la música.
+- **Música.** No canvia: cada taller conserva la seva tonalitat, el seu compàs i els seus instruments. No s’ha afegit cap so.
+- **Fluïdesa.** Mesurat dins l’HTML, sense targeta gràfica, a 1280×720 i DPR 2: gest 31,5 ms de mitjana, espera 16,4 ms, estampa 35,1 ms; semblant a la 0.52.
+- **Fotosensibilitat.** No hi ha cap flaix nou; els canvis continuen sent lents. L’auditoria de flaixos la fas tu.
+
+## Proves
+
+- `tests/marbre.test.mjs` (8 proves): s’hi afegeix la prova de les paletes (cap tinta repetida, les distàncies, les voltes girades i els conjunts d’alt contrast). Les altres comproven ara també que cada full té disposició, colors i paletes propis, que hi ha vint receptes diferents, almenys deu disposicions i dotze gestos, i que la franja i l’ona inclinada conserven l’àrea.
+- **Resultat:** 412 de 415 proves superades. Les 3 que fallen són les mateixes de la 0.52: «masia», «instruments enregistrats» i «Detectius de sons».
+- **Prova al navegador** (1280×720, DPR 2, sense errors a la consola): la portada, la carpeta, la fitxa, el panell ⓘ, un full sencer amb l’estampa i l’estenedor, i el full següent.
+- **Revisades amb fulls de contacte** (els vint fulls): primera, segona i tercera volta, fons blanc, alt contrast, gotes petites i mitjanes, i 7 passos amb flors.
+
+## Referències
+
+International Telecommunication Union, Radiocommunication Sector. (1998). *Relative timing of sound and vision for broadcasting* (Recommendation ITU-R BT.1359-1). https://www.itu.int/rec/R-REC-BT.1359
+
+Lu, S., Jaffer, A., Jin, X., Zhao, H., & Mao, X. (2012). Mathematical marbling. *IEEE Computer Graphics and Applications, 32*(6), 26–35. https://doi.org/10.1109/MCG.2011.51
+
+Ottosson, B. (2020, 23 de desembre). *A perceptual color space for image processing* [Entrada de blog]. https://bottosson.github.io/posts/oklab/
+
+Sharma, G., Wu, W., & Dalal, E. N. (2005). The CIEDE2000 color-difference formula: Implementation notes, supplementary test data, and mathematical observations. *Color Research & Application, 30*(1), 21–30. https://doi.org/10.1002/col.20070
+
+W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2* (Recomanació del W3C, 5 d’octubre de 2023). https://www.w3.org/TR/WCAG22/
+
+OKLCH no és un estàndard revisat per experts: és una font tècnica, i aquí només serveix per girar els tons. La comprovació de les diferències es fa amb CIEDE2000. Els colors, els motius i els llindars són decisions de disseny.
+
+---
+
 # Pim Pam 0.52 · La nova Pluja de colors
 
 Base: 0.51 (commit 546e7ac). Demanat per en Marc el 7 de novembre de 2026. A les 21:33 va demanar el pla de la següent activitat de «Per revisar»: «Analitza-la i proposa com la refaries, partint del mateix concepte». A les 21:58 el va aprovar: «D'acord, ja pots començar a programar la pluja de colors, una part molt bonica de l'activitat original era la sincronia entre les gotes i les notes, mira de mantenir-ho». Pla: «Pla: la nova Pluja de colors» (https://claude.ai/artifact/DtFkbsTE4gUZ2P1DCAcsMo), amb les cinc recomanacions acceptades.

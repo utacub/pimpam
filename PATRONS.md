@@ -47,12 +47,14 @@ A la segona volta, el jardí surt a l’inrevés i les flors que en tenen mostre
 
 Des de la 0.52, Pluja de colors no té vint composicions: té vint fulls de paper marbrejat en cinc tallers (`dist/marbre-tallers.js`). Cada pulsació és un pas del full, i l’últim pas és l’estampa.
 
-| Taller | Música | Fulls (gest) |
-|---|---|---|
-| Barcelona (enquadernació) | la major, 3/4 · guitarra, clarinet, contrabaix, violins pizzicato, arpa, pandereta | Turc (punxó suau), Espanyol (ona), Pentinat (punxó i pinta fina), Cua de paó (punxó, pinta i pinta d’ones) |
-| Istanbul (ebru) | re *hijaz*, 9/8 · arpa, udu, oboè, tambor | Pedres amb vora (dos remolins), Anada i tornada (punxó amunt i avall), Onades (ones alternes), Tulipa (flor feta amb el punxó) |
-| Kyoto (suminagashi) | mi *in*, 4/4 · arpa, marimba, claves | Anells (ventall), Ventall (dos bufs), Ondulació (una ona lenta), Ombra doble (remolí ample, dos colors) |
-| París (claraboia) | fa major, 3/4 · piano, violoncels i violins pizzicato, glockenspiel, triangle | Rodet francès (pinta fina i caragols), Ram (punxó, pinta fina i pinta d’ones), Plomes (dos punxons creuats), Rosa (flor feta amb el punxó) |
-| Nuremberg (impressor) | sol major, 2/4 · marimba, fagot, flauta, glockenspiel, claves | Holandès antic (gotes en quadrícula, punxó i pinta), Ziga-zaga (dues pintes en ziga-zaga), Espiral (remolí i voltes del punxó), Remolí (tres remolins) |
+Des de la 0.52.1, cada full té la seva manera de posar la tinta (disposició) i el seu gest, i dues paletes pròpies (primera i segona volta). Cap tinta es repeteix entre els 40 conjunts, i dos fulls seguits es diferencien almenys 18 unitats ΔE00 (Sharma et al., 2005). A partir de la tercera volta, les paletes giren el to en l’espai OKLCH.
 
-A la segona volta, cada taller fa servir la seva segona paleta i els gestos van en mirall. Els patrons europeus i el suminagashi segueixen la bibliografia (vegeu `CANVIS.md`, 0.52); els colors, les eines i la música són decisions de disseny.
+| Taller | Música | Fulls (disposició · gest) |
+|---|---|---|
+| Barcelona (enquadernació) | la major, 3/4 · guitarra, clarinet, contrabaix, violins pizzicato, arpa, pandereta | Turc (pedres grans i petites, vetes · punxó en diagonal), Espanyol (pedres de dos colors · vaivé en diagonal), Pentinat (franges verticals · punxó i pinta fina), Cua de paó (escaquer · punxó, pinta i pinta d’ones) |
+| Istanbul (ebru) | re *hijaz*, 9/8 · arpa, udu, oboè, tambor | Pedres amb vora (tres colors, vora fosca · traç en essa), Anada i tornada (files en diagonal · punxó amunt i avall), Cadena de cors (quatre dianes · un sol traç), Tulipa (marc de pedres · flor feta amb el punxó) |
+| Kyoto (suminagashi) | mi *in*, 4/4 · arpa, marimba, claves | Anells (pocs centres · ventall), Ventall (tres centres · dos bufs), Ondulació (centres en diagonal · una ona lenta), Roda (un sol centre · voltes alternes del punxó) |
+| París (claraboia) | fa major, 3/4 · piano, violoncels i violins pizzicato, glockenspiel, triangle | Rodet francès (files encavalcades · pinta fina i caragols), Ram (files ondulades · punxó, pinta fina i pinta d’ones), Estel (una diana enorme · dotze raigs enfora i endins), Rosa (corona de gotes · flor feta amb el punxó) |
+| Nuremberg (impressor) | sol major, 2/4 · marimba, fagot, flauta, glockenspiel, claves | Holandès antic (quadrícula · punxó, pinta i pinta de través), Ziga-zaga (franges de quatre colors · ziga-zaga), Espiral (gotes en espiral · voltes del punxó), Remolí (dues dianes · tres remolins) |
+
+A la segona volta, cada full fa servir la seva segona paleta i els gestos van en mirall. Els patrons europeus i el suminagashi segueixen la bibliografia (vegeu `CANVIS.md`, 0.52 i 0.52.1); els colors, les eines i la música són decisions de disseny.
