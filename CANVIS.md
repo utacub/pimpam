@@ -207,6 +207,25 @@ Base: 0.54 (commit 406dea7, en local). Primera de les quatre fases del pla aprov
 
 ---
 
+# Pim Pam 0.55 · La nova Pluja de colors
+
+Base: 0.52.4 (commit e705207), l’última versió publicada. La 0.53 i la 0.54 són el Taller de vehicles en 3D, que encara no s’ha publicat i es farà sobre aquesta. Demanat per en Marc el 8 de novembre de 2026, a partir del seu concept art: una pantalla negra on cauen gotes de colors, primer al centre, i el color s’escampa i es barreja fins que omple la pantalla; «cada gota és una nota i cap nota no sona sense gota»; «la nota ha de sonar quan cada gota toca el terra»; al final el color es dilueix fins al negre i comença una melodia nova, amb uns altres colors i un altre ritme de gotes. Prova d’estil aprovada («Publica-ho», 13:13). «De moment no busquis alternatives a WebGL» (13:16). «Aquesta activitat no ha de tenir l’opció d’eliminar o atenuar fons, sempre serà igual» (13:23).
+
+- **Activitat nova: Pluja de colors (CE45)**, a «Formes, llum i música», després de Flor de paper. Gotes de pintura (CE03) continua sent l’última de la carpeta i no canvia.
+- **Cada pulsació, una frase de gotes.** Primer cau la nota greu de l’acord, com una gota gran, i després la melodia, com a gotes més petites (una nota aguda fa una gota petita). Cada gota sona en el moment exacte en què toca el terra, i no sona cap nota sense la seva gota. La primera frase de cada escena cau al centre; les altres, on la pintura toca el negre, i al final dins dels forats negres que queden. Després de l’última pulsació, el color acaba d’omplir la pantalla, es dilueix fins al negre i comença l’escena següent.
+- **Deu escenes**, cadascuna amb els seus colors (set tintes, una per a cada nota de l’escala, i una tinta pàl·lida per a les cèl·lules), la seva melodia original, el seu instrument real puntejat o percudit i el seu ritme de gotes: Primera llum (els colors del concept art, arpa), Mar endins (marimba), Jardí de nit (kalimba), Foc lent (guitarra), Pluja d’estiu (glockenspiel), Aurora (piano), Caramel (marimba), Tempesta suau (violins en pizzicato), Fruites (arpa) i Pols d’estrelles (glockenspiel). Les notes greus són de violoncel en pizzicato, arpa, marimba o piano.
+- **El terra** és un líquid espès simulat en temps real a la targeta gràfica (WebGL 2), el mateix motor de la prova d’estil: anells, franges, cèl·lules, relleu, ones i la corona de cada esquitx.
+- **Ajustos** (pestanya «Aquesta activitat»): gotes de cada pulsació (una, una frase curta o una frase llarga amb el seu eco), pulsacions per omplir la pantalla (6, 10 o 16), vista (en perspectiva o des de dalt), moviment del líquid (quiet, lent o viu) i primera escena. **Sense opcions de fons:** es veu sempre igual, amb el terra negre.
+- **Moviment reduït:** les gotes no cauen per l’aire (apareixen on toquen el terra), sense esquitxos ni corrent.
+- **Cap escena comença igual.** Cada escena, i cada vegada que s’entra a l’activitat, té el seu propi gir per triar on cauen les gotes i el seu propi punt de partida del corrent lent, de manera que els remolins i les formes no es repeteixen d’una escena a l’altra.
+- **Sense panell ⓘ.** D’una escena a l’altra només canvien els colors, l’instrument i el ritme, i en Marc va veure que no calien fitxes per a cada una (14:54). La fitxa de la portada té la seva imatge, i el nom de cada escena surt a l’ajust «Primera escena».
+- **Sense WebGL 2** la pantalla queda negra i l’ajuda ho explica (les notes sí que sonen).
+- **Correcció del motor:** l’anivellament que tanca les escletxes negres feia fronts rectes; ara les tanca seguint la seva forma.
+- **Proves.** 419 de 422 superades; les 3 que fallen ja fallaven a la 0.52.4 (mida dels fitxers de so de la masia, dels instruments gravats i de Detectius de sons). Comprovat en un navegador sense targeta gràfica (Chromium amb SwiftShader): l’escena plena, la dilució fins al negre i l’escena següent amb els seus colors. Aquest navegador és massa lent per jugar-hi en temps real, i per això cal provar-la en un ordinador amb targeta gràfica.
+- **Publicació.** Publicada a GitHub Pages el 8 de novembre de 2026 a les 15:18 (commit 499e447).
+
+---
+
 # Pim Pam 0.54 · El taller de vehicles: xassís amagat, passeig vist des de fora, sis peces de cada família i safata de quatre
 
 Base: 0.53 (commit 18c1b01). Demanat per en Marc el 8 de novembre de 2026: «Està bé, però els xassís haurien de quedar més ben encaixats als vestits, que no es vegi tant l’estructura de sota, i quan fa el passeig millor que no sigui una perspectiva POV, millor des de l’exterior i a més distància, perquè es vegi l’habitació. També hi hauria d’haver més diversitat de carrosseries, rodes i accessoris, 6 de cada. I que l’encercament es faci entre quatre elements, en comptes de tres. Quan tinguis tot això ja pots fer les fases 1 a 4.»

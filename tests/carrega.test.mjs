@@ -59,7 +59,7 @@ test('every engine and every activity: the cover in the app, the ring in the sty
  // the cover goes up in start, before the activity's first frame, for every activity
  assert.match(app,/<\/main><\/div>`;loadBegin\(item\);updateGameUI\(\);/);assert.match(app,/class="load-cover\$\{heavy\?' load-now':''\}" role="progressbar" aria-label="S’està preparant l’activitat"/);
  // 0.40.1 (Marc, Iris Xe laptop): slow activities show the ring at once and are drawn only after it has been seen and the screen has gone full
- assert.match(app,/const LOAD_HEAVY=\['masia','pinta','viatge','encaix','vehicles',\.\.\.LOAD_DIVES\],LOAD_RING_FIRST=300,LOAD_SETTLE=150,LOAD_FULL_WAIT=1200;/);
+ assert.match(app,/const LOAD_HEAVY=\['masia','pinta','viatge','encaix','vehicles','pluja-colors',\.\.\.LOAD_DIVES\],LOAD_RING_FIRST=300,LOAD_SETTLE=150,LOAD_FULL_WAIT=1200;/);
  assert.match(app,/if\(L\.frames<=2\|\|now<L\.hold\|\|!loadSettled\(L,now\)\)\{L\.smooth=0;return false;\}/);
  assert.match(app,/const L=loading;if\(L\)L\.fs=true;/);assert.match(app,/document\.addEventListener\('fullscreenchange',loadMark\);/);
  // under the cover no time passes, the switches and the choices do nothing, no sound, no taste of the board, no cue
