@@ -1,3 +1,17 @@
+# Pim Pam 0.60.1 · El taller de vehicles: el vehicle torna a veure’s després de la desfilada
+
+Base: 0.60 (commit 7e0d539, publicada). Correcció que en Marc va trobar a la versió publicada el 8 de novembre de 2026 a les 21:03 (hora de Catalunya): «Al 2on escenari els vehicles i totes les peces són invisibles».
+
+## Què canvia
+
+- **El vehicle del banc es torna a veure al racó següent.** Després de la desfilada de final de racó (rondes 4, 8, 12…), en tornar al banc el xassís no hi era i les peces que s’hi posaven (carrosseria, rodes, accessori) no es veien, ni al banc ni al passeig. La safata sí que es veia. Ara el vehicle hi és des de la primera ronda del racó nou, i també després de la segona desfilada (de la sala al pati).
+- **Per què passava.** En acabar la desfilada s’amaguen els vehicles del comboi, i el primer del comboi és el mateix vehicle del banc: quedava amagat per sempre. Ara s’amaguen tots menys aquest.
+
+## Proves
+
+- Una comprovació nova a tests/vehicles.test.mjs vigila que en desar el comboi mai no s’amagui el vehicle del banc.
+- Imatges en una sola pàgina, amb el mateix estat 3D: desfilada de l’habitació → banc de la sala (xassís) → carrosseria que s’hi posa → passeig de la sala → desfilada de la sala → banc del pati. Abans de la correcció, el banc de la sala sortia buit.
+
 # Pim Pam 0.60 · El taller de vehicles: la desfilada de final de racó
 
 Base: 0.59 (commit c533919). **Publicada** el 8 de novembre de 2026 a les 20:11 (hora de Catalunya) a https://utacub.github.io/pimpam/ , fusionada amb la 0.55 (Pluja de colors nova) en el commit 16a6b3d; el fitxer autònom passa a dir-se Pim_Pam_45_activitats_v0_60.html. Tanca el pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»): després de les quatre fases (els racons), el final de racó. El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.

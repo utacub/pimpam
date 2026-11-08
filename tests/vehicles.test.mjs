@@ -300,4 +300,6 @@ test('the finale of a corner (0.60): the fourth vehicle ends with the parade of 
  draw(3,TL.parkEnd+4,{});draw(7,TL.parkEnd+4,{vhMade:made});draw(2,plain.end-.1,{vhMade:made});
  // the engine: the last pick of a round 3 lasts the parade too, the others as before
  const s=S(),st=stateAt(3,['familiar','tacs'],s),res=chooseScan(st,s,0);assert.ok(res.accepted&&res.action==='effect');assert.equal(res.duration,vhTimes(s,3).final);assert.equal(res.duration,TL.end);
- assert.equal(chooseScan(stateAt(2,['familiar','tacs'],s),s,0).duration,vhTimes(s,2).final);assert.equal(chooseScan(stateAt(3,['familiar'],s),s,0).duration,VH_SNAP);});
+ assert.equal(chooseScan(stateAt(2,['familiar','tacs'],s),s,0).duration,vhTimes(s,2).final);assert.equal(chooseScan(stateAt(3,['familiar'],s),s,0).duration,VH_SNAP);
+ // 0.60.1: the vehicle on the bench leads the convoy, so putting the convoy away after the parade must never hide it (the toy of the next corner was invisible)
+ const src3d=read('../dist/vehicles-3d.js');assert.match(src3d,/parade\.groups\)if\(g!==toy\)g\.visible=false/);assert.doesNotMatch(src3d,/parade\.groups\)g\.visible=false/);});

@@ -432,7 +432,7 @@ function vhMeasure(view){if(view.quality&&view.quality!=='auto')return;const now
  if(VH_3D.frames>=90){if(VH_3D.slow>VH_3D.frames*.4&&VH_3D.tier!=='baixa'){VH_3D.tier=VH_3D.tier==='alta'?'mitjana':'baixa';}VH_3D.frames=VH_3D.slow=VH_3D.fast=0;}}
 export const vhTierNow=()=>VH_3D.tier;
 // The toy on the chassis: which body, wheels and accessory are on, the pending piece on its flight, the paint of the colour pick.
-function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pending,toy=VH_3D.parts.toy,t=view.t||0;toy.visible=true;if(VH_3D.parts.parade&&view.phase!=='parade')for(const g of VH_3D.parts.parade.groups)g.visible=false;
+function vhPose(view){const T=vhP3(),tmp=vhTmps(),P=view.picks||{},pend=view.pending,toy=VH_3D.parts.toy,t=view.t||0;toy.visible=true;if(VH_3D.parts.parade&&view.phase!=='parade')for(const g of VH_3D.parts.parade.groups)if(g!==toy)g.visible=false;
  for(const k in VH_3D.parts.bodies)VH_3D.parts.bodies[k].visible=false;for(const k in vhBodyCache)vhBodyCache[k].visible=false;for(const k in VH_3D.parts.wheels)VH_3D.parts.wheels[k].visible=false;for(const k in VH_3D.parts.tops)VH_3D.parts.tops[k].visible=false;
  const flyer=VH_3D.parts.flyer;while(flyer.children.length)flyer.remove(flyer.children[0]);
  const color=P.color||(P.body?VH_BODY_COLOR[P.body]:'blau');let body=null;if(P.body){body=vhBodyCached(P.body,color);body.visible=true;body.position.set(0,VH_BODY_Y,0);body.rotation.set(0,0,0);body.scale.setScalar(1);}

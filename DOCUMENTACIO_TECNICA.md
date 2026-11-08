@@ -1,5 +1,11 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.60.1 · El taller de vehicles: el vehicle del banc després de la desfilada
+
+- **Error.** `vhParadeGroups` fa servir `VH_3D.parts.toy` com a primer grup del comboi (el vehicle que s’acaba de fer). A `vhPose`, quan la fase no és `parade`, el bucle que amaga els grups del comboi també amagava aquest grup just després de `toy.visible=true`, i des de la primera desfilada (ronda 3) el vehicle del banc no es tornava a veure (el racó següent: banc buit, peces invisibles, passeig sense vehicle).
+- **Correcció (`dist/vehicles-3d.js`).** El bucle salta el vehicle del banc: `for(const g of VH_3D.parts.parade.groups)if(g!==toy)g.visible=false;`. La reconstrucció del comboi ja l’excloïa en alliberar geometries.
+- **Prova.** `tests/vehicles.test.mjs` (prova 11) comprova la forma del bucle al codi. Les eines de fotogrames pinten cada especificació en la mateixa pàgina i amb el mateix estat 3D: una seqüència desfilada → banc de la ronda següent reprodueix l’error i en comprova la correcció.
+
 ## 0.60 · El taller de vehicles: la desfilada de final de racó
 
 - **Motor (`dist/vehicles.js`).** `vhFinale(round,s)` és cert a l’última ronda de cada racó (`li===VH_ROUNDS-1`: rondes 3, 7, 11…). `vhTimes(s,round)` hi afegeix `parade` (`VH_PARADE={curt:9,mitja:12,llarg:15}`, segons «Durada del passeig») i `vhTimeline(s,go,round)` retorna a més `parkEnd`, `parade`, `finale` i `end=parkEnd+parade`; `vhPhase` dona la fase `parade` (u 0..1) després de `park`. Sense ronda (o en una ronda que no és final) tot queda com abans. `VH_PARADE_PATH` és la ruta de la desfilada, la mateixa a totes les habitacions: comença dins del garatge on ha aparcat el vehicle (−680, −192, 420), surt per la porta, fa un revolt cap endavant (esquivant el test de la sala) i travessa el davant de l’habitació fins a sortir per la dreta (x 1000); `VH_PARADE_GAP=150` és la distància entre vehicles. `scan-catalog.js` passa la ronda a `vhTimes` perquè la durada de l’efecte de l’última tria inclogui la desfilada.
