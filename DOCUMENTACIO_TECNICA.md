@@ -1,5 +1,10 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.61 · Fora la Pluja musical (CE07)
+
+- **Codi.** Fora `dist/musical-rain.js` (dibuix, 20 composicions i instruments `rain-…`). `app.js` crea el so amb `createPimPamSynth` d'`ocean.js`, que ja era el sintetitzador que `createPimPamRainSynth` embolcallava; fora `MR_SUSTAINED` de `resumeScore` i les veus `rain-…` de `FALLBACK_VOICE`. `cause-catalog.js` perd les branques de partitura i de canvi de durada de `'rain'`; `cause-art.js`, el seu pintor. `HOME_GROUPS` «Per revisar»: `['bubbles','dress']`.
+- **Proves.** `GONE_061=['rain']`; el catàleg passa a 31 de causa-efecte (més les 2 pel·lícules) i 11 d'encercament. El codi CE07 no es reaprofita.
+
 ## 0.60.3 · El taller de vehicles sense panell ⓘ
 
 - **Contingut.** Fora la clau `vehicles` de `production/info/escenes.json` (110 entrades), la seva capçalera a `HEAD` de `production/info/make_info.py` i les 110 imatges `production/info/img/vehicles_NN.jpg`. `CARD_IMG.vehicles` (la fitxa de la portada, `production/info/cards/vehicles.jpg`) es queda. `dist/info-escenes.js` regenerat: les altres entrades, capçaleres i fitxes són idèntiques.
