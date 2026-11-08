@@ -1,12 +1,23 @@
 # Pim Pam 0.52.4 · Sense marc blau als botons tocats
 
-Base: 0.52.2 (commit 1ebe3ec). Demanat per en Marc el 8 de novembre de 2026: «A les activitats que tenen un punt d'informació, si el toques durant l'activitat, tendeix a quedar marcat amb un marc blau, que no marxa fins que fas clic en un altre botó».
+Base: 0.52.3 (Gotes de pintura), que alhora parteix de la 0.52.2 (commit 1ebe3ec). Inclou la 0.52.3. Demanat per en Marc el 8 de novembre de 2026: «A les activitats que tenen un punt d'informació, si el toques durant l'activitat, tendeix a quedar marcat amb un marc blau, que no marxa fins que fas clic en un altre botó».
 
 - **Causa (verificada al navegador).** En tancar la finestra ⓘ, el focus tornava al botó ⓘ. Quan després es premia el commutador (una tecla), Chrome passava a mostrar el focus de teclat (`:focus-visible`) i dibuixava el marc blau al voltant del botó. Reproduït amb Chromium: abans, després de tocar ⓘ, tancar i prémer Espai, el botó quedava amb `:focus-visible`; ara no.
 - **Correcció.** Un botó tocat amb el dit o el ratolí deixa anar el focus després del clic (també la pausa, el so i els altres botons de l'activitat i de la portada). En tancar les finestres d'informació, d'ajustos i d'usuaris, el focus només torna al botó d'origen si s'està navegant amb el teclat (Tab). Si una tecla del commutador es prem mentre un botó té el focus sense navegació de teclat, el botó el deixa anar.
 - **Accessibilitat de teclat.** Qui navega amb Tab continua veient el marc blau i, en tancar una finestra, el focus torna al botó que l'havia obert (comprovat).
 - **Proves.** 412 de 415 superades; les 3 que fallen ja fallaven a la 0.52.2 (mida dels fitxers de so de la masia, dels instruments gravats i de Detectius de sons) i no tenen relació amb aquest canvi.
-- **Pendent.** La 0.52.3 (Gotes de pintura, local en un altre fil) s'haurà d'ajuntar amb aquesta abans de publicar.
+- **Publicació.** Es publica a GitHub Pages juntament amb la 0.52.3, que encara no s'havia publicat (Marc: «Podem publicar-ho tot junt»).
+
+
+---
+
+# Pim Pam 0.52.3 · Gotes de pintura
+
+Base: 0.52.2. Demanat per en Marc el 8 de novembre de 2026: «M'agradaria que la activitat que has creat li canviis el nom i li posis Gotes de Pintura, i que generis un pla per aconseguir una cosa més semblant al concept art que t'he passat, que es digui Pluja de colors.»
+
+- **Nom nou.** L’activitat del paper marbrejat es diu ara **Gotes de pintura**. Ho diu la fitxa, el panell ⓘ i la capçalera de l’activitat.
+- **La resta no canvia.** El codi (CE03), l’identificador intern, els ajustos, els registres, la música i la posició (l’última de «Formes, llum i música») són els mateixos.
+- **Pluja de colors.** El nom queda reservat per a l’activitat nova del concept art, que de moment és un pla: https://claude.ai/artifact/9MKi78VMWcXAXeREWt66LM
 
 ---
 

@@ -1,4 +1,4 @@
-// La nova Pluja de colors (CE03), 0.52.1 · the five workshops of marbled paper and their twenty sheets.
+// Gotes de pintura (CE03; «La nova Pluja de colors» until 0.52.2, renamed in 0.52.3) · the five workshops of marbled paper and their twenty sheets.
 // Each workshop has its tradition, its scenery, its music (key, scale, metre, tempo, instruments: all recordings of real
 // instruments, nothing held) and four sheets. A sheet says how the first rain is laid out on the water (lay: stones, rows,
 // stripes, targets, a spiral, a frame…), which of its colours fall in it (rc), what the stylus or the comb draws, and its own

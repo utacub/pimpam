@@ -1,4 +1,4 @@
-// La nova Pluja de colors (CE03), 0.52.1 · the scene: the workshop around the bath, the water and its ink, the drops in the air, the
+// Gotes de pintura (CE03; «La nova Pluja de colors» until 0.52.2, renamed in 0.52.3) · the scene: the workshop around the bath, the water and its ink, the drops in the air, the
 // brush, the comb and the stylus, the sheet of paper that takes the print, the clothesline, and the wait for the next press.
 // Materials: the ink has a slightly darker rim (the pigment gathers at its edge), which is also the dark contour of every colour;
 // the water has a slow wet sheen (a window reflected, moving without any sudden change of light); the print is matte, on paper

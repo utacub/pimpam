@@ -94,7 +94,7 @@ function home(){loading=null;logEnd();psStop();vdStop();cancelScanSpeech();ptAir
 const itemKind=g=>(causeDefinition(g.id)||g).kind;
 // 0.42: the menu shows folders of activities by kind instead of all 43 cards at once. HOME_GROUPS sets the folders and their order;
 // an id that is not in the catalogue is skipped, and a catalogue id that is in no folder goes to «Altres» so it can never get lost.
-// «Per revisar» keeps the first activities made with ChatGPT, apart, for Marc to review. 0.47.1: «Formes, llum i música» goes first (Marc). 0.52.2: Pluja de colors goes to the end of that folder (Marc).
+// «Per revisar» keeps the first activities made with ChatGPT, apart, for Marc to review. 0.47.1: «Formes, llum i música» goes first (Marc). 0.52.2: Pluja de colors goes to the end of that folder (Marc); 0.52.3: it is renamed Gotes de pintura.
 const HOME_GROUPS=[
  {id:'espectacles',name:'Formes, llum i música',desc:'Cada pulsació porta una composició nova amb la seva música: flors de paper, patrons, vitralls, focs, dibuixos que ballen i paper marbrejat.',accent:'#713bd0',ids:['flower','kaleido','vitrall','natura','piro','drawings','toys','kitchen','color-rain']},
  {id:'viatges',name:'Viatges i immersions',desc:'Vint escenes per pulsació: el mar, la selva, la sabana, el temps i els gegants del blau.',accent:'#0b6f8a',ids:['jelly','jungle','savanna','well','giants']},

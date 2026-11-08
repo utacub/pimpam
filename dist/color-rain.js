@@ -1,4 +1,4 @@
-// La nova Pluja de colors (CE03), 0.52.1 · the model: the steps of a sheet of marbled paper, the print, the clothesline, the change
+// Gotes de pintura (CE03; «La nova Pluja de colors» until 0.52.2, renamed in 0.52.3) · the model: the steps of a sheet of marbled paper, the print, the clothesline, the change
 // of workshop, the wait for the next press; and (further down) the music and the sounds, which drive the ink: every drop touches
 // the water exactly on its note.
 // Marc, 7 November 2026: plan «La nova Pluja de colors» approved («ja pots començar a programar la pluja de colors, una part molt
@@ -17,7 +17,7 @@ import {MB_TALLERS,mbNote,mbPalette} from './marbre-tallers.js';
 import {mbInk,mbQueue,mbAdvance,mbView} from './marbre-tinta.js';
 
 // The catalogue's card: the activity keeps its id, its name and its code (CE03) and goes to «Formes, llum i música».
-export const PC_CAUSE=Object.freeze({id:'color-rain',code:'CE03',type:'ce',level:'01 · Descobrir',name:'Pluja de colors',desc:'Plou color sobre una cubeta d’aigua i es fa paper marbrejat: vint fulls de cinc tallers, amb música d’instruments reals.',tag:'20 fulls marbrejats · 5 tallers',time:'Al teu ritme',marbre:true,recorded:true});
+export const PC_CAUSE=Object.freeze({id:'color-rain',code:'CE03',type:'ce',level:'01 · Descobrir',name:'Gotes de pintura',desc:'Plou color sobre una cubeta d’aigua i es fa paper marbrejat: vint fulls de cinc tallers, amb música d’instruments reals.',tag:'20 fulls marbrejats · 5 tallers',time:'Al teu ritme',marbre:true,recorded:true});
 // the bath is 16:9 in ink units (1 high); the press shows at once (the first drop starts to fall) and lands MB_LEAD later, on its note
 export const MB_A=16/9,MB_FALL=.32,MB_LEAD=.38,MB_LOUD=2.6,MB_AIR=6;
 export const MB_SIZE=Object.freeze({grans:{per:1,spray:3,rings:2},mitjanes:{per:2,spray:4,rings:3},petites:{per:4,spray:6,rings:4}});

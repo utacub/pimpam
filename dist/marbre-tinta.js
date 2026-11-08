@@ -1,4 +1,4 @@
-// La nova Pluja de colors (CE03), 0.52.1 · the ink on the water: mathematical marbling.
+// Gotes de pintura (CE03; «La nova Pluja de colors» until 0.52.2, renamed in 0.52.3) · the ink on the water: mathematical marbling.
 // Every drop and every stroke is an exact function that moves every point of the ink (Lu, Jaffer, Jin, Zhao & Mao, 2012;
 // Jaffer, «Dropping paint», «The mathematics of marbling»): the ink is never created or lost, only moved, which is what makes
 // marbled paper look the way it does. The ink is a list of polygons (one for each drop) in bath units: the bath is 1 high and
