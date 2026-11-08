@@ -1,3 +1,66 @@
+# Pim Pam 0.53 · El taller de vehicles en tres dimensions (fase 0)
+
+Base: 0.52.4 (commit e705207). Demanat per en Marc el 8 de novembre de 2026: «M'agradaria que fos una activitat elaborada amb three.js, la primera activitat de Pim Pam en 3D. Que es construeixin vehicles joguina, que en acabar circulen una mica per un circuit […] una mica com si es construïssin joguines de vehicles de Toy Story i després les veiem circular per la casa (sense que les joguines tinguin ulls ni res semblant)». Pla aprovat a les 10:18 («D'acord, ja pots començar a construir l'activitat»): https://claude.ai/artifact/Vp8456GkEm26qbjLEgGKXh. Estil: les quatre imatges de concepte d’en Marc del mateix dia («Joguina de vinil tou»).
+
+Aquesta versió és la **fase 0** del pla: el motor en tres dimensions dins del fitxer únic, el taller i l’habitació, i el primer racó complet. S’atura aquí perquè en Marc revisi l’art abans de les fases 1 a 4 (els altres quatre racons de la casa, més peces, el final de racó i el poliment).
+
+## Què fa l’activitat
+
+- **El taller.** Un banc de fusta clara amb la vora verda, un tauler d’eines (la clau anglesa es gronxa al ganxo), un prestatge amb capses, un llum de taula i, al fons, la paret amb la finestra i el fris de turons. A sota, la safata: una barra verda amb dues, tres o quatre caselles de color crema («Opcions de contingut»).
+- **Les peces (racó de l’habitació).** Quatre carrosseries (cotxe familiar blau, autobús groc, furgoneta de repartiment corall, cotxe de curses verd), tres jocs de rodes (de tacs, primes de curses, de fusta) i tres accessoris (baca amb maleta, remolc de blocs, bandereta). Amb quatre passos, el quart és el color (blau, corall, groc, verd: un pot de pintura que pinta la carrosseria).
+- **Muntar.** A cada pas la safata mostra les peces d’una família; la triada vola de la casella al xassís gris i fa «clac» (fusta: claves i vora de tambor). Cada ronda ofereix tres de les quatre carrosseries, i l’ordre canvia amb la ronda; cada carrosseria surt en tres rondes de cada quatre.
+- **Esperar i arrencar.** Amb l’última peça, el vehicle queda complet i espera que es premi el commutador: un anell gruixut (el de l’encercament, sencer) respira al voltant del vehicle, un piano fa un acompanyament suau i, si ningú no prem, arrenca sol al cap de vuit segons. Amb «Engegar: sol», arrenca de seguida i no hi ha anell.
+- **La volta.** Dues claves engeguen el motor; el vehicle baixa la rampa del banc al terra i fa una volta per l’habitació (catifa, llit, pilota, blocs) fins al garatge, que és un prestatge-caixa a terra. La càmera «Dinàmica» fa tres plans (la rampa, el seguiment arran de terra, l’arribada); la «Tranquil·la» ho mira tot des de l’habitació. Durada: 8, 14 o 20 segons.
+- **Cada peça es nota.** Les rodes de tacs fan botar el vehicle i piquen un tambor greu; les primes l’inclinen a les corbes i xiulen en baixar la rampa; les de fusta fan toc-toc amb les claves i es belluguen. La maleta s’obre a mig camí i en salten tres pilotes que es queden a terra; els blocs del remolc salten i fan una torre al garatge; amb la bandereta, el garatge té una pancarta d’arribada i sona una campana.
+- **Les llums.** L’habitació es veu de matí, tarda, capvespre i nit, una per ronda; de nit s’encén el llum de taula i la lluna surt a la finestra. A fora se senten merles al matí, el prat a la tarda i grills al vespre i a la nit (bucles de natura de la suite).
+- **Panell ⓘ.** Catorze entrades: les deu peces, amb el que fa cadascuna, i les quatre hores del dia. La fitxa de la portada és una imatge (el cotxe familiar acabat al banc), com la dels viatges: three.js no pot construir l’escena mentre s’obre el menú.
+
+## Direcció artística
+
+- **Vinil tou.** Formes grans i arrodonides, materials mats amb una lleugera brillantor de vernís, ombres suaus i llum d’estudi. Paleta tancada de les imatges de concepte: blau 2A5BE0, corall F06A43, groc FFC81E, verd 2AA497, marina 1C2A55, crema F7EAD8, gris del xassís B8BCC9, paret A7B2F3, menta 93DFC6.
+- **Cap cara.** El vidre és una sola franja fosca contínua (al cotxe fa tota la volta; a la furgoneta és un parabrisa ample; a l’autobús, una tira de finestres; al bòlid, una visera baixa) i al davant només hi ha una barra groga de para-xocs: mai dos fars rodons ni dues finestres que es llegeixin com uns ulls. Tot és geometria generada al moment: cap model ni textura externs.
+
+## Encercament i ajustos
+
+- Les regles de sempre: cap paraula escrita durant l’encercament (els noms de les peces són només per al lector de pantalla), ordre d’esquerra a dreta, el ressaltat clar de la suite, pista de commutador després d’una volta sense prémer, indicador d’espera.
+- Ajustos nous, a la pestanya «Aquesta activitat»: tries per vehicle (2, 3 o 4), qui tria (l’alumne o «sorpresa»: l’activitat tria una peça a l’atzar), com arrenca (amb una pulsació, o sol), durada del recorregut (curt, mitjà, llarg), càmera (dinàmica o tranquil·la), qualitat del dibuix (automàtica, alta, mitjana, baixa) i garatge (sense garatge, el vehicle surt de la imatge i torna al taller de seguida).
+- «Presentació del decorat»: amb el decorat atenuat, l’habitació i el taller es fonen cap al color de fons; sense decorat, desapareixen i queden el banc, la rampa, el garatge i el vehicle sobre el fons negre o blanc, amb l’ombra. Amb «Menys moviment», la clau no es gronxa, el vehicle no bota, la bandera no oneja i les peces de la safata no pugen i baixen.
+- Fotosensibilitat: cap element parpelleja; l’únic ritme visual és la respiració de l’anell de l’espera (0,7 Hz), molt per sota del límit de tres canvis per segon (W3C, 2023, criteri 2.3.1).
+
+## Música i sons (cap enregistrament nou)
+
+- Una peça en fa major a 112 pulsacions per minut, tocada pels instruments reals de Detectius de sons (contrabaix pizzicato, piano i clarinet, de la col·lecció VSCO-2 CE). Cada peça posada afegeix un compàs amb una veu més; la volta sencera porta tota la banda; l’arribada al garatge té la seva cadència, el «clac» i la campana.
+- Sons de fusta i de joguina dels bancs que ja hi havia: claves i vora de tambor, tambor greu, caixa, la tapa que s’obre i els «boings» de les pilotes, els cops dels blocs, la tela que s’infla de la bandera i la campana.
+
+## Tècnica
+
+- **three.js dins del fitxer únic.** La part de three.js (versió 0.187.0) que fa servir l’activitat va empaquetada amb esbuild (0.25.10) com un sol script que defineix `PP3`, en un `<script>` a part abans del mòdul de l’app, perquè three.js no es pot concatenar amb la resta (el constructor del fitxer únic treu els `import` i `export`). El fitxer construït fa 63,6 MB (0,9 MB més que la 0.52.4: three.js i les imatges del panell).
+- **Dibuix.** L’escena es dibuixa amb WebGL en un canvas fora de pantalla i es copia al canvas de l’app, sota el ressaltat de l’encercament. La safata és una escena pròpia amb càmera ortogràfica en píxels, de manera que les peces queden exactament sota les zones de l’encercament. La construcció es fa en vuit passos sota la cortina de càrrega, i els shaders es compilen abans que es vegi res.
+- **Qualitat.** Tres nivells (alta, mitjana, baixa: mida del dibuix 1, 0,75 i 0,55; ombres 2048, 1024 i cap). «Automàtica» comença alta i baixa si els fotogrames van lents. Sense WebGL es dibuixa una versió plana del banc i de les peces.
+- Mòduls nous: `vehicles.js` (model), `vehicles-so.js` (so), `vehicles-3d.js` (escena three.js), `vehicles-art.js` (zones, còpia al canvas, versió plana); `vendor/three-taller.js` i `tools/vendor-three.mjs` (per regenerar-lo). Eines: `tools/vehicles-frames.mjs` (fotogrames), `tools/vehicles-info.mjs` (imatges del panell), `tools/vehicles-app.mjs` (el fitxer construït a Chromium). El dibuix antic d’EN07 (el cotxe pla de la primera versió) s’ha tret del codi.
+
+## Proves
+
+- **Automàtiques.** 10 proves noves (`tests/vehicles.test.mjs`): catàleg i carpeta, model i rondes, opcions de la safata, flux dins el motor d’encercament, temps i cronologia, sons dins l’efecte i als bancs, geometria, dibuix pla amb i sense decorat, ajustos, panell ⓘ. Suite sencera: 422 de 425 superades; les 3 que fallen ja fallaven a la 0.52.4 (fitxers de so de la masia, dels instruments gravats i de Detectius de sons a disc) i no tenen relació amb aquest canvi.
+- **Al navegador (Chromium sense GPU, SwiftShader).** Des del fitxer construït: la portada, la carpeta «Encercament: triar i crear» amb la fitxa nova, el panell ⓘ, la cortina de càrrega i l’activitat sencera amb el commutador (tecla Espai): tres peces triades, l’espera amb l’anell, la pulsació que arrenca el vehicle, la rampa, la volta, el garatge i la ronda següent (tarda). Cap error de pàgina. Sense GPU, SwiftShader dibuixa un fotograma cada 0,75 s de mitjana (1280 × 720, qualitat alta), i l’app avança el rellotge com a molt 100 ms per fotograma: allà l’activitat va a una desena part de la velocitat real; amb GPU no passa.
+- **No provat:** tauletes i ordinadors reals (rendiment dels tres nivells de qualitat, tacte), Safari i Firefox. Les captures de `imatges/` són a DPR 2 (interfície des del fitxer construït; moments de l’activitat des de l’eina de fotogrames, perquè SwiftShader dibuixa cada fotograma en segons).
+
+## Per revisar (en Marc)
+
+1. L’art de la fase 0: les peces, el taller, l’habitació, les quatre llums i les càmeres. Qualsevol canvi d’estil és millor ara, abans dels quatre racons següents.
+2. Si la base agrada, les fases 1 a 4 del pla (sala, pati, passadís i bany; més rodes i accessoris; final de racó cada quatre vehicles; poliment i rendiment).
+3. Quines tauletes fa servir l’escola, per ajustar els nivells de qualitat.
+4. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula.
+
+## Referències
+
+- Cannella, H. I., O’Reilly, M. F., & Lancioni, G. E. (2005). Choice and preference assessment research with people with severe to profound developmental disabilities: A review of the literature. *Research in Developmental Disabilities, 26*(1), 1–15. https://doi.org/10.1016/j.ridd.2004.01.006 (DOI no verificat des d’aquest entorn.)
+- three.js authors. (2026). *three.js* (versió r187) [Programari]. https://threejs.org
+- Wallace, E. (2025). *esbuild* (versió 0.25.10) [Programari]. https://esbuild.github.io
+- W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2* (W3C Recommendation, 5 d’octubre de 2023). https://www.w3.org/TR/WCAG22/
+
+---
+
 # Pim Pam 0.52.4 · Sense marc blau als botons tocats
 
 Base: 0.52.3 (Gotes de pintura), que alhora parteix de la 0.52.2 (commit 1ebe3ec). Inclou la 0.52.3. Demanat per en Marc el 8 de novembre de 2026: «A les activitats que tenen un punt d'informació, si el toques durant l'activitat, tendeix a quedar marcat amb un marc blau, que no marxa fins que fas clic en un altre botó».

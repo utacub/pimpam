@@ -1849,5 +1849,119 @@
     "Cada gota i cada gest mouen la tinta, però no se’n fa ni se’n perd gens."
    ]
   }
+ ],
+ "vehicles": [
+  {
+   "t": "Cotxe familiar",
+   "l": [
+    "Carrosseria blava i arrodonida, amb una sola franja de vidre que fa tota la volta.",
+    "És el vehicle de cada dia, tranquil per tota l’habitació.",
+    "Al davant només hi ha una barra groga de para-xocs: cap fanal que sembli una cara."
+   ]
+  },
+  {
+   "t": "Autobús",
+   "l": [
+    "Alt i groc, amb una tira de finestres seguides i el sostre pla.",
+    "Com que és més alt, s’hi nota més el balanceig a les corbes.",
+    "Al sostre hi cap qualsevol accessori."
+   ]
+  },
+  {
+   "t": "Furgoneta de repartiment",
+   "l": [
+    "Carrosseria corall amb la caixa de càrrega alta al darrere i un parabrisa ample.",
+    "Pensada per portar coses: el remolc li escau.",
+    "Quan baixa la rampa, la caixa alta es veu de lluny."
+   ]
+  },
+  {
+   "t": "Cotxe de curses",
+   "l": [
+    "Baix, llarg i verd, amb una visera fosca en lloc de finestres.",
+    "És l’esportiu del taller: amb les rodes primes s’inclina a les corbes.",
+    "Amb la bandereta, l’arribada al garatge és una meta de debò."
+   ]
+  },
+  {
+   "t": "Rodes de tacs",
+   "l": [
+    "Rodes amples de goma amb tacs, com les d’un tot terreny de joguina.",
+    "Pel camí, el vehicle bota una mica a cada bony i fa un tam-tam suau.",
+    "Són les que passen per tot arreu: la catifa, el terra de fusta i la rampa."
+   ]
+  },
+  {
+   "t": "Rodes primes de curses",
+   "l": [
+    "Rodes estretes amb la llanda gran, com les d’un cotxe de carreres.",
+    "A les corbes el vehicle s’inclina i, en baixar la rampa, xiula.",
+    "Gairebé no boten: el viatge és llis."
+   ]
+  },
+  {
+   "t": "Rodes de fusta",
+   "l": [
+    "Rodes de fusta tornejada amb el cub pintat, com les d’un tren de joguina.",
+    "Fan toc-toc a cada volta, amb les claves.",
+    "Boten una mica i es belluguen com les d’una joguina antiga."
+   ]
+  },
+  {
+   "t": "Baca amb maleta",
+   "l": [
+    "Una baca amb una maleta de viatge a sobre.",
+    "A mig camí la tapa s’obre i en salten tres pilotes que roden pel terra de l’habitació.",
+    "Les pilotes es queden on cauen fins a la volta següent."
+   ]
+  },
+  {
+   "t": "Remolc de blocs",
+   "l": [
+    "Un remolc amb dues rodes que porta tres blocs de fusta de colors.",
+    "El remolc segueix el vehicle per tot el circuit.",
+    "En arribar al garatge, els blocs salten i fan una torre."
+   ]
+  },
+  {
+   "t": "Bandereta",
+   "l": [
+    "Una bandereta al pal, que oneja amb el vent del viatge.",
+    "Quan el vehicle s’acosta al garatge, hi ha una pancarta d’arribada esperant-lo.",
+    "Sona una campana en creuar-la."
+   ]
+  },
+  {
+   "t": "Matí",
+   "l": [
+    "Entra llum clara per la finestra i el taller es veu sencer: el banc, el tauler d’eines i el prestatge.",
+    "Se senten merles a fora.",
+    "El vehicle baixa la rampa i travessa l’habitació fins al garatge."
+   ]
+  },
+  {
+   "t": "Tarda",
+   "l": [
+    "Una llum més daurada i ombres més llargues.",
+    "Se sent el prat a través de la finestra.",
+    "El circuit passa per la catifa, voreja el llit i torna cap al garatge."
+   ]
+  },
+  {
+   "t": "Capvespre",
+   "l": [
+    "El cel de la finestra s’enrogeix i l’habitació queda en penombra càlida.",
+    "Els grills comencen a cantar.",
+    "La pancarta d’arribada i el garatge es veuen contra el vespre."
+   ]
+  },
+  {
+   "t": "Nit",
+   "l": [
+    "El llum de taula s’encén i il·lumina el banc; la lluna es veu per la finestra.",
+    "L’habitació fosca només té el llum càlid del taller.",
+    "Els grills de la nit acompanyen la volta."
+   ]
+  }
  ]
 }

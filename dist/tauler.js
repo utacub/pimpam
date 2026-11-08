@@ -4,7 +4,7 @@
 // each zone follows the focus, the veil over what is not in focus, the contour of the focus with the time left drawn along it, and the
 // opening of the chosen zone to the whole screen.
 import {cpuSheet} from './carrega.js';
-export const TL_BOARDS=Object.freeze(['destinations','sounds','sources','lights','pot','pinta','masia','encaix']);
+export const TL_BOARDS=Object.freeze(['destinations','sounds','sources','lights','pot','pinta','masia','encaix','vehicles']);
 export const tlBoard=id=>TL_BOARDS.includes(id)||typeof id==='string'&&id.startsWith('pp-');
 // Height (CSS px) kept free at the bottom of the stage for the strip of commands.
 export const TL_STRIP=66;
