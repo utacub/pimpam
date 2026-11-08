@@ -22,8 +22,10 @@ const TOP_ON={baca:'familiar+tacs',remolc:'furgoneta+fusta',bandera:'curses+prim
 const WHEEL_ON_SALA={...WHEEL_ON,tacs:'totterreny',tapacubs:'policia'},TOP_ON_SALA={...TOP_ON,escala:'bombers+bessones',sirena:'policia+tapacubs'};
 // the yard (0.57): its pieces on its own works vehicles
 const WHEEL_ON_PATI={...WHEEL_ON,corrons:'piconadora',grans:'tractor',massisses:'carreto',gegants:'buldozer',tacs:'bolquet',erugues:'excavadora'},TOP_ON_PATI={...TOP_ON,pala:'excavadora+erugues',caixa:'bolquet+grans',tambor:'piconadora+corrons',cons:'carreto+massisses',remolc:'tractor+gegants',sirena:'buldozer+tacs'};
+// the hallway (0.58): its pieces on its own train bodies (each body and wheel set is offered in the round the tool finds for the shot)
+const WHEEL_ON_PASSADIS={...WHEEL_ON,pestanya:'mercaderies',bieles:'locomotora',vagoneta:'vago',faldons:'tramvia',fusta:'cua',radis:'maniobres'},TOP_ON_PASSADIS={...TOP_ON,xemeneia:'locomotora+bieles',xiulet:'tramvia+faldons',fanal:'vago+vagoneta',troncs:'mercaderies+vagoneta',campana:'cua+fusta',bandera:'maniobres+radis'};
 // each corner is shown as the first corner («Primer racó», flag sala), so its rounds are 0 to 3
-for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={habitacio:WHEEL_ON,sala:WHEEL_ON_SALA,pati:WHEEL_ON_PATI}[corner],T={habitacio:TOP_ON,sala:TOP_ON_SALA,pati:TOP_ON_PATI}[corner];
+for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={habitacio:WHEEL_ON,sala:WHEEL_ON_SALA,pati:WHEEL_ON_PATI,passadis:WHEEL_ON_PASSADIS}[corner],T={habitacio:TOP_ON,sala:TOP_ON_SALA,pati:TOP_ON_PATI,passadis:TOP_ON_PASSADIS}[corner];
  for(const id of VH_BODIES[corner])SHOTS.push({kind:'result',picks:'-',id,t:2.35,flag});
  for(const id of VH_WHEELS[corner])SHOTS.push({kind:'result',picks:W[id],id,t:2.35,flag});
  for(const id of VH_TOPS[corner])SHOTS.push({kind:'result',picks:T[id],id,t:2.35,flag:flag?`steps4,${flag}`:'steps4'});
@@ -37,6 +39,11 @@ for(const corner of VH_CORNERS){const flag=corner==='habitacio'?'':corner,W={hab
    {kind:'final',round:1,picks:'excavadora+erugues',id:'pala',t:START+RIDE*.58,flag:`go=${GO},tranquila,pati`},
    {kind:'final',round:2,picks:'bolquet+grans',id:'caixa',t:PARK+1.5,flag:`go=${GO},tranquila,pati`},
    {kind:'final',round:3,picks:'piconadora+corrons',id:'tambor',t:PARK+1.4,flag:`go=${GO},pati`});
+ else if(corner==='passadis')// the hallway (the tops a round offers: 0 fanal/troncs/campana/bandera, 1 troncs…xemeneia, 2 campana…xiulet, 3 bandera/xemeneia/xiulet/fanal): morning on the bridge, afternoon with the smoke, dusk whistling, night in the garage with the lantern lit
+  SHOTS.push({kind:'final',round:0,picks:'tramvia+faldons',id:'campana',t:START+RIDE*.6,flag:`go=${GO},tranquila,passadis`},
+   {kind:'final',round:1,picks:'maniobres+radis',id:'xemeneia',t:START+RIDE*.35,flag:`go=${GO},passadis`},
+   {kind:'final',round:2,picks:'cua+pestanya',id:'xiulet',t:START+RIDE*.53,flag:`go=${GO},tranquila,passadis`},
+   {kind:'final',round:3,picks:'locomotora+bieles',id:'fanal',t:PARK+1.4,flag:`go=${GO},passadis`});
  else// the sala: morning crossing the books with the bell, afternoon under the table with the ladder, dusk watering the pot, night with the crane at the garage
   SHOTS.push({kind:'final',round:0,picks:'ambulancia+balons',id:'campana',t:START+RIDE*.3,flag:`go=${GO},sala`},
    {kind:'final',round:1,picks:'totterreny+tapacubs',id:'escala',t:START+RIDE*.6,flag:`go=${GO},tranquila,sala`},

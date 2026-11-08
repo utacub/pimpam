@@ -2378,6 +2378,182 @@
     "La nit se sent a fora.",
     "Al garatge, la caixa bolca la sorra i el tambor deixa anar el formigó amb el llum del taller."
    ]
+  },
+  {
+   "t": "Locomotora de vapor",
+   "l": [
+    "Verda, amb la cabina quadrada al darrere i la caldera rodona al davant, amb dues cintes fosques i la porta del fumeral.",
+    "És la màquina del tren: hi va bé la xemeneia, que treu fum tot el camí, i les rodes amb bieles.",
+    "El vidre de la cabina és una sola franja fosca; al davant, només la barra groga de para-xocs."
+   ]
+  },
+  {
+   "t": "Vagó de passatgers",
+   "l": [
+    "Corall, llarg i baix, amb una franja de finestres i un sostre amb llanterna al damunt.",
+    "Va bé amb les rodes de tren amb pestanya i el fanal.",
+    "Els muntants de les finestres són del color del vagó."
+   ]
+  },
+  {
+   "t": "Tramvia",
+   "l": [
+    "Groc, amb els dos extrems arrodonits, una franja crema i la perxa del tròlei al sostre.",
+    "Amb els faldons de tramvia, les rodes queden amagades i el viatge és llis.",
+    "Una sola franja de vidre al voltant; al davant, la barra groga de para-xocs."
+   ]
+  },
+  {
+   "t": "Vagó de mercaderies",
+   "l": [
+    "Blau, amb la cabina petita al darrere i una caixa oberta amb costelles al davant.",
+    "És el vagó de càrrega: hi va bé la càrrega de troncs, que roden al garatge.",
+    "Les rodes de vagoneta el fan tentinejar una mica."
+   ]
+  },
+  {
+   "t": "Màquina de maniobres",
+   "l": [
+    "Taronja, amb la cabina alta i el capó llarg amb una franja crema, el tub d’escapament i la reixa.",
+    "És la màquina petita que mou els vagons: amb les rodes de radis fa tic-tic.",
+    "Una sola franja de vidre; al davant, només la barra groga."
+   ]
+  },
+  {
+   "t": "Furgó de cua",
+   "l": [
+    "Lila, amb dues plataformes amb baranes als extrems i una cúpula de guaita al sostre.",
+    "És l’últim vagó del tren: hi va bé la campana o la bandereta.",
+    "Amb les rodes de fusta fa toc-toc com una joguina antiga."
+   ]
+  },
+  {
+   "t": "Rodes de tren amb pestanya",
+   "l": [
+    "Rodes grises de tren amb el cub marina i una pestanya per dins, que s’agafa a la via.",
+    "Fan clac-clac regular, com els rails de debò, amb les claves per parelles.",
+    "Gairebé no boten ni s’inclinen: el tren va recte."
+   ]
+  },
+  {
+   "t": "Rodes amb bieles",
+   "l": [
+    "Rodes corall amb el cub crema, unides per una biela grisa a cada costat.",
+    "Les bieles pugen i baixen amb cada volta i se sent un retruny ràpid.",
+    "El vehicle bota una mica i s’inclina a les corbes."
+   ]
+  },
+  {
+   "t": "Rodes de vagoneta",
+   "l": [
+    "Rodes petites marina amb el cub gris, com les d’una vagoneta de mina.",
+    "Rasquen el terra a cada volta i fan tentinejar el vehicle.",
+    "Són les més baixes de totes."
+   ]
+  },
+  {
+   "t": "Rodes amb faldons de tramvia",
+   "l": [
+    "Rodes marina amagades darrere uns faldons del mateix color que arriben gairebé a terra.",
+    "El viatge és llis i silenciós: només un sonall suau a cada volta.",
+    "Ni boten ni s’inclinen: el tramvia llisca."
+   ]
+  },
+  {
+   "t": "Rodes de fusta",
+   "l": [
+    "Les mateixes rodes de fusta tornejada de l’habitació, que fan toc-toc amb les claves.",
+    "Al furgó de cua i al vagó de passatgers hi queden com a casa.",
+    "Boten una mica i es belluguen com les d’una joguina antiga."
+   ]
+  },
+  {
+   "t": "Rodes de radis",
+   "l": [
+    "Les rodes primes de sis radis de l’habitació, que fan tic-tic amb les claves.",
+    "A la màquina de maniobres hi van bé: s’inclinen una mica a les corbes.",
+    "Són ràpides i lleugeres."
+   ]
+  },
+  {
+   "t": "Xemeneia de vapor",
+   "l": [
+    "Una xemeneia marina amb la boca ampla, al davant del sostre.",
+    "Tot el camí en surten bafarades blanques que pugen i es desfan (quietes, si es demana menys moviment).",
+    "Se sent un buf a cada bafarada; al garatge s’apaga."
+   ]
+  },
+  {
+   "t": "Xiulet de vapor",
+   "l": [
+    "Un xiulet de llautó petit, dret sobre el sostre.",
+    "A la meitat del camí bufa dues vegades: en surt un raig de vapor i sona la flauta, dues notes alhora.",
+    "Després calla fins a la ronda següent."
+   ]
+  },
+  {
+   "t": "Fanal de tren",
+   "l": [
+    "Un fanal marina amb el vidre groguenc, al davant del sostre.",
+    "Cap al final del camí s’encén a poc a poc i al garatge queda encès.",
+    "Fa un clic en encendre’s; mai no parpelleja."
+   ]
+  },
+  {
+   "t": "Càrrega de troncs",
+   "l": [
+    "Tres troncs de fusta ajaguts en un bressol amb puntals marina.",
+    "Al garatge els troncs roden un rere l’altre cap al darrere i cauen a la placa.",
+    "Se senten tres cops de fusta i un soroll de troncs que xoquen."
+   ]
+  },
+  {
+   "t": "Campana",
+   "l": [
+    "La mateixa campana groga de la sala, amb el batall blau.",
+    "Al passadís repica quan el tren passa pel pont de fusta.",
+    "Sona quatre vegades, de més fort a més fluix."
+   ]
+  },
+  {
+   "t": "Bandereta",
+   "l": [
+    "La mateixa bandereta de l’habitació, que oneja amb el vent del viatge.",
+    "Al furgó de cua i a la màquina de maniobres és la bandera del cap de tren.",
+    "Al garatge hi ha una pancarta d’arribada i sona una campana en creuar-la."
+   ]
+  },
+  {
+   "t": "El passadís, matí",
+   "l": [
+    "Llum clara sobre la paret blavosa amb l’arrambador de fusta pintada, el parquet d’espiga, la porta blanca, el penjador amb l’abric i el banc de les sabates.",
+    "Se sent l’alba a fora.",
+    "El tren baixa la rampa, agafa la via de fusta sobre l’estora, puja el pont amb baranes i arriba al garatge."
+   ]
+  },
+  {
+   "t": "El passadís, tarda",
+   "l": [
+    "Llum blanca de tarda; se sent el vent per la finestra.",
+    "La via de fusta travessa l’estora corall amb les ratlles crema.",
+    "La cançó de tren: contrabaix caminant, violí pinçat, arpa i triangle a 126 pulsacions per minut."
+   ]
+  },
+  {
+   "t": "El passadís, capvespre",
+   "l": [
+    "Llum taronja i baixa, amb ombres llargues sobre el parquet.",
+    "Se senten les granotes a fora.",
+    "Si el tren porta xiulet, bufa a la meitat del camí; el fanal es va encenent cap al final."
+   ]
+  },
+  {
+   "t": "El passadís, nit",
+   "l": [
+    "El llum del taller s’encén; la lluna es veu per la finestra i el passadís queda fosc.",
+    "La nit se sent a fora.",
+    "Al garatge el fanal queda encès i els troncs roden fins a la placa."
+   ]
   }
  ]
 }

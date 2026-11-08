@@ -1,3 +1,47 @@
+# Pim Pam 0.58 · El taller de vehicles: el passadís del tren (fase 3)
+
+Base: 0.57 (commit 33239bb, en local). Tercera de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
+
+## Què canvia
+
+- **El passadís, quart racó de la casa.** El cicle és ara habitació → sala → pati → passadís → habitació… L’ajust «Primer racó» (pestanya «Aquesta activitat») admet el passadís. El passadís té una paret blavosa amb un arrambador de fusta pintada de crema (amb ranures i un llistó de fusta al damunt), parquet d’espiga en tres tons de mel, una finestra a l’esquerra (amb la lluna de nit), una porta blanca amb plafons i pom marina, un penjador amb un abric marina, una bufanda groga, una gorra corall i una bossa verda, dos quadres petits (un sol i una vela), un banc de fusta amb quatre sabates, un paraigüer gris amb dos paraigües i una estora corall amb dues ratlles crema que recorre tot el passadís.
+- **La via de fusta i el pont.** Sobre l’estora hi ha una via de joguina de fusta (dos rails i travesses) que segueix tot el circuit des del peu de la rampa fins a tocar del garatge; a mig camí la via puja un pont de fusta amb dues rampes i baranes crema i torna a baixar. Les travesses i els rails queden sempre plans sobre la via, també als pendents.
+- **Sis vehicles de tren.** Locomotora de vapor (verda, amb la cabina al darrere, la caldera rodona amb dues cintes i la porta del fumeral al davant), vagó de passatgers (corall, llarg, amb muntants a les finestres i llanterna al sostre), tramvia (groc, amb els extrems arrodonits, una franja crema i la perxa del tròlei), vagó de mercaderies (blau, amb la cabina al darrere i una caixa oberta amb costelles), màquina de maniobres (taronja, amb el capó llarg, el tub d’escapament i la reixa) i furgó de cua (lila, amb plataformes amb baranes als extrems i una cúpula de guaita). Com sempre: una sola franja de vidre, una sola barra groga de para-xocs, cap cara.
+- **Sis rodes.** Noves: de tren amb pestanya (grises amb el cub marina i una pestanya interior; clac-clac regular de claus per parelles, sense bots), amb bieles (corall amb el cub crema, unides per una biela a cada costat que puja i baixa amb la volta; retruny ràpid), de vagoneta (petites, marina, rasquen el terra i fan tentinejar el vehicle) i amb faldons de tramvia (amagades darrere uns faldons marina; viatge llis amb un sonall suau); compartides: de fusta i de radis.
+- **Sis accessoris.** Nous: la xemeneia de vapor (treu bafarades blanques tot el camí, quietes si es demana menys moviment, cap al garatge), el xiulet (a la meitat del camí bufa dues vegades amb un raig de vapor i dues notes de flauta alhora), el fanal de tren (s’encén a poc a poc cap al final del camí i queda encès al garatge; mai parpelleja) i la càrrega de troncs (al garatge, tres troncs roden un rere l’altre cap al darrere i cauen a la placa); compartits: campana i bandereta.
+- **La cançó de tren del passadís.** Música pròpia en Sol major a 126 pulsacions per minut, sense swing: la vora del tambor marca les corxeres com els rails, el contrabaix camina a negres, el violí pinçat respon als contratemps, l’arpa porta la tonada i el triangle petit repica al tres dels compassos complets; la cadència del garatge acaba amb el triangle gran. Els tastos de les peces del passadís van amb l’arpa, les claus, els tambors i el buf. Aire del passadís: alba al matí, vent a la tarda, granotes al capvespre i la nit.
+- **Parets més amples.** La paret, el sòcol i el terra de tots els racons fan ara 4400 unitats d’ample, desplaçats cap al costat del garatge (abans 2400): des de la càmera del garatge es veia el final de la paret.
+- **Panell ⓘ i catàleg.** 88 entrades: les divuit peces i les quatre hores de cada racó, amb una imatge cadascuna. `ACTIVITATS.md` actualitzat.
+
+## Regles que es mantenen
+
+- Cap paraula escrita durant l’encercament, ordre d’esquerra a dreta, ressaltat clar de la suite, pista del commutador després d’una volta en blanc, senyal d’espera; cap cara a les joguines (una sola franja de vidre, una sola barra groga de para-xocs; el fanal és un sol llum, no dos fars). Criteris de disseny propis, no evidència.
+- Fotosensibilitat: cap gag nou fa parpellejar res (el fum, el xiulet i els troncs són moviments lents; el fanal s’encén una sola vegada i es queda encès); tot per sota dels tres canvis per segon del criteri 2.3.1 (W3C, 2023), que és el llindar de referència per a la fotosensibilitat en contingut web (Harding i Jeavons, 1994, per a la base clínica del llindar).
+- Música i sons només dels bancs de la suite (cap enregistrament nou): contrabaix, violí, arpa, flauta i triangle dels instruments ja mostrejats; claus, tambors, rascar, sonall, bufs, cops de fusta i xocs dels bancs de foley existents; alba, vent, granotes i nit dels paisatges sonors existents.
+- El vehicle es veu sempre: al passadís no hi ha cap tub ni túnel.
+
+## Proves
+
+- `node --test tests/*.test.mjs`: 422 de 425 verdes (les 3 vermelles són les de sempre: enregistraments de la masia, dels instruments i dels detectius que no són al disc); `tests/vehicles.test.mjs` (10) i `tests/info.test.mjs` actualitzades i verdes.
+- Fotogrames del passadís amb three.js (SwiftShader, 1280×720 i 2560×1440): el banc amb les quatre safates (carrosseries, rodes amb les bieles, accessoris), la locomotora amb les bieles, el tren amb la xemeneia fumejant sobre la via, el tramvia creuant el pont, el vagó amb el fanal, els troncs al garatge (nit), la vista tranquil·la del passadís sencer, el capvespre amb decoració atenuada i sense decoració, i el dibuix pla sense WebGL.
+- Fitxer construït (`Pim_Pam_44_activitats_v0_58.html`, 65.139.629 bytes) obert a Chromium sense errors de consola: portada, carpeta, fitxa, panell ⓘ (88 entrades), càrrega, pestanya «Aquesta activitat» amb «Primer racó», pausa i safata del taller.
+- Les 88 imatges del panell ⓘ renderitzades de nou (`tools/vehicles-info.mjs`) i `production/info/make_info.py` executat.
+
+## Per revisar (en Marc)
+
+1. El passadís: els colors (paret blavosa, arrambador crema, parquet), la porta, el penjador, el banc de les sabates, l’estora i el pont; qualsevol moble es pot canviar.
+2. Els sis vehicles de tren i els quatre accessoris nous, sobretot el fum de la xemeneia i els troncs que roden al garatge.
+3. La via de fusta: si es prefereix una via més discreta (només travesses) o més marcada, és un canvi petit.
+4. La cançó de tren: si convé més o menys volum de la vora del tambor.
+5. La fase 4 (el bany, amb els vehicles d’aigua i aire) segueix tot seguit com a 0.59.
+6. Publicar a GitHub Pages: aquesta versió només està confirmada en local, pendent de la seva paraula; abans cal fer pull de main, on l’altre fil ha publicat la 0.55 (Pluja de colors nova).
+
+## Referències
+
+- Harding, G. F. A., i Jeavons, P. M. (1994). *Photosensitive epilepsy* (2a ed.). Mac Keith Press.
+- three.js authors. (2026). *three.js* (versió r187) [Programari]. https://threejs.org
+- W3C. (2023). *Web Content Accessibility Guidelines (WCAG) 2.2* (W3C Recommendation, 5 d’octubre de 2023). https://www.w3.org/TR/WCAG22/
+
 # Pim Pam 0.57 · El taller de vehicles: el pati dels vehicles d’obres (fase 2)
 
 Base: 0.56 (commit ca97478, en local). Segona de les quatre fases del pla aprovat per en Marc el 8 de novembre de 2026 («Quan tinguis tot això ja pots fer les fases 1 a 4»). El número 0.55 el fa servir la nova Pluja de colors, que es publica des d’un altre fil.
