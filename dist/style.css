@@ -256,3 +256,33 @@
 /* 0.50.6 · the UTAC logo lowered so that its letters are centred on the letters of «Pim Pam» (the swoosh and the button of the Pim Pam logo
    take its upper part); the sizes stay as they are (Marc, 7 November 2026) */
 .brands .utac-logo{transform:translateY(21%)}
+
+/* 0.62 · Informació (dist/sobre.js) */
+.sobre-dialog{width:min(900px,calc(100vw - 32px))}
+.sobre-head{padding-bottom:16px}
+.sobre-head .dialog-title{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.sobre-head h2{margin:0}
+.sobre-body{line-height:1.55}
+.sobre-body section{margin-top:6px}
+.sobre-body h3{font-size:19px;margin:24px 0 8px;color:var(--primary)}
+.sobre-body p{margin:0 0 10px;font-size:15.5px}
+.sobre-body a{color:var(--primary)}
+.sobre-brands{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.sobre-brands .utac-logo{height:44px;width:auto}
+.sobre-brands .pim-logo{height:58px;width:auto}
+.sobre-brands .brand-divider{width:1px;height:40px;background:var(--line)}
+.sobre-institucions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px 26px;margin-top:18px}
+.sobre-institucions figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.sobre-institucions a{display:flex;align-items:center;justify-content:center;height:80px;width:100%;border-radius:10px;background:#fff}
+.sobre-institucions img{max-height:100%;max-width:100%;object-fit:contain}
+.sobre-institucions figcaption{font-size:13.5px;color:var(--muted);line-height:1.4}
+.sobre-eines{list-style:none;margin:0;padding:0}
+.sobre-eines li{display:grid;grid-template-columns:13rem 1fr;gap:0 16px;padding:9px 0;border-bottom:1px solid var(--line)}
+.sobre-eines .use{grid-row:span 3;color:var(--muted);font-size:14px}
+.sobre-eines strong{font-size:15px}
+.sobre-eines li>span:not(.use){font-size:14px}
+.sobre-eines a{font-size:13.5px;overflow-wrap:anywhere}
+.sobre-versio{color:var(--muted);font-size:13.5px!important;margin-top:18px!important}
+.sobre-novetats{font:inherit;color:var(--primary);background:none;border:0;padding:0;min-height:0;text-decoration:underline;cursor:pointer}
+@media (max-width:650px){.nav button.sobre-button:nth-child(n){display:flex}}
+@media (max-width:620px){.sobre-eines li{grid-template-columns:1fr}.sobre-eines .use{grid-row:auto}}

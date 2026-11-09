@@ -34,4 +34,4 @@ Cal un servidor perquè l’app fa servir mòduls JavaScript. Per jugar sense se
 
 ## Crèdits
 
-Els crèdits i les llicències dels sons enregistrats són a [`dist/assets/samples/CREDITS.md`](dist/assets/samples/CREDITS.md).
+Els crèdits, l’origen i les institucions també es poden veure a l’app, amb el botó «Informació» de la portada. Els crèdits i les llicències dels sons enregistrats són a [`dist/assets/samples/CREDITS.md`](dist/assets/samples/CREDITS.md).

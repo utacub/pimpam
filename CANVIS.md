@@ -1,3 +1,24 @@
+# Pim Pam 0.62 · Botó «Informació» a la portada
+
+Base: 0.61.1 (commit 2fa5a2e, publicada). Petició d’en Marc el 9 de novembre de 2026 a les 20:29 (hora de Catalunya): afegir a la pàgina principal un botó d’informació que expliqui breument l’aplicació i tots els crèdits, inspirat en la informació de LECAA Docs, amb una part «Origen i institucions» amb tots els logotips.
+
+## Què canvia
+
+- **Botó «Informació»** a la capçalera de la portada, entre l’usuari i «Configuració» (al mòbil, només la icona ⓘ). Obre una finestra amb quatre apartats:
+  - **Què és Pim Pam:** per a qui és, els tres tipus d’activitat (amb el nombre de cada tipus, calculat del catàleg), les carpetes i les activitats personalitzades, com arriben els commutadors i què es pot ajustar, i que funciona al navegador sense demanar dades personals.
+  - **Origen i institucions:** el mateix text i els mateixos cinc logotips que LECAA Docs (UTAC, Universitat de Barcelona, Fundació Bosch i Gimpera, Departament d’Educació i Formació Professional, Departament de Drets Socials i Inclusió), amb l’enllaç al web de cada institució. Els logotips són els fitxers WebP del repositori utacub/lecaa_docs, sense canvis.
+  - **Eines i recursos:** Claude, ChatGPT, ElevenLabs, VSCO-2 CE (CC0), «Brook sound» de TwoWings (CC BY 3.0), el toc de castells dels Marrecs de Salt de JordiGran (CC BY-SA 4.0) i three.js (MIT), cadascun amb l’autor, la llicència i l’enllaç.
+  - **Crèdits i llicències:** què és generat i què és enregistrat, l’enllaç a `dist/assets/samples/CREDITS.md` (la llista so per so) i al codi, la versió i un enllaç a «Novetats d’aquesta versió».
+- **Encercament:** el botó no entra a la volta de l’encercament del menú, que continua sent les targetes i «Configuració», sense paraules. Mentre la finestra és oberta l’encercament s’atura, com amb qualsevol altra finestra. Es tanca amb la creu, amb Esc o tocant fora.
+- El fitxer únic porta els logotips a dins, i funciona sense connexió (els enllaços externs necessiten connexió).
+
+## Proves
+
+- tests/sobre.test.mjs (2 proves): els logotips hi són, el text porta l’origen, les institucions i els crèdits, el botó no té `data-settings` (no entra a l’encercament) i el build incrusta els logotips.
+- Suite: 437 proves, 434 passen; fallen les 3 de sempre (mides de fitxers de so de la masia, dels instruments i dels Detectius), que ja fallaven a la 0.61.1.
+- Chromium, servidor http i fitxer únic, 1440×900 i 390×844: la finestra s’obre, els 7 logotips carreguen, Esc i el fons la tanquen, «Novetats» obre la configuració amb la 0.62, cap error a la consola.
+- No s’ha passat l’auditoria de flaixos (no canvia cap activitat).
+
 # Pim Pam 0.61.1 · El taller de vehicles: accessoris redibuixats i ben assentats
 
 Base: 0.61 (commit 0be7169, publicada). Petició d’en Marc el 8 de novembre de 2026 a les 22:40 (hora de Catalunya): «Revisa com estan dibuixats els complements, n’hi ha diversos, com la campana, que no es veuen bé. Revisa també com s’acoplen als vehicles. Sovint queden massa ensorrats per dins del vehicle».
