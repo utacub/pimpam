@@ -1,3 +1,12 @@
+# Pim Pam 0.63.1 · Text de la finestra «Informació»
+
+Base: 0.63 (commit 2dd7533, publicada). Petició d’en Marc el 10 de novembre de 2026 a les 8:10 (hora de Catalunya).
+
+## Què canvia
+
+- «Està pensat per a infants i joves amb discapacitat que aprenen a fer servir un commutador» ara diu «Està pensat per aprendre a fer servir commutadors».
+- El paràgraf dels tipus d’activitat ja no diu quantes n’hi ha de causa-efecte i d’encercament («Hi ha activitats de causa-efecte…; activitats d’encercament…; i 2 petites pel·lícules…»).
+
 # Pim Pam 0.63 · Bombolles sense pes, en lloc de Bombolles de sabó
 
 Base: 0.62 (commit a467e2e) amb la pàgina de prova de les vuit matèries (commit 4050cfc), publicades. Petició d’en Marc el 10 de novembre de 2026 a les 7:30 (hora de Catalunya): «No entenc per què no ho has publicat tot directament a Pim Pam, substituint l’activitat Bombolles de sabó». L’estil de les vuit matèries es va aprovar el 9 de novembre (les bombolles, «la mel hauria de ser més translúcida», «Dacord, segueix amb els altres»).
