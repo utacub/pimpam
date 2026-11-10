@@ -34,7 +34,10 @@ float phiAt(ivec2 p){if(inBox(p))return texelFetch(uPhi,p,0).x;return wallAt(p)?
 void gradLap(ivec2 x,float phi,out vec2 gp,out float lap){gp=vec2(0.);lap=0.;for(int a=1;a<9;a++){float q=phiAt(x+E[a]);gp+=Wt[a]*vec2(E[a])*q;lap+=Wt[a]*(q-phi);}gp*=3.;lap*=6.;}
 `;
 // 2 · pressure and velocity: stream g, forces, collide. Out: g (three textures) and U = (ux, uy, p*, φ)
-const LBM_FS_G=LBM_HEAD+LBM_GRAD+`uniform sampler2D uG0,uG1,uG2,uU,uF,uTemp;uniform float uRhoL,uRhoH,uTauL,uTauH,uSig,uXi,uHasF,uHasT,uGrav;uniform vec2 uAcc,uBeta;
+const LBM_FS_G=LBM_HEAD+LBM_GRAD+`uniform sampler2D uG0,uG1,uG2,uU,uF,uTemp;uniform float uRhoL,uRhoH,uTauL,uTauH,uSig,uXi,uHasF,uHasT,uGrav;uniform vec2 uAcc,uBeta,uDarcy;uniform float uRough;
+// the gap between the plates is not quite even (glass is never flat): a frozen random field, smooth over some cells
+float hsh(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float rough(vec2 x){x/=7.;vec2 i=floor(x),f=fract(x);f=f*f*(3.-2.*f);return mix(mix(hsh(i),hsh(i+vec2(1.,0.)),f.x),mix(hsh(i+vec2(0.,1.)),hsh(i+1.),f.x),f.y)*2.-1.;}
 layout(location=0) out vec4 o0;layout(location=1) out vec4 o1;layout(location=2) out vec4 o2;layout(location=3) out vec4 o3;
 void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec2 ub=texelFetch(uU,x,0).xy;float g[9];
  for(int a=0;a<9;a++){ivec2 p=x-E[a];if(inBox(p))g[a]=pop(uG0,uG1,uG2,a,p);else if(wallAt(p))g[a]=pop(uG0,uG1,uG2,OPP[a],x);else{
@@ -52,21 +55,29 @@ void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec2 ub=texelFetch(uU,x,0).xy;float g
  vec2 F=mu*gp-ps*(1./3.)*grho-tau*(Pi*grho)+rho*uAcc;if(uHasF>0.)F+=texelFetch(uF,x,0).xy;
  // weight (the lava lamp): gravity uGrav downwards on the difference from the light fluid, and the expansion of each fluid when hot
  if(uHasT>0.){float T=texelFetch(uTemp,x,0).x;F.y+=-uGrav*(rho-uRhoL)+uGrav*rho*(uBeta.x*phi+uBeta.y*(1.-phi))*T;}
- vec2 u=u0+F/(2.*rho);float om=1./(tau+.5);float go[9];
+ // the drag of two close plates (a Hele-Shaw cell: Darcy, −ρ α u with α = 12ν/b² for each fluid), taken implicitly in u
+ float al=(uDarcy.x*(1.-phi)+uDarcy.y*phi)*(uRough>0.?1.+uRough*rough(vec2(x)):1.);vec2 u=(u0+F/(2.*rho))/(1.+.5*al);F-=rho*al*u;float om=1./(tau+.5);float go[9];
  for(int a=0;a<9;a++){float Fa=3.*Wt[a]*dot(vec2(E[a]),F)/rho;float geq=ps*Wt[a]+gam(a,u)-Wt[a]-.5*Fa;go[a]=g[a]-om*(g[a]-geq)+Fa;}
  o0=vec4(go[0],go[1],go[2],go[3]);o1=vec4(go[4],go[5],go[6],go[7]);o2=vec4(go[8],mu,0.,0.);o3=vec4(u,ps,phi);}`;
 // 3 · the phase: stream h, collide towards φΓ(u) with the term that keeps the interface sharp (conservative Allen–Cahn)
-const LBM_FS_H=LBM_HEAD+LBM_GRAD+`uniform sampler2D uH0,uH1,uH2,uU;uniform float uTauPhi,uXi;
+const LBM_FS_H=LBM_HEAD+LBM_GRAD+`uniform sampler2D uH0,uH1,uH2,uU,uUo;uniform float uTauPhi,uXi;
 layout(location=0) out vec4 o0;layout(location=1) out vec4 o1;layout(location=2) out vec4 o2;
 void main(){ivec2 x=ivec2(gl_FragCoord.xy);float h[9];float phi=0.;for(int a=0;a<9;a++){ivec2 p=x-E[a];h[a]=inBox(p)?pop(uH0,uH1,uH2,a,p):wallAt(p)?pop(uH0,uH1,uH2,OPP[a],x):0.;phi+=h[a];}
- vec2 gp;float lap;gradLap(x,texelFetch(uPhi,x,0).x,gp,lap);float l=length(gp);vec2 n=l>1e-9?gp/l:vec2(0.);
+ vec2 gp;float lap;gradLap(x,texelFetch(uPhi,x,0).x,gp,lap);// the normal, faded out where φ hardly changes (inside a fluid a tiny ripple of φ would otherwise be «sharpened» into a speck)
+ float l=length(gp);vec2 n=gp/max(l,.1/uXi);
  vec2 u=texelFetch(uU,x,0).xy;float om=1./(uTauPhi+.5),k=4.*phi*(1.-phi)/uXi;float ho[9];
- for(int a=0;a<9;a++){float Fa=k*Wt[a]*dot(vec2(E[a]),n);float heq=phi*gam(a,u)-.5*Fa;ho[a]=h[a]-om*(h[a]-heq)+Fa;}
+ // the lattice fluid is slightly compressible (∂p*/∂t = −∇·u): where it swells, the phase would be thinned as if the liquid had
+ // become less of itself. The liquids are incompressible, so the phase is carried as it is: + φ ∇·u (∇·u from the change of p*)
+ float dv=texelFetch(uUo,x,0).z-texelFetch(uU,x,0).z;
+ for(int a=0;a<9;a++){float Fa=k*Wt[a]*dot(vec2(E[a]),n);float heq=phi*gam(a,u)-.5*Fa;ho[a]=h[a]-om*(h[a]-heq)+Fa+Wt[a]*phi*dv;}
  o0=vec4(ho[0],ho[1],ho[2],ho[3]);o1=vec4(ho[4],ho[5],ho[6],ho[7]);o2=vec4(ho[8],0.,0.,0.);}`;
 // what a stimulus does to the matter: up to 8 soft shapes (ellipses in cells) that bring the phase towards a value and/or the
 // velocity towards a value (a nozzle that pours, a puff, a stirring paddle). Shape i: uA[i] = (cx, cy, rx, ry),
-// uB[i] = (angle, φ target or −1 to keep it, ux, uy), uC[i] = (strength 0–1 per step, edge softness in cells, velocity: 0 keep, 1 set, 2 add, 0)
+// uB[i] = (angle, φ target or −1 to keep it, ux, uy), uC[i] = (strength 0–1 per step, edge softness in cells, velocity: 0 keep, 1 set, 2 add,
+// pressure p* target or 0 to keep it: a hole that pushes liquid in or draws it out)
 const LBM_SHAPES=`uniform int uNS;uniform vec4 uA[8],uB[8],uC[8];
+float shapeM(int i,vec2 x){vec4 A=uA[i],B=uB[i],C=uC[i];vec2 d=x-A.xy;float c=cos(B.x),s=sin(B.x);d=vec2(c*d.x+s*d.y,-s*d.x+c*d.y);
+ float r=length(d/A.zw),edge=max(C.y,.5)/min(A.z,A.w);return C.x*clamp((1.-r)/edge+.5,0.,1.);}
 void shapes(vec2 x,inout float phi,inout vec2 u){for(int i=0;i<8;i++){if(i>=uNS)break;vec4 A=uA[i],B=uB[i],C=uC[i];vec2 d=x-A.xy;float c=cos(B.x),s=sin(B.x);d=vec2(c*d.x+s*d.y,-s*d.x+c*d.y);
   float r=length(d/A.zw),edge=max(C.y,.5)/min(A.z,A.w),m=C.x*clamp((1.-r)/edge+.5,0.,1.);if(m<=0.)continue;
   if(B.y>=0.)phi=mix(phi,B.y,m);if(C.z==1.)u=mix(u,B.zw,m);else if(C.z==2.)u+=B.zw*m;}}
@@ -76,7 +87,10 @@ layout(location=0) out vec4 o0;layout(location=1) out vec4 o1;layout(location=2)
 void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec4 a=texelFetch(uG0,x,0),b=texelFetch(uG1,x,0),c=texelFetch(uG2,x,0),U=texelFetch(uU,x,0);
  float g[9]=float[9](a.x,a.y,a.z,a.w,b.x,b.y,b.z,b.w,c.x);float phi=U.w;vec2 u=U.xy,u1=u;shapes(vec2(x)+.5,phi,u1);
  if(u1!=u){for(int i=0;i<9;i++)g[i]+=gam(i,u1)-gam(i,u);}
- o0=vec4(g[0],g[1],g[2],g[3]);o1=vec4(g[4],g[5],g[6],g[7]);o2=vec4(g[8],c.yzw);o3=vec4(u1,U.z,phi);}`;
+ // pressure: g_eq grows by Wt·Δp*
+ float p0=U.z,p1=p0;for(int i=0;i<8;i++){if(i>=uNS)break;if(uC[i].w==0.)continue;float m=shapeM(i,vec2(x)+.5);if(m>0.)p1=mix(p1,uC[i].w,m);}
+ if(p1!=p0){for(int i=0;i<9;i++)g[i]+=Wt[i]*(p1-p0);}
+ o0=vec4(g[0],g[1],g[2],g[3]);o1=vec4(g[4],g[5],g[6],g[7]);o2=vec4(g[8],c.yzw);o3=vec4(u1,p1,phi);}`;
 const LBM_FS_PAINT_H=LBM_HEAD+LBM_SHAPES+`uniform sampler2D uH0,uH1,uH2,uU;
 layout(location=0) out vec4 o0;layout(location=1) out vec4 o1;layout(location=2) out vec4 o2;
 void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec4 a=texelFetch(uH0,x,0),b=texelFetch(uH1,x,0),c=texelFetch(uH2,x,0),U=texelFetch(uU,x,0);
@@ -135,7 +149,7 @@ function lbmClear(gl,f,n){gl.bindFramebuffer(gl.FRAMEBUFFER,f);for(let i=0;i<n;i
 // one live box per slot (o.slot): a new box of the same slot frees the old one (the textures of a matter that has gone)
 const LBM_SLOTS=new Map();
 export function lbmCreate(gl,o={}){if(o.slot){const old=LBM_SLOTS.get(o.slot);if(old&&!old.dead)lbmDestroy(old);}const P=lbmCompile(gl),W=o.W|0,H=o.H|0,T=()=>lbmTex(gl,W,H);
- const S={gl,P,W,H,per:o.per|0,wall:o.wall|0,side:[0,0,0,0],acc:[0,0],steps:0,par:{rhoL:o.rhoL??.05,rhoH:o.rhoH??1,tauL:o.tauL??.02,tauH:o.tauH??.02,sigma:o.sigma??.004,xi:o.xi??4,tauPhi:o.tauPhi??.2},F:null};
+ const S={gl,P,W,H,per:o.per|0,wall:o.wall|0,darcy:o.darcy||null,side:[0,0,0,0],acc:[0,0],steps:0,par:{rhoL:o.rhoL??.05,rhoH:o.rhoH??1,tauL:o.tauL??.02,tauH:o.tauH??.02,sigma:o.sigma??.004,xi:o.xi??4,tauPhi:o.tauPhi??.2},F:null};
  const mk=()=>{const g=[T(),T(),T(),T()],h=[T(),T(),T()];return {g,h,fg:lbmFbo(gl,g),fh:lbmFbo(gl,h)};};S.A=mk();S.B=mk();S.phi=T();S.fphi=lbmFbo(gl,[S.phi]);
  for(const X of [S.A,S.B]){lbmClear(gl,X.fg,4);lbmClear(gl,X.fh,3);}lbmClear(gl,S.fphi,1);
  if(o.temp){S.temp={t:[T(),T()],cur:0};S.temp.f=S.temp.t.map(t=>lbmFbo(gl,[t]));for(const f of S.temp.f)lbmClear(gl,f,1);}
@@ -159,14 +173,14 @@ export function lbmStep(S,n=1){const gl=S.gl,P=S.P,p=S.par;if(![P.phi,P.g,P.h].e
  for(let k=0;k<n;k++){const A=S.A,B=S.B;
   gl.useProgram(P.phi.p);lbmSet(gl,P.phi,{...base(S),uH0:{tex:A.h[0],unit:0},uH1:{tex:A.h[1],unit:1},uH2:{tex:A.h[2],unit:2}});draw(gl,S,S.fphi);
   gl.useProgram(P.g.p);lbmSet(gl,P.g,{...base(S),uG0:{tex:A.g[0],unit:0},uG1:{tex:A.g[1],unit:1},uG2:{tex:A.g[2],unit:2},uU:{tex:A.g[3],unit:3},uPhi:{tex:S.phi,unit:4},uF:{tex:S.F||S.phi,unit:5},uHasF:S.F?1:0,uTemp:{tex:S.temp?S.temp.t[S.temp.cur]:S.phi,unit:6},uHasT:S.temp?1:0,uGrav:S.grav||0,uBeta:S.beta||[0,0],
-   uRhoL:p.rhoL,uRhoH:p.rhoH,uTauL:p.tauL,uTauH:p.tauH,uSig:p.sigma,uXi:p.xi,uAcc:S.acc});draw(gl,S,B.fg);
-  gl.useProgram(P.h.p);lbmSet(gl,P.h,{...base(S),uH0:{tex:A.h[0],unit:0},uH1:{tex:A.h[1],unit:1},uH2:{tex:A.h[2],unit:2},uU:{tex:B.g[3],unit:3},uPhi:{tex:S.phi,unit:4},uTauPhi:p.tauPhi,uXi:p.xi});draw(gl,S,B.fh);
+   uRhoL:p.rhoL,uRhoH:p.rhoH,uTauL:p.tauL,uTauH:p.tauH,uSig:p.sigma,uXi:p.xi,uAcc:S.acc,uDarcy:S.darcy||[0,0],uRough:S.rough||0});draw(gl,S,B.fg);
+  gl.useProgram(P.h.p);lbmSet(gl,P.h,{...base(S),uH0:{tex:A.h[0],unit:0},uH1:{tex:A.h[1],unit:1},uH2:{tex:A.h[2],unit:2},uU:{tex:B.g[3],unit:3},uUo:{tex:A.g[3],unit:5},uPhi:{tex:S.phi,unit:4},uTauPhi:p.tauPhi,uXi:p.xi});draw(gl,S,B.fh);
   S.A=B;S.B=A;S.steps++;}
  gl.bindVertexArray(null);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return true;}
 function shapeU(list){const A=new Float32Array(32),B=new Float32Array(32),C=new Float32Array(32),D=new Float32Array(32);let n=0;
- for(const s of list){if(n>=8)break;const k=n*4;A.set([s.x,s.y,s.rx??s.r,s.ry??s.r],k);B.set([s.angle||0,s.phi??-1,s.ux||0,s.uy||0],k);C.set([s.k??1,s.soft??1.5,s.vel==='set'?1:s.vel==='add'?2:0,0],k);if(s.dye)D.set(s.dye,k);n++;}
+ for(const s of list){if(n>=8)break;const k=n*4;A.set([s.x,s.y,s.rx??s.r,s.ry??s.r],k);B.set([s.angle||0,s.phi??-1,s.ux||0,s.uy||0],k);C.set([s.k??1,s.soft??1.5,s.vel==='set'?1:s.vel==='add'?2:0,s.p||0],k);if(s.dye)D.set(s.dye,k);n++;}
  return {uNS:{i:n},uA:{arr:A,size:4},uB:{arr:B,size:4},uC:{arr:C,size:4},uDyeC:{arr:D,size:4}};}
-// shapes (cells): {x, y, r | rx, ry, angle, phi (target, omitted: kept), ux, uy, vel: 'set' | 'add', k (0–1), soft (cells), dye: [r,g,b,a]}
+// shapes (cells): {x, y, r | rx, ry, angle, phi (target, omitted: kept), ux, uy, vel: 'set' | 'add', p (pressure p* target), k (0–1), soft (cells), dye: [r,g,b,a]}
 export function lbmPaint(S,list){if(!list.length)return;const gl=S.gl,P=S.P;if(!lbmOk(gl,P.pg)||!lbmOk(gl,P.ph))return;gl.disable(gl.BLEND);gl.bindVertexArray(P.vao);const A=S.A,B=S.B,u=shapeU(list);
  gl.useProgram(P.ph.p);lbmSet(gl,P.ph,{...base(S),...u,uH0:{tex:A.h[0],unit:0},uH1:{tex:A.h[1],unit:1},uH2:{tex:A.h[2],unit:2},uU:{tex:A.g[3],unit:3}});draw(gl,S,B.fh);
  gl.useProgram(P.pg.p);lbmSet(gl,P.pg,{...base(S),...u,uG0:{tex:A.g[0],unit:0},uG1:{tex:A.g[1],unit:1},uG2:{tex:A.g[2],unit:2},uU:{tex:A.g[3],unit:3}});draw(gl,S,B.fg);

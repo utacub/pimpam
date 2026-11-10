@@ -1,3 +1,21 @@
+# Pim Pam 0.65 · Bombolles sense pes: «Oli i aigua» simulada de debò
+
+Base: 0.64 (commit 4552ccb, publicada). Continua la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar «com a fluids d’acord amb les lleis de la física».
+
+## Què canvia
+
+- **«Oli i aigua», refeta com a simulació.** Ara és una cel·la de Hele-Shaw: dos vidres molt junts, plens d’oli i il·luminats per darrere. Cada pulsació obre un forat al vidre i hi empeny aigua amb una tinta fluorescent. Entre dos vidres, cada líquid es mou com diu la llei de Darcy (la velocitat és l’empenta de la pressió dividida pel fregament amb el vidre, que creix amb la viscositat), i entre els dos líquids hi ha tensió superficial. Quan l’aigua, que és poc viscosa, empeny l’oli, que ho és molt, el front és inestable: qualsevol bony avança més de pressa que els veïns i es fa un dit, i els dits es parteixen per la punta i es ramifiquen (Saffman i Taylor, 1958; Paterson, 1981). No es dibuixa res: és el mateix simulador de líquids amb el fregament dels vidres, i un gruix entre vidres que no és ben igual a tot arreu (el vidre mai no és pla del tot), que decideix on comencen els primers dits. La penúltima pulsació obre tres forats alhora amb les tres tintes. A la sortida, el vidre de dalt s’aixeca una mica (el fregament baixa) i un corrent d’oli s’emporta l’aigua per un costat.
+- **El simulador** guanya el fregament de dues plaques (llei de Darcy, −ρ α u amb α = 12ν/b² per a cada líquid), forats que empenyen líquid a una pressió donada, i dues correccions: la fase ja no es dilueix quan el fluid de la xarxa, que és lleugerament compressible, s’expandeix (els líquids són incompressibles), i dins d’un líquid una ondulació minúscula de la fase ja no es converteix en una taqueta falsa. Tornat a validar: la tensió superficial que surt de la llei de Laplace és 0,0105 per a 0,0100 imposada (un 5 %); la quantitat de cada líquid es manté, amb un canvi únic d’un 0,1–0,3 % quan la pressió de dins d’una gota s’assenta (abans, 4·10⁻⁵), i dues gotes que es toquen en fan una de rodona amb l’àrea de les dues (un 0,1 % menys).
+- **So:** una aigua que entra entre dos vidres no fa soroll, per això l’oli ja no té sons enregistrats (abans tenia esquitxos). Les notes de la música i dues notes suaus (quan s’obre un forat i quan dues taques d’aigua es toquen) es mantenen.
+- **Comprovat** amb el processador (Chromium amb SwiftShader), fotograma a fotograma, a la mida real: els dits, la pantalla plena a un 73 % a la penúltima pulsació, i la sortida, que deixa la pantalla negra en uns 6 segons.
+- **No comprovat:** l’aspecte i la fluïdesa amb una targeta gràfica real, i l’auditoria de flaixos.
+
+## Referències
+
+Paterson, L. (1981). Radial fingering in a Hele Shaw cell. *Journal of Fluid Mechanics, 113*, 513–529. https://doi.org/10.1017/S0022112081003595
+
+Saffman, P. G., & Taylor, G. I. (1958). The penetration of a fluid into a porous medium or Hele-Shaw cell containing a more viscous liquid. *Proceedings of the Royal Society of London. Series A, 245*(1242), 312–329. https://doi.org/10.1098/rspa.1958.0085
+
 # Pim Pam 0.64 · Bombolles sense pes: l’aigua, simulada de debò, i una làmpada de lava
 
 Base: 0.63.2 (commit aaf632e, publicada). Peticions d’en Marc el 10 de novembre de 2026 (hora de Catalunya): a les 8:26, «la resta són males animacions, no simulacions de fluids… s’han de comportar com a fluids d’acord amb les lleis de la física»; a les 9:48, «Afegeix un estímul que sigui de lava de colors (de l’estil de les làmpades de lava)».

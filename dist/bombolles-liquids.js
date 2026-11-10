@@ -20,13 +20,23 @@ export function lqNozzle(S,e,u,target,o={}){const gx=S.mx*.55,gy=S.my*.55,x=e===
 // a syringe: a little liquid with dye `col` ([r, g, b, a]) pushed into the drop b (from the small picture), towards its middle
 export function lqSyringe(S,b,col,o={}){const r=S.rnd,a=r()*6.283,R=Math.sqrt(b.A/Math.PI),x=b.x+Math.cos(a)*R*.55,y=b.y+Math.sin(a)*R*.55,t0=S.simT+(o.delay||0);
  S.acts.push({kind:'syringe',t0,t1:t0+(o.dur??.55),x,y,ux:-Math.cos(a+(r()-.5)*.6),uy:-Math.sin(a+(r()-.5)*.6),U:o.U??.045,r:Math.max(3,Math.min(6,R*.12)),col,ev:false});}
+// a hole in the plate of a Hele-Shaw cell (the oil): liquid o.phi with dye `col` pushed in at pressure p for o.dur seconds; the
+// pressure is set only in the inner half of the hole, so that what flows out of it is all new liquid (a source where the phase is
+// not kept would dilute it)
+export function lqHole(S,x,y,col,o={}){const t0=S.simT+(o.delay||0);S.acts.push({kind:'hole',t0,t1:t0+(o.dur??2.6),x,y,r:(o.r??12)*S.Hs/160,p:o.p??.15,phi:o.phi??1,col,ev:false});}
+// a puff: a short push of the fluid itself through a slot outside the screen at edge e (as lqNozzle), with smoke `col`: the speed
+// rises and falls as a half sine over o.dur seconds (a piston), and nothing is added or taken. The edges of the slot shed vorticity
+// that rolls up into a pair of vortices (the section of a smoke ring), which then travels by itself
+export function lqPuff(S,e,u,target,o={}){const gx=S.mx*.5,x=e===0?gx:e===2?S.W-(S.W-S.mx-S.Ws)*.5:S.mx+u*S.Ws,y=e===1?S.H-(S.H-S.my-S.Hs)*.5:e===3?S.my*.5:S.my+(1-u)*S.Hs;
+ const dx=target[0]-x,dy=target[1]-y,L=Math.hypot(dx,dy)||1,t0=S.simT+(o.delay||0);
+ S.acts.push({kind:'puff',t0,t1:t0+(o.dur??.45),x,y,ux:dx/L,uy:dy/L,U:o.U??.11,r:(o.r??10)*S.Hs/160,col:o.col,ev:false,e});}
 // the drops seen on the screen, the biggest first; the emptiest place of the screen (cells)
 export const lqBig=S=>S.blobs.filter(b=>b.vis).sort((a,b)=>b.A-a.A);
 export function lqGap(S){let best=null;for(let j=0;j<5;j++)for(let i=0;i<9;i++){const x=S.mx+(i+.5)/9*S.Ws,y=S.my+(j+.5)/5*S.Hs;let c=1e9;for(const b of S.blobs)c=Math.min(c,Math.hypot(x-b.x,y-b.y)-Math.sqrt(b.A/Math.PI));c+=S.rnd()*8;if(!best||c>best.c)best={c,x,y};}return best;}
 // the edge whose nozzle brings the total momentum back towards zero
 export const lqEdge=S=>Math.abs(S.mom[0])>Math.abs(S.mom[1])*1.4?(S.mom[0]>0?2:0):(S.mom[1]>0?1:3);
 // the events of the actions that start (sounds), and the actions that are over
-export function lqEvents(S){for(const a of S.acts)if(!a.ev&&S.simT>=a.t0){a.ev=true;if(a.kind==='nozzle')S.ev.push({t:S.t,type:'raig',x:lqScrX(S,a.x)});}
+export function lqEvents(S){for(const a of S.acts)if(!a.ev&&S.simT>=a.t0){a.ev=true;if(a.kind==='nozzle'||a.kind==='hole')S.ev.push({t:S.t,type:'raig',x:lqScrX(S,a.x)});else if(a.kind==='puff')S.ev.push({t:S.t,type:'anell',x:lqScrX(S,a.x)});}
  S.acts=S.acts.filter(a=>S.simT<a.t1+.5);if(S.ev.length>60)S.ev.splice(0,S.ev.length-60);}
 // what the actions paint at this moment: {out (phase and velocity), dye}
 export function lqShapes(S){const out=[],dye=[],T=S.simT;
@@ -37,6 +47,10 @@ export function lqShapes(S){const out=[],dye=[],T=S.simT;
    // the solver allows, and it blew up)
    else if(T<a.t1+.4&&a.phi===1)out.push({x:a.x,y:a.y,rx:a.r*1.4,ry:a.r*1.15,angle:ang,phi:0,ux:0,uy:0,vel:'set',k:.1,soft:5});
    else if(T<a.t1+.4)out.push({x:a.x,y:a.y,rx:a.r*1.4,ry:a.r*1.15,angle:ang,ux:0,uy:0,vel:'set',k:.1,soft:5});}
+  // a hole: the pressure comes up in 0.3 s and stays while it is open; then the hole is shut and the pressure left in it dies away
+  else if(a.kind==='hole'&&T<a.t1){const ramp=Math.min(1,(T-a.t0)/.3);out.push({x:a.x,y:a.y,r:a.r,phi:a.phi,k:1,soft:2},{x:a.x,y:a.y,r:a.r*.5,p:a.p*ramp,k:.5,soft:2});dye.push({x:a.x,y:a.y,r:a.r*1.6,k:1,soft:2,dye:a.col});}
+  else if(a.kind==='puff'&&T<a.t1){const s=Math.sin(Math.PI*(T-a.t0)/(a.t1-a.t0)),U=a.U*s;out.push({x:a.x,y:a.y,rx:a.r*1.3,ry:a.r,angle:ang,ux:a.ux*U,uy:a.uy*U,vel:'set',k:1,soft:3});
+   if(a.col)dye.push({x:a.x,y:a.y,rx:a.r*1.3,ry:a.r*.95,angle:ang,k:1,soft:2.5,dye:a.col});}
   else if(a.kind==='syringe'&&T<a.t1){out.push({x:a.x,y:a.y,r:a.r,ux:a.ux*a.U,uy:a.uy*a.U,vel:'set',k:.5,soft:2});dye.push({x:a.x,y:a.y,r:a.r*.9,k:1,soft:1,dye:a.col});}}
  return {out,dye};}
 // the way out by an acceleration of the whole room towards edge `side` (0 left, 1 top, 2 right, 3 bottom), its speed kept under vmax
