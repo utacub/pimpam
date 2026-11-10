@@ -1,4 +1,4 @@
-# Pim Pam 0.63.1 · Bombolles sense pes, sense Mel i caramel
+# Pim Pam 0.63.2 · Bombolles sense pes, sense Mel i caramel
 
 Petició d’en Marc el 10 de novembre de 2026 a les 8:26 (hora de Catalunya), després de provar la 0.63: «El de la mel i el caramel ja el pot eliminar, crec que és irrecuperable». També diu que, fora de les bombolles de sabó, les altres matèries són «males animacions, no simulacions de fluids». Aquesta versió només treu la mel; les altres sis es refaran com a simulacions físiques en versions següents.
 
@@ -6,6 +6,14 @@ Petició d’en Marc el 10 de novembre de 2026 a les 8:26 (hora de Catalunya), d
 - Fora el mòdul `dist/bombolles-mel.js` i la seva música.
 - Un perfil desat amb «Mel i caramel» com a primera matèria comença ara per les bombolles de sabó (no es perd la resta del perfil).
 - Proves: `tests/bombolles.test.mjs` amb set matèries i la prova del perfil antic. Comprovat a Chromium: la llista de primera matèria, l’arc de les bombolles amb 4 pulsacions i el pas al plasma, sense errors.
+# Pim Pam 0.63.1 · Text de la finestra «Informació»
+
+Base: 0.63 (commit 2dd7533, publicada). Petició d’en Marc el 10 de novembre de 2026 a les 8:10 (hora de Catalunya).
+
+## Què canvia
+
+- «Està pensat per a infants i joves amb discapacitat que aprenen a fer servir un commutador» ara diu «Està pensat per aprendre a fer servir commutadors».
+- El paràgraf dels tipus d’activitat ja no diu quantes n’hi ha de causa-efecte i d’encercament («Hi ha activitats de causa-efecte…; activitats d’encercament…; i 2 petites pel·lícules…»).
 
 # Pim Pam 0.63 · Bombolles sense pes, en lloc de Bombolles de sabó
 

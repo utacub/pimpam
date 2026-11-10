@@ -22,7 +22,7 @@ import {nebNew,nebPress,nebStep,nebDraw,nebEmptyNow} from './bombolles-nebulosa.
 
 export const BB_CAUSE=Object.freeze({id:'bubbles',code:'CE05',type:'ce',level:'01 · Descobrir',name:'Bombolles sense pes',desc:'Set matèries sense pes que entren per una vora sobre negre, creixen fins a omplir la pantalla i se’n van: bombolles de sabó, plasma, aigua, fum, ferrofluid, oli i una nebulosa, cadascuna amb la seva música.',tag:'7 matèries · una música per a cadascuna',time:'Al teu ritme',bombolles:true,recorded:true});
 
-// The seven matters, in this order (Mel i caramel taken out in 0.63.1: Marc, 10 November 2026, «irrecuperable»). what: the words of the status for a screen reader.
+// The seven matters, in this order (Mel i caramel taken out in 0.63.2: Marc, 10 November 2026, «irrecuperable»). what: the words of the status for a screen reader.
 export const BB_STIMS=Object.freeze([
  {id:'sabo',name:'Bombolles de sabó',what:'bombolles iridescents',nou:sboNew,prem:sboPress,pas:sboStep,pinta:sboDraw,buit:sboEmptyNow},
  {id:'plasma',name:'Plasma',what:'fils de llum entre punts que brillen',nou:plaNew,prem:plaPress,pas:plaStep,pinta:plaDraw,buit:plaEmptyNow},

@@ -10,7 +10,7 @@ test('0.62 Informació: logos exist, text has the origin, institutions and credi
   assert.equal(SOBRE_LOGOS.length,5);
   for(const l of SOBRE_LOGOS)assert.ok(existsSync(new URL('../dist/'+l.src.slice(2),import.meta.url)),l.src);
   const h=sobreHtml({ce:31,scan:11,films:2},'0.62','x');
-  for(const t of ['Origen i institucions','Universitat de Barcelona','Fundació Bosch i Gimpera','UTAC Sírius','UTAC Educació','VSCO-2-CE','CC BY-SA 4.0','CC BY 3.0','ElevenLabs','three.js','CREDITS.md','Versió 0.62','31 activitats de causa-efecte','11 activitats d’encercament','2 petites pel·lícules'])
+  for(const t of ['Origen i institucions','Universitat de Barcelona','Fundació Bosch i Gimpera','UTAC Sírius','UTAC Educació','VSCO-2-CE','CC BY-SA 4.0','CC BY 3.0','ElevenLabs','three.js','CREDITS.md','Versió 0.62','Hi ha activitats de causa-efecte','; activitats d’encercament','aprendre a fer servir commutadors','2 petites pel·lícules'])
     assert.ok(h.includes(t),t);
   assert.ok(SOBRE_EINES.every(r=>r.length===4&&/^https:\/\//.test(r[3])));
 });

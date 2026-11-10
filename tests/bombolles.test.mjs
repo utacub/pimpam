@@ -19,7 +19,7 @@ test('Bombolles sense pes takes the id and the code of Bombolles de sabó (0.63)
 test('its settings: 4, 8 or 12 presses of each matter (8 by default) and the first matter',()=>{
  assert.equal(defaults.bbPresses,8);assert.equal(defaults.bbFirst,'sabo');
  assert.throws(()=>validateProfile({...defaults,bbPresses:6}));assert.throws(()=>validateProfile({...defaults,bbFirst:'foc'}));
- // Mel i caramel is gone (0.63.1): a profile saved with it as the first matter starts with the soap bubbles
+ // Mel i caramel is gone (0.63.2): a profile saved with it as the first matter starts with the soap bubbles
  assert.equal(validateProfile({...defaults,bbFirst:'mel'}).bbFirst,'sabo');
  for(const P of [4,8,12])assert.equal(validateProfile({...defaults,bbPresses:P}).bbPresses,P);
  const g={};bbStart(g,{...S,bbFirst:'fum'});assert.equal(bbStim(g.bombolles).id,'fum');});
