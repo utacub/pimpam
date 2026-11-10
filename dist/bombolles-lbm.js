@@ -53,8 +53,9 @@ void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec2 ub=texelFetch(uU,x,0).xy;float g
  // the viscous term where the density changes, from the non-equilibrium stress (local, as the BGK form allows)
  mat2 Pi=mat2(0.);for(int a=0;a<9;a++){vec2 e=vec2(E[a]);float geq=ps*Wt[a]+gam(a,u0)-Wt[a];Pi+=(g[a]-geq)*outerProduct(e,e);}
  vec2 F=mu*gp-ps*(1./3.)*grho-tau*(Pi*grho)+rho*uAcc;if(uHasF>0.)F+=texelFetch(uF,x,0).xy;
- // weight (the lava lamp): gravity uGrav downwards on the difference from the light fluid, and the expansion of each fluid when hot
- if(uHasT>0.){float T=texelFetch(uTemp,x,0).x;F.y+=-uGrav*(rho-uRhoL)+uGrav*rho*(uBeta.x*phi+uBeta.y*(1.-phi))*T;}
+ // weight (the lava lamp, the ferrofluid): gravity uGrav downwards on the difference from the light fluid, and (the lava) the
+ // expansion of each fluid when hot
+ F.y-=uGrav*(rho-uRhoL);if(uHasT>0.){float T=texelFetch(uTemp,x,0).x;F.y+=uGrav*rho*(uBeta.x*phi+uBeta.y*(1.-phi))*T;}
  // the drag of two close plates (a Hele-Shaw cell: Darcy, −ρ α u with α = 12ν/b² for each fluid), taken implicitly in u
  float al=(uDarcy.x*(1.-phi)+uDarcy.y*phi)*(uRough>0.?1.+uRough*rough(vec2(x)):1.);vec2 u=(u0+F/(2.*rho))/(1.+.5*al);F-=rho*al*u;float om=1./(tau+.5);float go[9];
  for(int a=0;a<9;a++){float Fa=3.*Wt[a]*dot(vec2(E[a]),F)/rho;float geq=ps*Wt[a]+gam(a,u)-Wt[a]-.5*Fa;go[a]=g[a]-om*(g[a]-geq)+Fa;}
@@ -128,14 +129,42 @@ void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec2 u=texelFetch(uU,x,0).xy;float T=
  // losing heat: everywhere a little (the glass), more in the band at the top (uTop: from y, to y, rate)
  float c=uCool+uTop.z*smoothstep(uTop.x,uTop.y,gl_FragCoord.y);T*=exp(-c*uDt);
  vec2 dummy=vec2(0.);shapes(gl_FragCoord.xy,T,dummy);o=vec4(T,0.,0.,0.);}`;
+// a magnetisable liquid (φ = 1, μ = 1 + χ; the other fluid μ = 1) in the field of magnets. The field H = −∇ψ with ψ = ψ0 (the magnets
+// alone: line dipoles and a uniform field, exact) + ψ' (what the liquid changes), from ∇·(μ∇ψ) = 0 (no currents in the liquid), solved
+// for ψ' by red-black over-relaxation on the cells of the box, starting from the last step (the liquid moves little in one step).
+// ψ' = 0 on the floor (the magnets sit right under it), no flux of ψ' through the other sides. The force on the liquid is the
+// Korteweg–Helmholtz force of a linear magnetisable fluid, −½ μ0 H² ∇μ (Rosensweig, 1985), here μ0 = 1: it acts where μ changes, at
+// the surface of the liquid, and pulls the surface out where the field crowds into it (the Rosensweig instability)
+const LBM_MAG=`uniform int uNM;uniform vec4 uMag[6];uniform vec2 uHu;uniform float uChi;uniform sampler2D uP;
+// the potential of the magnets alone: line dipoles at (x, y) with moment (mx, my), ψ0 = m·r / (2π r²); and a uniform field uHu
+float psi0(vec2 p){float s=-dot(uHu,p);for(int i=0;i<6;i++){if(i>=uNM)break;vec2 r=p-uMag[i].xy;s+=dot(uMag[i].zw,r)/(6.2831853*max(dot(r,r),1.));}return s;}
+vec2 h0(vec2 p){vec2 H=uHu;for(int i=0;i<6;i++){if(i>=uNM)break;vec2 r=p-uMag[i].xy;float r2=max(dot(r,r),1.);vec2 n=r*inversesqrt(r2),m=uMag[i].zw;H+=(2.*dot(m,n)*n-m)/(6.2831853*r2);}return H;}
+float muAt(ivec2 p){if(!inBox(p))p=clamp(p,ivec2(0),uN-1);return 1.+uChi*clamp(texelFetch(uPhi,p,0).x,0.,1.);}
+// ψ' at a neighbour p of x: across the floor −ψ'(x) (ψ' = 0 halfway), across the other sides ψ'(x) (no flux)
+float pAt(ivec2 p,ivec2 x){if(inBox(p))return texelFetch(uP,p,0).x;return p.y<0&&(uPer&2)==0?-texelFetch(uP,x,0).x:texelFetch(uP,x,0).x;}
+`;
+// over-relaxation of ψ' on the cells of one colour (a chessboard: uColor), the others copied
+const LBM_FS_MAG_SOR=LBM_HEAD+`uniform sampler2D uPhi;uniform int uColor;uniform float uOm;`+LBM_MAG+`out vec4 o;
+void main(){ivec2 x=ivec2(gl_FragCoord.xy);float c=texelFetch(uP,x,0).x;if(((x.x+x.y)&1)!=uColor){o=vec4(c,0.,0.,0.);return;}
+ vec2 xc=vec2(x)+.5;float mc=muAt(x),p0=psi0(xc),num=0.,den=0.;
+ for(int a=1;a<5;a++){ivec2 p=x+E[a];float mf=.5*(mc+muAt(p));num+=mf*(psi0(xc+vec2(E[a]))-p0);
+  ivec2 q=p;if(inBox(q)){num+=mf*texelFetch(uP,q,0).x;den+=mf;}else if(p.y<0&&(uPer&2)==0)den+=2.*mf;}
+ float s=num/max(den,1e-6);o=vec4(c+uOm*(s-c),0.,0.,0.);}`;
+// the force: (Fx, Fy, Hx, Hy)
+const LBM_FS_MAG_F=LBM_HEAD+LBM_GRAD+LBM_MAG+`out vec4 o;
+void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec2 xc=vec2(x)+.5;
+ vec2 H=h0(xc)-.5*vec2(pAt(x+ivec2(1,0),x)-pAt(x-ivec2(1,0),x),pAt(x+ivec2(0,1),x)-pAt(x-ivec2(0,1),x));
+ // only in the surface itself: inside the liquid, next to a magnet, H² is large and the tiny ripples of φ of the lattice would be
+ // pushed into a runaway
+ float phi=texelFetch(uPhi,x,0).x;vec2 gp;float lap;gradLap(x,phi,gp,lap);float w=smoothstep(.004,.02,phi*(1.-phi));o=vec4(-.5*dot(H,H)*uChi*gp*w,H);}`;
 const LBM_PROG=new WeakMap();
 function lbmCompile(gl){let P=LBM_PROG.get(gl);if(P)return P;P={};const mk=(fs,name)=>{const sh=(t,src)=>{const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);return s;};const v=sh(gl.VERTEX_SHADER,LBM_VS),f=sh(gl.FRAGMENT_SHADER,fs),p=gl.createProgram();
   gl.attachShader(p,v);gl.attachShader(p,f);gl.linkProgram(p);return {p,v,f,name,U:{},ok:null};};
- P.phi=mk(LBM_FS_PHI,'phi');P.g=mk(LBM_FS_G,'g');P.h=mk(LBM_FS_H,'h');P.pg=mk(LBM_FS_PAINT_G,'paint-g');P.ph=mk(LBM_FS_PAINT_H,'paint-h');P.dye=mk(LBM_FS_DYE,'dye');P.down=mk(LBM_FS_DOWN,'down');P.iadv=mk(LBM_FS_INF_ADV,'inflate-advect');P.temp=mk(LBM_FS_TEMP,'temperature');P.ijac=mk(LBM_FS_INF_JAC,'inflate-jacobi');
+ P.phi=mk(LBM_FS_PHI,'phi');P.g=mk(LBM_FS_G,'g');P.h=mk(LBM_FS_H,'h');P.pg=mk(LBM_FS_PAINT_G,'paint-g');P.ph=mk(LBM_FS_PAINT_H,'paint-h');P.dye=mk(LBM_FS_DYE,'dye');P.down=mk(LBM_FS_DOWN,'down');P.iadv=mk(LBM_FS_INF_ADV,'inflate-advect');P.temp=mk(LBM_FS_TEMP,'temperature');P.ijac=mk(LBM_FS_INF_JAC,'inflate-jacobi');P.msor=mk(LBM_FS_MAG_SOR,'magnet-sor');P.mf=mk(LBM_FS_MAG_F,'magnet-force');
  const vao=gl.createVertexArray();gl.bindVertexArray(vao);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);gl.bindVertexArray(null);
  P.vao=vao;LBM_PROG.set(gl,P);return P;}
 // the programs, for a loading cover (compiled together, KHR_parallel_shader_compile)
-export function lbmProgramsList(gl){const P=lbmCompile(gl);return ['phi','g','h','pg','ph','dye','down','iadv','ijac','temp'].map(k=>P[k]);}
+export function lbmProgramsList(gl){const P=lbmCompile(gl);return ['phi','g','h','pg','ph','dye','down','iadv','ijac','temp','msor','mf'].map(k=>P[k]);}
 function lbmOk(gl,o){if(o.ok===null){o.ok=!!gl.getProgramParameter(o.p,gl.LINK_STATUS);if(!o.ok&&typeof console!=='undefined')console.warn('LBM shader',o.name,gl.getShaderInfoLog(o.v)||'',gl.getShaderInfoLog(o.f)||'',gl.getProgramInfoLog(o.p));}return o.ok;}
 function lbmSet(gl,o,u){for(const n in u){const v=u[n];let l=o.U[n];if(l===undefined)l=o.U[n]=gl.getUniformLocation(o.p,n);if(l===null)continue;
   if(v&&v.tex!==undefined){gl.activeTexture(gl.TEXTURE0+v.unit);gl.bindTexture(gl.TEXTURE_2D,v.tex);gl.uniform1i(l,v.unit);}
@@ -161,7 +190,8 @@ export function lbmCreate(gl,o={}){if(o.slot){const old=LBM_SLOTS.get(o.slot);if
 export function lbmDestroy(S){if(S.dead)return;S.dead=true;const gl=S.gl;for(const X of [S.A,S.B]){for(const t of [...X.g,...X.h])gl.deleteTexture(t);gl.deleteFramebuffer(X.fg);gl.deleteFramebuffer(X.fh);}gl.deleteTexture(S.phi);gl.deleteFramebuffer(S.fphi);
  if(S.temp){S.temp.t.forEach(t=>gl.deleteTexture(t));S.temp.f.forEach(f=>gl.deleteFramebuffer(f));}
  if(S.inf){S.inf.t.forEach(t=>gl.deleteTexture(t));S.inf.f.forEach(f=>gl.deleteFramebuffer(f));}
- if(S.dye){S.dye.t.forEach(t=>gl.deleteTexture(t));S.dye.f.forEach(f=>gl.deleteFramebuffer(f));}if(S.down){gl.deleteTexture(S.down.t);gl.deleteFramebuffer(S.down.f);}}
+ if(S.dye){S.dye.t.forEach(t=>gl.deleteTexture(t));S.dye.f.forEach(f=>gl.deleteFramebuffer(f));}if(S.down){gl.deleteTexture(S.down.t);gl.deleteFramebuffer(S.down.f);}
+ if(S.mag){[...S.mag.p,S.mag.F].forEach(t=>gl.deleteTexture(t));[...S.mag.fp,S.mag.fF].forEach(f=>gl.deleteFramebuffer(f));}}
 // the current textures: U = (ux, uy, p*, φ) of the last step, the dye picture
 export const lbmU=S=>S.A.g[3];
 export const lbmDyeTex=S=>S.dye?S.dye.t[S.dye.cur]:null;
@@ -202,6 +232,18 @@ export function lbmTemp(S,dt,o={},list=[]){if(!S.temp)return;const gl=S.gl,P=S.P
  lbmSet(gl,P.temp,{...base(S),...shapeU(list),uT:{tex:D.t[D.cur],unit:0},uU:{tex:S.A.g[3],unit:1},uDt:dt,uKap:o.kappa??.01,uCool:o.cool??0,uTop:o.top||[0,0,0,0]});
  draw(gl,S,D.f[1-D.cur]);D.cur=1-D.cur;gl.bindVertexArray(null);gl.bindFramebuffer(gl.FRAMEBUFFER,null);}
 export const lbmTempTex=S=>S.temp?S.temp.t[S.temp.cur]:null;
+// the magnetic field and its force for the next steps: magnets = up to 6 line dipoles {x, y, mx, my} (cells), o.H = a uniform field
+// [Hx, Hy], o.chi = the susceptibility of the liquid, o.sweeps = rounds of over-relaxation (each one both colours), o.omega
+export function lbmMagnet(S,mags,o={}){const gl=S.gl,P=S.P;if(!lbmOk(gl,P.msor)||!lbmOk(gl,P.mf))return false;
+ if(!S.mag){const T=()=>lbmTex(gl,S.W,S.H);S.mag={p:[T(),T()],cur:0,F:T()};S.mag.fp=S.mag.p.map(t=>lbmFbo(gl,[t]));S.mag.fF=lbmFbo(gl,[S.mag.F]);for(const f of S.mag.fp)lbmClear(gl,f,1);lbmClear(gl,S.mag.fF,1);}
+ const M=S.mag,A=new Float32Array(24),n=Math.min(6,mags.length);mags.slice(0,6).forEach((m,i)=>A.set([m.x,m.y,m.mx,m.my],i*4));
+ const u={...base(S),uNM:{i:n},uMag:{arr:A,size:4},uHu:o.H||[0,0],uChi:o.chi??1,uPhi:{tex:S.phi,unit:1}};
+ gl.disable(gl.BLEND);gl.bindVertexArray(P.vao);gl.useProgram(P.msor.p);
+ for(let i=0;i<2*(o.sweeps??4);i++){lbmSet(gl,P.msor,{...u,uP:{tex:M.p[M.cur],unit:0},uColor:{i:i&1},uOm:o.omega??1.8});draw(gl,S,M.fp[1-M.cur]);M.cur=1-M.cur;}
+ gl.useProgram(P.mf.p);lbmSet(gl,P.mf,{...u,uP:{tex:M.p[M.cur],unit:0}});draw(gl,S,M.fF);
+ S.F=M.F;gl.bindVertexArray(null);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return true;}
+// the field and the force of the last call (Fx, Fy, Hx, Hy), or null
+export const lbmMagTex=S=>S.mag?S.mag.F:null;
 // reads (synchronously) the whole U = (ux, uy, p*, φ): for the tests and the review tools
 export function lbmRead(S){const gl=S.gl,out=new Float32Array(S.W*S.H*4);gl.bindFramebuffer(gl.FRAMEBUFFER,S.A.fg);gl.readBuffer(gl.COLOR_ATTACHMENT3);gl.readPixels(0,0,S.W,S.H,gl.RGBA,gl.FLOAT,out);gl.readBuffer(gl.COLOR_ATTACHMENT0);gl.bindFramebuffer(gl.FRAMEBUFFER,null);return out;}
 // a small picture of the box (bw × bh cells per texel): (mean φ, mean speed, mean p*, share of cells with φ > ½). Read without

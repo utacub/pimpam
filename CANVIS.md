@@ -1,3 +1,24 @@
+# Pim Pam 0.67 · Bombolles sense pes: el «Ferrofluid» simulat de debò
+
+Base: 0.66 (commit a0b37ca, publicada). Continua la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar «com a fluids d’acord amb les lleis de la física».
+
+## Què canvia
+
+- **«Ferrofluid», refet com a simulació.** Un líquid ple d’imants minúsculs, més dens que l’aire i amb tensió superficial, reposa en una safata just sota la pantalla, dins d’una bobina. Cada pulsació hi fa passar més corrent, i el camp travessa el líquid cap amunt. El líquid s’imanta (μ = 1 + χ) i alhora canvia el camp: on la superfície fa un bony, el camp s’hi concentra i l’estira més. Per sobre d’un camp crític la superfície plana deixa de ser estable i s’aixeca en una filera de punxes, tan separades com diuen les equacions (la inestabilitat de camp normal de Cowley i Rosensweig, 1967); com més camp, més altes i més esmolades. No es dibuixa res: és el simulador de líquids amb la gravetat i la força magnètica −½ H² ∇μ a la superfície (la força de Korteweg–Helmholtz per a un fluid que s’imanta en proporció al camp; Rosensweig, 1985), i el camp es calcula a cada pas a partir de ∇·(μ∇ψ) = 0 per al líquid tal com és en aquell moment. On surten les primeres punxes ho decideixen uns bonys d’una cel·la a la superfície quan s’aboca el líquid. A la sortida s’apaga la bobina i les punxes tornen a caure a la safata, sota la pantalla.
+- **Les fases:** la primera pulsació posa el camp a 1,3 vegades el crític (surten punxes baixes en un parell de segons), cada pulsació següent el puja, i al moment ple arriba a 1,85 vegades: les punxes arriben gairebé a dalt de la pantalla i de la punta se’n poden desprendre gotes.
+- **El simulador** guanya el camp magnètic d’un líquid imantable (resolt amb sobrerelaxació vermell-negre a cada pas, partint del pas anterior) i la gravetat sense camp de temperatura. La força magnètica només actua a la superfície: dins el líquid, a prop d’un imant fort, les petites ondulacions de la xarxa feien créixer una inestabilitat numèrica.
+- **Validat** (`tools/bombolles-lbm-proves.mjs`): un cilindre de líquid en un camp uniforme té a dins el camp exacte 2H0/(1 + μ) amb un error del 0,3 % (χ = 1) i de l’1,3 % (χ = 2), i fora, sobre l’eix, el camp exacte amb un error de menys del 0,3 %. Una capa plana amb una ondulació de la longitud d’ona crítica es manté estable a 0,8 i 0,9 vegades el camp crític de Cowley i Rosensweig, creix poc a 1,0 i creix clarament a 1,1 i 1,25: el llindar de la simulació cau entre 0,9 i 1,0 vegades el teòric.
+- **Escales triades** (criteri, declarat al codi): el líquid és 10 vegades més dens que l’aire (un de real, unes 1000), χ = 2 (un ferrofluid fort) i les punxes queden a unes 45 cel·les l’una de l’altra (quatre o cinc a l’amplada de la pantalla).
+- **So:** la música es manté; una gota que es desprèn d’una punta fa una nota de glockenspiel i, quan torna a caure, un degoteig suau enregistrat. El text d’estat ara diu «punxes d’un líquid magnètic».
+- **Comprovat** amb el processador (Chromium amb SwiftShader), fotograma a fotograma a temps real: punxes visibles uns 2 segons després de la primera pulsació, punxes que arriben gairebé a dalt al moment ple, i la sortida, que deixa la pantalla negra. Dins l’app: la llista d’ajustos, els textos d’estat i 92 notes, sense errors. Amb el processador la simulació va més lenta que el temps real; per això ara el corrent de la bobina segueix el temps de la simulació i no el del rellotge, perquè una targeta lenta vegi el mateix que una de ràpida (comprovat després d’aquest canvi només amb la simulació, no dins l’app).
+- **No comprovat:** l’aspecte i la fluïdesa amb una targeta gràfica real, i l’auditoria de flaixos.
+
+## Referències
+
+Cowley, M. D., & Rosensweig, R. E. (1967). The interfacial stability of a ferromagnetic fluid. *Journal of Fluid Mechanics, 30*(4), 671–688. https://doi.org/10.1017/S0022112067001697
+
+Rosensweig, R. E. (1985). *Ferrohydrodynamics*. Cambridge University Press.
+
 # Pim Pam 0.66 · Bombolles sense pes: «Anells de fum» simulats de debò
 
 Base: 0.65 (commit d547bb3, publicada). Continua la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar «com a fluids d’acord amb les lleis de la física».
