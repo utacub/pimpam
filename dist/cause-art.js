@@ -54,21 +54,6 @@ function Cshape(c,kind,size,color,t=0){const g=Cgrad(c,-size,-size,size*2,size*2
  else if(kind%6===4){c.beginPath();c.moveTo(0,-size);c.bezierCurveTo(size*1.4,-size*.05,size,size,0,size);c.bezierCurveTo(-size,size,-size*1.4,-size*.05,0,-size);c.fill();Cellipse(c,-size*.25,size*.12,size*.15,size*.35,'#fff8e74a');}
  else {Cstroke(c,()=>{for(let j=0;j<100;j++){const a=j/99*C_TAU*2.4,rr=size*j/99;if(j)c.lineTo(Math.cos(a)*rr,Math.sin(a)*rr);else c.moveTo(0,0);}},g,Math.max(2,size*.09));}
 }
-function Cbubble(c,x,y,r,palette,index=0,white=false){c.save();const color=palette[index%4];const g=c.createRadialGradient(x-r*.25,y-r*.35,r*.04,x,y,r);g.addColorStop(0,color+'08');g.addColorStop(.72,color+'22');g.addColorStop(.96,color+'90');g.addColorStop(1,white?'#7499aa90':'#d6eff3a0');Cellipse(c,x,y,r,r,g);
- for(let j=0;j<4;j++){c.beginPath();c.ellipse(x,y,r*(.98-j*.018),r*(.98-j*.018),0,j*1.3+.15,j*1.3+1.85);c.strokeStyle=palette[(index+j)%4]+(white?'c0':'cc');c.lineWidth=Math.max(.6,r*.014);c.stroke();}
- c.beginPath();c.ellipse(x-r*.21,y-r*.28,r*.46,r*.58,-.6,3.3,5.25);c.strokeStyle=white?'#ffffffa0':'#fff9eec0';c.lineWidth=Math.max(1,r*.028);c.stroke();Cellipse(c,x-r*.37,y-r*.48,r*.1,r*.055,'#ffffff98');c.restore();}
-
-function Cbubbles(c,w,h,g,s,p,clock){const v=g.variant||0,n=Math.round((12+v%5*4)*(s.density||65)/65),phase=clock.cycling?(clock.displayTime/s.duration)%1:clock.u;
- for(let i=0;i<n;i++){const a=i*2.399+v*.1,grid=v%4;let x,y;
-  if(grid===0){x=w*(.15+Crand(i+v*13)*.7);y=h*(.15+Crand(i+49)*.7);}
-  else if(grid===1){x=w*.5+Math.cos(a)*Math.min(w,h)*(.12+i/n*.28);y=h*.5+Math.sin(a)*Math.min(w,h)*(.12+i/n*.28);}
-  else if(grid===2){x=w*(.1+i/n*.8);y=h*(.5+Math.sin(i*.8+phase*.7)*.25);}
-  else{x=w*(.25+(i%3)*.25);y=h*(.12+Math.floor(i/3)/Math.ceil(n/3)*.74);}
-  const local=clock.cycling?1:(i===0?Math.max(.2,Csmooth(phase/.2)):Csmooth((phase-Crand(i)*.1)/.2)),drift=s.reduced?0:Math.sin(clock.motion*.5+i)*h*.035,r=Math.min(w,h)*(.035+Crand(i+v*7)*.065)*local;Cbubble(c,x,y+drift,Math.max(.001,r),p,i,s.base==='white');}
-}
-
-// Dia rere dia (CE09): the paper village, at the position of the day shown (it moves smoothly to the moment of the last press). It is
-// drawn before the first press too: the quiet night before the first dawn. The card shows a sunset of the summer feast.
 function Cdaynight(c,w,h,g,s,p,clock,card){const moments=s.dayMoments||8,preview=card||g.diaTarget===undefined&&clock.running,target=preview?12:g.diaTarget??diaStart(moments),from=g.diaFrom??target,t=clock.running?clock.t:1e3;
  Cwaiting(c,w,h,'daynight',g,s,preview,idle=>drawDia(c,w,h,{phi:clock.running&&!preview?diaPhase(from,target,t):target,target,t,prev:preview?undefined:g.diaPrev,held:g.diaHeld,stops:diaStops(moments),idle,reduced:s.reduced,adaptive:!preview,preview:!!card,background:s.background,base:s.base,opacity:s.opacity}));}
 // The stage stories (0.14 and 0.15) draw the whole screen, at rest too: the stage waits with its chairs, the sky with its landscape, the
@@ -195,10 +180,10 @@ function renderExtraCause(c,w,h,id,game,s,preview=false){const item=causeDefinit
  const g=preview?{...game,item,variant:game.variant||0,count:item.kind==='sequence'?Math.min(4,s.steps):1,day:true,time:item.preview?.time??3,duration:item.preview?.duration??6,audioDuration:item.preview?.duration??6,control:'effect',releaseTime:null}:game;
  const clock=causeClock(g,s),p=causePalette(id,g.variant||0).map(color=>s.base==='white'&&item.kind==='burst'?Cmix(color,'#2c4256',.2):color);if(!clock.running&&!g.count&&item.kind!=='cycle'&&!item.stage&&!item.wind&&!item.beam&&!item.knock&&!item.ready&&!item.dive)return true;
  c.save();if(item.kind==='burst'&&!item.ownPhases)c.globalAlpha*=clock.envelope;if(item.kind==='sequence'&&!item.stage&&g.count>=s.steps&&clock.running)c.globalAlpha*=1-Csmooth((clock.u-.87)/.13);
- const drawers={bubbles:Cbubbles,jelly:Cfons,jungle:Cselva,savanna:Csabana,well:Cpou,giants:Cgegants,daynight:Cdaynight,constellations:Cstage('constellations',drawConstel),orchestra:Cstage('orchestra',drawOrquestra),castells:Cstage('castells',drawCastells,fmStamp),balloons:Cstage('balloons',drawGlobus),magician:Cstage('magician',drawMag),waiter:Cstage('waiter',drawCambrer),lighthouse:Cfar,door:Ctoc,fira:Cfira,wind:Cwind,kaleido:Ckaleido,drawings:Cdibuixos(DB_SET),toys:Cdibuixos(JG_SET),kitchen:Cdibuixos(CN_SET),vitrall:Cvitrall,natura:Cnatura,piro:Cpiro};drawers[id](c,w,h,g,s,p,clock,preview);c.restore();return true;
+ const drawers={jelly:Cfons,jungle:Cselva,savanna:Csabana,well:Cpou,giants:Cgegants,daynight:Cdaynight,constellations:Cstage('constellations',drawConstel),orchestra:Cstage('orchestra',drawOrquestra),castells:Cstage('castells',drawCastells,fmStamp),balloons:Cstage('balloons',drawGlobus),magician:Cstage('magician',drawMag),waiter:Cstage('waiter',drawCambrer),lighthouse:Cfar,door:Ctoc,fira:Cfira,wind:Cwind,kaleido:Ckaleido,drawings:Cdibuixos(DB_SET),toys:Cdibuixos(JG_SET),kitchen:Cdibuixos(CN_SET),vitrall:Cvitrall,natura:Cnatura,piro:Cpiro};drawers[id](c,w,h,g,s,p,clock,preview);c.restore();return true;
 }
 
-export {Cbubble,Cellipse,Cgrad,Cmix,Cround,Cscene,Cshape,CshapeAt,Cstar,Cstroke,Cwheel,renderExtraCause};
+export {Cellipse,Cgrad,Cmix,Cround,Cscene,Cshape,CshapeAt,Cstar,Cstroke,Cwheel,renderExtraCause};
 // The five dives prepare their first shaders in the background, one every 400 ms, while the menu is open (0.35).
 // The loading cover (0.40): the share of the programs a dive needs at its start that is ready (1 for any other activity).
 const DIVE_LOAD={jelly:fonsLoad,jungle:selvaLoad,savanna:sabanaLoad,well:pouLoad,giants:gegantsLoad};

@@ -39,7 +39,7 @@ test('the step-by-step stories keep the waiting state: a press runs, the end of 
  for(const id of WAITING){const g=setup(id),s={...defaults};assert.ok(beginCause(g,s,10));assert.equal(g.wait.mode,'run');assert.equal(g.wait.at,10);
   g.time=g.duration;finishCause(g,s,10+g.duration);assert.equal(g.wait.mode,'wait');assert.equal(g.wait.at,10+g.duration);
   assert.equal(restCause(g,30),false,'already waiting');assert.ok(beginCause(g,s,40));assert.equal(g.wait.mode,'run');}
- for(const id of ['bubbles']){const g=setup(id);beginCause(g,{...defaults},10);assert.equal(g.wait,undefined);}
+ for(const id of ['lighthouse','door']){const g=setup(id);beginCause(g,{...defaults},10);assert.equal(g.wait,undefined);}
  // Fons marí de vidre (0.28) waits too: each stimulus stops and darkens at its end.
  {const g=setup('jelly'),s={...defaults};assert.ok(beginCause(g,s,10));assert.equal(g.wait.mode,'run');g.time=g.duration;finishCause(g,s,10+g.duration);assert.equal(g.wait.mode,'wait');}});
 
