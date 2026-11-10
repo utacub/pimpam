@@ -33,7 +33,7 @@ export const BB_STIMS=Object.freeze([
  {id:'lava',name:'Làmpada de lava',what:'bombolles de cera de colors',nou:lavNew,prem:lavPress,pas:lavStep,pinta:lavDraw,buit:lavEmptyNow},
  {id:'ferro',name:'Ferrofluid',what:'punxes d’un líquid magnètic',nou:ferNew,prem:ferPress,pas:ferStep,pinta:ferDraw,buit:ferEmptyNow},
  {id:'oli',name:'Oli i aigua',what:'dits d’aigua de colors dins l’oli',nou:oliNew,prem:oliPress,pas:oliStep,pinta:oliDraw,buit:oliEmptyNow},
- {id:'nebulosa',name:'Nebulosa',what:'gas de colors i estels que s’encenen',nou:nebNew,prem:nebPress,pas:nebStep,pinta:nebDraw,buit:nebEmptyNow}]);
+ {id:'nebulosa',name:'Nebulosa',what:'bombolles de gas encès al voltant d’estels nous',nou:nebNew,prem:nebPress,pas:nebStep,pinta:nebDraw,buit:nebEmptyNow}]);
 export const BB_IDS=Object.freeze(BB_STIMS.map(x=>x.id));
 export const BB_PRESSES=Object.freeze([4,8,12]);
 export const bbPresses=s=>BB_PRESSES.includes(+s?.bbPresses)?+s.bbPresses:8;
@@ -85,7 +85,7 @@ export function bbHelp(s){const P=bbPresses(s);return `<strong>Cada pulsació fa
 // bubbles bright and high in E lydian, the plasma quick in B lydian, the water in D dorian and 6/8, the smoke in F with a flute and a
 // clarinet that follows it in canon, the lava lamp slow in B flat dorian with a clarinet over a vibraphone (a lamp makes no sound of its
 // own: no recorded effects), the ferrofluid in E flat minor with two instruments that take
-// turns (a drop that comes off a spike rings a glockenspiel, and drips when it falls back), the oil in G mixolydian and 6/8 (water pushed into oil between plates is silent: no recorded effects), the nebula slow in D flat). unit: the seconds of an eighth note; M: eighths in a bar.
+// turns (a drop that comes off a spike rings a glockenspiel, and drips when it falls back), the oil in G mixolydian and 6/8 (water pushed into oil between plates is silent: no recorded effects), the nebula slow in D flat, a glockenspiel note for each star that lights up and a harp for each group of supernovae: space carries no sound, so no recorded effects). unit: the seconds of an eighth note; M: eighths in a bar.
 // prog: the degree of the chord of each press; cont: melodic shapes (steps of the scale above the root of the chord); snap: the
 // pitch classes the melody keeps to (a pentatonic over the chords); trem: the middle voice in tremolo; canon: a second voice that
 // follows the melody; sync: a second voice on the off-beats; gong: a gong at the full moment.
@@ -108,7 +108,7 @@ export const BB_MUSIC=Object.freeze({
  oli:{key:67,mode:'mixo',meter:'68',unit:.3,M:6,lead:'guitarRec',mid:'harpRec',bass:'celliPizzRec',spark:'kalimbaRec',prog:[0,6,3,0,6,3,4,0],cont:[2,5,0,4],
   ev:{fusio:['kalimbaRec',0,.15],raig:['harpRec',2,.1]},fx:{}},
  nebulosa:{key:61,mode:'major',meter:'34',unit:.5,M:6,lead:'dsPiano',mid:'dsArpa',bass:'celliPizzRec',spark:'dsGlock',gong:true,prog:[0,3,5,4,0,3,1,4],cont:[4,0,2,5],
-  ev:{estels:['dsGlock',1,.11],banc:['dsArpa',0,.13]},fx:{}}});
+  ev:{estel:['dsGlock',1,.11],nova:['dsArpa',0,.15]},fx:{}}});
 const BB_UNPITCHED=new Set(['dsTriangle','dsGong','triangleRec','cymbalRec']);
 // a degree of the scale (any integer: it wraps into the octaves) as a MIDI note
 export function bbMidi(U,deg,oct=0){const m=BB_MODES[U.mode],n=m.length,o=Math.floor(deg/n);return U.key+12*(o+oct)+m[((deg%n)+n)%n];}

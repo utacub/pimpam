@@ -4,12 +4,13 @@
 // still plays). The size of the picture adapts to the speed of the computer (glAdapt, as in the other WebGL activities).
 import {BMB,bmbSetup,bmbCanvas,bmbBegin,bmbEnd,bmbRopeReset,bmbReady,bmbProgramsList,bmbSettle} from './bombolles-motor.js';
 import {lbmProgramsList} from './bombolles-lbm.js';
+import {gasProgramsList} from './bombolles-gas.js';
 import {glLoadShare,glAdapt} from './carrega.js';
 import {escWaitClock,ESC_WAIT_START} from './escenari.js';
 import {bbStim} from './bombolles.js';
 const BBR={st:{scale:1,ema:16,slow:0,fast:0,last:0},fixed:0};
 // the loading cover: the programs of the pictures and of the liquid solver, compiled together (1 without WebGL2)
-const bbPrograms=()=>{const list=bmbProgramsList();return list.length?[...list,...lbmProgramsList(BMB.gl)]:list;};
+const bbPrograms=()=>{const list=bmbProgramsList();return list.length?[...list,...lbmProgramsList(BMB.gl),...gasProgramsList(BMB.gl)]:list;};
 export function bbLoad(){if(typeof document==='undefined')return 1;const list=bbPrograms();if(!list.length)return 1;return glLoadShare(BMB.gl,list,BMB.par,bmbSettle);}
 // from the home page, where the browser compiles in the background
 export function bbPrewarm(){if(typeof document==='undefined'||!bmbReady()||!BMB.par)return false;bbPrograms();return true;}
