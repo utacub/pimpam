@@ -1,4 +1,4 @@
-// Bombolles sense pes (CE05, id 'bubbles', 0.63) · the model: seven kinds of weightless matter in turn, the presses of each one, its
+// Laboratori de matèria, until 0.69 «Bombolles sense pes» (CE05, id 'bubbles', 0.63) · the model: seven kinds of weightless matter in turn, the presses of each one, its
 // way out to black, and its music. It takes the place of the old «Bombolles de sabó» (Marc, 10 November 2026: «publicat tot directament
 // a Pim Pam, substituint l'activitat Bombolles de sabó»). The pictures are the engine of the style trial (bombolles-motor.js and one
 // module for each matter), approved stimulus by stimulus on 9 November 2026.
@@ -21,7 +21,9 @@ import {ferNew,ferPress,ferStep,ferDraw,ferEmptyNow} from './bombolles-ferro.js'
 import {oliNew,oliPress,oliStep,oliDraw,oliEmptyNow} from './bombolles-oli.js';
 import {nebNew,nebPress,nebStep,nebDraw,nebEmptyNow} from './bombolles-nebulosa.js';
 
-export const BB_CAUSE=Object.freeze({id:'bubbles',code:'CE05',type:'ce',level:'01 · Descobrir',name:'Bombolles sense pes',desc:'Vuit matèries que apareixen sobre negre, creixen fins a omplir la pantalla i se’n van: bombolles de sabó, plasma, aigua, fum, una làmpada de lava, ferrofluid, oli i una nebulosa, cadascuna amb la seva música.',tag:'8 matèries · una música per a cadascuna',time:'Al teu ritme',bombolles:true,recorded:true});
+// The name: «Bombolles sense pes» from 0.63 to 0.69, «Laboratori de matèria» since 0.70 (Marc, 10 November 2026: «Canvia el nom de
+// l’activitat per un que et sembli que encaixa millor… Ara hi ha moltes més coses que bombolles»). The id and the code stay.
+export const BB_CAUSE=Object.freeze({id:'bubbles',code:'CE05',type:'ce',level:'01 · Descobrir',name:'Laboratori de matèria',desc:'Vuit matèries simulades amb les lleis de la física apareixen sobre negre, creixen fins a omplir la pantalla i se’n van: bombolles de sabó, plasma, aigua, fum, una làmpada de lava, ferrofluid, oli i aigua i una nebulosa, cadascuna amb la seva música.',tag:'8 matèries · una música per a cadascuna',time:'Al teu ritme',bombolles:true,recorded:true});
 
 // The eight matters, in this order (Mel i caramel taken out in 0.63.2: Marc, 10 November 2026, «irrecuperable»; the lava lamp added
 // in 0.64 at his request, the only one with weight). what: the words of the status for a screen reader.
@@ -38,8 +40,12 @@ export const BB_IDS=Object.freeze(BB_STIMS.map(x=>x.id));
 export const BB_PRESSES=Object.freeze([4,8,12]);
 export const bbPresses=s=>BB_PRESSES.includes(+s?.bbPresses)?+s.bbPresses:8;
 export const bbStim=F=>BB_STIMS[((F.i%BB_STIMS.length)+BB_STIMS.length)%BB_STIMS.length];
-// times (s): the shortest step after a press, the shortest full moment, the black between two matters, the longest way out (a guard)
-export const BB_STEP=2.2,BB_FULL=6.5,BB_BLACK=1.2,BB_OUT_MAX=25;
+// times (s): the shortest step after a press, the shortest full moment, the black between two matters, the longest way out. No way out
+// may be long (Marc, 10 November 2026: a simulation sometimes takes too long to empty): whatever is still on the screen BB_OUT_FADE
+// seconds after the last press fades to black, and at BB_OUT_MAX the next matter is on its way, about as long as the full moment
+export const BB_STEP=2.2,BB_FULL=6.5,BB_BLACK=1.2,BB_OUT_FADE=4.5,BB_OUT_MAX=7;
+// how dark the picture is made over the matter (0 none, 1 black): the fade of a long way out, and the black between two matters
+export function bbFade(F){if(!F)return 0;if(F.phase==='black')return 1;if(F.phase!=='out')return 0;const u=Math.max(0,Math.min(1,(F.t-F.at-BB_OUT_FADE)/(BB_OUT_MAX-BB_OUT_FADE)));return u*u*(3-2*u);}
 
 export function bbNew(s){const first=Math.max(0,BB_IDS.indexOf(s?.bbFirst));
  return {t:0,i:first,first,lap:0,k:0,P:bbPresses(s),S:null,AR:16/9,phase:'rest',at:0,end:0,wait:null,seed:Math.floor(Math.random()*1e6),notes:[],chord:0,uid:0,done:0,matters:0,lastEv:-9,lastFx:{},cues:['matter']};}
@@ -64,7 +70,7 @@ export function bbRate(F,s){if(F.phase==='out'||F.phase==='black'||s?.waitCue===
 export function bbTick(game,s,dt){const F=game?.bombolles;if(!F)return;F.t+=dt;
  if(F.S){const M=bbStim(F);let r=dt*bbRate(F,s);while(r>1e-6){const h=Math.min(r,1/60);M.pas(F.S,h);r-=h;}}
  if(F.phase==='run'&&F.t>=F.end){F.phase='rest';F.done++;game.completed=F.done;F.wait=escWaitTurn(F.wait,'wait',F.t);}
- if(F.phase==='out'&&(F.t-F.at>BB_OUT_MAX||(F.t>=F.end&&(!F.S||bbStim(F).buit(F.S))))){F.phase='black';F.at=F.t;F.done++;game.completed=F.done;F.cues.push('black');}
+ if(F.phase==='out'&&(F.t-F.at>=BB_OUT_MAX||(F.t>=F.end&&(!F.S||bbStim(F).buit(F.S))))){F.phase='black';F.at=F.t;F.done++;game.completed=F.done;F.cues.push('black');}
  if(F.phase==='black'&&F.t-F.at>=BB_BLACK){F.i=(F.i+1)%BB_STIMS.length;if(F.i===F.first)F.lap++;F.k=0;game.count=0;F.S=null;F.P=bbPresses(s);F.matters++;F.phase='rest';F.at=F.t;F.notes=F.notes.filter(n=>!n.sent);F.cues.push('matter');
   F.wait=escWaitTurn({mode:'run',at:F.t,idle:0,rate:1,dark:0},'wait',F.t+.01);}
  if(F.notes.length>160)F.notes=F.notes.filter(n=>!n.sent||n.at>F.t-2);}

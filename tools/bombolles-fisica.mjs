@@ -19,11 +19,11 @@ await page.goto(`http://localhost:${server.address().port}/`);
 const P=+(process.env.BMB_PRESSES||8),gap=+(process.env.BMB_GAP||5),seed=+(process.env.BMB_SEED||11),fps=+(process.env.BMB_FPS||30);
 const times=[];{let x=.5;for(let k=1;k<=P;k++){times.push(x);x+=k===P-1?gap*2:gap;}}
 const end=times[P-1]+14,shots=process.env.BMB_SHOTS?JSON.parse(process.env.BMB_SHOTS):[['01_arribada',times[0]+3.5],['02_arribada2',times[1]+4],['03_creixement',times[Math.min(P-3,3)]+4],['04_creixement2',times[P-3]+4],['05_ple',times[P-2]+6],['06_ple2',times[P-2]+2*gap-.5],['07_sortida',times[P-1]+3],['08_final',end]];
-const ok=await page.evaluate(async([W,H,stim,seed,P,phys])=>{const M=await import('/dist/bombolles-motor.js'),mod=await import(`/dist/bombolles-${stim}.js`);
+const ok=await page.evaluate(async([W,H,stim,seed,P,phys,lap])=>{const M=await import('/dist/bombolles-motor.js'),mod=await import(`/dist/bombolles-${stim}.js`);
  if(!M.bmbSetup(W,H))return 'no WebGL2';const cv=M.bmbCanvas();cv.style.cssText='display:block;width:100%;height:100%';document.body.appendChild(cv);
  const pre=Object.keys(mod).find(k=>k.endsWith('New')).slice(0,-3),phy=Object.keys(mod).find(k=>/_PHYS$/.test(k));
  if(phys&&phy)Object.assign(mod[phy],JSON.parse(phys));
- window.R={M,mod,pre,S:mod[pre+'New']({seed,lap:+(process.env.BMB_LAP||0),AR:W/H,presses:P}),k:0,t:0,ev:{}};return 'ok';},[W,H,stim,seed,P,process.env.BMB_PHYS||'']);
+ window.R={M,mod,pre,S:mod[pre+'New']({seed,lap,AR:W/H,presses:P}),k:0,t:0,ev:{}};return 'ok';},[W,H,stim,seed,P,process.env.BMB_PHYS||'',+(process.env.BMB_LAP||0)]);
 if(ok!=='ok'){console.log(ok,errors);process.exit(1);}
 const t1=Date.now();
 for(const [name,at] of shots){

@@ -1849,5 +1849,71 @@
     "Cada gota i cada gest mouen la tinta, però no se’n fa ni se’n perd gens."
    ]
   }
+ ],
+ "bubbles": [
+  {
+   "t": "Bombolles de sabó",
+   "l": [
+    "Una bombolla és una pel·lícula d’aigua amb sabó molt més prima que un cabell. La llum que es reflecteix a les seves dues cares s’interfereix, i cada gruix de la pel·lícula fa brillar un color.",
+    "Sense pes, les bombolles suren i tremolen quan es toquen. Dues bombolles enganxades comparteixen una paret, i on es troben tres pel·lícules sempre fan angles de 120 graus.",
+    "Quan una bombolla rebenta, el forat s’obre des d’un punt a velocitat constant. Aquí es veu molt més a poc a poc que a la realitat."
+   ]
+  },
+  {
+   "t": "Plasma",
+   "l": [
+    "Un gas no condueix l’electricitat fins que el camp elèctric és prou fort per arrencar electrons als àtoms. Aleshores s’hi obren canals de gas ionitzat que fan llum, com en una bola de plasma o en un llamp.",
+    "Els canals creixen sobretot per on el camp és més intens i es ramifiquen. Quan un canal arriba a un altre elèctrode salta l’arc, que porta tot el corrent i és el que brilla més.",
+    "L’ordinador calcula el camp elèctric a cada moment. Una descàrrega de debò travessa l’espai en milionèsimes de segon: aquí va un milió de vegades més a poc a poc perquè se’n vegi la forma."
+   ]
+  },
+  {
+   "t": "Esferes d’aigua",
+   "l": [
+    "Sense gravetat, com a l’estació espacial, l’aigua no cau: la tensió superficial l’estira fins que fa una bola, que és la forma amb menys superfície.",
+    "Dues boles que es toquen s’ajunten en una de sola i tremolen una estona, més a poc a poc com més grans són. Cada broc tira aigua d’un color, i els colors es barregen dins les boles que s’ajunten.",
+    "L’ordinador resol les equacions de l’aigua i de l’aire. L’aigua de la simulació és més espessa que la de debò perquè el càlcul sigui estable."
+   ]
+  },
+  {
+   "t": "Anells de fum",
+   "l": [
+    "Quan una bufada d’aire surt per una escletxa, les vores la fan rodar sobre si mateixa i es forma un anell de remolí que avança tot sol i s’emporta el fum. Es veu el tall de l’anell: dos remolins que giren al revés.",
+    "Dos anells que xoquen de cara s’eixamplen cap als costats, i un anell que n’atrapa un altre per darrere hi passa per dins. El fum només fa visible el moviment de l’aire.",
+    "L’ordinador calcula el moviment de l’aire. L’aire de la simulació és més espès que el de debò, i per això els anells són més amples i s’aturen abans."
+   ]
+  },
+  {
+   "t": "Làmpada de lava",
+   "l": [
+    "La cera, freda, pesa una mica més que el líquid de la làmpada i reposa al fons. La bombeta l’escalfa: la cera calenta s’eixampla, es torna més lleugera que el líquid i puja.",
+    "A dalt es refreda, torna a pesar més i baixa. Les formes de les gotes, els colls que s’estrenyen i les gotes que s’ajunten surten de les equacions: no estan dibuixades.",
+    "És l’única matèria de l’activitat que té pes. Aquí tot va més de pressa que en una làmpada de debò, que triga força estona a escalfar-se."
+   ]
+  },
+  {
+   "t": "Ferrofluid",
+   "l": [
+    "Un ferrofluid és un líquid ple de partícules magnètiques petitíssimes. Sense camp magnètic és un bassal negre i llis, com un mirall.",
+    "Cada pulsació fa passar més corrent per la bobina. Quan el camp passa d’un cert valor, la superfície plana ja no s’aguanta i s’aixeca en una filera de punxes; com més fort el camp, més altes i punxegudes.",
+    "La distància entre les punxes surt de l’equilibri entre la força magnètica, la tensió superficial i el pes. L’ordinador calcula el camp i el líquid a cada moment."
+   ]
+  },
+  {
+   "t": "Oli i aigua",
+   "l": [
+    "L’aigua i l’oli no es barregen. Aquí són entre dues plaques de vidre molt juntes, il·luminades per darrere, i cada pulsació hi empeny aigua amb tinta.",
+    "Quan un líquid poc espès empeny un de més espès, la vora no avança plana: qualsevol bony va més de pressa que els del costat i es fa un dit, que es parteix i es ramifica.",
+    "És la digitació viscosa, la mateixa que apareix quan s’injecta aigua sota terra per treure’n petroli."
+   ]
+  },
+  {
+   "t": "Nebulosa",
+   "l": [
+    "Una nebulosa és un núvol fosc d’hidrogen on neixen estels. La llum ultraviolada d’un estel nou i molt massiu arrenca electrons al gas del voltant, i aquest gas brilla.",
+    "El gas encès, molt més calent, empeny el núvol i obre una bombolla que creix. Darrere els nusos de gas dens queda una ombra: un pilar que apunta a l’estel, com els de la nebulosa de l’Àguila.",
+    "Al final els estels esclaten com a supernoves i les ones de l’explosió escombren el gas. A l’ordinador passa en segons el que a l’espai triga milions d’anys."
+   ]
+  }
  ]
 }

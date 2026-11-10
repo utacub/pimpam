@@ -31,7 +31,7 @@ function ctx(){const calls=[],fills=[],gradient={addColorStop(){}};return new Pr
 test('EN07 is still El taller de vehicles, creative, recorded, in the folder of choosing and creating, heavy to load; the old drawing of it is gone and three.js travels inside the single file',()=>{
  const row=SCAN_ACTIVITIES.find(a=>a.id==='vehicles');assert.ok(row);assert.equal(row.code,'EN07');assert.equal(row.name,'El taller de vehicles');assert.equal(row.task,'creative');assert.equal(row.recorded,true);assert.match(row.desc,/tres dimensions/);
  assert.equal(SCAN_ACTIVITIES.length,11);assert.ok(TL_BOARDS.includes('vehicles'));
- const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.(5[4-9]|6[0-9])/);
+ const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.(5[4-9]|[6-9][0-9])/);
  for(const name of ['vhPressStart','vhRetime','vhSettings','vhAirUpdate','vhAirStop'])assert.match(app,new RegExp(`function ${name}\\(`),name);
  const art=read('../dist/scan-art.js');assert.doesNotMatch(art,/Svehicle|vehicle-body|vehicle-wheels|vehicle-top/);assert.match(art,/vhBoard\(c,w,h,state,game,s/);assert.match(art,/vhResult\(c,w,h,state,game,s/);
  const build=read('../build_standalone.py');assert.match(build,/'vehicles\.js','vehicles-so\.js','vehicles-3d\.js','vehicles-art\.js'/);assert.match(build,/three-taller\.js/);assert.match(build,/startswith\('\/\/ three\.js'\)/);
@@ -267,7 +267,7 @@ test('no «Informació» panel since 0.60.3 (Marc: «és completament irrellevan
  assert.match(CARD_IMG.vehicles||'',/^data:image\/jpeg;base64,\/9j\//);
  assert.match(read('../production/info/make_info.py'),/'vehicles'/);
  const act=read('../ACTIVITATS.md');assert.match(act,/\| EN07 \| El taller de vehicles \| Composició creativa \| \(Refeta del tot a la 0\.53/);
- assert.match(read('../package.json'),/"version":\s*"0\.(5[4-9]|6[0-9])/);});
+ assert.match(read('../package.json'),/"version":\s*"0\.(5[4-9]|[6-9][0-9])/);});
 test('the finale of a corner (0.60): the fourth vehicle ends with the parade of the vehicles made in the corner, with its own phase, time, route, music and flat drawing',()=>{
  assert.deepEqual(VH_PARADE,{curt:9,mitja:12,llarg:15});assert.equal(VH_PARADE_GAP,150);assert.equal(vhParadeTime(S()),12);assert.equal(vhParadeTime(S({vhRide:'curt'})),9);
  for(let r=0;r<40;r++)assert.equal(vhFinale(r,S()),r%4===3,`round ${r}`);assert.equal(vhFinale(null,S()),false);assert.equal(vhFinale(undefined,S()),false);assert.equal(vhFinale(3,S({vhCorner:'bany'})),true);

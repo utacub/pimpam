@@ -7,7 +7,7 @@ import {lbmProgramsList} from './bombolles-lbm.js';
 import {gasProgramsList} from './bombolles-gas.js';
 import {glLoadShare,glAdapt} from './carrega.js';
 import {escWaitClock,ESC_WAIT_START} from './escenari.js';
-import {bbStim} from './bombolles.js';
+import {bbStim,bbFade} from './bombolles.js';
 const BBR={st:{scale:1,ema:16,slow:0,fast:0,last:0},fixed:0};
 // the loading cover: the programs of the pictures and of the liquid solver, compiled together (1 without WebGL2)
 const bbPrograms=()=>{const list=bmbProgramsList();return list.length?[...list,...lbmProgramsList(BMB.gl),...gasProgramsList(BMB.gl)]:list;};
@@ -27,8 +27,11 @@ export function bbDraw(c,w,h,G,s,preview=false){const F=G?.bombolles,cv=c.canvas
  if(!F.S||F.k===0)F.AR=W/Math.max(1,H);
  if(!F.S){c.restore();return;}
  const scale=glAdapt(BBR.st,BBR.fixed,'bubbles'),rw=Math.max(64,Math.round(W*scale)),rh=Math.max(36,Math.round(H*scale));
+ // a way out that lasts too long fades to black (bbFade), and between two matters nothing is drawn
+ const fade=bbFade(F);if(fade>=.999){c.restore();return;}
  if(!bmbSetup(rw,rh)||!bmbBegin(F.S.t)){c.restore();return;}
  bmbRopeReset();bbStim(F).pinta(F.S);bmbEnd(F.S.post||{});
  c.imageSmoothingEnabled=true;c.drawImage(bmbCanvas(),0,0,rw,rh,0,0,W,H);
+ if(fade>.001){c.fillStyle=`rgba(0,0,0,${fade.toFixed(3)})`;c.fillRect(0,0,W,H);}
  if(s?.waitCue!==false&&F.phase!=='out'&&F.phase!=='black'){const wk=escWaitClock(F.wait||ESC_WAIT_START,F.t),dark=(wk.dark||0)*BB_DARK;if(dark>.005){c.fillStyle=`rgba(0,0,0,${dark.toFixed(3)})`;c.fillRect(0,0,W,H);}}
  c.restore();}

@@ -2,6 +2,8 @@
 // The motion is not drawn: it is the liquid solver (bombolles-lbm.js), water and air with surface tension (Navier–Stokes with a
 // phase field, Fakhari et al., 2017). A press only opens nozzles outside the screen (water comes out for a while at a speed that
 // slows down, and the nozzle is then cut), pushes a little ink through a syringe into a drop, or fires the thruster of the cabin.
+// Since 0.70 every nozzle pours water already coloured with one of the three fluorescent inks (Marc, 10 November 2026: much more
+// colour), so each ball has a colour of its own and the colours swirl together when balls merge.
 // What the water does then comes from the equations: a squirt gathers into a ball (surface tension), two balls that meet merge and
 // wobble (the bigger, the slower), a fast collision throws small drops, the ink is carried in mushrooms by the flow inside the drop,
 // and when the cabin accelerates everything falls out through one side, bent by the air that holds it back.
@@ -48,8 +50,9 @@ const INK=[[1,0,0,1],[0,1,0,1],[0,0,1,1]];
 export function aigPress(S,k,P=S.P){const r=S.rnd,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;const c=(x,y)=>lqCell(S,x,y),AR=S.AR,big=lqBig(S),lap=S.lap;
  if(role==='arriba'){// two squirts from opposite edges that meet: one ball at rest (the first one left of the middle, the second right)
   const p=k===1?[AR*(.36+.06*r()),.45+.12*r()]:[AR*(.66+.05*r()),.4+.2*r()],T=c(...p);
-  if((k+lap+S.e0)%2===0){lqNozzle(S,0,p[1],T,{dur:2.6+.4*r()});lqNozzle(S,2,p[1]+(r()-.5)*.1,T,{dur:2.6+.4*r()});}
-  else{lqNozzle(S,1,p[0]/AR,T,{dur:2.4+.4*r(),r:12});lqNozzle(S,3,p[0]/AR+(r()-.5)*.1,T,{dur:2.4+.4*r(),r:12});}
+  const d1=INK[(k+lap)%3],d2=INK[(k+lap+1)%3];
+  if((k+lap+S.e0)%2===0){lqNozzle(S,0,p[1],T,{dur:2.6+.4*r(),dye:d1});lqNozzle(S,2,p[1]+(r()-.5)*.1,T,{dur:2.6+.4*r(),dye:d2});}
+  else{lqNozzle(S,1,p[0]/AR,T,{dur:2.4+.4*r(),r:12,dye:d1});lqNozzle(S,3,p[0]/AR+(r()-.5)*.1,T,{dur:2.4+.4*r(),r:12,dye:d2});}
   S.ev.push({t:S.t,type:'entra',x:p[0]/AR});return;}
  if(role==='creix'){
   // ink into the biggest drops (a syringe: a little water with ink, pushed in), and more water: aimed at the emptiest place (or, one
@@ -57,13 +60,13 @@ export function aigPress(S,k,P=S.P){const r=S.rnd,role=bmbRole(k,P);S.k=k;S.P=P;
   const ink=big.slice(0,1+(k%2));ink.forEach((b,i)=>lqSyringe(S,b,INK[(k+i+lap)%3]));if(ink.length)S.ev.push({t:S.t,type:'tinta',x:lqScrX(S,ink[0].x)});
   const tgt=(k%3===2&&big.length)?[big[0].x,big[0].y]:(()=>{const g=lqGap(S);return [g.x,g.y];})();
   const e=lqEdge(S),u=e===0||e===2?1-(tgt[1]-S.my)/S.Hs:(tgt[0]-S.mx)/S.Ws;
-  lqNozzle(S,e,Math.min(.9,Math.max(.1,u+(r()-.5)*.15)),tgt,{dur:1.3+1.1*r(),r:8+4*r(),U:.06+.02*r()});
+  lqNozzle(S,e,Math.min(.9,Math.max(.1,u+(r()-.5)*.15)),tgt,{dur:1.3+1.1*r(),r:8+4*r(),U:.06+.02*r(),dye:INK[(k+lap+2)%3]});
   // and, now and then, a fast thin squirt across: it breaks into small drops when it hits
-  if(k%3===0)lqNozzle(S,(e+2)%4,.25+.5*r(),tgt,{dur:1.2,r:5,U:.085,delay:.4});
+  if(k%3===0)lqNozzle(S,(e+2)%4,.25+.5*r(),tgt,{dur:1.2,r:5,U:.085,delay:.4,dye:INK[(k+lap)%3]});
   S.ev.push({t:S.t,type:'entra',x:lqScrX(S,tgt[0])});return;}
  if(role==='ple'){// squirts from the four edges at once, at the biggest drops and at the emptiest places: they crash and merge, plus ink
-  for(let e=0;e<4;e++){const b=big[e%Math.max(1,Math.min(3,big.length))],g=lqGap(S),T=e<2&&b?[b.x,b.y]:[g.x,g.y];lqNozzle(S,e,.25+.5*r(),T,{dur:2.2+.8*r(),r:10+4*r(),U:.07+.015*r(),delay:.2*e});}
-  const g=lqGap(S);lqNozzle(S,(S.e0+1)%4,.5,[g.x,g.y],{dur:2,r:9,delay:1.2});
+  for(let e=0;e<4;e++){const b=big[e%Math.max(1,Math.min(3,big.length))],g=lqGap(S),T=e<2&&b?[b.x,b.y]:[g.x,g.y];lqNozzle(S,e,.25+.5*r(),T,{dur:2.2+.8*r(),r:10+4*r(),U:.07+.015*r(),delay:.2*e,dye:INK[(e+lap)%3]});}
+  const g=lqGap(S);lqNozzle(S,(S.e0+1)%4,.5,[g.x,g.y],{dur:2,r:9,delay:1.2,dye:INK[(lap+1)%3]});
   big.slice(0,3).forEach((b,i)=>lqSyringe(S,b,INK[i]));S.ev.push({t:S.t,type:'ple'});return;}
  // the way out: the cabin accelerates (a thruster), so in the cabin everything falls towards one side, faster and faster, and leaves
  // the screen through it, bent by the air that holds it back

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {BB_CAUSE,BB_STIMS,BB_IDS,BB_MUSIC,BB_BLACK,bbStart,bbPress,bbTick,bbBlocked,bbStatus,bbProgress,bbHelp,bbPhrase,bbEvents,bbRate,bbStim} from '../dist/bombolles.js';
+import {BB_CAUSE,BB_STIMS,BB_IDS,BB_MUSIC,BB_BLACK,BB_FULL,BB_OUT_FADE,BB_OUT_MAX,bbFade,bbStart,bbPress,bbTick,bbBlocked,bbStatus,bbProgress,bbHelp,bbPhrase,bbEvents,bbRate,bbStim} from '../dist/bombolles.js';
 import {bmbRole} from '../dist/bombolles-sabo.js';
 import {EXTRA_CAUSES} from '../dist/cause-catalog.js';
 import {SAMPLE_BANK} from '../dist/sampler.js';
@@ -11,8 +11,8 @@ const S={bbPresses:8,bbFirst:'sabo',lock:true,sound:true,waitCue:true};
 function run(g,s,secs,gap=1e9,on){let t=0,next=gap;while(t<secs){if(t>=next){if(!bbBlocked(g,s))bbPress(g,s);next=t+gap;}bbTick(g,s,1/30);t+=1/30;on?.(g.bombolles);}}
 const until=(g,s,cond,max=60)=>{let t=0;while(!cond(g.bombolles)&&t<max){bbTick(g,s,1/30);t+=1/30;}return t;};
 
-test('Bombolles sense pes takes the id and the code of Bombolles de sabó (0.63), and the old one is gone',()=>{
- assert.equal(BB_CAUSE.id,'bubbles');assert.equal(BB_CAUSE.code,'CE05');assert.equal(BB_CAUSE.name,'Bombolles sense pes');assert.ok(BB_CAUSE.bombolles&&BB_CAUSE.recorded);
+test('Bombolles sense pes (0.63; «Laboratori de matèria» since 0.70) takes the id and the code of Bombolles de sabó, and the old one is gone',()=>{
+ assert.equal(BB_CAUSE.id,'bubbles');assert.equal(BB_CAUSE.code,'CE05');assert.equal(BB_CAUSE.name,'Laboratori de matèria');assert.ok(BB_CAUSE.bombolles&&BB_CAUSE.recorded);
  assert.ok(!EXTRA_CAUSES.some(x=>x.id==='bubbles'));assert.deepEqual(BB_IDS,['sabo','plasma','aigua','fum','lava','ferro','oli','nebulosa']);
  for(const m of BB_STIMS)for(const f of ['nou','prem','pas','pinta','buit'])assert.equal(typeof m[f],'function',m.id+' '+f);});
 
@@ -30,8 +30,15 @@ test('the arc of a matter: in from an edge, growth, the full moment, the way out
    if(k<P){assert.equal(F.phase,'run');assert.equal(bbPress(g,s),false,'locked during the phrase');until(g,s,F=>F.phase==='rest');assert.equal(F.wait.mode,'wait');}
    else assert.equal(role,'surt');}
   assert.equal(F.phase,'out');assert.ok(bbBlocked(g,s));assert.equal(bbPress(g,s),false);
-  const out=until(g,s,F=>F.phase==='black',40);assert.ok(out<26,`out in ${out.toFixed(1)} s`);assert.ok(bbStim(F).buit(F.S)||out>=25);
+  const out=until(g,s,F=>F.phase==='black',40);assert.ok(out<=BB_OUT_MAX+.1,`out in ${out.toFixed(1)} s`);assert.ok(bbStim(F).buit(F.S)||out>=BB_OUT_MAX-.1);
   until(g,s,F=>F.phase==='rest',5);assert.equal(F.i,1);assert.equal(F.k,0);assert.equal(g.count,0);assert.equal(F.S,null);assert.equal(F.matters,1);}});
+
+test('no way out is long (Marc, 10 November 2026): every matter is black at most BB_OUT_MAX s after its last press, fading from BB_OUT_FADE',()=>{
+ assert.ok(BB_OUT_FADE<BB_OUT_MAX&&BB_OUT_MAX<=BB_FULL+1);
+ for(const id of BB_IDS){const s={...S,bbPresses:4,bbFirst:id},g={};bbStart(g,s);const F=g.bombolles;
+  for(let k=1;k<=4;k++){assert.ok(bbPress(g,s),`${id} press ${k}`);if(k<4)until(g,s,F=>F.phase==='rest');}
+  assert.equal(F.phase,'out');assert.equal(bbFade(F),0);until(g,s,F=>F.t-F.at>=BB_OUT_FADE-.05||F.phase!=='out',10);if(F.phase==='out')assert.ok(bbFade(F)<.01,id);
+  const out=until(g,s,F=>F.phase==='black',20);assert.ok(out<=BB_OUT_MAX-BB_OUT_FADE+.15,`${id}: black ${out.toFixed(2)} s after the fade began`);assert.equal(bbFade(F),1);}});
 
 test('after the last matter the first one comes back with its second palette, at any rhythm of presses',()=>{
  for(const gap of [.4,3]){const s={...S,bbPresses:4},g={};bbStart(g,s);const seen=new Set();run(g,s,600,gap,F=>seen.add(F.i));const F=g.bombolles;

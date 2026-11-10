@@ -1,3 +1,31 @@
+# Pim Pam 0.70 · «Laboratori de matèria»: nom nou, «Informació», més color a l’aigua i finals curts
+
+Base: 0.69 (commit d6d7a87, publicada). Respon als missatges d’en Marc del 10 de novembre de 2026 entre les 22:07 i les 22:19 (hora de Catalunya).
+
+## Què canvia
+
+- **Nom nou.** «Bombolles sense pes» es diu ara **«Laboratori de matèria»** («Ara hi ha moltes més coses que bombolles»). Conserva l’identificador `bubbles`, el codi CE05, el lloc a «Formes, llum i música» i els ajustos. Canvien la fitxa (`BB_CAUSE` a `dist/bombolles.js`), la descripció de la carpeta, el text del fons als ajustos i `ACTIVITATS.md`.
+- **«Informació».** L’activitat té ara el botó ⓘ, amb una fitxa per a cada matèria en l’ordre de l’activitat: el nom, una imatge de la simulació i tres línies planeres sobre el fenomen físic (pel·lícules primes i angles de 120° a les bombolles, ruptura dielèctrica al plasma, tensió superficial sense gravetat a l’aigua, anells de remolí al fum, convecció a la làmpada de lava, inestabilitat de camp normal al ferrofluid, digitació viscosa a l’oli i aigua, regions ionitzades i pilars a la nebulosa). Com a les altres fitxes, sense cites; les fonts són a sota. La capçalera diu «No són dibuixos sinó simulacions…» en lloc de «Són dibuixos…». Dades a `production/info/escenes.json`, imatges `production/info/img/bubbles_01…08.jpg` (fotogrames de les revisions de cada simulació), regenerat amb `make_info.py`.
+- **«Esferes d’aigua» amb molt més color.** Abans l’aigua era transparent i només la tinta d’unes xeringues la tenyia a taques. Ara cada broc tira aigua ja tenyida amb una de les tres tintes fluorescents de la paleta, de manera que cada bola té el seu color i, quan dues boles s’ajunten, els colors s’arremolinen junts pel corrent de dins. El moviment no canvia: la tinta és un colorant passiu que segueix el flux.
+- **Cap final llarg.** Algunes matèries (el ferrofluid, que deixa un bassal visible; l’aigua, l’oli i la nebulosa, amb restes que triguen a sortir) no arribaven mai a «buit» i esperaven el límit de 25 s. Ara, per a totes vuit: 4,5 s després de l’última pulsació el que encara es veu es fon a negre en 2,5 s, i als 7 s ve la matèria següent (`BB_OUT_FADE`, `BB_OUT_MAX`, `bbFade`). Si una matèria es buida abans, passa abans, com fins ara.
+- **Proves:** `tests/bombolles.test.mjs` comprova, per a cadascuna de les vuit matèries, que la fosa no comença abans de 4,5 s i que el negre arriba com a molt als 7 s; `tests/info.test.mjs` comprova les vuit fitxes amb els noms de l’activitat i la capçalera de simulació. També s’arregla `tools/bombolles-fisica.mjs` (la volta es passava a la pàgina amb `process.env`, que el navegador no té).
+- **No verificat:** l’aspecte i la velocitat en una targeta gràfica real (la revisió s’ha fet amb el processador) i l’auditoria de flaixos (no demanada). Que el nom nou sigui el millor és una proposta: es pot canviar sense tocar res més.
+
+## Referències de les fitxes d’«Informació»
+
+- Cowley, M. D., & Rosensweig, R. E. (1967). The interfacial stability of a ferromagnetic fluid. *Journal of Fluid Mechanics, 30*(4), 671–688. https://doi.org/10.1017/S0022112067001697
+- Culick, F. E. C. (1960). Comments on a ruptured soap film. *Journal of Applied Physics, 31*(6), 1128–1129.
+- Hester, J. J., Scowen, P. A., Sankrit, R., Lauer, T. R., Ajhar, E. A., Baum, W. A., Code, A., Currie, D. G., Danielson, G. E., Ewald, S. P., Faber, S. M., Grillmair, C. J., Groth, E. J., Holtzman, J. A., Hunter, D. A., Kristian, J., Light, R. M., Lynds, C. R., Monet, D. G., … Westphal, J. A. (1996). Hubble Space Telescope WFPC2 imaging of M16: Photoevaporation and emerging young stellar objects. *The Astronomical Journal, 111*, 2349–2360. https://doi.org/10.1086/117968
+- Homsy, G. M. (1987). Viscous fingering in porous media. *Annual Review of Fluid Mechanics, 19*, 271–311. https://doi.org/10.1146/annurev.fl.19.010187.001415
+- Lim, T. T., & Nickels, T. B. (1992). Instability and reconnection in the head-on collision of two vortex rings. *Nature, 357*, 225–227. https://doi.org/10.1038/357225a0
+- Niemeyer, L., Pietronero, L., & Wiesmann, H. J. (1984). Fractal dimension of dielectric breakdown. *Physical Review Letters, 52*(12), 1033–1036. https://doi.org/10.1103/PhysRevLett.52.1033
+- Osterbrock, D. E., & Ferland, G. J. (2006). *Astrophysics of gaseous nebulae and active galactic nuclei* (2a ed.). University Science Books.
+- Raizer, Y. P. (1991). *Gas discharge physics*. Springer.
+- Rosensweig, R. E. (1985). *Ferrohydrodynamics*. Cambridge University Press.
+- Saffman, P. G. (1992). *Vortex dynamics*. Cambridge University Press. https://doi.org/10.1017/CBO9780511624063
+- Saffman, P. G., & Taylor, G. I. (1958). The penetration of a fluid into a porous medium or Hele-Shaw cell containing a more viscous liquid. *Proceedings of the Royal Society of London. Series A, 245*(1242), 312–329. https://doi.org/10.1098/rspa.1958.0085
+- Weaire, D., & Hutzler, S. (1999). *The physics of foams*. Oxford University Press.
+
 # Pim Pam 0.69 · Bombolles sense pes: el «Plasma» simulat de debò
 
 Base: 0.68 (commit 3f640e2, publicada). Tanca la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar d’acord amb les lleis de la física. Amb aquesta versió, les vuit matèries de «Bombolles sense pes» són simulacions.

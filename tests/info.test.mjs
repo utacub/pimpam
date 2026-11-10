@@ -9,7 +9,7 @@ import {SELVA_NAMES} from '../dist/selva.js';
 import {SABANA_NAMES} from '../dist/sabana.js';
 import {POU_NAMES} from '../dist/pou.js';
 import {GG_NAMES} from '../dist/gegants.js';
-const expected={jelly:20,jungle:20,savanna:20,well:21,pot:11,castells:11,orchestra:6,sounds:8,sources:9,giants:20,pinta:5,masia:6,viatge:7,encaix:20,fira:5,flower:20,'color-rain':20};
+const expected={jelly:20,jungle:20,savanna:20,well:21,pot:11,castells:11,orchestra:6,sounds:8,sources:9,giants:20,pinta:5,masia:6,viatge:7,encaix:20,fira:5,flower:20,'color-rain':20,bubbles:8};
 test('each dive has every scene, with a picture and one to three short lines',()=>{
   assert.deepEqual(Object.keys(SCENE_INFO).sort(),Object.keys(expected).sort());
   for(const [id,n] of Object.entries(expected)){
@@ -25,6 +25,14 @@ test('each dive has every scene, with a picture and one to three short lines',()
   }
 });
 test('every panel has its heading',()=>{for(const id of Object.keys(expected))assert.ok(SCENE_INFO_HEAD[id]?.length>10,id);});
+// 0.70: the panel of the Laboratori de matèria (Marc, 10 November 2026: «una Informació que expliqués quin fenòmen físic està simulant»): one card for
+// each matter, with its name, in the order of the activity; its pictures are simulations, and the heading says so instead of «Són dibuixos».
+test('the Laboratori de matèria has one card for each matter, and says that its pictures are simulations',async()=>{
+  const {BB_STIMS}=await import('../dist/bombolles.js');
+  assert.deepEqual(SCENE_INFO.bubbles.map(s=>s.t),BB_STIMS.map(x=>x.name));
+  const src=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
+  assert.match(src,/\$\{it\.bombolles\?'No són dibuixos sinó simulacions/);
+});
 test('the scene titles follow the activity names',()=>{
   const names={jelly:FONS_NAMES,jungle:SELVA_NAMES,savanna:SABANA_NAMES,well:POU_NAMES,giants:GG_NAMES};
   for(const [id,list] of Object.entries(names))list.slice(0,20).forEach((n,i)=>assert.equal(SCENE_INFO[id][i].t,n,`${id} ${i+1}`));
