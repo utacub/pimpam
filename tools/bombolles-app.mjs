@@ -32,7 +32,7 @@ if(/paused/.test(await phase())){await press();await page.waitForTimeout(800);}
 console.log('start',await phase(),'|',await status());await shot('03_inici');
 for(let k=1;k<=4;k++){await until(/rest/);await press();await page.waitForTimeout(k===3?5000:2500);await shot(`04_pulsacio_${k}`);console.log('press',k,await phase(),'|',await status());}
 console.log('out:',await until(/black|rest/,120000),'|',await status());await shot('05_negre');
-await until(/rest/);console.log('next',await status());await press();await page.waitForTimeout(2500);await shot('06_mel_1');console.log('press',await phase(),'|',await status());
+await until(/rest/);console.log('next',await status());await press();await page.waitForTimeout(2500);await shot('06_seguent_1');console.log('press',await phase(),'|',await status());
 const log=await page.evaluate(()=>window.__pimpamSoundLog.filter(x=>x.op==='play').map(x=>x.event?.inst));const by={};for(const i of log)by[i]=(by[i]||0)+1;
 console.log('notes',log.length,JSON.stringify(by));console.log('recordings started',await page.evaluate(()=>window.__bbRec));
 console.log('errors',errors.length);for(const e of errors.slice(0,8))console.log(' ',e.slice(0,300));await browser.close();

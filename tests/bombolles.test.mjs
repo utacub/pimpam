@@ -13,12 +13,14 @@ const until=(g,s,cond,max=60)=>{let t=0;while(!cond(g.bombolles)&&t<max){bbTick(
 
 test('Bombolles sense pes takes the id and the code of Bombolles de sabó (0.63), and the old one is gone',()=>{
  assert.equal(BB_CAUSE.id,'bubbles');assert.equal(BB_CAUSE.code,'CE05');assert.equal(BB_CAUSE.name,'Bombolles sense pes');assert.ok(BB_CAUSE.bombolles&&BB_CAUSE.recorded);
- assert.ok(!EXTRA_CAUSES.some(x=>x.id==='bubbles'));assert.deepEqual(BB_IDS,['sabo','mel','plasma','aigua','fum','ferro','oli','nebulosa']);
+ assert.ok(!EXTRA_CAUSES.some(x=>x.id==='bubbles'));assert.deepEqual(BB_IDS,['sabo','plasma','aigua','fum','ferro','oli','nebulosa']);
  for(const m of BB_STIMS)for(const f of ['nou','prem','pas','pinta','buit'])assert.equal(typeof m[f],'function',m.id+' '+f);});
 
 test('its settings: 4, 8 or 12 presses of each matter (8 by default) and the first matter',()=>{
  assert.equal(defaults.bbPresses,8);assert.equal(defaults.bbFirst,'sabo');
  assert.throws(()=>validateProfile({...defaults,bbPresses:6}));assert.throws(()=>validateProfile({...defaults,bbFirst:'foc'}));
+ // Mel i caramel is gone (0.63.1): a profile saved with it as the first matter starts with the soap bubbles
+ assert.equal(validateProfile({...defaults,bbFirst:'mel'}).bbFirst,'sabo');
  for(const P of [4,8,12])assert.equal(validateProfile({...defaults,bbPresses:P}).bbPresses,P);
  const g={};bbStart(g,{...S,bbFirst:'fum'});assert.equal(bbStim(g.bombolles).id,'fum');});
 
@@ -31,9 +33,9 @@ test('the arc of a matter: in from an edge, growth, the full moment, the way out
   const out=until(g,s,F=>F.phase==='black',40);assert.ok(out<26,`out in ${out.toFixed(1)} s`);assert.ok(bbStim(F).buit(F.S)||out>=25);
   until(g,s,F=>F.phase==='rest',5);assert.equal(F.i,1);assert.equal(F.k,0);assert.equal(g.count,0);assert.equal(F.S,null);assert.equal(F.matters,1);}});
 
-test('after the eighth matter the first one comes back with its second palette, at any rhythm of presses',()=>{
+test('after the last matter the first one comes back with its second palette, at any rhythm of presses',()=>{
  for(const gap of [.4,3]){const s={...S,bbPresses:4},g={};bbStart(g,s);const seen=new Set();run(g,s,600,gap,F=>seen.add(F.i));const F=g.bombolles;
-  assert.equal(seen.size,8);assert.ok(F.matters>=8,`${F.matters} matters`);assert.ok(F.lap>=1);}});
+  assert.equal(seen.size,BB_STIMS.length);assert.ok(F.matters>=BB_STIMS.length,`${F.matters} matters`);assert.ok(F.lap>=1);}});
 
 test('without «Espera que acabi cada efecte» a press during a phrase is taken, and the notes of the phrase not yet sent are left out',()=>{
  const s={...S,lock:false},g={};bbStart(g,s);bbPress(g,s);bbTick(g,s,.3);const F=g.bombolles,before=F.notes.filter(n=>!n.sent).length;assert.ok(before>0);
@@ -76,7 +78,7 @@ test('in the app: the folder «Formes, llum i música» after Pluja de colors, o
  assert.match(app,/if\(item\.bombolles\)bbStart\(game,settings\)/);assert.match(app,/game\?\.bombolles\?bbBlocked\(game,settings\):/);assert.match(app,/pjSilence\(\);bbSilence\(\);/);
  assert.match(app,/if\(game\.bombolles\)\{bbTick\(game,settings,Math\.min\(dt,100\)\/1000\);bbAudio\(game,settings,audio,master,/);
  assert.match(art,/if\(id==='bubbles'\)\{bbDraw\(c,w,h,game,s,preview\);return;\}/);
- const order=['bombolles-shaders.js','bombolles-motor.js','bombolles-sabo.js','bombolles-mel.js','bombolles-plasma.js','bombolles-aigua.js','bombolles-fum.js','bombolles-ferro.js','bombolles-oli.js','bombolles-nebulosa.js','bombolles.js','bombolles-escena.js'];
+ const order=['bombolles-shaders.js','bombolles-motor.js','bombolles-sabo.js','bombolles-plasma.js','bombolles-aigua.js','bombolles-fum.js','bombolles-ferro.js','bombolles-oli.js','bombolles-nebulosa.js','bombolles.js','bombolles-escena.js'];
  let at=-1;for(const f of order){const i=build.indexOf(`'${f}'`);assert.ok(i>at,f);at=i;}assert.ok(at<build.indexOf("'art.js'"));
  const {CARD_IMG}=await import('../dist/info-escenes.js');assert.match(CARD_IMG.bubbles,/^data:image\/jpeg;base64,/);
  const {bbDraw,bbLoad,bbGlFailed}=await import('../dist/bombolles-escena.js');assert.equal(bbLoad(),1,'no WebGL outside the browser: nothing to wait for');assert.equal(bbGlFailed(),false);

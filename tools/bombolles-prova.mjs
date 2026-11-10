@@ -1,6 +1,6 @@
 // Bombolles sense pes: the style trial. Runs the real engine (dist/bombolles-*.js) in Chromium with a fixed sequence of presses (the
 // whole arc of a stimulus: black, arrival, growth, the full moment, the way out, black) at a fixed step, and writes still frames.
-// Usage: node tools/bombolles-prova.mjs OUTDIR sabo|mel [W H DPR] [lap]      (env BMB_SHOTS='[["name",seconds],…]', BMB_GAP, BMB_SEED)
+// Usage: node tools/bombolles-prova.mjs OUTDIR sabo|plasma|… [W H DPR] [lap]      (env BMB_SHOTS='[["name",seconds],…]', BMB_GAP, BMB_SEED)
 import {createRequire} from 'node:module';
 import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
@@ -8,7 +8,7 @@ const require=createRequire(import.meta.url);
 let playwright;try{playwright=require('playwright');}catch{playwright=require('/opt/node-tools/node_modules/playwright');}
 const root=fileURLToPath(new URL('..',import.meta.url));
 // the stimuli: name → the prefix of its functions (xNew, xPress, xStep, xDraw, xCover, xEmptyNow) and its module
-export const BMB_STIMS={sabo:['sbo','sabo'],mel:['mel','mel'],plasma:['pla','plasma'],aigua:['aig','aigua'],fum:['fum','fum'],ferro:['fer','ferro'],oli:['oli','oli'],nebulosa:['neb','nebulosa']};
+export const BMB_STIMS={sabo:['sbo','sabo'],plasma:['pla','plasma'],aigua:['aig','aigua'],fum:['fum','fum'],ferro:['fer','ferro'],oli:['oli','oli'],nebulosa:['neb','nebulosa']};
 import {existsSync} from 'node:fs';
 const have=Object.entries(BMB_STIMS).filter(([,v])=>existsSync(root+'dist/bombolles-'+v[1]+'.js'));
 export const BMB_MODULES=['bombolles-shaders.js','bombolles-motor.js',...have.map(([,v])=>'bombolles-'+v[1]+'.js')];

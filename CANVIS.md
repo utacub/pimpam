@@ -1,3 +1,12 @@
+# Pim Pam 0.63.1 · Bombolles sense pes, sense Mel i caramel
+
+Petició d’en Marc el 10 de novembre de 2026 a les 8:26 (hora de Catalunya), després de provar la 0.63: «El de la mel i el caramel ja el pot eliminar, crec que és irrecuperable». També diu que, fora de les bombolles de sabó, les altres matèries són «males animacions, no simulacions de fluids». Aquesta versió només treu la mel; les altres sis es refaran com a simulacions físiques en versions següents.
+
+- «Bombolles sense pes» passa de vuit a set matèries: bombolles de sabó, plasma, esferes d’aigua, anells de fum, ferrofluid, oli i aigua, i nebulosa. Després de la setena torna la primera amb la segona paleta.
+- Fora el mòdul `dist/bombolles-mel.js` i la seva música.
+- Un perfil desat amb «Mel i caramel» com a primera matèria comença ara per les bombolles de sabó (no es perd la resta del perfil).
+- Proves: `tests/bombolles.test.mjs` amb set matèries i la prova del perfil antic. Comprovat a Chromium: la llista de primera matèria, l’arc de les bombolles amb 4 pulsacions i el pas al plasma, sense errors.
+
 # Pim Pam 0.63 · Bombolles sense pes, en lloc de Bombolles de sabó
 
 Base: 0.62 (commit a467e2e) amb la pàgina de prova de les vuit matèries (commit 4050cfc), publicades. Petició d’en Marc el 10 de novembre de 2026 a les 7:30 (hora de Catalunya): «No entenc per què no ho has publicat tot directament a Pim Pam, substituint l’activitat Bombolles de sabó». L’estil de les vuit matèries es va aprovar el 9 de novembre (les bombolles, «la mel hauria de ser més translúcida», «Dacord, segueix amb els altres»).
