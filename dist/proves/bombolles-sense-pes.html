@@ -1,0 +1,893 @@
+<!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bombolles sense pes · prova d'estil</title>
+<style>html,body{margin:0;height:100%;background:#000;overflow:hidden}canvas{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+#nota{position:fixed;left:16px;bottom:14px;font:15px/1.4 system-ui,sans-serif;color:#9a9a9a;transition:opacity 1.2s}#err{position:fixed;inset:0;display:none;place-items:center;color:#ddd;font:20px system-ui,sans-serif;text-align:center;padding:2em}</style></head>
+<body><div id="nota"><b id="nom">1 · Bombolles de sabó</b><br>Espai o clic: prem el commutador · tecles 1 a 8: tria l'estímul · P: 4, 8 o 12 pulsacions (ara <span id="np">8</span>)</div>
+<div id="err">Aquest navegador no pot dibuixar la prova (cal WebGL2 amb textures de coma flotant).</div>
+<script>(()=>{// Bombolles sense pes (CE06 'bubbles', made again in November 2026) · the shaders of the common engine (bombolles-motor.js).
+// Every stimulus is matter floating on black: the engine draws bodies (instanced quads: soap bubbles, the wall two bubbles share,
+// beads and droplets) and ropes (strips: honey streams, coils and threads) into a half-float picture in linear light, and a last
+// pass adds a soft glow and brings the picture to the screen. Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+// Soap film: the colour is the interference of light in a film of water of changing thickness (three wavelengths, the classic
+// sin² of the phase difference; a simplification of Belcour & Barla, 2017), on a thickness that swirls over the sphere.
+// Honey: light absorbed along the thickness (Beer–Lambert), a bright focus opposite the light and two long lights reflected.
+const BMB_VS_FULL=`#version 300 es
+layout(location=0) in vec2 aP;out vec2 vUv;void main(){vUv=aP*.5+.5;gl_Position=vec4(aP,0.,1.);}`;
+const BMB_VS_SPRITE=`#version 300 es
+layout(location=0) in vec2 aQ;layout(location=1) in vec4 aA;layout(location=2) in vec4 aB;layout(location=3) in vec4 aC;layout(location=4) in vec4 aD;layout(location=5) in vec4 aE;
+uniform float uAR,uPad;out vec2 vQ;flat out vec4 vA,vB,vC,vD,vE;
+void main(){vQ=aQ*uPad;vA=aA;vB=aB;vC=aC;vD=aD;vE=aE;vec2 p=aA.xy+vQ*aA.z;gl_Position=vec4(p.x/uAR*2.-1.,1.-p.y*2.,0.,1.);}`;
+// the thickness of the film and the light it catches, swirling: a few turns of folding the point of the sphere over itself
+const BMB_GLSL_FILM=`
+vec2 bmbMarble(vec3 P,float seed,float t){vec3 p=P*uFreq+vec3(seed*13.1,seed*7.7,seed*3.3);float a=1.;
+ for(int i=0;i<7;i++){p+=(.56/pow(a,.8))*sin(p.yzx*(1.25*a)+vec3(t*.23,t*.19,-t*.15)*sqrt(a)+seed*6.283);a*=1.55;}
+ float ph=(p.x*1.1+p.y*.8+p.z*1.3)*uBands,h=abs(fract(ph*.159155)*2.-1.);
+ float m=.5+.5*sin(p.y*1.5-p.z*1.2+p.x*.4+1.7+seed*9.);m*=.8+.2*sin(ph*5.+p.z*3.);m+=.1*pow(.5+.5*sin(ph*9.+p.y*4.),4.);
+ return vec2(h,m);}
+// (where only the red wavelength is reflected, part of it is given to the green: gold instead of a saturated red)
+vec3 bmbThin(float d,float c){vec3 ph=8.3566*d*c/vec3(650.,510.,475.);vec3 s=sin(ph);s*=s;s.g+=.55*s.r*(1.-s.b)*(1.-s.b)*(1.-s.g);return s;}
+vec3 bmbVivid(vec3 c,float k){float l=dot(c,vec3(.3,.5,.2));return max(vec3(0.),mix(vec3(l),c,k));}
+vec3 bmbTurn(vec3 p,float a,float b){float c=cos(a),s=sin(a);p=vec3(c*p.x+s*p.z,p.y,-s*p.x+c*p.z);c=cos(b);s=sin(b);return vec3(p.x,c*p.y-s*p.z,s*p.y+c*p.z);}
+// the colour of the film at a point of the sphere: n = normal, cz = cosine of the angle of view, k = how much of it is there (0–1)
+vec3 bmbFilm(vec3 n,float cz,float seed,float t,float lit){vec2 m=bmbMarble(bmbTurn(n,t*.11+seed*5.,seed*3.+t*.07),seed,t);
+ float ct=mix(1.,sqrt(1.-(1.-cz*cz)/1.769),.55),d=mix(mix(uThick.x,uThick.y,m.x/uThick2.z),mix(uThick2.x,uThick2.y,(m.x-uThick2.z)/max(1e-3,1.-uThick2.z)),smoothstep(uThick2.z-.012,uThick2.z+.012,m.x))+(seed-.5)*uThick.z;
+ vec3 c=bmbVivid(bmbThin(d,ct),uSat);float band=smoothstep(uBand.x,uBand.y,m.y),fr=uF0+(1.-uF0)*pow(1.-cz,2.6);
+ return c*fr*(.035+1.3*band)*lit;}`;
+// A soap bubble. A = x, y, radius, seed · B = wobble (a2, φ2, a3, φ3) · C = alpha, hole angle (a burst opening), hole direction,
+// film time offset · D, E = planes that cut it where it shares a wall with another bubble (nx, ny, nz, distance / radius; w ≥ 9: none)
+const BMB_FS_BUBBLE=`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;uniform float uT,uPx,uFreq,uSat,uF0,uGain;uniform vec3 uThick,uThick2;uniform vec2 uBand;uniform float uBands;out vec4 o;
+${BMB_GLSL_FILM}
+float bmbWindow(vec3 r,vec3 L,float sz){float k=dot(r,L);if(k<=.05)return 0.;vec3 tx=normalize(cross(vec3(0.,1.,0.),L)),ty=cross(L,tx);float a=dot(r,tx)/k,b=dot(r,ty)/k;a+=b*.22;
+ float e=.1*sz,box=smoothstep(sz+e,sz-e,abs(a))*smoothstep(sz*.78+e,sz*.78-e,abs(b));return box*smoothstep(.015*sz,.07*sz,abs(a+.1*sz))*(.55+.45*smoothstep(sz,-sz,b));}
+void main(){float R=vA.z,seed=vA.w;vec2 q=vQ;float th=atan(q.y,q.x),rr=1.+vB.x*cos(2.*th-vB.y)+vB.z*cos(3.*th-vB.w);q/=rr;float r2=dot(q,q),aa=1.5/(R*uPx);
+ if(r2>1.+2.*aa){discard;}float r=sqrt(r2),edge=1.-smoothstep(1.-aa,1.+aa,r),z=sqrt(max(0.,1.-r2));vec3 nf=vec3(q,z),nb=vec3(q,-z);float kf=1.,kb=1.,sw=max(.012,2.*aa);
+ if(vD.w<9.){kf*=1.-smoothstep(-sw,sw,dot(nf,vD.xyz)-vD.w);kb*=1.-smoothstep(-sw,sw,dot(nb,vD.xyz)-vD.w);}
+ if(vE.w<9.){kf*=1.-smoothstep(-sw,sw,dot(nf,vE.xyz)-vE.w);kb*=1.-smoothstep(-sw,sw,dot(nb,vE.xyz)-vE.w);}
+ float hole=0.;if(vC.y>0.){vec3 b=normalize(vec3(cos(vC.z)*.62,sin(vC.z)*.62,.5));float af=acos(clamp(dot(nf,b),-1.,1.)),ab=acos(clamp(dot(nb,b),-1.,1.));
+  hole=kf*exp(-pow((af-vC.y)/.045,2.))+.6*kb*exp(-pow((ab-vC.y)/.045,2.));kf*=smoothstep(vC.y-.02,vC.y+.02,af);kb*=smoothstep(vC.y-.02,vC.y+.02,ab);}
+ float t=uT+vC.w;vec3 L=normalize(vec3(-.5,-.62,.6));
+ // the front film and the back film seen through it; each catches more light on the side it turns to the lamp
+ vec3 rf=vec3(2.*z*q,2.*z*z-1.),rb=vec3(-2.*z*q,2.*z*z-1.);float lf=.55+.75*max(0.,dot(rf,L)),lb=.5+.8*max(0.,dot(rb,L));
+ vec3 cf=bmbFilm(nf,z,seed,t,lf),cb=bmbFilm(nb,z,seed+.37,t,lb);vec3 col=cf*kf+cb*kb*.72;
+ // the rim, where the film is seen edge-on, and the two reflections of the window (the back one smaller and upside down)
+ float rim=smoothstep(.93,.995,r);col+=(cf+cb+vec3(.06))*rim*rim*1.1*max(kf,kb);
+ vec3 W=normalize(vec3(.62,-.66,.42));float w1=bmbWindow(rf,W,.44)*kf,w2=bmbWindow(rb,W,.3)*kb;
+ col+=(vec3(1.,.88,.96)+cf*1.5)*w1*.95+(vec3(.9,.85,1.)+cb)*w2*.3;col+=vec3(1.,.95,.9)*hole*2.2;
+ o=vec4(col*uGain*vC.x*edge,0.);}`;
+// The wall two joined bubbles share: a disc seen at an angle. A = x, y, radius, seed · B = normal (x, y, z), alpha · C = film time offset
+const BMB_FS_WALL=`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;uniform float uT,uPx,uFreq,uSat,uF0,uGain;uniform vec3 uThick,uThick2;uniform vec2 uBand;uniform float uBands;out vec4 o;
+${BMB_GLSL_FILM}
+void main(){vec3 m=vB.xyz;float mz=max(.08,abs(m.z));vec2 d=vQ;float zz=-(m.x*d.x+m.y*d.y)/(m.z>=0.?mz:-mz);vec3 P=vec3(d,zz);float r=length(P),aa=1.5/(vA.z*uPx)/mz;if(r>1.+2.*aa){discard;}
+ float edge=1.-smoothstep(1.-aa,1.+aa,r);vec3 c=bmbFilm(normalize(P+m*.6),mz,vA.w,uT+vC.x,1.);float ring=smoothstep(.8,.985,r);
+ o=vec4((c*(.35+.9*(1.-mz))+(c+vec3(.08))*ring*ring*1.9)*uGain*vB.w*edge,0.);}`;
+// A droplet or a spark: A = x, y, radius · B = colour (linear), alpha
+const BMB_FS_DOT=`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;uniform float uPx;out vec4 o;
+void main(){float r=length(vQ),aa=1.5/(vA.z*uPx);if(r>1.+aa){discard;}float e=1.-smoothstep(1.-aa,1.+aa,r),z=sqrt(max(0.,1.-r*r));
+ float sp=pow(max(0.,dot(normalize(vec3(vQ,z)),normalize(vec3(-.45,-.55,.7)))),24.);o=vec4((vB.rgb*(.25+.9*smoothstep(.55,1.,r))+vec3(1.)*sp*1.5)*vB.a*e,0.);}`;
+// Honey, caramel and syrup: the same matter for the ropes and the beads.
+// n = normal (z to the eye), tk = thickness along the view (0–1), st = (across, along) for the streaks inside, sh = 0 deep in a pile …
+// 1 on top, T = direction of the rope (0 for a bead): the lights stretch along it.
+const BMB_GLSL_HONEY=`
+uniform vec3 uSig,uGlow,uSpecCol;uniform float uT,uDepth,uOpac,uPass;
+// A liquid is drawn twice: first it filters what is under it (uPass 0: each colour passes through the thickness as it does through
+// the liquid itself, so what is seen through a rope is deeper and redder, and thin edges filter almost nothing), then it adds its own light
+// (uPass 1).
+vec3 bmbThrough(float tk,float sh,float tint){return .97*exp(-(uSig*mix(1.15,.8,tint)+.16)*tk*uDepth*mix(1.7,1.,sh)*uOpac);}
+float bmbH21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float bmbVn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(bmbH21(i),bmbH21(i+vec2(1.,0.)),f.x),mix(bmbH21(i+vec2(0.,1.)),bmbH21(i+vec2(1.,1.)),f.x),f.y);}
+vec3 bmbAlong(vec3 v,vec3 T){return normalize(v-T*dot(v,T));}
+vec3 bmbHoney(vec3 n,float tk,vec2 st,float sh,vec3 T,float tint){
+ vec3 Lk=normalize(vec3(-.5,-.62,.6)),Lr=normalize(vec3(.7,.45,.55)),V=vec3(0.,0.,1.);float rope=step(.5,dot(T,T));
+ // what is seen through the liquid: a rope of liquid is a lens, and the lamps behind it show on its far side, bent and broken
+ // into streaks that travel with the flow; the rest of the inside is the dim light that wanders in the liquid
+ float s1=bmbVn(vec2(st.y*.22,st.x*1.6+3.)),s2=bmbVn(vec2(st.y*.9+7.,st.x*4.)),wv=s1*s2-.25,lens=mix(.8,2.3,bmbVn(vec2(st.y*.11+tint*7.,5.3)));
+ float si=min(length(n.xy),.999),dl=min(2.6,2.*(asin(si)-asin(si/1.45))*lens);vec2 nh=n.xy/max(si,1e-4);vec3 E=vec3(-nh*sin(dl),-cos(dl));
+ vec3 B1=normalize(vec3(-.62,-.7,-.35)),B2=normalize(vec3(.75,.5,-.42));B1=normalize(mix(B1,bmbAlong(B1,T),.55*rope));B2=normalize(mix(B2,bmbAlong(B2,T),.55*rope));
+ float f1=dot(E,B1)+.3*wv,f2=dot(E,B2)+.25*wv,light=.08+.1*s1+.32*smoothstep(.2,.95,f1)+3.*smoothstep(.85,.95,f1)*(.55+.9*s2)+1.*smoothstep(.87,.96,f2);
+ // the colour: pale where the liquid is thin, deep where it is thick or lies under other turns
+ vec3 sig=uSig*mix(1.15,.8,tint);float dens=uDepth*mix(1.7,1.,sh);vec3 col=uGlow*exp(-sig*tk*dens)*light*mix(.3,1.,sh);
+ // a darker line just inside the edge (the black around, bent by the liquid) and the bright thin edge itself
+ float fr=pow(1.-n.z,3.);float dkb=smoothstep(.3,.72,1.-n.z)*(1.-smoothstep(.78,.96,1.-n.z));col*=1.-dkb*vec3(.28,.58,.75);col+=uGlow*vec3(.5,.3,.3)*fr*.55;
+ // small bubbles of air caught in the liquid, carried by the flow (a few: each is a tiny lens with its own glint)
+ if(rope>.5){vec2 g=vec2(st.y*.4,st.x*1.05+.37*floor(st.y*.4)+tint*5.),id=floor(g);float hb=bmbH21(id+tint*31.+.5);
+  if(hb>.8){float rb=.09+.11*bmbH21(id+11.3);vec2 cb=id+.5+(vec2(bmbH21(id+3.1),bmbH21(id+7.7))-.5)*.5,dv=(g-cb)/vec2(.4,1.05);float cu=(cb.y-.37*id.x-tint*5.)/1.05,db=length(dv)/rb;
+   if(db<1.&&abs(cu)+rb<.72){float zb=sqrt(1.-db*db);vec2 nb=dv/rb;col=col*(1.+.9*zb*zb)*(1.-.55*smoothstep(.72,.98,db))+uGlow*vec3(.6,.5,.4)*.35*smoothstep(.75,1.,db)*max(0.,dot(nb,vec2(.6,.7)))+uSpecCol*1.6*smoothstep(.93,.98,dot(normalize(vec3(nb,zb)),normalize(vec3(-.35,-.45,.82))));}}}
+ // the lamps seen on the surface: a window with clean edges that runs along the rope and breaks where the rope turns towards
+ // the lamp, a soft sheen around it, and a small warm lamp from below
+ vec3 Hk=bmbAlong(normalize(Lk+V),T),Hr=bmbAlong(normalize(Lr+V),T);float dk=max(0.,dot(n,Hk)),dr=max(0.,dot(n,Hr));
+ float al=abs(dot(T.xy,normalize(Lk.xy))),o1=smoothstep(.3,.6,bmbVn(vec2(st.y*.17+tint*17.,2.7)))*(1.-smoothstep(.3,.85,al));o1=mix(1.,o1,rope);
+ float ar=abs(dot(T.xy,normalize(Lr.xy))),o2=mix(1.,smoothstep(.4,.7,bmbVn(vec2(st.y*.23+5.,9.1+tint*11.)))*(1.-smoothstep(.3,.85,ar)),rope),occ=smoothstep(.2,.62,sh);
+ float d2=max(0.,dot(n,bmbAlong(normalize(vec3(-.2,-.75,.66)+V),T)));
+ col+=uSpecCol*((smoothstep(.9955,.998,dk)*3.+pow(dk,120.)*.3)*o1+smoothstep(.9965,.9985,d2)*1.6*o1*o2)*occ;
+ col+=uSpecCol*vec3(1.,.82,.55)*(smoothstep(.993,.997,dr)*1.1*o2+pow(dr,40.)*.06)*occ;
+ return col;}`;
+// A rope: the engine cuts it into pieces, one four-sided piece between each two points of its line. A = the two sides at the first
+// point (x, y of one side, x, y of the other) · B = the same at the second point · C = how far across the rope each of those four
+// corners is (±1 at the edge of the liquid, more in the soft shadow around it; less where a tight bend cuts the inner side short) ·
+// D = along the rope (in radii, travelling with the flow) at both points, the radius at both · E = height in the pile at both, tint,
+// shadow. The place of each pixel inside its piece is worked out exactly (the piece is not a rectangle), so nothing jumps from one
+// piece to the next.
+const BMB_VS_SEG=`#version 300 es
+layout(location=0) in vec2 aQ;layout(location=1) in vec4 aA;layout(location=2) in vec4 aB;layout(location=3) in vec4 aC;layout(location=4) in vec4 aD;layout(location=5) in vec4 aE;
+uniform float uAR;out vec2 vP;flat out vec4 vA,vB,vC,vD,vE;
+void main(){vec2 q=aQ*.5+.5,p=mix(mix(aA.xy,aA.zw,q.x),mix(aB.xy,aB.zw,q.x),q.y);vP=p;vA=aA;vB=aB;vC=aC;vD=aD;vE=aE;gl_Position=vec4(p.x/uAR*2.-1.,1.-p.y*2.,0.,1.);}`;
+const BMB_FS_ROPE=`#version 300 es
+precision highp float;in vec2 vP;flat in vec4 vA,vB,vC,vD,vE;uniform float uPx,uSkirt;out vec4 o;
+${BMB_GLSL_HONEY}
+float bmbX(vec2 a,vec2 b){return a.x*b.y-a.y*b.x;}
+void main(){vec2 a=vA.xy,b=vA.zw,d=vB.xy,c=vB.zw,e=b-a,f=d-a,g=a-b+c-d,h=vP-a;float k2=bmbX(g,f),k1=bmbX(e,f)+bmbX(h,g),k0=bmbX(h,e),t;
+ if(abs(k2)<=1e-7*abs(k1)){t=abs(k1)>0.?-k0/k1:0.;}else{float w=sqrt(max(0.,k1*k1-4.*k0*k2)),q=-.5*(k1+(k1<0.?-w:w)),t1=abs(q)>0.?k0/q:0.,t2=q/k2;t=(t1>-.02&&t1<1.02)?t1:t2;}
+ t=clamp(t,0.,1.);vec2 A=mix(a,d,t),AB=mix(b,c,t)-A;float l2=max(dot(AB,AB),1e-12),s=clamp(dot(vP-A,AB)/l2,0.,1.);
+ float u=mix(mix(vC.x,vC.z,t),mix(vC.y,vC.w,t),s),au=abs(u),W=mix(vD.z,vD.w,t),aa=1.2/max(1.,W*uPx);
+ if(au>1.){float k=clamp(1.-(au-1.)/(uSkirt-1.),0.,1.);o=uPass<.5?vec4(vec3(1.-.5*k*k*vE.w),1.):vec4(0.);return;}
+ vec2 N=AB/sqrt(l2);float z=sqrt(max(0.,1.-u*u));vec3 n=normalize(vec3(N*u,z)),T=vec3(-N.y,N.x,0.);
+ float ed=1.-smoothstep(1.-aa,1.,au),sh=mix(vE.x,vE.y,t);if(uPass<.5){o=vec4(mix(vec3(1.),bmbThrough(z,sh,vE.z),ed),1.);return;}
+ o=vec4(bmbHoney(n,z,vec2(u,mix(vD.x,vD.y,t)),sh,T,vE.z)*ed,0.);}`;
+// A bead of honey: A = x, y, radius, seed · B = alpha, height in the pile (shade), tint, direction of its tail · C = how long the tail is
+const BMB_FS_BEAD=`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;uniform float uPx;out vec4 o;
+${BMB_GLSL_HONEY}
+void main(){vec2 q=vQ;float c=cos(vB.w),s=sin(vB.w);vec2 l=vec2(c*q.x+s*q.y,-s*q.x+c*q.y);float tl=vC.x,aa=1.5/(vA.z*uPx),rr,tk;vec3 nl;
+ // a round drop, or a drop with a tail (the half that looks back narrows to a point)
+ if(l.x<=0.||tl<=0.){float r2=dot(l,l);rr=sqrt(r2);tk=sqrt(max(0.,1.-r2));nl=vec3(l,tk);}
+ else{float sx=l.x/(1.+tl),w=max(1e-3,sqrt(max(0.,1.-sx*sx))*mix(1.,1.-sx,min(1.,tl))),ey=l.y/w;rr=sx>=1.?2.:1.+(abs(ey)-1.)*w;float zc=sqrt(max(0.,1.-ey*ey));tk=zc*w;nl=normalize(vec3(.35*sx,ey,zc));}
+ if(rr>1.+2.*aa){discard;}vec3 n=normalize(vec3(c*nl.x-s*nl.y,s*nl.x+c*nl.y,nl.z));
+ float ed=(1.-smoothstep(1.-aa,1.+aa,rr))*vB.x;if(uPass<.5){o=vec4(mix(vec3(1.),bmbThrough(tk,vB.y,vB.z),ed),1.);return;}
+ o=vec4(bmbHoney(n,tk,vec2(q.x*2.+vA.w*9.,q.y*2.+uT*.3),vB.y,vec3(0.),vB.z)*ed,0.);}`;
+// noise for the stimuli: smooth random values read from the engine's picture of random numbers (four at a time), and their sum
+// at five sizes
+const BMB_GLSL_NOISE=`
+uniform sampler2D uNoise;
+vec4 bmbN4(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return texture(uNoise,(i+f+.5)/256.);}
+float bmbFbm(vec2 p){float a=.5,s=0.;for(int i=0;i<5;i++){s+=a*bmbN4(p).r;p=mat2(1.6,1.2,-1.2,1.6)*p+vec2(17.3,9.1);a*=.5;}return s/.96875;}`;
+const BMB_FS_COPY=`#version 300 es
+precision highp float;in vec2 vUv;uniform sampler2D uS;out vec4 o;void main(){o=texture(uS,vUv);}`;
+// the glow: the picture made smaller and softer five times, then added back
+const BMB_FS_DOWN=`#version 300 es
+precision highp float;in vec2 vUv;uniform sampler2D uS;uniform vec2 uTx;out vec4 o;
+void main(){vec3 c=texture(uS,vUv+uTx*vec2(-1.,-1.)).rgb+texture(uS,vUv+uTx*vec2(1.,-1.)).rgb+texture(uS,vUv+uTx*vec2(-1.,1.)).rgb+texture(uS,vUv+uTx*vec2(1.,1.)).rgb;o=vec4(c*.25,1.);}`;
+const BMB_FS_UP=`#version 300 es
+precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform vec2 uTx;uniform float uMix;out vec4 o;
+void main(){vec3 c=texture(uS,vUv+uTx*vec2(-1.,-1.)).rgb+texture(uS,vUv+uTx*vec2(1.,-1.)).rgb+texture(uS,vUv+uTx*vec2(-1.,1.)).rgb+texture(uS,vUv+uTx*vec2(1.,1.)).rgb;
+ o=vec4(mix(texture(uB,vUv).rgb,c*.25,uMix),1.);}`;
+// to the screen: glow added, light pressed into the range of the screen (each channel 1 − e^−x), dimmed while waiting, sRGB
+const BMB_FS_FINAL=`#version 300 es
+precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform float uBloom,uExp,uDim;out vec4 o;
+void main(){vec3 c=texture(uS,vUv).rgb+texture(uB,vUv).rgb*uBloom;c=1.-exp(-max(c,vec3(0.))*uExp);c*=uDim;
+ o=vec4(pow(c,vec3(1./2.2)),1.);}`;
+
+// Bombolles sense pes (CE06 'bubbles', made again in November 2026) · the common WebGL2 engine of the stimuli.
+// Matter floating on black, drawn in linear light into a half-float picture (so lights can be brighter than the screen and bleed a
+// soft glow), then brought to the screen. Two kinds of things are drawn: bodies (instanced quads: 20 numbers each, see the shaders)
+// and ropes (a line of points cut into instanced four-sided pieces). Each stimulus (bombolles-sabo.js, bombolles-mel.js …) moves its matter
+// on the CPU and hands the engine what to draw each frame. Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+// Needs WebGL2 and EXT_color_buffer_float; bmbSetup returns false otherwise (as in Pluja de colors, there is no other picture).
+
+const BMB={gl:null,cv:null,failed:false,lost:false,par:null,P:null,quad:null,spr:null,rib:null,S:null,view:null,t:0,noise:null,px:0,lay:null};
+const BMB_SPR=20,BMB_MAXSPR=1536,BMB_MAXSEG=8192,BMB_LEVELS=5;
+function bmbInit(){if(BMB.gl||BMB.failed)return BMB.gl;if(typeof document==='undefined')return null;
+ try{const cv=document.createElement('canvas');cv.width=4;cv.height=4;const gl=cv.getContext('webgl2',{alpha:false,antialias:false,depth:false,stencil:false,premultipliedAlpha:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
+  if(!gl||!gl.getExtension('EXT_color_buffer_float')){BMB.failed=true;return null;}BMB.par=gl.getExtension('KHR_parallel_shader_compile');
+  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();BMB.lost=true;},false);cv.addEventListener('webglcontextrestored',()=>{BMB.lost=false;BMB.P=null;BMB.S=null;BMB.quad=null;BMB.spr=null;BMB.rib=null;BMB.noise=null;BMB.lay=null;},false);
+  BMB.gl=gl;BMB.cv=cv;return gl;}catch{BMB.failed=true;return null;}}
+const BMB_SRC={bubble:[BMB_VS_SPRITE,BMB_FS_BUBBLE],wall:[BMB_VS_SPRITE,BMB_FS_WALL],dot:[BMB_VS_SPRITE,BMB_FS_DOT],bead:[BMB_VS_SPRITE,BMB_FS_BEAD],rope:[BMB_VS_SEG,BMB_FS_ROPE],
+ down:[BMB_VS_FULL,BMB_FS_DOWN],up:[BMB_VS_FULL,BMB_FS_UP],final:[BMB_VS_FULL,BMB_FS_FINAL],copy:[BMB_VS_FULL,BMB_FS_COPY]};
+// a stimulus adds its own kinds of matter (its shaders) when its module loads
+function bmbKind(name,vs,fs){BMB_SRC[name]=[vs,fs];}
+function bmbShader(gl,type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+function bmbPrograms(gl){if(!BMB.P)BMB.P={};for(const [k,[vs,fs]] of Object.entries(BMB_SRC)){if(BMB.P[k])continue;const p=gl.createProgram(),v=bmbShader(gl,gl.VERTEX_SHADER,vs),f=bmbShader(gl,gl.FRAGMENT_SHADER,fs);
+  gl.attachShader(p,v);gl.attachShader(p,f);gl.linkProgram(p);BMB.P[k]={p,v,f,ok:null,U:{},name:k};}return BMB.P;}
+function bmbProgramsList(){const gl=bmbInit();return gl?Object.values(bmbPrograms(gl)):[];}
+function bmbSettle(o){const gl=BMB.gl;if(!gl||o.ok!==null)return;o.ok=!!gl.getProgramParameter(o.p,gl.LINK_STATUS);
+ if(!o.ok&&typeof console!=='undefined')console.warn('Bombolles sense pes: shader',o.name,gl.getShaderInfoLog(o.v)||'',gl.getShaderInfoLog(o.f)||'',gl.getProgramInfoLog(o.p));}
+function bmbUse(gl,name){const o=BMB.P[name];if(o.ok===null)bmbSettle(o);if(!o.ok)return null;gl.useProgram(o.p);return o;}
+const bmbReady=()=>{const gl=bmbInit();return !!gl&&!BMB.lost;};
+function bmbSet(gl,o,u){for(const n in u){const v=u[n],l=n in o.U?o.U[n]:(o.U[n]=gl.getUniformLocation(o.p,n));if(l===null)continue;
+  if(typeof v==='number')gl.uniform1f(l,v);else if(v.arr){gl['uniform'+v.size+'fv'](l,v.arr);}else if(v.tex){gl.activeTexture(gl.TEXTURE0+v.unit);gl.bindTexture(gl.TEXTURE_2D,v.tex);gl.uniform1i(l,v.unit);}
+  else if(v.length===2)gl.uniform2fv(l,v);else if(v.length===3)gl.uniform3fv(l,v);else if(v.length===4)gl.uniform4fv(l,v);}}
+function bmbTarget(gl,w,h){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA16F,w,h);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+ const f=gl.createFramebuffer();gl.bindFramebuffer(gl.FRAMEBUFFER,f);gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0);return {f,t,w,h};}
+function bmbBuffers(gl){if(BMB.quad)return;const vao=gl.createVertexArray();gl.bindVertexArray(vao);const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+ gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);BMB.quad=vao;
+ // a picture of random numbers (256 × 256, four in each point) that repeats: the shaders read their noise from it
+ const nz=new Uint8Array(262144),rn=bmbRandom(7);for(let i=0;i<nz.length;i++)nz[i]=Math.floor(rn()*256);const nt=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,nt);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,256,256,0,gl.RGBA,gl.UNSIGNED_BYTE,nz);
+ gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);BMB.noise=nt;
+ const sv=gl.createVertexArray();gl.bindVertexArray(sv);const qb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,qb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+ gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);const ib=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,ib);gl.bufferData(gl.ARRAY_BUFFER,BMB_MAXSPR*BMB_SPR*4,gl.DYNAMIC_DRAW);
+ for(let i=0;i<5;i++){gl.enableVertexAttribArray(1+i);gl.vertexAttribPointer(1+i,4,gl.FLOAT,false,BMB_SPR*4,i*16);gl.vertexAttribDivisor(1+i,1);}BMB.spr={vao:sv,buf:ib};
+ const rv=gl.createVertexArray();gl.bindVertexArray(rv);gl.bindBuffer(gl.ARRAY_BUFFER,qb);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);const rb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,rb);gl.bufferData(gl.ARRAY_BUFFER,BMB_MAXSEG*BMB_SPR*4,gl.DYNAMIC_DRAW);
+ for(let i=0;i<5;i++){gl.enableVertexAttribArray(1+i);gl.vertexAttribPointer(1+i,4,gl.FLOAT,false,BMB_SPR*4,i*16);gl.vertexAttribDivisor(1+i,1);}BMB.rib={vao:rv,buf:rb,data:new Float32Array(BMB_MAXSEG*BMB_SPR),n:0,ranges:[],tmp:new Float32Array(6*512)};gl.bindVertexArray(null);}
+// the picture: W × H pixels of the screen (the glow uses smaller copies)
+function bmbSetup(W,H){const gl=bmbInit();if(!gl||BMB.lost)return false;bmbPrograms(gl);bmbBuffers(gl);W=Math.max(16,Math.round(W));H=Math.max(16,Math.round(H));
+ if(BMB.cv.width!==W||BMB.cv.height!==H){BMB.cv.width=W;BMB.cv.height=H;}BMB.view={W,H,AR:W/H,px:H};BMB.px=H;BMB.lay=null;
+ if(BMB.S&&BMB.S.key===W+'x'+H)return true;
+ if(BMB.S){for(const x of [BMB.S.hdr,BMB.S.half,...BMB.S.bl,...BMB.S.up]){gl.deleteFramebuffer(x.f);gl.deleteTexture(x.t);}}
+ const S={key:W+'x'+H,hdr:bmbTarget(gl,W,H),half:bmbTarget(gl,Math.max(2,W>>1),Math.max(2,H>>1)),bl:[],up:[]};let w=W,h=H;for(let i=0;i<BMB_LEVELS;i++){w=Math.max(2,w>>1);h=Math.max(2,h>>1);S.bl.push(bmbTarget(gl,w,h));S.up.push(bmbTarget(gl,w,h));}BMB.S=S;return true;}
+function bmbCanvas(){return BMB.cv;}
+// one frame: bmbBegin, the things to draw in order (the later ones over the earlier ones), bmbEnd
+function bmbBegin(t=0){const gl=BMB.gl,S=BMB.S;if(!gl||!S||BMB.lost)return false;BMB.t=t;BMB.px=BMB.view.px;BMB.lay=null;gl.bindFramebuffer(gl.FRAMEBUFFER,S.hdr.f);gl.viewport(0,0,S.hdr.w,S.hdr.h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.enable(gl.BLEND);return true;}
+// bodies: `data` holds n × 20 numbers; `add` = true: light added to what is there (films, sparks) · false: laid over it ·
+// 'liquid': drawn twice, first filtering what is under it and then adding its own light (see bmbThrough in the shaders)
+function bmbBodies(kind,data,n,u={},add=true,pad=1.3){const gl=BMB.gl;if(!gl||!n)return;const o=bmbUse(gl,kind);if(!o)return;n=Math.min(n,BMB_MAXSPR);
+ gl.bindVertexArray(BMB.spr.vao);gl.bindBuffer(gl.ARRAY_BUFFER,BMB.spr.buf);gl.bufferSubData(gl.ARRAY_BUFFER,0,data,0,n*BMB_SPR);
+ bmbSet(gl,o,{uAR:BMB.view.AR,uPx:BMB.px,uT:BMB.t,uPad:pad,uPass:1,uNoise:{tex:BMB.noise,unit:2},...u});
+ if(add==='liquid'){gl.blendFunc(gl.ZERO,gl.SRC_COLOR);bmbSet(gl,o,{uPass:0});gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,n);bmbSet(gl,o,{uPass:1});gl.blendFunc(gl.ONE,gl.ONE);}
+ else if(add)gl.blendFunc(gl.ONE,gl.ONE);else gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,n);gl.bindVertexArray(null);}
+// matter that is worked out for every point of the screen (a field): one drawing over the whole picture. `add` as in bmbBodies
+function bmbField(kind,u={},add=true){const gl=BMB.gl;if(!gl)return;const o=bmbUse(gl,kind);if(!o)return;gl.bindVertexArray(BMB.quad);
+ bmbSet(gl,o,{uAR:BMB.view.AR,uPx:BMB.px,uT:BMB.t,uPass:1,uNoise:{tex:BMB.noise,unit:2},...u});
+ if(add==='liquid'){gl.blendFunc(gl.ZERO,gl.SRC_COLOR);bmbSet(gl,o,{uPass:0});gl.drawArrays(gl.TRIANGLES,0,3);bmbSet(gl,o,{uPass:1});gl.blendFunc(gl.ONE,gl.ONE);}
+ else if(add)gl.blendFunc(gl.ONE,gl.ONE);else gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLES,0,3);gl.bindVertexArray(null);}
+// soft matter (gas, smoke) can be drawn at half the size and laid over the picture afterwards: bmbLayer(), the things, bmbLayerEnd(add)
+function bmbLayer(){const gl=BMB.gl,S=BMB.S;if(!gl||!S)return;BMB.lay=S.half;BMB.px=S.half.h;gl.bindFramebuffer(gl.FRAMEBUFFER,S.half.f);gl.viewport(0,0,S.half.w,S.half.h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);}
+function bmbLayerEnd(add=false){const gl=BMB.gl,S=BMB.S;if(!gl||!S||!BMB.lay)return;BMB.lay=null;BMB.px=BMB.view.px;gl.bindFramebuffer(gl.FRAMEBUFFER,S.hdr.f);gl.viewport(0,0,S.hdr.w,S.hdr.h);const o=bmbUse(gl,'copy');if(!o)return;
+ gl.bindVertexArray(BMB.quad);bmbSet(gl,o,{uS:{tex:S.half.t,unit:0}});if(add)gl.blendFunc(gl.ONE,gl.ONE);else gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLES,0,3);gl.bindVertexArray(null);}
+// A rope from a line of points [{x, y, w (radius), v (along, in radii), sh (0–1, height in its pile), tint, sd (shadow)}]: one piece
+// (an instanced four-sided shape) between each two points, reaching a little beyond the liquid at each side (the soft shadow it lays
+// on what is under it). Ropes are drawn in the order they are given, and each rope from its first point to its last: what comes
+// later lies over what came before. A rope that crosses over itself (a coil) is given in stretches of `chunk` pieces that do not:
+// each stretch filters what is under it and then adds its light, so a turn is seen through the turn that lies on it.
+// Returns the number of pieces.
+const BMB_SKIRT=1.45;
+function bmbRopeReset(){if(BMB.rib){BMB.rib.n=0;BMB.rib.ranges.length=0;}}
+function bmbRope(pts,chunk=0){const R=BMB.rib,n=pts?pts.length:0;if(!R||n<2)return 0;if(R.tmp.length<n*6)R.tmp=new Float32Array(n*12);const d=R.data,T=R.tmp,first=R.n;let made=0;
+ for(let i=0;i<n;i++){const p=pts[i],a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)];let tx=b.x-a.x,ty=b.y-a.y;const l=Math.hypot(tx,ty)||1;tx/=l;ty/=l;const nx=-ty,ny=tx,w=Math.max(1e-6,p.w);
+  // where the rope bends tighter than its own radius, the inner side stops at the centre of the bend (the rope never folds over itself)
+  let lim=1e9,side=0;if(i>0&&i<n-1){const ax=p.x-a.x,ay=p.y-a.y,bx=b.x-p.x,by=b.y-p.y,ang=Math.atan2(ax*by-ay*bx,ax*bx+ay*by);if(Math.abs(ang)>1e-4){lim=.82*(Math.hypot(ax,ay)+Math.hypot(bx,by))/2/Math.abs(ang);side=ang>0?1:-1;}}
+  const o0=side===-1?Math.min(w*BMB_SKIRT,lim):w*BMB_SKIRT,o1=side===1?Math.min(w*BMB_SKIRT,lim):w*BMB_SKIRT,k=i*6;T[k]=p.x-nx*o0;T[k+1]=p.y-ny*o0;T[k+2]=-o0/w;T[k+3]=p.x+nx*o1;T[k+4]=p.y+ny*o1;T[k+5]=o1/w;}
+ for(let i=0;i<n-1&&R.n<BMB_MAXSEG;i++){const p=pts[i],q=pts[i+1];if(Math.abs(q.x-p.x)+Math.abs(q.y-p.y)<1e-7)continue;const a=i*6,b=a+6;let k=R.n*BMB_SPR;
+  d[k++]=T[a];d[k++]=T[a+1];d[k++]=T[a+3];d[k++]=T[a+4];d[k++]=T[b];d[k++]=T[b+1];d[k++]=T[b+3];d[k++]=T[b+4];d[k++]=T[a+2];d[k++]=T[a+5];d[k++]=T[b+2];d[k++]=T[b+5];
+  d[k++]=p.v;d[k++]=q.v;d[k++]=p.w;d[k++]=q.w;d[k++]=p.sh??1;d[k++]=q.sh??1;d[k++]=p.tint||0;d[k++]=p.sd??1;R.n++;made++;}
+ for(let f=first;f<R.n;f+=chunk>0?chunk:R.n)R.ranges.push(f,Math.min(R.n-f,chunk>0?chunk:R.n));
+ return made;}
+// draws the ropes given since bmbRopeReset, and starts again
+function bmbRopes(u={}){const gl=BMB.gl,R=BMB.rib;if(!gl||!R||!R.n)return;const o=bmbUse(gl,'rope');if(!o){bmbRopeReset();return;}
+ gl.bindVertexArray(R.vao);gl.bindBuffer(gl.ARRAY_BUFFER,R.buf);gl.bufferSubData(gl.ARRAY_BUFFER,0,R.data,0,R.n*BMB_SPR);bmbSet(gl,o,{uAR:BMB.view.AR,uPx:BMB.view.px,uT:BMB.t,uSkirt:BMB_SKIRT,...u});const lp=o.U.uPass!==undefined?o.U.uPass:(o.U.uPass=gl.getUniformLocation(o.p,'uPass'));
+ for(let r=0;r<R.ranges.length;r+=2){const off=R.ranges[r]*BMB_SPR*4;for(let i=0;i<5;i++)gl.vertexAttribPointer(1+i,4,gl.FLOAT,false,BMB_SPR*4,off+i*16);
+  gl.uniform1f(lp,0);gl.blendFunc(gl.ZERO,gl.SRC_COLOR);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,R.ranges[r+1]);gl.uniform1f(lp,1);gl.blendFunc(gl.ONE,gl.ONE);gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,R.ranges[r+1]);}
+ for(let i=0;i<5;i++)gl.vertexAttribPointer(1+i,4,gl.FLOAT,false,BMB_SPR*4,i*16);gl.bindVertexArray(null);bmbRopeReset();}
+// the uniforms of a program set once before several bmbBodies of the same kind are not kept between kinds: pass them each time
+// the end of the frame: glow, and to the screen. dim: 1, or less while the picture waits for the next press
+function bmbEnd(o={}){const gl=BMB.gl,S=BMB.S;if(!gl||!S||BMB.lost)return false;gl.disable(gl.BLEND);gl.bindVertexArray(BMB.quad);
+ let p=bmbUse(gl,'down');if(!p)return false;let src=S.hdr;for(const t of S.bl){gl.bindFramebuffer(gl.FRAMEBUFFER,t.f);gl.viewport(0,0,t.w,t.h);bmbSet(gl,p,{uS:{tex:src.t,unit:0},uTx:[.5/src.w,.5/src.h]});gl.drawArrays(gl.TRIANGLES,0,3);src=t;}
+ p=bmbUse(gl,'up');if(!p)return false;let low=S.bl[BMB_LEVELS-1];for(let i=BMB_LEVELS-2;i>=0;i--){const t=S.up[i];gl.bindFramebuffer(gl.FRAMEBUFFER,t.f);gl.viewport(0,0,t.w,t.h);
+  bmbSet(gl,p,{uS:{tex:low.t,unit:0},uB:{tex:S.bl[i].t,unit:1},uTx:[.5/low.w,.5/low.h],uMix:o.spread??.6});gl.drawArrays(gl.TRIANGLES,0,3);low=t;}
+ p=bmbUse(gl,'final');if(!p)return false;gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,BMB.view.W,BMB.view.H);
+ bmbSet(gl,p,{uS:{tex:S.hdr.t,unit:0},uB:{tex:low.t,unit:1},uBloom:o.bloom??.35,uExp:o.exp??1,uDim:o.dim??1});gl.drawArrays(gl.TRIANGLES,0,3);gl.bindVertexArray(null);return true;}
+// colours: '#rrggbb' → linear RGB
+function bmbLin(hex){const n=parseInt(hex.slice(1),16),f=c=>{c/=255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;};return [f(n>>16&255),f(n>>8&255),f(n&255)];}
+// a small random generator with a seed (the same seed gives the same picture: the review tools and the tests need it)
+function bmbRandom(seed){let s=(seed>>>0)||1;return ()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
+
+// Bombolles sense pes · stimulus 1, «Bombolles de sabó»: weightless soap bubbles.
+// The matter: spheres that are almost nothing but light on a film of soapy water. They drift in from an edge as if blown from outside
+// the screen, wobble when they touch (modes 2 and 3 of the sphere, the bigger the slower), cling in pairs that share a wall (the centres
+// at the distance that makes the films meet at 120°: d² = Ra² + Rb² − Ra·Rb), gather into a loose foam and at the end drift away
+// through every edge; a few burst (the hole opens from one point at a steady speed, as Culick described in 1960, slowed down).
+// All the motion is computed here; bombolles-motor.js draws the films. Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+// the two films: thickness in nanometres (thick: from, to, spread between bubbles; thick2: a second stretch and the share of the
+// film that is in the first one — the first film runs through violet, blue and turquoise and then, skipping the greens, through gold,
+// red and magenta; the second film is one stretch of the higher orders, greens and pinks), size of the swirls, how vivid, how much
+// light at the centre
+const SBO_FILMS=Object.freeze([{thick:[402,470,22],thick2:[556,636,.42],freq:1.15,sat:1.6,f0:.34,gain:1.15,band:[.42,.7],bands:1.7,dots:['#ff5fd0','#ffc640','#3fe8e0','#a46bff']},
+ {thick:[486,716,70],thick2:[716,716,1],freq:1.1,sat:1.6,f0:.34,gain:1.15,band:[.42,.7],bands:1.7,dots:['#ff5fc8','#5cff6a','#ffe070','#ff9ad8']}]);
+const SBO_EDGES=[0,2,1,3];// left, right, top, bottom (0 left, 1 top, 2 right, 3 bottom)
+function sboNew(o={}){const rnd=bmbRandom(o.seed||11);return {kind:'sabo',AR:o.AR||16/9,lap:o.lap||0,rnd,t:0,ft:rnd()*40,fs:1,b:[],dots:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),id:0,touch:new Set(),bq:[]};}
+const sboLive=S=>S.b.filter(b=>S.t>=b.born&&!b.gone);
+function sboAdd(S,o){const r=S.rnd,b={id:S.id++,x:o.x,y:o.y,vx:0,vy:0,R:o.R,r:o.R*.35,tx:o.tx,ty:o.ty,born:S.t+(o.delay||0),seed:r(),a2:.1+.08*r(),v2:0,p2:r()*6.28,a3:.04*r(),v3:0,p3:r()*6.28,alpha:1,join:[],burst:null,gone:false,ph:r()*30};S.b.push(b);return b;}
+// where a new bubble of radius R should settle: touching its neighbours (a little into them), near the point asked for
+function sboPlace(S,R,near,w=1,tries=90){const r=S.rnd,AR=S.AR,m=R*.55;let best=null;
+ for(let i=0;i<tries;i++){const x=i===0&&near?near[0]:-m+r()*(AR+2*m),y=i===0&&near?near[1]:-m+r()*(1+2*m);let c=9;for(const b of S.b){if(b.gone)continue;const d=Math.hypot(x-b.tx,y-b.ty)-b.R;if(d<c)c=d;}
+  const fit=c>8?0:-Math.abs(c-.9*R)/R-(c<.45*R?3*(.45*R-c)/R:0),s=fit-(near?w*Math.hypot(x-near[0],y-near[1]):0)+.12*r();if(!best||s>best.s)best={s,x,y};}
+ return best;}
+// the emptiest place of the screen: the cell of a coarse grid farthest from every bubble
+function sboEmpty(S){const AR=S.AR,r=S.rnd;let best=null;for(let j=0;j<9;j++)for(let i=0;i<16;i++){const x=(i+.5)/16*AR,y=(j+.5)/9;let c=9;for(const b of S.b){if(b.gone)continue;const d=Math.hypot(x-b.tx,y-b.ty)-b.R;if(d<c)c=d;}
+  c+=.03*r();if(!best||c>best.c)best={c,x,y};}return best;}
+function sboEdgePoint(S,e,x,y,R){const AR=S.AR,g=R+.03;return e===0?[-g,y]:e===2?[AR+g,y]:e===1?[x,-g]:[x,1+g];}
+function sboNearEdge(S,x,y){const AR=S.AR,d=[x,y,AR-x,1-y];let e=0;for(let i=1;i<4;i++)if(d[i]<d[e])e=i;return e;}
+// a puff from an edge: the bubbles leave one after another from the same point outside the screen
+function sboPuff(S,e,list,focus,w){const r=S.rnd;let n=0,first=null;for(const R of list){const p=sboPlace(S,R,first?[first.tx,first.ty]:focus,first?1.4:w);const s=sboEdgePoint(S,e,p.x+(r()-.5)*.1,p.y+(r()-.5)*.1,R);
+  const b=sboAdd(S,{x:s[0],y:s[1],R,tx:p.x,ty:p.y,delay:n*.28});if(!first)first=b;n++;}S.ev.push({t:S.t,type:'entra',n:list.length,R:list[0],e});return first;}
+function sboJoin(S,a,b){if(a.join.length>=2||b.join.length>=2||a===b)return false;const r=S.rnd,mz=(r()<.5?-1:1)*(.34+.3*r());a.join.push({o:b,mz,on:false});b.join.push({o:a,mz:-mz,on:false});return true;}
+function sboBurst(S,b){if(b.burst||b.gone)return;const r=S.rnd,dir=r()*6.283;b.burst={t0:S.t,dir,dur:.25+.5*b.r};for(const j of b.join){const k=j.o.join.findIndex(x=>x.o===b);if(k>=0)j.o.join.splice(k,1);}b.join=[];
+ const pal=SBO_FILMS[S.lap%2].dots.map(bmbLin),n=Math.round(10+90*b.r),bx=Math.cos(dir)*.62,by=Math.sin(dir)*.62;
+ for(let i=0;i<n;i++){const a=r()*6.283,q=Math.sqrt(r())*.98,px=Math.cos(a)*q,py=Math.sin(a)*q,dx=px-bx,dy=py-by,dl=Math.hypot(dx,dy)||1,sp=(.12+.5*r())*(.4+b.r*2.2);
+  S.dots.push({x:b.x+px*b.r,y:b.y+py*b.r,vx:dx/dl*sp+b.vx,vy:dy/dl*sp+b.vy,r:.0016+.004*r()*r(),c:pal[i%pal.length],t0:S.t+b.burst.dur*Math.min(1,dl/1.6),life:.7+.7*r()});}
+ S.ev.push({t:S.t,type:'esclat',R:b.R,x:b.x/S.AR});}
+// The role of press k of P (k from 1): the arrival (the first two), the growth, the full moment and the way out
+function bmbRole(k,P){return k>=P?'surt':k===P-1?'ple':k<=Math.min(2,Math.max(1,P-3))?'arriba':'creix';}
+function sboPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;
+ if(role==='arriba'){// a big bubble that stays half out of the screen and two small ones
+  const e=SBO_EDGES[(S.e0+k-1)%4],R=.25+.07*r(),u=.3+.4*r(),inn=R*(.3+.25*r()),t=e===0?[inn,u]:e===2?[AR-inn,u]:e===1?[u*AR,inn]:[u*AR,1-inn],s=sboEdgePoint(S,e,t[0],t[1],R);
+  const big=sboAdd(S,{x:s[0],y:s[1],R,tx:t[0],ty:t[1]});let n=1;for(const Rs of [.045+.02*r(),.022+.012*r(),k>1?.07+.03*r():0]){if(!Rs)continue;const p=sboPlace(S,Rs,[big.tx,big.ty],1.4),q=sboEdgePoint(S,e,p.x,p.y,Rs);sboAdd(S,{x:q[0],y:q[1],R:Rs,tx:p.x,ty:p.y,delay:.35*n++});}
+  S.ev.push({t:S.t,type:'entra',n,R,e});return;}
+ if(role==='creix'){const f=sboEmpty(S),e=sboNearEdge(S,f.x,f.y),left=P-2-k+1,big=.13+.1*r();
+  const first=sboPuff(S,e,[big,.07+.04*r(),.035+.02*r(),.02+.012*r(),.018+.01*r()],[f.x,f.y],.6);
+  // a second, smaller puff from the opposite side, and a bubble that comes to cling to another one (a double bubble)
+  const f2=sboEmpty(S);sboPuff(S,sboNearEdge(S,f2.x,f2.y),[.09+.06*r(),.03+.02*r(),.02+.01*r()],[f2.x,f2.y],.6);
+  const hosts=S.b.filter(b=>!b.gone&&!b.burst&&b.join.length<1&&b.R>.07&&b.R<.24&&b!==first&&b.tx>.05&&b.tx<AR-.05&&b.ty>.05&&b.ty<.95);
+  if(hosts.length){const h=hosts[Math.floor(r()*hosts.length)],R=h.R*(.7+.35*r()),D=Math.sqrt(h.R*h.R+R*R-h.R*R);let a=r()*6.283,bestA=a,bc=-9;
+   for(let i=0;i<10;i++){a+=.63;const x=h.tx+Math.cos(a)*D,y=h.ty+Math.sin(a)*D;let c=9;for(const b of S.b){if(b===h||b.gone)continue;const d=Math.hypot(x-b.tx,y-b.ty)-b.R-R;if(d<c)c=d;}if(x<.05||x>AR-.05||y<.05||y>.95)c-=.2;if(c>bc){bc=c;bestA=a;}}
+   const x=h.tx+Math.cos(bestA)*D*.8,y=h.ty+Math.sin(bestA)*D*.8,q=sboEdgePoint(S,sboNearEdge(S,x,y),x,y,R),nb=sboAdd(S,{x:q[0],y:q[1],R,tx:x,ty:y,delay:.5});sboJoin(S,h,nb);}
+  // now and then one of the older bubbles bursts
+  if(k%2===0){const c=S.b.filter(b=>!b.gone&&!b.burst&&!b.join.length&&S.t-b.born>3&&b.R>.05&&b.R<.16&&b.x>.1&&b.x<AR-.1&&b.y>.1&&b.y<.9);if(c.length)S.bq.push({b:c[Math.floor(r()*c.length)],t:S.t+1.6});}
+  return;}
+ if(role==='ple'){// the foam: every gap takes bubbles, small ones gather where two bubbles almost touch, and all swell a little
+  for(let i=0;i<4;i++){const f=sboEmpty(S);if(f.c<.03)break;sboPuff(S,sboNearEdge(S,f.x,f.y),[Math.min(.3,Math.max(.06,f.c*1.05)),.05+.03*r(),.03+.015*r()],[f.x,f.y],.9);}
+  for(let i=0;i<10;i++){const f=sboEmpty(S);if(f.c<.022)break;const R=Math.min(.12,Math.max(.02,f.c*.95)),q=sboEdgePoint(S,sboNearEdge(S,f.x,f.y),f.x,f.y,R);sboAdd(S,{x:q[0],y:q[1],R,tx:f.x,ty:f.y,delay:.3+.15*i});}
+  const L=S.b.filter(b=>!b.gone&&!b.burst);let n=0;for(let i=0;i<L.length&&n<34;i++)for(let j=i+1;j<L.length&&n<34;j++){const a=L[i],b=L[j],d=Math.hypot(a.tx-b.tx,a.ty-b.ty),g=d-a.R-b.R;if(g<.012||g>.09||a.R<.05||b.R<.05)continue;
+    const ux=(b.tx-a.tx)/d,uy=(b.ty-a.ty)/d;let s=a.R;for(let c=0;c<3&&s<d-b.R-.008;c++){const R=Math.min(.022,(d-b.R-s)/2,.008+.014*r());if(R<.006)break;const x=a.tx+ux*(s+R)+(-uy)*(r()-.5)*.02,y=a.ty+uy*(s+R)+ux*(r()-.5)*.02,q=sboEdgePoint(S,sboNearEdge(S,x,y),x,y,R);
+     sboAdd(S,{x:q[0],y:q[1],R,tx:x,ty:y,delay:.8+.06*n});n++;s+=2*R*.92;}}
+  for(const b of S.b)if(!b.gone)b.R*=1.08;S.fs=1.7;
+  for(let i=0;i<3;i++){const c=S.b.filter(b=>!b.gone&&!b.burst&&b.join.length<1&&b.R>.07&&b.R<.2);if(c.length<2)break;const a=c[Math.floor(r()*c.length)];let o=null,od=9;for(const b of c){if(b===a)continue;const d=Math.hypot(a.tx-b.tx,a.ty-b.ty)-a.R-b.R;if(d<od){od=d;o=b;}}
+   if(o&&od<.06&&sboJoin(S,a,o)){const D=Math.sqrt(a.R*a.R+o.R*o.R-a.R*o.R),d=Math.hypot(o.tx-a.tx,o.ty-a.ty)||1,mx=(a.tx+o.tx)/2,my=(a.ty+o.ty)/2,ux=(o.tx-a.tx)/d,uy=(o.ty-a.ty)/d;a.tx=mx-ux*D*.42;a.ty=my-uy*D*.42;o.tx=mx+ux*D*.42;o.ty=my+uy*D*.42;}}
+  S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: every bubble leaves by the edge it is nearest to, away from the middle; a few burst on the way (two a second at most)
+ S.fs=1;const cx=AR/2,cy=.5;for(const b of S.b){if(b.gone)continue;let dx=b.x-cx,dy=(b.y-cy)*1.3;const l=Math.hypot(dx,dy);if(l<.05){const a=r()*6.283;dx=Math.cos(a);dy=Math.sin(a);}else{dx/=l;dy/=l;}
+  const a=Math.atan2(dy,dx)+(r()-.5)*.5;b.ox=Math.cos(a);b.oy=Math.sin(a);b.acc=.05+.05*r()+.12*b.R;b.wait=.25*r()+Math.max(0,.9-l)*.9;}
+ const c=S.b.filter(b=>!b.gone&&!b.burst&&b.R>.035&&b.R<.14&&b.x>.2&&b.x<AR-.2&&b.y>.15&&b.y<.85).sort(()=>r()-.5).slice(0,7);c.forEach((b,i)=>S.bq.push({b,t:S.t+.7+i*.62+.2*r()}));
+ S.ev.push({t:S.t,type:'surt'});}
+function sboStep(S,dt){const r=S.rnd,AR=S.AR,t=S.t+dt;S.t=t;S.ft+=dt*S.fs*.5;const L=sboLive(S),out=S.role==='surt';
+ while(S.bq.length&&S.bq[0].t<=t){sboBurst(S,S.bq.shift().b);}
+ for(const b of L){b.r+=(b.R-b.r)*(1-Math.exp(-dt/.55));
+  if(out){b.wait-=dt;if(b.wait<=0){b.vx+=b.ox*b.acc*dt;b.vy+=b.oy*b.acc*dt;}b.vx*=Math.exp(-.15*dt);b.vy*=Math.exp(-.15*dt);}
+  else{// towards the place it will settle in, slowly, and a gentle wander around it
+   const wx=Math.sin(t*.23+b.ph)*.012+Math.sin(t*.11+b.ph*2.3)*.01,wy=Math.cos(t*.19+b.ph*1.7)*.012+Math.sin(t*.13+b.ph*.7)*.008;
+   b.vx+=((b.tx+wx*3-b.x)*1.15-b.vx*2.1)*dt;b.vy+=((b.ty+wy*3-b.y)*1.15-b.vy*2.1)*dt;}}
+ // pairs: touching bubbles push each other softly; a joined pair settles at the distance of a double bubble
+ const now=new Set();for(let i=0;i<L.length;i++){const a=L[i];if(a.burst)continue;for(let j=i+1;j<L.length;j++){const b=L[j];if(b.burst)continue;const dx=b.x-a.x,dy=b.y-a.y,rr=a.r+b.r;if(Math.abs(dx)>rr||Math.abs(dy)>rr)continue;const d=Math.hypot(dx,dy)||1e-6;if(d>=rr)continue;
+   const ux=dx/d,uy=dy/d,ma=a.r*a.r,mb=b.r*b.r,wa=mb/(ma+mb),wb=ma/(ma+mb),jn=a.join.find(x=>x.o===b);let f;
+   if(jn){const D=Math.sqrt(a.r*a.r+b.r*b.r-a.r*b.r)*Math.sqrt(1-jn.mz*jn.mz);f=(d-D)*9;if(!jn.on&&d<D*1.25){jn.on=true;const k=b.join.find(x=>x.o===a);if(k)k.on=true;S.ev.push({t,type:'fusio',R:Math.max(a.R,b.R),x:a.x/AR});a.v2+=1.2;b.v2+=1.2;}}
+   else{const lim=rr*(out?.985:.955);if(d>=lim){continue;}f=-(lim-d)*(out?6:11);const key=a.id*4096+b.id;now.add(key);
+    if(!S.touch.has(key)){const vr=(b.vx-a.vx)*ux+(b.vy-a.vy)*uy;if(vr<-.012&&Math.min(a.r,b.r)>.012){S.ev.push({t,type:'toc',R:Math.min(a.R,b.R),x:(a.x+b.x)/2/AR,v:-vr});const k=Math.min(3,-vr*26);a.v2+=k*wa*2;b.v2+=k*wb*2;a.p2=Math.atan2(uy,ux)*2;b.p2=a.p2;a.v3+=k*wa;b.v3+=k*wb;}}}
+   a.vx+=ux*f*wa*dt;a.vy+=uy*f*wa*dt;b.vx-=ux*f*wb*dt;b.vy-=uy*f*wb*dt;}}
+ S.touch=now;
+ for(const b of L){b.x+=b.vx*dt;b.y+=b.vy*dt;
+  // the wobble: two damped springs; the bigger the bubble, the slower (frequency ∝ R^−1.5, kept inside what the eye follows)
+  const w2=Math.min(13,Math.max(2.2,.3*Math.pow(b.r,-1.5)*.9)),w3=w2*1.9;b.v2+=(-w2*w2*b.a2-1.5*b.v2)*dt;b.a2+=b.v2*dt;b.v3+=(-w3*w3*b.a3-2.2*b.v3)*dt;b.a3+=b.v3*dt;b.a2=Math.max(-.1,Math.min(.1,b.a2));b.a3=Math.max(-.08,Math.min(.08,b.a3));
+  if(b.burst&&t-b.burst.t0>=b.burst.dur)b.gone=true;if(out&&(b.x<-b.r-.05||b.x>AR+b.r+.05||b.y<-b.r-.05||b.y>1+b.r+.05))b.gone=true;}
+ for(const d of S.dots){if(t<d.t0)continue;d.x+=d.vx*dt;d.y+=d.vy*dt;const k=Math.exp(-2.4*dt);d.vx*=k;d.vy*=k;}
+ S.dots=S.dots.filter(d=>t<d.t0+d.life);if(S.b.some(b=>b.gone))S.b=S.b.filter(b=>!b.gone);if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+// how much of the screen has matter over it (0–1), on a 48 × 27 grid
+function sboCover(S){const L=sboLive(S),G=48,H=27;let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,y=(j+.5)/H;for(const b of L){const dx=x-b.x,dy=y-b.y;if(dx*dx+dy*dy<b.r*b.r){n++;break;}}}return n/(G*H);}
+const sboEmptyNow=S=>!S.b.length&&!S.dots.length;
+const SBO_BUF=new Float32Array(1536*20);
+function sboDraw(S){const F=SBO_FILMS[S.lap%2],U={uThick:F.thick,uThick2:F.thick2,uFreq:F.freq,uSat:F.sat,uF0:F.f0,uGain:F.gain,uBand:F.band,uBands:F.bands},L=sboLive(S),d=SBO_BUF,t=S.t;let n=0,w=0;const walls=[];
+ for(const b of L){if(n>=1500)break;const k=n*20;d.fill(0,k,k+20);d[k]=b.x;d[k+1]=b.y;d[k+2]=b.r;d[k+3]=b.seed;d[k+4]=b.a2;d[k+5]=b.p2;d[k+6]=b.a3;d[k+7]=b.p3;d[k+8]=b.alpha;
+  if(b.burst){d[k+9]=Math.max(.001,(t-b.burst.t0)/b.burst.dur*3.1416);d[k+10]=b.burst.dir;}d[k+11]=b.ph;d[k+15]=9;d[k+19]=9;let q=0;
+  for(const j of b.join){if(q>1)break;const o=j.o;if(t<o.born||o.gone)continue;const dx=o.x-b.x,dy=o.y-b.y,d2=Math.hypot(dx,dy)||1e-6,s=Math.sqrt(1-j.mz*j.mz),D=d2/s;if(D>=b.r+o.r)continue;
+   const da=(D*D+b.r*b.r-o.r*o.r)/(2*D);if(Math.abs(da)>=b.r)continue;const mx=dx/d2*s,my=dy/d2*s,p=k+12+q*4;d[p]=mx;d[p+1]=my;d[p+2]=j.mz;d[p+3]=da/b.r;q++;
+   if(b.id<o.id)walls.push([b.x+mx*da,b.y+my*da,Math.sqrt(b.r*b.r-da*da),b.seed,mx,my,j.mz,Math.min(b.alpha,o.alpha),b.ph]);}
+  n++;}
+ bmbBodies('bubble',d,n,{...U,uT:S.ft});
+ for(const v of walls){const k=w*20;d.fill(0,k,k+20);d.set(v.slice(0,8),k);d[k+8]=v[8];w++;}if(w)bmbBodies('wall',d,w,{...U,uT:S.ft},true,1.1);
+ let m=0;for(const o of S.dots){if(t<o.t0||m>=1500)continue;const k=m*20,a=Math.min(1,(o.t0+o.life-t)/.4);d.fill(0,k,k+20);d[k]=o.x;d[k+1]=o.y;d[k+2]=o.r;d[k+4]=o.c[0];d[k+5]=o.c[1];d[k+6]=o.c[2];d[k+7]=a;m++;}if(m)bmbBodies('dot',d,m,{},true,1.2);}
+
+// Bombolles sense pes · stimulus 2, «Mel i caramel»: a liquid so viscous that it coils like a rope.
+// The matter: thick streams that come in from an edge and, where they meet a mass, wind round and round into a pile («liquid rope
+// coiling», Ribe, Habibi & Bonn, 2012); each turn settles outward and down as the next one lands on top, so the pile is a spiral
+// of rings that keeps flowing while the stream pours. Between piles a drop shoots across and leaves a thread, thick at the roots and
+// thin in the middle, on which beads swell (the way a thin thread of liquid breaks, Rayleigh–Plateau). At the end everything is drawn
+// out towards the edges and the threads break into beads that float away.
+// All the motion is computed here (kinematics of design, not a fluid solver); bombolles-motor.js draws the ropes and the beads.
+
+
+// the two liquids: how much each colour is absorbed along the thickness, the light inside, the bright focus, the lamps, the density
+const MEL_LIQUIDS=Object.freeze([{sig:[.15,1.02,2],glow:[2.2,.95,.1],spec:[1,.97,.9],depth:1,opac:2.2},// honey and caramel
+ {sig:[.5,3.2,.25],glow:[2.3,.8,.3],spec:[1,.94,1],depth:1,opac:2.2}]);// raspberry and blackberry syrup: orange where it is thin
+const MEL_POST=Object.freeze({spread:.5,bloom:.1,exp:1});// little glow around: it is a liquid, not a light
+const MEL_TURN=2.14;// seconds a turn of the coil takes (two beats at 56 to the minute)
+function melNew(o={}){const rnd=bmbRandom(o.seed||23);return {kind:'mel',AR:o.AR||16/9,lap:o.lap||0,rnd,t:0,piles:[],ribbons:[],threads:[],beads:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),id:0,post:MEL_POST};}
+const melEase=x=>x<=0?0:x>=1?1:x*x*(3-2*x);
+// a point outside the screen, on edge e (0 left, 1 top, 2 right, 3 bottom), at u along it
+function melEdge(S,e,u,g=.08){const AR=S.AR;return e===0?[-g,u]:e===2?[AR+g,u]:e===1?[u*AR,-g]:[u*AR,1+g];}
+function melPile(S,x,y,R){const r=S.rnd,a=-1.5708+(r()-.5)*.7,p={id:S.id++,x,y,tx:x,ty:y,Ax:Math.cos(a),Ay:Math.sin(a),e:.44+.14*r(),R0:R,Rout:R,Rgoal:R,th:0,om:0,pours:0,pour:null,tint:r(),ph:r()*20,born:S.t,pull:null,gone:false};S.piles.push(p);return p;}
+// a pour: the stream comes from the edge, reaches the top of the pile, coils for `turns` turns and its tail follows it in
+function melPour(S,p,e,u,turns){const s=melEdge(S,e,u,.1+p.Rout*.3);if(!p.pours){let a=Math.atan2(s[1]-p.y,s[0]-p.x)+1.5708;a=Math.atan2(Math.sin(a),Math.cos(a));a=Math.max(-1.15,Math.min(1.15,a))*.8+(S.rnd()-.5)*.3-1.5708;p.Ax=Math.cos(a);p.Ay=Math.sin(a);}p.pours++;p.Rgoal=p.R0*(1+.25*(p.pours-1));p.pour={sx:s[0],sy:s[1],t0:S.t,in:1.3,t1:S.t+1.3+turns*MEL_TURN,tail:1.6,sw:S.rnd()*6.28,side:S.rnd()<.5?-1:1};S.ev.push({t:S.t,type:'raig',x:p.x/S.AR,R:p.Rout});}
+// the place for a new pile: far from the others, inside the screen
+function melSpot(S,near){const r=S.rnd,AR=S.AR;let best=null;for(let i=0;i<60;i++){const x=AR*(.1+.8*r()),y=.16+.68*r();let c=9;for(const p of S.piles){const d=Math.hypot(x-p.tx,(y-p.ty)*1.25)-p.Rgoal;if(d<c)c=d;}
+  const s=Math.min(c,.6)-(near?.9*Math.hypot(x-near[0],y-near[1]):0)+.05*r();if(!best||s>best.s)best={s,x,y,c};}return best;}
+// a ribbon: a thick stream that crosses the screen from one edge to another in a long S that sways; it runs in head first and,
+// at the end, its tail runs out after it
+function melRibbon(S,e,delay=0){const r=S.rnd,A=melEdge(S,e,.2+.6*r(),.12),B=melEdge(S,(e+1+Math.floor(r()*2))%4,.2+.6*r(),.12);S.ribbons.push({ax:A[0],ay:A[1],bx:B[0],by:B[1],w:.05+.02*r(),amp:(r()<.5?-1:1)*(.2+.12*r()),ph:r()*9,tint:r(),t0:S.t+delay,in:2.8,out:0});S.ev.push({t:S.t,type:'cinta'});}
+function melRibbonPts(S,q,t){const dx=q.bx-q.ax,dy=q.by-q.ay,D=Math.hypot(dx,dy)||1,nx=-dy/D,ny=dx/D,am=q.amp*D*(1+.2*Math.sin(t*.31+q.ph)),am2=q.amp*D*(1+.2*Math.sin(t*.23+q.ph*1.7));
+ const c1x=q.ax+dx*.3+nx*am,c1y=q.ay+dy*.3+ny*am,c2x=q.ax+dx*.7-nx*am2,c2y=q.ay+dy*.7-ny*am2,u1=melEase((t-q.t0)/q.in),u0=q.out&&t>q.out?melEase((t-q.out)/3.2):0,M=80,out=[];if(u1<=u0)return out;let len=0;
+ for(let i=0;i<=M;i++){const u=u0+(u1-u0)*i/M,a=1-u,x=a*a*a*q.ax+3*a*a*u*c1x+3*a*u*u*c2x+u*u*u*q.bx,y=a*a*a*q.ay+3*a*a*u*c1y+3*a*u*u*c2y+u*u*u*q.by;if(i)len+=Math.hypot(x-out[i-1].x,y-out[i-1].y);out.push({x,y,d:len,u});}
+ for(const o of out){o.w=q.w*(1+.22*Math.sin(o.u*7+q.ph)+.1*Math.sin(o.u*17+q.ph*2))*Math.sqrt(Math.min(1,(len-o.d)/(q.w*2.5)+.004))*Math.sqrt(Math.min(1,o.d/(q.w*2.5)+.004));o.v=o.u*D*1.2/q.w-t*1.6;o.sh=.75;o.tint=.15+.5*q.tint;}return out;}
+function melThread(S,a,b,delay=0){if(a===b||S.threads.some(q=>(q.a===a&&q.b===b)||(q.a===b&&q.b===a)))return;const r=S.rnd,n=1+Math.floor(r()*3),beads=[];for(let i=0;i<n;i++)beads.push({u:.22+.56*(i+.5+.5*(r()-.5))/n,r:.008+.012*r(),ph:r()*6});
+ S.threads.push({a,b,t0:S.t+delay,dur:1+.5*r(),r0:.0035+.002*r(),sg:(r()<.5?-1:1)*(.08+.16*r()),ph:r()*9,beads,brk:null,done:false,hit:false});}
+function melDrop(S,p){const r=S.rnd,a=r()*6.283,sp=.03+.05*r();S.beads.push({x:p.x+Math.cos(a)*p.Rout*.9,y:p.y+Math.sin(a)*p.Rout*p.e,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:.012+.018*r(),tl:.8+1.2*r(),seed:r(),t0:S.t+r()*2,grow:1,free:true});}
+function melPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P),E=i=>(S.e0+i)%4;S.k=k;S.P=P;S.role=role;const live=S.piles.filter(p=>!p.gone);
+ if(role==='arriba'&&!live.length){// the first stream coils close to where it comes in
+  const e=E(0),s=melEdge(S,e,.25+.2*r()),x=Math.min(AR*.8,Math.max(AR*.2,s[0]+(e===0?.42:e===2?-.42:0))),y=Math.min(.72,Math.max(.3,s[1]+(e===1?.34:e===3?-.34:0)));
+  melPour(S,melPile(S,x,y,.2),e,.3+.3*r(),3);return;}
+ if(role==='arriba'||role==='creix'){// in turn: a new pile far from the others, or more liquid on a pile that is there; threads between neighbours
+  const fresh=live.length<2||(k%2===0&&live.length<4);let p;
+  if(fresh){const sp=melSpot(S);p=melPile(S,sp.x,sp.y,.15+.08*r());}else{p=live.filter(q=>!q.pour).sort((a,b)=>a.pours-b.pours||a.born-b.born)[0]||live[0];}
+  // the stream comes from the edge farthest from the pile, so it crosses the screen in a long curve
+  const d=[p.x,p.y*AR,AR-p.x,(1-p.y)*AR];let e=E(k);if(d[e]<AR*.3)e=d.indexOf(Math.max(...d));melPour(S,p,e,.2+.6*r(),3+(fresh?0:1));
+  const others=S.piles.filter(q=>!q.gone&&q!==p).sort((a,b)=>Math.hypot(a.x-p.x,a.y-p.y)-Math.hypot(b.x-p.x,b.y-p.y));if(others[0])melThread(S,others[0],p,2.2);if(others[1]&&k>3)melThread(S,p,others[1],3.4);
+  if(live.length>=2&&!S.ribbons.length)melRibbon(S,E(k+1));if(k>2)for(let i=0;i<2;i++)melDrop(S,live[Math.floor(r()*live.length)]);return;}
+ if(role==='ple'){// the lace: every pile takes a last stream at once, and threads join every pair of neighbours
+  while(S.piles.filter(p=>!p.gone).length<4){const sp=melSpot(S);melPile(S,sp.x,sp.y,.14+.07*r());}
+  while(S.ribbons.length<2)melRibbon(S,E(S.ribbons.length*2+1),.6*S.ribbons.length);
+  const L=S.piles.filter(p=>!p.gone);L.forEach((p,i)=>{if(!p.pour||S.t>p.pour.t1){const d=[p.x,p.y*AR,AR-p.x,(1-p.y)*AR];let e=E(i);if(d[e]<AR*.25)e=d.indexOf(Math.max(...d));melPour(S,p,e,.15+.7*r(),4+i%2);p.pour.t0+=i*.35;p.pour.t1+=i*.35;}});
+  let n=0;for(const a of L)for(const b of L){if(a.id>=b.id)continue;if(Math.hypot(a.x-b.x,a.y-b.y)<.95)melThread(S,a,b,1+.5*n++);}
+  for(let i=0;i<8;i++)melDrop(S,L[i%L.length]);S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: every mass is drawn out towards the edge it is nearest to, and the threads break
+ const cx=AR/2;for(const p of S.piles){if(p.gone)continue;let dx=p.x-cx,dy=(p.y-.5)*1.4;const l=Math.hypot(dx,dy);if(l<.04){const a=r()*6.283;dx=Math.cos(a);dy=Math.sin(a);}else{dx/=l;dy/=l;}
+  p.pull={dx,dy,t0:S.t+.3*r(),acc:.085+.05*r()};if(p.pour&&S.t<p.pour.t1)p.pour.t1=S.t;}
+ S.threads.forEach((q,i)=>{if(!q.brk)q.brk=S.t+.4+.25*i+.3*r();});S.ribbons.forEach((q,i)=>{if(!q.out)q.out=S.t+.3+.5*i;});for(const b of S.beads){const dx=b.x-cx,dy=b.y-.5,l=Math.hypot(dx,dy)||1;b.ox=dx/l;b.oy=dy/l;}S.ev.push({t:S.t,type:'surt'});}
+// the pile at age s (turns since that bit of rope landed): where it lies, how thick it is, how high in the pile
+const MEL_W=.2,MEL_TOP=.45;// the radius of the rope and of the top turn of a pile, in radii of the pile// the radius of the rope, in radii of its pile
+function melCoil(p,s,o){const th=p.th-6.2832*s,k=1-Math.exp(-s/1.7),Rt=p.Rout*MEL_TOP,wob=1+(.1*Math.sin(th*.37+p.ph)+.06*Math.sin(th*1.31+p.ph*2.3))*k,R=(Rt+(p.Rout-Rt)*k)*wob,h=p.Rout*1.1*Math.exp(-s/2.1),lx=R*Math.cos(th),ly=p.e*R*Math.sin(th)+h;
+ o.x=p.x-p.Ay*lx+p.Ax*ly;o.y=p.y+p.Ax*lx+p.Ay*ly;o.w=p.Rout*MEL_W*(1+.3*k)*(1+.13*Math.sin(th*.53+p.ph*3.1)*Math.min(1,s*2));o.sh=.2+.8*Math.exp(-s/2);o.v=th*3;return o;}
+// the drawing-out at the end: the points of a mass slide along the direction it is pulled in
+function melPull(p,o,t){const q=p.pull;if(!q||t<=q.t0)return o;const u=t-q.t0,sh=.5*q.acc*u*u,st=1.9*(1-Math.exp(-u/2.6)),rx=o.x-p.x,ry=o.y-p.y,al=rx*q.dx+ry*q.dy,pe=-rx*q.dy+ry*q.dx,a2=al*(1+st)+sh,p2=pe*(1-.3*Math.min(1,st));
+ o.x=p.x+q.dx*a2-q.dy*p2;o.y=p.y+q.dy*a2+q.dx*p2;o.w*=1/Math.sqrt(1+.5*st);return o;}
+function melStep(S,dt){const t=S.t+dt,AR=S.AR;S.t=t;
+ for(const p of S.piles){if(p.gone)continue;p.Rout+=(p.Rgoal-p.Rout)*(1-Math.exp(-dt/2.2));
+  // a slow drift around its place
+  p.x=p.tx+.012*Math.sin(t*.17+p.ph);p.y=p.ty+.01*Math.cos(t*.13+p.ph*1.7);
+  const q=p.pour;let om=0;if(q&&t>q.t0+q.in){const end=q.t1+q.tail;om=t<q.t1?6.2832/MEL_TURN:t<end?6.2832/MEL_TURN*(1-melEase((t-q.t1)/q.tail)*.85):0;}
+  p.om+=(om-p.om)*(1-Math.exp(-dt/.35));const th0=p.th;p.th+=p.om*dt;if(Math.floor(p.th/6.2832)>Math.floor(th0/6.2832))S.ev.push({t,type:'volta',x:p.x/AR,R:p.Rout,n:Math.floor(p.th/6.2832)});
+  if(p.pull&&t>p.pull.t0){const u=t-p.pull.t0,sh=.5*p.pull.acc*u*u,cx=p.x+p.pull.dx*sh,cy=p.y+p.pull.dy*sh,m=p.Rout*3.2;if(cx<-m||cx>AR+m||cy<-m||cy>1+m)p.gone=true;}}
+ for(const q of S.threads){if(q.done)continue;if(!q.hit&&t>=q.t0+q.dur){q.hit=true;S.ev.push({t,type:'fil',x:(q.a.x+q.b.x)/2/AR});}
+  if(q.brk&&t>=q.brk){if(!q.broke){q.broke=true;S.ev.push({t,type:'trenca',x:(q.a.x+q.b.x)/2/AR});// the beads of a broken thread go free
+    const P=melThreadPts(S,q,t);for(const b of q.beads){const i=Math.min(P.length-1,Math.round(b.u*(P.length-1))),o=P[i],dx=o.x-AR/2,dy=o.y-.5,l=Math.hypot(dx,dy)||1;S.beads.push({x:o.x,y:o.y,vx:dx/l*.03,vy:dy/l*.03,ox:dx/l,oy:dy/l,r:b.r,tl:.6,seed:b.ph/6,t0:t,grow:0,free:true});}q.beads=[];}
+   if(t>q.brk+1.5)q.done=true;}
+  if(q.a.gone&&q.b.gone)q.done=true;}
+ const out=S.role==='surt';for(const b of S.beads){if(t<b.t0)continue;if(out&&b.ox!==undefined){b.vx+=b.ox*.09*dt;b.vy+=b.oy*.09*dt;}else{b.vx*=Math.exp(-.5*dt);b.vy*=Math.exp(-.5*dt);}b.x+=b.vx*dt;b.y+=b.vy*dt;
+  if(b.x<-.1||b.x>AR+.1||b.y<-.1||b.y>1.1)b.gone=true;}
+ S.beads=S.beads.filter(b=>!b.gone);S.threads=S.threads.filter(q=>!q.done);if(S.piles.some(p=>p.gone)&&S.piles.every(p=>p.gone))S.piles=[];S.ribbons=S.ribbons.filter(q=>!(q.out&&t>q.out+3.3));if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+// the ropes of a pile: the coil from its oldest turn to the newest and, joined to it, the stream back to the edge it comes from
+// (while a new stream is still on its way to the pile, it is a rope of its own). The stream comes down the axis of the pile and,
+// close to it, whirls round wider and wider until it lies on the top turn, as a rope of liquid does when it coils.
+function melPileRopes(S,p,t){const coil=[],N=Math.min(p.th/6.2832,4.6),q=p.pour,tint=.15+.5*p.tint,on=q&&t>q.t0&&t<q.t1+q.tail,g=on?melEase((t-q.t0)/q.in):0,cut=on&&t>q.t1?melEase((t-q.t1)/q.tail):0;
+ // the newest end of the coil is round while no stream is joined to it
+ const cap=!on||g<1?1:Math.max(cut,1-(t-q.t0-q.in)/.4);
+ if(N>.02){const n=Math.max(2,Math.ceil(N*96)),tl=.1+.5*melEase((N-3.4)/1.2);for(let i=0;i<=n;i++){const s=N*(1-i/n),o=melCoil(p,s,{});o.w*=Math.sqrt(Math.min(1,(N-s)/tl+.003));if(cap>0)o.w*=1-cap*(1-Math.sqrt(Math.min(1,s/.1+.003)));o.tint=tint;coil.push(melPull(p,o,t));}}
+ if(!on)return coil.length>1?[coil]:[];
+ const Rt=p.Rout*MEL_TOP,h0=p.Rout*1.1,cx=p.x+p.Ax*h0,cy=p.y+p.Ay*h0,dx=q.sx-cx,dy=q.sy-cy,D=Math.hypot(dx,dy)||1,sw=q.side*(.14+.05*Math.sin(t*.5+q.sw))*D;
+ const p1x=cx+p.Ax*p.Rout*1.6,p1y=cy+p.Ay*p.Rout*1.6,p2x=q.sx-dx*.4-dy/D*sw,p2y=q.sy-dy*.4+dx/D*sw,M=56,base=[];let len=0;
+ for(let i=0;i<=M;i++){const u=i/M,a=1-u,x=a*a*a*cx+3*a*a*u*p1x+3*a*u*u*p2x+u*u*u*q.sx,y=a*a*a*cy+3*a*a*u*p1y+3*a*u*u*p2y+u*u*u*q.sy;if(i)len+=Math.hypot(x-base[i-1].x,y-base[i-1].y);base.push({x,y,d:len});}
+ const at=f=>{const i=Math.min(M-1,Math.floor(f));return base[i].d+(base[i+1].d-base[i].d)*(f-i);};
+ // sg = length along the rope from the pile; z = how far up the axis that is (the rope leaves the top turn along it, then rises)
+ const L=.75*Rt,lam=Rt,zOf=g=>g-.82*L*(1-Math.exp(-g/L)),sOf=z=>{let g=z+.82*L;for(let i=0;i<6;i++)g=z+.82*L*(1-Math.exp(-g/L));return g;};
+ // while it comes in, the head runs from the edge to the pile; once the tap closes, the tail runs in after it
+ const zA=at((1-g)*M),zB=at((1-cut)*M),sA=zA>0?sOf(zA):0,sB=sOf(zB),w0=p.Rout*MEL_W,v0=p.th*3,joined=g>=1&&coil.length>1,stream=[],K=84;let bi=0;
+ for(let j=joined?1:0;j<=K;j++){const sg=sA+(sB-sA)*Math.pow(j/K,1.7),z=Math.min(len,Math.max(0,zOf(sg)));while(bi<M-1&&base[bi+1].d<z)bi++;const A=base[bi],B=base[bi+1],fr=(z-A.d)/Math.max(1e-9,B.d-A.d);
+  const r=Rt*Math.exp(-z/lam),th=p.th+.9*L/Rt*(1-Math.exp(-sg/(.9*L))),lx=r*Math.cos(th),ly=p.e*r*Math.sin(th);
+  const o={x:A.x+(B.x-A.x)*fr-p.Ay*lx+p.Ax*ly,y:A.y+(B.y-A.y)*fr+p.Ax*lx+p.Ay*ly,w:w0*(1+.14*Math.sin(sg*7+q.sw)*Math.min(1,sg/(4*w0))),v:v0+sg/w0,sh:1,tint};
+  if(g<1)o.w*=Math.sqrt(Math.min(1,Math.max(0,sg-sA)/(w0*2.5)+.004));if(cut>0)o.w*=Math.sqrt(Math.min(1,Math.max(0,sB-sg)/(w0*3)+.004));stream.push(melPull(p,o,t));}
+ if(joined)return [coil.concat(stream)];return coil.length>1?[coil,stream]:[stream];}
+// where a thread holds on to a pile: on the side of its widest turn that faces the other end
+function melAnchor(p,ox,oy,t){const N=Math.min(p.th/6.2832,4.6),s=Math.min(N,2.4),k=1-Math.exp(-s/1.7),R=p.Rout*(MEL_TOP+(1-MEL_TOP)*k)*.9,h=p.Rout*1.1*Math.exp(-s/2.1),cx=p.x+p.Ax*h,cy=p.y+p.Ay*h,dx=ox-cx,dy=oy-cy,a=Math.atan2((p.Ax*dx+p.Ay*dy)/p.e,-p.Ay*dx+p.Ax*dy),lx=R*Math.cos(a),ly=p.e*R*Math.sin(a)+h;
+ return melPull(p,{x:p.x-p.Ay*lx+p.Ax*ly,y:p.y+p.Ax*lx+p.Ay*ly,w:0},t);}
+function melThreadPts(S,q,t){const A=melAnchor(q.a,q.b.x,q.b.y,t),B=melAnchor(q.b,q.a.x,q.a.y,t),dx=B.x-A.x,dy=B.y-A.y,D=Math.hypot(dx,dy)||1,sg=q.sg*(1+.25*Math.sin(t*.4+q.ph))*D,cx=(A.x+B.x)/2-dy/D*sg,cy=(A.y+B.y)/2+dx/D*sg,out=[],M=30;
+ for(let i=0;i<=M;i++){const u=i/M,a=1-u;out.push({x:a*a*A.x+2*a*u*cx+u*u*B.x,y:a*a*A.y+2*a*u*cy+u*u*B.y,u});}return out;}
+function melCover(S){const G=48,H=27,c=new Uint8Array(G*H),mark=(x,y,rad)=>{const i0=Math.max(0,Math.floor((x-rad)/S.AR*G)),i1=Math.min(G-1,Math.floor((x+rad)/S.AR*G)),j0=Math.max(0,Math.floor((y-rad)*H)),j1=Math.min(H-1,Math.floor((y+rad)*H));for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++)c[j*G+i]=1;};
+ for(const p of S.piles){if(p.gone)continue;for(const R of melPileRopes(S,p,S.t))for(const o of R)mark(o.x,o.y,o.w);}for(const q of S.ribbons)for(const o of melRibbonPts(S,q,S.t))mark(o.x,o.y,o.w);for(const q of S.threads)for(const o of melThreadPts(S,q,S.t))mark(o.x,o.y,.004);for(const b of S.beads)mark(b.x,b.y,b.r);let n=0;for(const v of c)n+=v;return n/(G*H);}
+const melEmptyNow=S=>!S.piles.length&&!S.beads.length&&!S.threads.length&&!S.ribbons.length;
+const MEL_BUF=new Float32Array(600*20);
+function melDraw(S){const Lq=MEL_LIQUIDS[S.lap%2],U={uSig:Lq.sig,uGlow:Lq.glow,uSpecCol:Lq.spec,uDepth:Lq.depth,uOpac:Lq.opac},t=S.t,d=MEL_BUF;let n=0;
+ const bead=(x,y,r,sh,tint,ang,tl,seed,a=1)=>{if(n>=590||r<=0)return;const k=n*20;d.fill(0,k,k+20);d[k]=x;d[k+1]=y;d[k+2]=r;d[k+3]=seed;d[k+4]=a;d[k+5]=sh;d[k+6]=tint;d[k+7]=ang;d[k+8]=tl;n++;};
+ for(const q of S.ribbons){const R=melRibbonPts(S,q,t);if(R.length>1)bmbRope(R);}
+ for(const q of S.threads){if(t<q.t0)continue;const P=melThreadPts(S,q,t),M=P.length-1,g=Math.min(1,(t-q.t0)/q.dur),gap=q.brk&&t>q.brk?.5*melEase((t-q.brk)/1.5):0,tint=.3;
+  const rad=u=>q.r0*(.32+2.2*Math.pow(Math.abs(2*u-1),3.2));
+  const seg=(u0,u1)=>{const pts=[];for(const o of P){if(o.u<u0-1e-6||o.u>u1+1e-6)continue;pts.push({x:o.x,y:o.y,w:rad(o.u),v:o.u*40,sh:1,tint,sd:.6});}if(pts.length>1)bmbRope(pts);};
+  if(gap>0){seg(0,.5-gap);seg(.5+gap,1);for(const u of [.5-gap,.5+gap]){const o=P[Math.min(M,Math.max(0,Math.round(u*M)))];bead(o.x,o.y,q.r0*2.2*(1+gap),1,tint,0,0,q.ph);}}
+  else{seg(0,g);if(g<1){const i=Math.min(M,Math.round(g*M)),o=P[i],b=P[Math.max(0,i-1)];bead(o.x,o.y,q.r0*3.2,1,tint,Math.atan2(b.y-o.y,b.x-o.x),1.2,q.ph);}
+   else{const k=melEase((t-q.t0-q.dur)/2.5);for(const b of q.beads){const o=P[Math.min(M,Math.round((b.u+.02*Math.sin(t*.3+b.ph))*M))];bead(o.x,o.y,b.r*k,1,tint,0,0,b.ph);}}}}
+ for(const b of S.beads){if(t<b.t0)continue;const k=melEase((t-b.t0)/1.2),sp=Math.hypot(b.vx,b.vy);bead(b.x,b.y,b.r*(b.grow?k:1),1,.3,Math.atan2(-b.vy,-b.vx),Math.min(b.tl,sp*30),b.seed);}
+ for(const p of S.piles){if(p.gone)continue;for(const R of melPileRopes(S,p,t))if(R.length>1)bmbRope(R,48);}
+ bmbRopes(U);if(n)bmbBodies('bead',d,n,U,'liquid',3.3);}
+
+// Bombolles sense pes · stimulus 3, «Plasma»: threads of light between points that glow.
+// The matter: a few points of light (poles), half of them of one sign and half of the other, and the lines of the field they make
+// together, which leave every pole as a wheel of threads and join it to its neighbours of the other sign (the lines of a field of
+// point charges in a plane: the level lines of the sum of the angles around each pole, turned into a spiral by a term in log r). The
+// threads waver with a slow noise, so they read as silk more than as a diagram. Nothing blinks: each press makes the threads reach
+// further and brings new poles, and the light grows by its shape, not by flashes.
+// Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+
+
+const PLA_MAX=12;
+// uNode = x, y, reach of its light, how much of it is there · uCol = colour (linear), sign (+1 or −1)
+bmbKind('plasma',BMB_VS_FULL,`#version 300 es
+precision highp float;in vec2 vUv;uniform float uAR,uT,uGain,uPhase,uN;uniform vec4 uNode[${PLA_MAX}],uCol[${PLA_MAX}];out vec4 o;
+${BMB_GLSL_NOISE}
+void main(){vec2 p=vec2(vUv.x*uAR,1.-vUv.y);
+ vec4 n1=bmbN4(p*1.6+vec2(uT*.045,-uT*.035)),n2=bmbN4(p*3.7+vec2(-uT*.06,uT*.05)+11.3),n3=bmbN4(p*8.+vec2(uT*.08,uT*.07)+5.7);
+ vec2 q=p+(n1.rg-.5)*.2+(n2.rg-.5)*.07+(n3.rg-.5)*.02;float psi=uPhase,env=0.,core=0.,wsum=0.;vec3 tint=vec3(0.),hot=vec3(0.);
+ for(int i=0;i<${PLA_MAX};i++){if(float(i)>=uN)break;vec4 nd=uNode[i],c=uCol[i];vec2 d=q-nd.xy;float r=length(d)+1e-4;psi+=c.a*(atan(d.y,d.x)+.8*log(r));
+  float e=nd.w*exp(-pow(r/max(nd.z,1e-3),1.25));env+=e;tint+=c.rgb*e*e;wsum+=e*e;vec2 d0=mix(p,q,.35)-nd.xy;float s=.006+.035*nd.z,k=nd.w*s*s/(dot(d0,d0)+s*s);core+=k;hot+=c.rgb*k;}
+ // threads at three finenesses: broad veils, strands and hairs; each fades in and out along its way
+ float f=pow(.5+.5*cos(psi*3.+n1.b*6.),3.)*.5+pow(.5+.5*cos(psi*7.+n2.b*6.+1.7),6.)*.85+pow(.5+.5*cos(psi*17.+n3.b*5.+n1.a*6.),12.)*.55,gap=smoothstep(.3,.62,bmbN4(p*1.3+vec2(uT*.02,3.)).g*.55+n1.a*.55);
+ f=max(0.,f-.06)*(.06+2.1*n2.a*(.25+.75*n1.a))*(.12+.88*gap);vec3 base=tint/max(wsum,1e-5);base=max(vec3(0.),mix(vec3(dot(base,vec3(.3,.5,.2))),base,1.5));float en=1.-exp(-env*1.4);
+ vec3 col=base*f*en*uGain*1.5+base*en*en*.012+(hot*1.3+vec3(core)*.8)*1.3;o=vec4(col,0.);}`);
+const PLA_PALS=Object.freeze([['#1f4dff','#e01fff','#5a2bff','#18b8ff','#ff2fb8','#3a3cff'],['#27f07a','#ffd03a','#2ee6d0','#b7ff3a','#ffb02e','#35c8ff']]);
+function plaNew(o={}){const rnd=bmbRandom(o.seed||11);return {kind:'plasma',AR:o.AR||16/9,lap:o.lap||0,rnd,t:0,n:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),gain:1,G:1,ph:rnd()*6,sg:1,ci:Math.floor(rnd()*6),post:{spread:.5,bloom:.24,exp:1}};}
+// the point just outside the screen nearest to (x, y)
+function plaOutside(S,x,y,m=.14){const AR=S.AR,d=[x,y,AR-x,1-y];let e=0;for(let i=1;i<4;i++)if(d[i]<d[e])e=i;return e===0?[-m,y]:e===2?[AR+m,y]:e===1?[x,-m]:[x,1+m];}
+function plaEmpty(S){const AR=S.AR,r=S.rnd;let best=null;for(let j=0;j<7;j++)for(let i=0;i<12;i++){const x=(i+.5)/12*AR,y=(j+.5)/7;let c=9;for(const n of S.n){const d=Math.hypot(x-n.tx,y-n.ty);if(d<c)c=d;}
+  c=Math.min(c,2.2*Math.min(x,y,AR-x,1-y)+.12)+.04*r();if(!best||c>best.c)best={c,x,y};}return best;}
+function plaAdd(S,tx,ty,R,from){if(S.n.length>=PLA_MAX)return null;const r=S.rnd,pal=PLA_PALS[S.lap%2],s=from||plaOutside(S,tx,ty),n={x:s[0],y:s[1],tx,ty,vx:0,vy:0,r:R*.3,R,a:0,A:1,sg:S.sg,c:bmbLin(pal[S.ci++%pal.length]),ph:r()*40,out:false};
+ S.sg=-S.sg;S.n.push(n);S.ev.push({t:S.t,type:'pol',x:tx/S.AR,R});return n;}
+function plaPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;
+ if(role==='arriba'){if(!S.n.length){const e=S.e0,u=.3+.4*r(),t=e===0?[.2,u]:e===2?[AR-.2,u]:e===1?[u*AR,.2]:[u*AR,.8];plaAdd(S,t[0],t[1],.1);}
+  else{const a=S.n[0];a.R=.16;const ang=Math.atan2(.5-a.ty,AR/2-a.tx)+(r()-.5)*.9;plaAdd(S,a.tx+Math.cos(ang)*.34,a.ty+Math.sin(ang)*.3,.11);}return;}
+ if(role==='creix'){for(const n of S.n)n.R=Math.min(.27,n.R*1.25);for(let i=0;i<2;i++){const f=plaEmpty(S);plaAdd(S,f.x,f.y,.1+.04*r());}S.ev.push({t:S.t,type:'creix'});return;}
+ if(role==='ple'){for(let i=0;i<4&&S.n.length<10;i++){const f=plaEmpty(S);if(f.c<.2)break;plaAdd(S,f.x,f.y,.2);}for(const n of S.n)n.R=Math.max(n.R,.24)*1.25;S.G=1.12;S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: every pole leaves by the edge it is nearest to, and its threads go with it
+ S.G=1;for(const n of S.n){let dx=n.x-AR/2,dy=(n.y-.5)*1.5;const l=Math.hypot(dx,dy)||1;const a=Math.atan2(dy/l,dx/l)+(r()-.5)*.4;n.out=true;n.ox=Math.cos(a);n.oy=Math.sin(a);n.wait=.2*r()+Math.max(0,.8-l)*.8;n.R*=.6;}
+ S.ev.push({t:S.t,type:'surt'});}
+function plaStep(S,dt){const AR=S.AR,t=S.t+dt;S.t=t;S.ph+=dt*.1;S.gain+=(S.G-S.gain)*(1-Math.exp(-dt/1.5));
+ for(const n of S.n){n.r+=(n.R-n.r)*(1-Math.exp(-dt/1.3));
+  if(n.out){n.wait-=dt;if(n.wait<=0){n.vx+=n.ox*.09*dt;n.vy+=n.oy*.09*dt;}const o=Math.max(-n.x,-n.y,n.x-AR,n.y-1);n.A=o<=0?1:Math.max(0,1-o/.3);n.a+=(n.A-n.a)*(1-Math.exp(-dt/.25));if(o>.32)n.gone=true;}
+  else{const wx=Math.sin(t*.21+n.ph)*.02+Math.sin(t*.09+n.ph*2.1)*.02,wy=Math.cos(t*.17+n.ph*1.3)*.02+Math.sin(t*.11+n.ph*.6)*.015;n.vx+=((n.tx+wx-n.x)*1.1-n.vx*2.1)*dt;n.vy+=((n.ty+wy-n.y)*1.1-n.vy*2.1)*dt;n.a+=(n.A-n.a)*(1-Math.exp(-dt/.9));}
+  n.x+=n.vx*dt;n.y+=n.vy*dt;}
+ if(S.n.some(n=>n.gone))S.n=S.n.filter(n=>!n.gone);if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+function plaCover(S){const G=32,H=18;let c=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,y=(j+.5)/H;let e=0;for(const n of S.n)e+=n.a*Math.exp(-Math.hypot(x-n.x,y-n.y)/Math.max(n.r,1e-3));if(e>.12)c++;}return c/(G*H);}
+const plaEmptyNow=S=>!S.n.length;
+const PLA_NODE=new Float32Array(PLA_MAX*4),PLA_COL=new Float32Array(PLA_MAX*4);
+function plaDraw(S){const n=Math.min(PLA_MAX,S.n.length);if(!n)return;for(let i=0;i<n;i++){const o=S.n[i],k=i*4;PLA_NODE[k]=o.x;PLA_NODE[k+1]=o.y;PLA_NODE[k+2]=o.r;PLA_NODE[k+3]=o.a;PLA_COL[k]=o.c[0];PLA_COL[k+1]=o.c[1];PLA_COL[k+2]=o.c[2];PLA_COL[k+3]=o.sg;}
+ bmbField('plasma',{uN:n,uNode:{arr:PLA_NODE,size:4},uCol:{arr:PLA_COL,size:4},uGain:S.gain,uPhase:S.ph,uT:S.t});}
+
+// Bombolles sense pes · stimulus 4, «Esferes d'aigua»: balls of clear water with ink inside.
+// The matter: water without weight gathers into spheres. Each sphere is a lens (a bright rim, a dark ring just inside it, the window
+// of the room reflected on it), it trembles when something touches it (the oscillations of a drop that Rayleigh described in 1879:
+// the bigger the drop, the slower) and two spheres that touch flow into one through a neck. Each press drops ink of a new colour
+// into the big sphere, where it unfolds in slow clouds. At the end the sphere breaks into drops that leave by every edge.
+// The water is one field worked out for every point of the screen (up to 16 balls that melt into each other where they are close).
+// Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+
+
+const AIG_MAX=16;
+// uBall = x, y, radius, seed · uWob = the two oscillations (size, angle, size, angle) · uInk = how much ink, how many colours, –, –
+bmbKind('aigua',BMB_VS_FULL,`#version 300 es
+precision highp float;in vec2 vUv;uniform float uAR,uT,uN,uPass,uPx;uniform vec4 uBall[${AIG_MAX}],uWob[${AIG_MAX}],uInk[${AIG_MAX}];uniform vec3 uPal[5];out vec4 o;
+${BMB_GLSL_NOISE}
+float aigWindow(vec3 r,vec3 L,float sz){float k=dot(r,L);if(k<=.05)return 0.;vec3 tx=normalize(cross(vec3(0.,1.,0.),L)),ty=cross(L,tx);float a=dot(r,tx)/k,b=dot(r,ty)/k;a+=b*.22;
+ float e=.1*sz,box=smoothstep(sz+e,sz-e,abs(a))*smoothstep(sz*.78+e,sz*.78-e,abs(b));return box*smoothstep(.015*sz,.07*sz,abs(a+.1*sz))*(.55+.45*smoothstep(sz,-sz,b));}
+vec3 aigPal(float x){x=mod(x,5.);float i=floor(x),f=x-i;f=f*f*(3.-2.*f);vec3 a=uPal[int(i)],b=uPal[int(mod(i+1.,5.))];return mix(a,b,f);}
+void main(){vec2 p=vec2(vUv.x*uAR,1.-vUv.y);float d=1e3,R=.1,seed=0.;vec2 g=vec2(0.,1.),ctr=p,ink=vec2(0.);bool first=true;
+ for(int i=0;i<${AIG_MAX};i++){if(float(i)>=uN)break;vec4 b=uBall[i];if(b.z<=1e-4)continue;vec2 v=p-b.xy;float l=length(v)+1e-5,th=atan(v.y,v.x);vec4 w=uWob[i];
+  float rr=b.z*(1.+w.x*cos(2.*th-w.y)+w.z*cos(3.*th-w.w)),di=l-rr;
+  if(first){first=false;d=di;R=rr;g=v/l;ctr=b.xy;ink=uInk[i].xy;seed=b.w;}
+  else{float k=min(.05,.7*min(R,rr)),h=clamp(.5+.5*(d-di)/k,0.,1.);d=mix(d,di,h)-k*h*(1.-h);g=mix(g,v/l,h);R=mix(R,rr,h);ctr=mix(ctr,b.xy,h);ink=mix(ink,uInk[i].xy,h);seed=mix(seed,b.w,h);}}
+ float aa=1.2/uPx;if(d>aa){discard;}float ed=1.-smoothstep(-aa,aa,d),dd=clamp(-d,0.,R),nz=sqrt(max(0.,dd*(2.*R-dd)))/R;g=normalize(g);vec3 n=normalize(vec3(g*(1.-dd/R),nz+1e-4));
+ // the ink: clouds that fold slowly inside the ball, seen through its lens
+ vec2 ip=(p-ctr)/R,il=ip*(.82+.18*nz)*(1.+2.2*R)+seed*17.;float tt=uT*.04;vec2 w1=vec2(bmbFbm(il*.8+vec2(0.,tt)),bmbFbm(il*.8+vec2(5.2,-tt)+3.1))-.5;
+ vec2 w2=vec2(bmbFbm(il*1.9+w1*2.2+vec2(tt,1.7)),bmbFbm(il*1.9+w1*2.2+vec2(8.3,-tt)))-.5;
+ vec2 iq=il*1.3+w2*1.7+w1*.8;float D0=bmbFbm(iq),M=ink.x*(1.-smoothstep(.15,1.,length(ip+w1*1.1+w2*.5)/(.42+.8*ink.x))),v=(D0-.5)*2.7+M*1.15-.55,inside=smoothstep(.04,.42,nz);
+ float D=smoothstep(-.05,.6,v)*inside*smoothstep(0.,.12,M);float rimw=1.-nz,band=smoothstep(.5,.82,rimw)*(1.-smoothstep(.88,1.,rimw));
+ if(uPass<.5){o=vec4(mix(vec3(1.),vec3(.9,.96,1.)*(1.-.5*band)*(1.-.9*D),ed),1.);return;}
+ float vl=(bmbFbm(iq+vec2(-.085,-.11))-.5)*2.7+M*1.15-.55,lit=clamp(.8+(v-vl)*1.5,.3,1.45)*(.6+.5*smoothstep(.0,.6,v));
+ vec3 ic=aigPal(1.2+ink.y*.8+(bmbFbm(il*.45+w1*.9+9.)-.5)*(5.+2.5*ink.y)+v*.7);vec3 col=ic*D*lit*1.7;
+ // the water itself: the thin bright rim, the light gathered on the far side, the window and the sky of the room on its skin
+ float fr=pow(rimw,3.),an=atan(n.y,n.x);vec3 rimc=mix(vec3(.2,.85,1.),vec3(.55,.42,1.),.5+.5*sin(an*2.+seed*6.+1.));col+=rimc*(fr*.8+pow(rimw,10.)*2.6);
+ float ca=smoothstep(.15,.9,dot(g,vec2(.6,.78)))*smoothstep(.3,.75,rimw)*(1.-smoothstep(.8,.98,rimw));col+=vec3(.25,.8,1.)*ca*.55;
+ vec3 rf=vec3(2.*nz*n.xy,2.*nz*nz-1.);float w0=aigWindow(rf,normalize(vec3(-.58,-.64,.5)),mix(.3,.15,smoothstep(.15,.6,R))),tl=dot(g,vec2(-.62,-.78));
+ float arc=smoothstep(.7,.78,rimw)*(1.-smoothstep(.84,.9,rimw))*smoothstep(.55,.9,tl+.25*(bmbN4(vec2(an*3.,seed*9.)).g-.5)),arc2=smoothstep(.6,.66,rimw)*(1.-smoothstep(.7,.76,rimw))*smoothstep(.75,.95,-tl);
+ col+=vec3(.95,1.,1.)*w0*1.2+vec3(.8,.97,1.)*arc*1.3+vec3(.4,.6,1.)*arc2*.5+vec3(.006,.02,.035)*nz;
+ // a few bubbles of air caught in the water
+ if(R>.05){vec2 q=ip*7.+vec2(seed*9.,-uT*.06),id=floor(q);float hb=bmbN4(id+.5).b;if(hb>.9){vec2 c=id+.5+(bmbN4(id+3.7).rg-.5)*.5,dv=q-c;float rb=.1+.14*bmbN4(id+9.1).a,db=length(dv)/rb;
+   if(db<1.){col+=(vec3(.6,.9,1.)*smoothstep(.6,1.,db)*.6+vec3(1.)*smoothstep(.9,.97,dot(normalize(vec3(dv/rb,sqrt(1.-db*db))),normalize(vec3(-.4,-.5,.76))))*1.2)*inside;}}}
+ o=vec4(col*ed,0.);}`);
+// the inks of the two laps (five each)
+const AIG_PALS=Object.freeze([['#1f5bff','#b23cff','#ff3fd0','#19d9e6','#7dff3a'],['#ff7a1a','#ff4f9e','#8dff3a','#ffb02e','#b25cff']]);
+function aigNew(o={}){const rnd=bmbRandom(o.seed||11);return {kind:'aigua',AR:o.AR||16/9,lap:o.lap||0,rnd,t:0,b:[],dots:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),main:null,post:{spread:.5,bloom:.14,exp:1}};}
+function aigOutside(S,x,y,m){const AR=S.AR,d=[x,y,AR-x,1-y];let e=0;for(let i=1;i<4;i++)if(d[i]<d[e])e=i;return e===0?[-m,y]:e===2?[AR+m,y]:e===1?[x,-m]:[x,1+m];}
+function aigAdd(S,o){const r=S.rnd,s=o.from||aigOutside(S,o.tx,o.ty,o.R*1.15+.03),b={x:s[0],y:s[1],vx:0,vy:0,tx:o.tx,ty:o.ty,r:o.r??o.R,R:o.R,seed:r(),a2:.05*r(),v2:0,p2:r()*6.28,a3:.02*r(),v3:0,p3:r()*6.28,ink:o.ink||0,INK:o.ink||0,hue:o.hue||0,ph:r()*40,into:null,out:false,gone:false,stiff:o.stiff||1};S.b.push(b);return b;}
+function aigDots(S,x,y,n,sp){const r=S.rnd;for(let i=0;i<n;i++){const a=r()*6.283,q=.02+sp*r();S.dots.push({x:x+Math.cos(a)*q,y:y+Math.sin(a)*q,vx:Math.cos(a)*.01*r(),vy:Math.sin(a)*.01*r(),r:.004+.009*r()*r(),ph:r()*30});}}
+function aigEdgeSpot(S,R){const AR=S.AR,r=S.rnd,M=S.main;let best=null;for(let i=0;i<24;i++){const e=Math.floor(r()*4),u=.15+.7*r(),m=R*.9+.04,x=e===0?m:e===2?AR-m:u*AR,y=e===1?m:e===3?1-m:u;let c=9;for(const b of S.b){if(b.gone)continue;const d=Math.hypot(x-b.tx,y-b.ty)-b.R-R;if(d<c)c=d;}if(!best||c>best.c)best={c,x,y};}return best;}
+function aigPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P),cx=AR/2,cy=.5;S.k=k;S.P=P;S.role=role;
+ if(role==='arriba'){if(!S.main){const e=S.e0,u=.35+.3*r(),R=.2,t=e===0?[.13,u]:e===2?[AR-.13,u]:e===1?[u*AR,.13]:[u*AR,.87];S.main=aigAdd(S,{tx:t[0],ty:t[1],R});aigDots(S,t[0],t[1],4,.3);S.ev.push({t:S.t,type:'entra',R});}
+  else{const M=S.main;M.R=.25;M.tx+=(cx-M.tx)*.3;M.ty+=(cy-M.ty)*.3;M.INK=.38;M.v2+=.5;const f=aigEdgeSpot(S,.11);aigAdd(S,{tx:f.x,ty:f.y,R:.1+.03*r()});S.ev.push({t:S.t,type:'tinta',hue:0});}return;}
+ const M=S.main;if(!M)return;
+ if(role==='creix'){const free=S.b.filter(b=>b!==M&&!b.into&&!b.gone&&!b.out).sort((a,b)=>Math.hypot(a.tx-M.tx,a.ty-M.ty)-Math.hypot(b.tx-M.tx,b.ty-M.ty));if(free.length)free[0].into=M;
+  M.tx+=(cx-M.tx)*.35;M.ty+=(cy-M.ty)*.35;M.R=Math.min(.46,M.R*1.13);M.INK=Math.min(.9,M.INK+.17);M.hue+=.6;
+  for(let i=0;i<2;i++){const R=.08+.06*r(),f=aigEdgeSpot(S,R);aigAdd(S,{tx:f.x,ty:f.y,R});}aigDots(S,M.tx,M.ty,3,M.R+.2);S.ev.push({t:S.t,type:'tinta',hue:M.hue});return;}
+ if(role==='ple'){for(const b of S.b)if(b!==M&&!b.gone)b.into=M;M.tx=cx;M.ty=cy;M.R=.63;M.INK=1;M.hue+=1;M.v2+=.6;
+  for(let i=0;i<3;i++){const a=.6+i*2.1+r()*.8,R=.12+.08*r();aigAdd(S,{tx:cx+Math.cos(a)*(.63+R*.45)*1.12,ty:cy+Math.sin(a)*(.63+R*.45)*.8,R,ink:.3*r()});}aigDots(S,cx,cy,8,.75);S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: the big ball breaks into drops, and every drop leaves by the edge in front of it
+ const n=6,a0=r()*6.283;for(let i=0;i<n;i++){const a=a0+i/n*6.283+(r()-.5)*.4,R=M.r*(.36+.1*r()),c=aigAdd(S,{from:[M.x+Math.cos(a)*M.r*.42,M.y+Math.sin(a)*M.r*.42],tx:0,ty:0,R,r:R*.2,ink:M.ink*(.5+.4*r()),hue:M.hue});c.out=true;c.ox=Math.cos(a);c.oy=Math.sin(a)*.8;c.wait=.5+.25*i*r();c.acc=.1+.05*r();}
+ M.R=0;M.dying=true;for(const b of S.b){if(b===M||b.out)continue;b.into=null;const dx=b.x-cx,dy=b.y-cy,l=Math.hypot(dx,dy)||1;b.out=true;b.ox=dx/l;b.oy=dy/l;b.wait=.3*r();b.acc=.1;}
+ for(const d of S.dots){const dx=d.x-cx,dy=d.y-cy,l=Math.hypot(dx,dy)||1;d.ox=dx/l;d.oy=dy/l;}S.out=true;S.ev.push({t:S.t,type:'surt'});}
+function aigStep(S,dt){const AR=S.AR,t=S.t+dt;S.t=t;
+ for(const b of S.b){b.r+=(b.R-b.r)*(1-Math.exp(-dt/(b.dying?.5:.9)));b.ink+=(b.INK-b.ink)*(1-Math.exp(-dt/2.2));
+  if(b.out){b.wait-=dt;if(b.wait<=0){b.vx+=b.ox*b.acc*dt;b.vy+=b.oy*b.acc*dt;}else{b.vx+=b.ox*.02*dt;b.vy+=b.oy*.02*dt;}}
+  else if(b.into){const M=b.into,dx=M.x-b.x,dy=M.y-b.y,l=Math.hypot(dx,dy)||1;b.vx+=(dx/l*.35-b.vx*1.6)*dt;b.vy+=(dy/l*.35-b.vy*1.6)*dt;
+   if(l<M.r+b.r*.2&&!b.fused){b.fused=true;M.R=Math.min(.7,Math.sqrt(M.R*M.R+b.R*b.R*.6));b.R=0;M.v2+=1.1*Math.min(1,b.r/M.r*3);M.p2=Math.atan2(-dy,-dx)*2;M.v3+=.5;S.ev.push({t,type:'fusio',R:b.r,x:b.x/AR});}
+   if(b.fused&&b.r<.004)b.gone=true;}
+  else{const wx=Math.sin(t*.19+b.ph)*.02+Math.sin(t*.08+b.ph*2.3)*.015,wy=Math.cos(t*.15+b.ph*1.7)*.02+Math.sin(t*.1+b.ph*.7)*.012;b.vx+=((b.tx+wx-b.x)*.9-b.vx*1.9)*dt;b.vy+=((b.ty+wy-b.y)*.9-b.vy*1.9)*dt;}
+  b.x+=b.vx*dt;b.y+=b.vy*dt;const w2=Math.min(9,Math.max(1.3,.22*Math.pow(Math.max(b.r,.01),-1.5)*.5)),w3=w2*1.9;b.v2+=(-w2*w2*b.a2-.9*b.v2)*dt;b.a2+=b.v2*dt;b.v3+=(-w3*w3*b.a3-1.4*b.v3)*dt;b.a3+=b.v3*dt;b.a2=Math.max(-.09,Math.min(.09,b.a2));b.a3=Math.max(-.05,Math.min(.05,b.a3));
+  if(b.dying&&b.r<.004)b.gone=true;if(b.out&&(b.x<-b.r-.08||b.x>AR+b.r+.08||b.y<-b.r-.08||b.y>1+b.r+.08))b.gone=true;}
+ for(const d of S.dots){if(S.out){d.vx+=d.ox*.08*dt;d.vy+=d.oy*.08*dt;}else{d.vx+=(Math.sin(t*.3+d.ph)*.004-d.vx*.5)*dt;d.vy+=(Math.cos(t*.26+d.ph*1.3)*.004-d.vy*.5)*dt;}d.x+=d.vx*dt;d.y+=d.vy*dt;}
+ if(S.out)S.dots=S.dots.filter(d=>d.x>-.05&&d.x<AR+.05&&d.y>-.05&&d.y<1.05);
+ if(S.b.some(b=>b.gone)){S.b=S.b.filter(b=>!b.gone);if(S.main&&S.main.gone)S.main=null;}if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+function aigCover(S){const G=48,H=27;let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,y=(j+.5)/H;for(const b of S.b){const dx=x-b.x,dy=y-b.y;if(dx*dx+dy*dy<b.r*b.r){n++;break;}}}return n/(G*H);}
+const aigEmptyNow=S=>!S.b.length&&!S.dots.length;
+const AIG_B=new Float32Array(AIG_MAX*4),AIG_W=new Float32Array(AIG_MAX*4),AIG_I=new Float32Array(AIG_MAX*4),AIG_D=new Float32Array(64*20),AIG_P=new Float32Array(15);
+function aigDraw(S){const L=S.b.slice().sort((a,b)=>b.r-a.r).slice(0,AIG_MAX),n=L.length;if(n){L.forEach((b,i)=>{const k=i*4;AIG_B[k]=b.x;AIG_B[k+1]=b.y;AIG_B[k+2]=b.r;AIG_B[k+3]=b.seed;AIG_W[k]=b.a2;AIG_W[k+1]=b.p2;AIG_W[k+2]=b.a3;AIG_W[k+3]=b.p3;AIG_I[k]=b.ink;AIG_I[k+1]=b.hue;});
+  AIG_PALS[S.lap%2].forEach((h,i)=>AIG_P.set(bmbLin(h),i*3));bmbField('aigua',{uN:n,uBall:{arr:AIG_B,size:4},uWob:{arr:AIG_W,size:4},uInk:{arr:AIG_I,size:4},uPal:{arr:AIG_P,size:3},uT:S.t},'liquid');}
+ let m=0;const d=AIG_D;for(const o of S.dots){if(m>=64)break;const k=m*20;d.fill(0,k,k+20);d[k]=o.x;d[k+1]=o.y;d[k+2]=o.r;d[k+4]=.35;d[k+5]=.8;d[k+6]=1;d[k+7]=1;m++;}if(m)bmbBodies('dot',d,m,{},true,1.2);}
+
+// Bombolles sense pes · stimulus 5, «Anells de fum»: rings of coloured smoke.
+// The matter: smoke that turns on itself in rings (vortex rings). A ring travels along its own axis, the smaller the faster, and two
+// rings on the same axis play leapfrog: the one behind shrinks, speeds up and passes through the one in front, which widens and
+// slows, and then they swap (Shariff & Leonard, 1992). Each ring is seen at an angle (an ellipse) and its smoke boils slowly.
+// Nothing is simulated as a fluid: each ring is one drawing whose density is worked out from its shape and a slow noise. The rings
+// are drawn at half the size of the picture (smoke is soft) and laid over the black.
+// Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+
+
+// A = x, y, half the size of the drawing, seed · B = radius of the ring, radius of its tube, how flat it is seen (1 = a circle), angle ·
+// C = colour (linear), how much of it is there · D = second colour, how far its smoke has turned · E = how unruly, time offset
+bmbKind('fum',BMB_VS_SPRITE,`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;uniform float uT,uPx;uniform sampler2D uNoise;out vec4 o;
+// noise that comes back to the same value after M steps along the ring
+float fumN(vec2 p,float M){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);float y=(i.y+f.y+.5)/256.;return mix(texture(uNoise,vec2((mod(i.x,M)+.5)/256.,y)).r,texture(uNoise,vec2((mod(i.x+1.,M)+.5)/256.,y)).r,f.x);}
+float fumFbm(vec2 p,float M){float a=.5,s=0.;for(int i=0;i<4;i++){s+=a*fumN(p,M);p=p*2.+vec2(0.,13.7);M*=2.;a*=.5;}return s/.9375;}
+// two noises at once (billows), read from the picture of random numbers without the repeat
+vec2 fumBil(vec2 p){vec2 s=vec2(0.);float a=.5;for(int i=0;i<5;i++){vec2 j=floor(p),f=fract(p);f=f*f*(3.-2.*f);vec2 n=texture(uNoise,(j+f+.5)/256.).rg;float m=2.*n.x-1.;s+=a*vec2(.2*abs(m)+1.1*m*m,n.y);p=mat2(1.6,1.2,-1.2,1.6)*p+vec2(17.3,9.1);a*=.5;}return s/.96875;}
+void main(){vec2 q=vQ*vA.z;float ca=cos(vB.w),sa=sin(vB.w);vec2 l=vec2(ca*q.x+sa*q.y,-sa*q.x+ca*q.y);float sq=max(vB.z,.12),R=vB.x,a=vB.y,t=uT*.1+vE.y,sd=vA.w*40.,M,ur;vec2 nc,er,toL=vec2(-.55,-.83);
+ if(vE.z<.5){vec2 pr=vec2(l.x,l.y/sq);float rho=length(pr),th=atan(pr.y,pr.x),ct=cos(th),st=sin(th),sc=sqrt(ct*ct+st*st*sq*sq);ur=(rho-R)*sc/a;if(abs(ur)>3.6){discard;}
+  M=max(4.,floor(6.2832*R/a*.7+.5));nc=vec2((th/6.2832+.5)*M,ur*.4);er=vec2(ca*ct-sa*st*sq,sa*ct+ca*st*sq)/sc;}
+ else{vec2 c=l/a;ur=length(c);if(ur>3.6){discard;}M=256.;nc=c*.5+sd;er=normalize(q+1e-5);}
+ // the tube wanders (a slow noise along the ring) and its smoke boils (two noises that slide through it)
+ vec2 n0=nc+vec2(0.,vD.w*.2+sd+t*.4);float w=fumN(n0,M)*.7+fumN(n0*2.+vec2(0.,3.3),M*2.)*.3-.5,w2=fumN(nc*2.+vec2(0.,5.-vD.w*.2+sd-t*.3),M*2.)-.5,uu=ur+vE.x*(2.2*w+.45*w2);
+ vec2 nb=l*(3.5+.4/a)+sd*3.+vec2(w,w2)*.35,lo=vec2(ca*toL.x+sa*toL.y,-sa*toL.x+ca*toL.y)*.5,v1=vec2(.3,-.5)*vD.w*.25,v2=vec2(-.6,.2)*vD.w*.25;float du=dot(er,toL)*.55;
+ vec2 b1=fumBil(nb+v1),b2=fumBil((nb+lo)+v1),c1=fumBil(nb*2.1+v2+9.).rg,c2=fumBil((nb+lo)*2.1+v2+9.).rg;
+ float rho=exp(-uu*uu*1.05)*(.3+1.25*b1.x+.55*c1.x),rhol=exp(-(uu+du)*(uu+du)*1.05)*(.3+1.25*b2.x+.55*c2.x);
+ float al=min(1.,smoothstep(.16,.58,rho)*.93+.22*smoothstep(.06,.3,rho))*vC.a,shade=clamp(.55+1.5*(rho-rhol)+.45*smoothstep(.3,1.,rho)+.1*clamp(uu,-1.2,1.2)*dot(er,toL)+.25*(c1.y-.5),.1,1.6);
+ vec3 base=mix(vC.rgb,vD.rgb,.38*(.5+.5*sin(nc.x/M*6.2832+vA.w*6.283)+.6*(b1.y-.5))),col=base*(.2+.6*shade);col=max(vec3(0.),mix(vec3(dot(col,vec3(.3,.5,.2))),col,1.3))+vec3(1.,.96,.9)*pow(max(0.,shade-1.1),2.)*.3;
+ o=vec4(col*al,al);}`);
+const FUM_PALS=Object.freeze([['#ff7a12','#ff2f8e','#8a3cff','#22d877','#ffa51e','#d92bff'],['#2a8cff','#ffcf24','#ff6a4a','#a05cff','#22d8c4','#ff4f9e']]);
+function fumNew(o={}){const rnd=bmbRandom(o.seed||11);return {kind:'fum',AR:o.AR||16/9,lap:o.lap||0,rnd,t:0,b:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),ci:Math.floor(rnd()*6),post:{spread:.6,bloom:.16,exp:1.05}};}
+function fumAdd(S,o){const r=S.rnd,pal=FUM_PALS[S.lap%2],c1=bmbLin(pal[S.ci%pal.length]),c2=bmbLin(pal[(S.ci+1+Math.floor(r()*2))%pal.length]);S.ci++;
+ const g={x:o.x,y:o.y,tx:o.tx,ty:o.ty,vx:0,vy:0,ax:o.ax,ay:o.ay,sq:o.sq??(.45+.3*r()),R:o.R*.6,RR:o.R,a:o.a*.7,AA:o.a,c1,c2,spin:r()*9,seed:r(),al:o.al??1,A:o.al??1,turb:o.turb??.45,TURB:o.turb??.45,ph:r()*40,pair:null,lead:false,phi:0,out:false,gone:false,puff:!!o.puff};S.b.push(g);return g;}
+// a ring that comes in through the edge nearest to its place, travelling along its axis
+function fumRing(S,tx,ty,R,a){const AR=S.AR,r=S.rnd,d=[tx,ty,AR-tx,1-ty];let e=0;for(let i=1;i<4;i++)if(d[i]<d[e])e=i;const ang=[0,Math.PI/2,Math.PI,-Math.PI/2][e]+(r()-.5)*.7,ax=Math.cos(ang),ay=Math.sin(ang),m=d[e]+R+a*3+.05;
+ const g=fumAdd(S,{x:tx-ax*m,y:ty-ay*m,tx,ty,ax,ay,R,a});S.ev.push({t:S.t,type:'anell',R,x:tx/AR});return g;}
+function fumEmpty(S){const AR=S.AR,r=S.rnd;let best=null;for(let j=0;j<7;j++)for(let i=0;i<12;i++){const x=(i+.5)/12*AR,y=(j+.5)/7;let c=9;for(const b of S.b){const d=Math.abs(Math.hypot(x-b.tx,y-b.ty)-b.RR*.8)-b.AA;if(d<c)c=d;}
+  c=Math.min(c,1.6*Math.min(x,y,AR-x,1-y)+.1)+.04*r();if(!best||c>best.c)best={c,x,y};}return best;}
+function fumPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;
+ if(role==='arriba'){if(!S.b.length){const e=S.e0,u=.35+.3*r(),t=e===0?[.34,u]:e===2?[AR-.34,u]:e===1?[u*AR,.36]:[u*AR,.64];fumRing(S,t[0],t[1],.16,.055);}
+  else{const A=S.b[0],B=fumAdd(S,{x:A.tx-A.ax*(Math.max(AR,1)*.5+.3),y:A.ty-A.ay*(Math.max(AR,1)*.5+.3),tx:A.tx,ty:A.ty,ax:A.ax,ay:A.ay,sq:A.sq,R:.15,a:.05});A.pair=B;B.pair=A;A.lead=true;A.RR=.18;S.ev.push({t:S.t,type:'anell',R:.12,x:A.tx/AR});}return;}
+ if(role==='creix'){for(const b of S.b){b.RR*=1.1;b.AA*=1.14;}const f=fumEmpty(S),R=.17+.07*r(),g=fumRing(S,f.x,f.y,R,.058+.015*r());
+  const f2=fumEmpty(S);fumAdd(S,{x:f2.x+(f2.x<AR/2?-1:1)*(Math.min(f2.x,AR-f2.x)+.3),y:f2.y,tx:f2.x,ty:f2.y,ax:1,ay:0,sq:.8,puff:true,R:.0,a:.07+.03*r(),turb:.8,al:.85});
+  if(k%2===0){const B=fumAdd(S,{x:g.x-g.ax*.5,y:g.y-g.ay*.5,tx:g.tx,ty:g.ty,ax:g.ax,ay:g.ay,sq:g.sq,R:R*.85,a:.045});g.pair=B;B.pair=g;g.lead=true;}return;}
+ if(role==='ple'){for(const b of S.b){b.RR*=1.25;b.AA*=1.18;b.TURB=Math.min(1,b.TURB+.15);}
+  for(let i=0;i<7;i++){const f=fumEmpty(S);if(f.c<(i<2?.05:.13))break;fumRing(S,f.x,f.y,.2+.1*r(),.07).TURB=.6;}
+  for(let i=0;i<6;i++){const f=fumEmpty(S);if(f.c<(i<3?.05:.1))break;fumAdd(S,{x:f.x+(f.x<AR/2?-1:1)*(Math.min(f.x,AR-f.x)+.35),y:f.y,tx:f.x,ty:f.y,ax:1,ay:0,sq:.8,puff:true,R:.0,a:.06+.025*r(),turb:.7,al:.85});}
+  S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: every ring drifts away from the middle, widening and thinning as it goes
+ for(const b of S.b){let dx=b.x-AR/2,dy=(b.y-.5)*1.4;const l=Math.hypot(dx,dy)||1,a=Math.atan2(dy/l,dx/l)+(r()-.5)*.4;b.out=true;b.ox=Math.cos(a);b.oy=Math.sin(a);b.wait=.3*r()+Math.max(0,.7-l)*.7;b.pair=null;b.RR*=1.5;b.A=.75;}
+ S.ev.push({t:S.t,type:'surt'});}
+function fumStep(S,dt){const AR=S.AR,t=S.t+dt;S.t=t;
+ for(const b of S.b){const k=1-Math.exp(-dt/(b.out?5:1.6));b.R+=(b.RR-b.R)*k;b.a+=(b.AA-b.a)*(1-Math.exp(-dt/1.6));b.turb+=(b.TURB-b.turb)*(1-Math.exp(-dt/2));b.al+=(b.A-b.al)*(1-Math.exp(-dt/3));b.spin+=dt*.07/Math.max(.03,b.a);
+  // leapfrog: the pair turns around the place they share; the one that is behind is the smaller one
+  let ox=0,oy=0;b.leap=0;if(b.pair&&!b.out){const A=b.lead?b:b.pair;A.phi+=dt*.25;const s=b.lead?1:-1,S0=.5*Math.min(.16,A.RR*.9);ox=b.ax*s*S0*Math.cos(A.phi);oy=b.ay*s*S0*Math.cos(A.phi);b.leap=s*.24*Math.sin(A.phi);}
+  if(b.out){b.wait-=dt;if(b.wait<=0){b.vx+=b.ox*.07*dt;b.vy+=b.oy*.07*dt;}}
+  else{const wx=Math.sin(t*.13+b.ph)*.02,wy=Math.cos(t*.11+b.ph*1.7)*.018;b.vx+=((b.tx+ox+wx-b.x)*.55-b.vx*1.5)*dt;b.vy+=((b.ty+oy+wy-b.y)*.55-b.vy*1.5)*dt;}
+  b.x+=b.vx*dt;b.y+=b.vy*dt;const m=b.R+b.a*3.2;if(b.out&&(b.x<-m||b.x>AR+m||b.y<-m||b.y>1+m))b.gone=true;}
+ if(S.b.some(b=>b.gone))S.b=S.b.filter(b=>!b.gone);if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+function fumCover(S){const G=48,H=27;let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,y=(j+.5)/H;for(const b of S.b){const dx=x-b.x,dy=y-b.y,ca=Math.cos(b.rot||0),sa=Math.sin(b.rot||0),lx=ca*dx+sa*dy,ly=(-sa*dx+ca*dy)/b.sq;
+    if(Math.abs(Math.hypot(lx,ly)-b.R)<b.a*1.3){n++;break;}}}return n/(G*H);}
+const fumEmptyNow=S=>!S.b.length;
+const FUM_BUF=new Float32Array(48*20);
+function fumDraw(S){const d=FUM_BUF;let n=0;const L=S.b.slice().sort((a,b)=>(b.R*(1+(b.leap||0)))-(a.R*(1+(a.leap||0))));
+ for(const b of L){if(n>=48)break;const k=n*20,R=b.R*(1+(b.leap||0)),a=b.a;b.rot=Math.atan2(-b.ax,b.ay);d[k]=b.x;d[k+1]=b.y;d[k+2]=R+a*3.5;d[k+3]=b.seed;d[k+4]=R;d[k+5]=a;d[k+6]=b.sq;d[k+7]=b.rot;
+  d[k+8]=b.c1[0];d[k+9]=b.c1[1];d[k+10]=b.c1[2];d[k+11]=b.al;d[k+12]=b.c2[0];d[k+13]=b.c2[1];d[k+14]=b.c2[2];d[k+15]=b.spin;d[k+16]=b.turb;d[k+17]=b.ph;d[k+18]=b.puff?1:0;d[k+19]=0;n++;}
+ if(!n)return;bmbLayer();bmbBodies('fum',d,n,{uT:S.t},false,1);bmbLayerEnd(false);}
+
+// Bombolles sense pes · stimulus 6, «Ferrofluid»: a black liquid mirror that grows spikes.
+// The matter: a liquid full of tiny magnets. When the field through it is strong enough its flat surface is no longer stable and rises
+// in a regular pattern of spikes, each row set between the spikes of the row behind (the hexagonal pattern of the instability that
+// Cowley & Rosensweig described in 1967). The liquid is black and shiny: all its colour is the coloured lamps around it, mirrored.
+// Each press makes the field stronger: more liquid, a new row of spikes behind, taller spikes. Drops of the same liquid float around.
+// Nothing here is simulated: the rows and the heights are worked out, and each spike, each mound of liquid and each drop is one
+// drawing with the shape and the mirror of its surface. Things are drawn from the far ones to the near ones.
+// Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+
+
+// A = x, y, half the size of the drawing, seed · B = (spike: width of its foot · mound: its two radii · drop: –), how much of it is
+// there (z) · E = kind (0 drop, 1 spike, 2 mound), side the field points to (1 up the screen, −1 down)
+bmbKind('ferro',BMB_VS_SPRITE,`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;uniform float uT,uPx;uniform vec3 uL1,uL2,uL3,uL4;out vec4 o;
+${BMB_GLSL_NOISE}
+// the lamps of the room, seen in the direction r: two long coloured ones behind (left and right), a small warm one in front, a dim one below
+vec3 ferEnv(vec3 r){float a=dot(r,normalize(vec3(-.78,-.3,-.55))),b=dot(r,normalize(vec3(.8,-.2,-.52))),c=dot(r,normalize(vec3(.3,-.62,.72))),d=dot(r,normalize(vec3(.1,.55,-.8))),e=dot(r,normalize(vec3(-.2,-.9,-.35)));
+ float g=dot(r,normalize(vec3(-.55,-.1,.83))),k=dot(r,normalize(vec3(.6,-.55,.58)));
+ return uL1*(pow(max(a,0.),6.)*1.5+pow(max(a,0.),28.)*1.6)+uL2*(pow(max(b,0.),6.)*1.5+pow(max(b,0.),28.)*1.5)+uL3*(pow(max(c,0.),16.)*.7+pow(max(c,0.),90.)*1.2+pow(max(g,0.),10.)*.55)+vec3(1.)*pow(max(k,0.),60.)*.7
+  +uL4*(pow(max(d,0.),2.)*.05+pow(max(e,0.),7.)*.2);}
+void main(){float dir=vE.y,al=vB.z,kind=vE.x;vec2 q=vec2(vQ.x,vQ.y*dir);vec3 n;float st,fres=1.;
+ if(kind>.5&&kind<1.5){// a spike: a body of revolution, wide and almost flat at its foot, thin and steep towards its point
+  float h=.5-q.y*.5,x=q.x*.5;if(h>1.||h<0.){discard;}float hh=max(h,.015),c=vB.x,w=c*(1./sqrt(hh)-1.),s=x/max(w,1e-4),aa=1.5/(uPx*vA.z*2.*max(w,.004));if(abs(s)>1.+aa){discard;}
+  al*=(1.-smoothstep(1.-aa,1.+aa,abs(s)))*smoothstep(0.,.07,h)*(1.-smoothstep(.5,.62,abs(x)));float sl=c/(2.*pow(hh,1.5));vec3 N=normalize(vec3(s,sl,sqrt(max(0.,1.-s*s))));n=vec3(N.x,-N.y,N.z);st=h*3.+vA.w*7.;}
+ else if(kind>1.5){// a mound of liquid: a low dome seen from a little above, its skin moving in slow waves
+  vec2 e=q*vA.z/vB.xy;float r2=dot(e,e),aa=1.5/(uPx*min(vB.x,vB.y));if(r2>1.+2.*aa){discard;}al*=1.-smoothstep(1.-aa,1.+aa,sqrt(r2));
+  vec4 wv=bmbN4(vec2(q.x*vA.z*2.6+vA.w*31.,q.y*vA.z*7.-uT*.05+vA.w*17.)),w2=bmbN4(vec2(q.x*vA.z*6.+uT*.04+vA.w*5.,q.y*vA.z*16.+vA.w*3.));
+  n=normalize(vec3(e.x*.3*r2+(wv.r-.5)*2.4+(w2.r-.5)*.7,-.95+e.y*.5*r2,.42-.75*smoothstep(.55,1.,r2)*step(e.y,0.)+(wv.g-.5)*.7+(w2.g-.5)*.3));st=q.x*4.+vA.w*3.;}
+ else{float r2=dot(q,q),aa=1.5/(uPx*vA.z);if(r2>1.+2.*aa){discard;}al*=1.-smoothstep(1.-aa,1.+aa,sqrt(r2));n=normalize(vec3(q,sqrt(max(0.,1.-r2))));st=q.y*2.+vA.w*9.;}
+ vec3 I=normalize(vec3(0.,.3,-1.)),r=reflect(I,n);float fr=.3+.7*pow(1.-max(0.,dot(n,-I)),2.5),flow=.75+.5*bmbN4(vec2(st,vA.w*13.+dot(n.xz,vec2(3.,2.)))).b;
+ vec3 col=ferEnv(r)*fr*flow;o=vec4(col*al,al);}`);
+// the lamps of the two laps (left, right, front, below)
+const FER_PALS=Object.freeze([['#ff2fd0','#2a9cff','#ffb02e','#7a4cff'],['#ff9a1e','#19e0c8','#ff3fb0','#9a5cff']]);
+const FER_ROWS=[[.95,1],[.77,.8],[.62,.64],[.5,.51],[.4,.41],[.32,.33]];// each row: where its foot is, how big it is seen
+function ferNew(o={}){const rnd=bmbRandom(o.seed||11),AR=o.AR||16/9,lap=o.lap||0,dir=lap%2?-1:1,S={kind:'ferro',AR,lap,rnd,t:0,rows:[],drops:[],ev:[],role:'buit',k:0,P:o.presses||8,dir,x0:AR*(.3+.4*rnd()),field:0,FIELD:0,post:{spread:.55,bloom:.22,exp:1}};
+ FER_ROWS.forEach(([y,s],j)=>{const sp=.58*s,n=Math.ceil(AR/sp)+2,row={y,s,j,on:0,ON:0,rx:0,RX:0,sink:1,SINK:1,seed:rnd(),sp:[]};
+  for(let i=0;i<n;i++)row.sp.push({x:(i-1+(j%2?.5:0)+(rnd()-.5)*.22)*sp,H:.56*s*(.7+.5*rnd()),h:0,c:.34+.1*rnd(),seed:rnd(),ph:rnd()*6.28});S.rows.push(row);});return S;}
+function ferDrop(S,tx,ty,R,crown){const AR=S.AR,r=S.rnd,d=[tx,AR-tx],e=d[0]<d[1]?-1:1,D={x:e<0?-R-.05:AR+R+.05,y:ty+(r()-.5)*.1,tx,ty,vx:0,vy:0,r:R,seed:r(),ph:r()*40,crown:crown?[-.5,0,.5].map(a=>({a:a+(r()-.5)*.2,H:R*(1.3+.6*r()),h:0,seed:r()})):null,out:false,gone:false};S.drops.push(D);S.ev.push({t:S.t,type:'gota',R,x:tx/AR});return D;}
+function ferPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P),R=S.rows;S.k=k;S.P=P;S.role=role;const up=y=>S.dir>0?y:1-y;
+ if(role==='arriba'){if(!R[0].ON){R[0].ON=1;R[0].RX=.46;R[0].SINK=.08;S.FIELD=.36;}else{R[0].RX=.62;R[0].SINK=.03;S.FIELD=.5;ferDrop(S,S.x0+(S.x0<AR/2?.6:-.6),up(.42),.06,true);ferDrop(S,AR*(.2+.6*r()),up(.22),.035);}S.ev.push({t:S.t,type:'camp',f:S.FIELD});return;}
+ if(role==='creix'){const n=R.filter(w=>w.ON).length,steps=Math.max(1,P-3-Math.min(2,Math.max(1,P-3))),add=Math.max(1,Math.round((R.length-1-1)/steps));R[0].RX=AR;R[0].SINK=0;
+  for(let i=n;i<Math.min(R.length-1,n+add);i++){R[i].ON=1;R[i].RX=AR;R[i].SINK=0;}for(let i=1;i<n;i++){R[i].RX=AR;R[i].SINK=0;}S.FIELD=Math.min(.85,S.FIELD+.12);
+  ferDrop(S,AR*(.15+.7*r()),up(.1+.2*r()),.03+.03*r(),r()<.5);S.ev.push({t:S.t,type:'camp',f:S.FIELD});return;}
+ if(role==='ple'){for(const w of R){w.ON=1;w.RX=AR;w.SINK=0;}S.FIELD=1;for(let i=0;i<3;i++)ferDrop(S,AR*(.1+.8*r()),up(.05+.12*r()),.022+.03*r(),i===0);S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: the field dies, the spikes lie down, the liquid sinks back through the edge it came from and the drops fly away
+ S.FIELD=0;S.out=true;S.tout=S.t;for(const d of S.drops){d.out=true;d.ox=d.x<AR/2?-1:1;d.oy=-.6*S.dir;d.wait=.4*r();}S.ev.push({t:S.t,type:'surt'});}
+function ferStep(S,dt){const AR=S.AR,t=S.t+dt;S.t=t;S.field+=(S.FIELD-S.field)*(1-Math.exp(-dt/(S.out?.9:1.6)));
+ for(const w of S.rows){if(S.out){const t0=S.tout+1.1+(S.rows.length-1-w.j)*.45;if(t>t0)w.SINK=2.2;}w.on+=(w.ON-w.on)*(1-Math.exp(-dt/1.2));w.rx+=(w.RX-w.rx)*(1-Math.exp(-dt/1.6));w.sink+=(w.SINK-w.sink)*(1-Math.exp(-dt/(S.out?1.5:1.8)));
+  for(const s of w.sp){const inside=Math.abs(s.x-(w.j?AR/2:S.x0))<w.rx*.8?1:0,breath=1+.07*Math.sin(t*.9+s.ph),H=s.H*inside*w.ON*Math.max(0,Math.min(1,(S.FIELD-.12-.07*w.j)*2.2+.25*(S.FIELD>.2?1:0)))*breath;s.h+=(H-s.h)*(1-Math.exp(-dt/(.9+.6*s.seed)));}}
+ for(const d of S.drops){if(d.out){d.wait-=dt;if(d.wait<=0){d.vx+=d.ox*.12*dt;d.vy+=d.oy*.1*dt;}}else{const wx=Math.sin(t*.2+d.ph)*.03,wy=Math.cos(t*.16+d.ph*1.6)*.025;d.vx+=((d.tx+wx-d.x)*.8-d.vx*1.7)*dt;d.vy+=((d.ty+wy-d.y)*.8-d.vy*1.7)*dt;}
+  d.x+=d.vx*dt;d.y+=d.vy*dt;if(d.crown)for(const c of d.crown){const H=c.H*(S.out?0:Math.min(1,S.field*1.6));c.h+=(H-c.h)*(1-Math.exp(-dt/1.1));}if(d.out&&(d.x<-.2||d.x>AR+.2||d.y<-.2||d.y>1.2))d.gone=true;}
+ if(S.drops.some(d=>d.gone))S.drops=S.drops.filter(d=>!d.gone);if(S.out&&S.rows.every(w=>w.sink>1.9)){for(const w of S.rows){w.ON=0;w.on=0;}S.gone=true;}if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+// where the liquid of a row is on the screen (the top of its mound), with the row sunk by its share
+const ferTop=(S,w)=>w.y+w.sink*(1.12-w.y);
+function ferCover(S){if(S.gone)return 0;const G=48,H=27;let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,yy=(j+.5)/H,y=S.dir>0?yy:1-yy;let c=false;for(const w of S.rows){if(w.on<.05)continue;const top=ferTop(S,w),cx=w.j?S.AR/2:S.x0;
+    if(y>top+.02*w.s&&Math.abs(x-cx)<w.rx){c=true;break;}for(const s of w.sp){if(s.h>.02&&Math.abs(x-s.x)<s.c*s.h*1.2&&y<top+.03&&y>top-s.h*.8){c=true;break;}}if(c)break;}if(c)n++;}return n/(G*H);}
+const ferEmptyNow=S=>(S.gone||S.rows.every(w=>!w.ON&&w.on<.01))&&!S.drops.length;
+const FER_BUF=new Float32Array(400*20),FER_U={};
+function ferDraw(S){const d=FER_BUF,dir=S.dir,fy=y=>dir>0?y:1-y;let n=0;const put=(x,y,hs,seed,b0,b1,al,kind)=>{if(n>=400)return;const k=n*20;d.fill(0,k,k+20);d[k]=x;d[k+1]=fy(y);d[k+2]=hs;d[k+3]=seed;d[k+4]=b0;d[k+5]=b1;d[k+6]=al;d[k+16]=kind;d[k+17]=dir;n++;};
+ if(!S.gone)for(let j=S.rows.length-1;j>=0;j--){const w=S.rows[j];if(w.on<.01)continue;const top=ferTop(S,w),cx=w.j?S.AR/2:S.x0,ry=.34*w.s+.1;put(cx,top+ry*.985,Math.max(w.rx,ry),w.seed,Math.max(w.rx,.02),ry,1,2);
+   for(const s of w.sp){if(s.h<.004)continue;put(s.x,top+.018*w.s-s.h*.5,s.h*.5,s.seed,s.c,0,1,1);}}
+ for(const o of S.drops){if(o.crown)for(const c of o.crown){if(c.h<.003)continue;const bx=o.x+Math.sin(c.a)*o.r*.75,by=o.y-Math.cos(c.a)*o.r*.5;put(bx,by-c.h*.5,c.h*.5,c.seed,.3,0,1,1);}put(o.x,fy(o.y),o.r,o.seed,0,0,1,0);}
+ if(!n)return;const P=FER_PALS[S.lap%2].map(bmbLin);bmbBodies('ferro',d,n,{uL1:P[0],uL2:P[1],uL3:P[2],uL4:P[3],uT:S.t},false,1.25);}
+
+// Bombolles sense pes · stimulus 7, «Oli i aigua»: two liquids that do not mix.
+// The matter: a band of oil and a band of water side by side, clear and thick like glass. Where they meet, the surface that keeps
+// them apart waves slowly, and fingers of the one push into the other (the fingers of the instability of Rayleigh and Taylor, when
+// the heavier liquid lies on the lighter one), swell at the tip and let go a drop. This is the one stimulus with a little weight: a
+// weak pull across the band, which is what makes the fingers grow. At the end the two liquids come apart and each leaves by its side.
+// The two liquids are one field worked out for every point of the screen: the band along x′, its thickness and its fingers across.
+// Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+
+
+const OLI_F=6,OLI_D=24;
+// uFing = place along the band, length, radius, lean · uDrop = x, y, radius (more than 0: oil; less: water), –
+bmbKind('oli',BMB_VS_FULL,`#version 300 es
+precision highp float;in vec2 vUv;uniform float uAR,uT,uPx,uAng,uTo,uTw,uHead,uGap,uAmp,uNF,uND;uniform vec2 uC;uniform vec4 uFing[${OLI_F}],uDrop[${OLI_D}];uniform vec3 uGlowO,uSigO,uGlowW1,uGlowW2,uSigW;out vec4 o;
+${BMB_GLSL_NOISE}
+float oliMid(float x){return uAmp*(sin(x*2.1+uT*.22)*.06+sin(x*4.7-uT*.31+1.3)*.03+sin(x*9.1+uT*.45)*.012);}
+float oliCap(vec2 p,vec2 a,vec2 b,float r){vec2 pa=p-a,ba=b-a;float h=clamp(dot(pa,ba)/dot(ba,ba),0.,1.);return length(pa-ba*h)-r;}
+float oliSmin(float a,float b,float k){float h=clamp(.5+.5*(b-a)/k,0.,1.);return mix(b,a,h)-k*h*(1.-h);}
+void main(){vec2 p=vec2(vUv.x*uAR,1.-vUv.y);float ca=cos(uAng),sa=sin(uAng);vec2 v=p-uC,q=vec2(ca*v.x+sa*v.y,-sa*v.x+ca*v.y);
+ float m=oliMid(q.x),tau=clamp((uHead-q.x)/.24,0.,1.),kk=sqrt(tau*(2.-tau));
+ float to=uTo*kk*(1.+.25*sin(q.x*1.7+uT*.2+2.)+.12*sin(q.x*5.3-uT*.4)),tw=uTw*kk*(1.+.25*sin(q.x*1.4-uT*.17+.5)+.1*sin(q.x*4.1+uT*.3));
+ float dO=to<.003?1e3:max(m-uGap-to-q.y,q.y-(m-uGap)),dW=tw<.003?1e3:max(m+uGap-q.y,q.y-(m+uGap+tw));
+ for(int i=0;i<${OLI_F};i++){if(float(i)>=uNF)break;vec4 f=uFing[i];if(f.y<=.002)continue;float fm=oliMid(f.x)-uGap;vec2 a=vec2(f.x,fm-.02),b=vec2(f.x+f.w,fm+f.y);dO=oliSmin(dO,oliSmin(oliCap(q,a,b,f.z*.8),length(q-b)-f.z*1.3,.03),.075);}
+ float dOd=1e3,dWd=1e3;for(int i=0;i<${OLI_D};i++){if(float(i)>=uND)break;vec4 b=uDrop[i];float dd=length(p-b.xy)-abs(b.z);if(b.z>0.)dOd=min(dOd,dd);else dWd=min(dWd,dd);}
+ float dOa=min(dO,dOd),dOf=max(dOa,-dWd),dWf=min(max(dW,-dOa),dWd),d;bool oil=dOf<dWf;d=oil?dOf:dWf;float aa=1.2/uPx;if(d>aa){discard;}float ed=1.-smoothstep(-aa,aa,d);
+ // the liquid is thick: its edge is rounded (a bevel as wide as wB) and its skin waves slowly
+ float wB=oil?.05:.055,tb=clamp(-d/wB,0.,1.),z=sqrt(1.-(1.-tb)*(1.-tb));vec2 g=vec2(dFdx(d),-dFdy(d));g/=max(length(g),1e-6);float fl=oil?1.:-.7;
+ vec4 nz=bmbN4(vec2(q.x*1.2-uT*.06*fl,q.y*3.4+(oil?0.:7.))),n2=bmbN4(vec2(q.x*3.1-uT*.1*fl,q.y*8.+3.));vec3 n=normalize(vec3(g*(1.-tb)*1.1+((nz.rg-.5)*.6+(n2.rg-.5)*.22)*tb,z*.9+.2));
+ float dep=clamp((q.y-(m+uGap))/.32,0.,1.);vec3 glow=oil?uGlowO:mix(uGlowW1,uGlowW2,smoothstep(0.,1.,dep)),sig=oil?uSigO:uSigW;
+ float s1=bmbN4(vec2(q.x*.9-uT*.05*fl,q.y*5.+1.)).b,s2=bmbN4(vec2(q.x*2.3-uT*.09*fl,q.y*11.)).a;float th=bmbN4(vec2(q.x*.7-uT*.03*fl,q.y*1.6+(oil?3.:9.))).r,sh=bmbN4(vec2(q.x*.8-uT*.04*fl+nz.r*.6,q.y*3.2+5.+nz.g*.5)).g,sheen=smoothstep(.6,.615,sh)*(1.-smoothstep(.64,.665,sh))*smoothstep(.35,.6,n2.b);
+ vec3 col=glow*exp(-sig*(.25+.75*z)*(.7+2.4*th))*(.3+1.*s1*s2+.25*s1)+(vec3(1.,.97,.95)*sheen*.9+glow*.3*smoothstep(.55,.62,sh)*(1.-smoothstep(.66,.8,sh)))*tb;
+ vec3 L=normalize(vec3(-.5,-.65,.58)),H=normalize(L+vec3(0.,0.,1.));float nh=max(0.,dot(n,H)),sp=smoothstep(.97,.985,nh)*2.2+pow(nh,22.)*.3,rim=pow(1.-z,3.);
+ col+=glow*rim*.6+vec3(1.,.97,.92)*sp+glow*.6*smoothstep(.1,.9,dot(g,vec2(.55,.8)))*(1.-tb)*tb*3.;o=vec4(col*ed,0.);}`);
+// the liquids of the two laps: the light of the oil and what it absorbs, the water near the oil and far from it, what the water absorbs
+const OLI_PALS=Object.freeze([{glowO:[2.4,1.05,.1],sigO:[.12,.95,2.2],glowW1:[1.15,.3,2.4],glowW2:[.12,.38,2.6],sigW:[1.5,1.15,.12]},{glowO:[.75,2.3,.12],sigO:[1.3,.1,2.1],glowW1:[2.4,.3,1.15],glowW2:[.1,.32,2.6],sigW:[.8,1.4,.25]}]);
+function oliNew(o={}){const rnd=bmbRandom(o.seed||11),AR=o.AR||16/9;return {kind:'oli',AR,lap:o.lap||0,rnd,t:0,ang:(rnd()<.5?0:Math.PI)+(rnd()-.5)*.7,to:0,TO:0,tw:0,TW:0,head:-1.5,HEAD:-1.5,gap:0,gv:0,amp:1,AMP:1,f:[],d:[],ev:[],role:'buit',k:0,P:o.presses||8,out:false,gone:true,post:{spread:.55,bloom:.2,exp:1}};}
+const oliMidJS=(S,x)=>S.amp*(Math.sin(x*2.1+S.t*.22)*.06+Math.sin(x*4.7-S.t*.31+1.3)*.03+Math.sin(x*9.1+S.t*.45)*.012);
+// from the band (x′ along, y′ across) to the screen
+function oliOut(S,x,y){const c=Math.cos(S.ang),s=Math.sin(S.ang);return [S.AR/2+c*x-s*y,.5+s*x+c*y];}
+function oliDrop(S,x,y,r,kind,vy=0){const q=oliOut(S,x,y);if(S.d.length>=OLI_D)S.d.shift();S.d.push({x:q[0],y:q[1],r,kind,vx:0,vy:0,dr:vy,ph:S.rnd()*40,a:0});S.ev.push({t:S.t,type:'gota',R:r,kind});}
+function oliFinger(S){if(S.f.length>=OLI_F)return;const r=S.rnd,hi=Math.min(S.HEAD-.3,.85);let x=0;for(let i=0;i<12;i++){x=-.85+r()*(hi+.85);if(S.f.every(f=>Math.abs(f.x-x)>.22))break;}S.f.push({x,len:0,LEN:Math.min(S.TW*.75,.11+.1*r()),r:.034+.018*r(),lean:(r()-.5)*.12,re:0});}
+function oliPress(S,k,P=S.P){const r=S.rnd,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;S.gone=false;
+ if(role==='arriba'){if(!S.TO){S.TO=.095;S.HEAD=-.2;oliDrop(S,-.2,-.12,.02,1);S.ev.push({t:S.t,type:'entra'});}else{S.TO=.1;S.TW=.09;S.HEAD=.1;oliDrop(S,.25,.02,.028,1);oliDrop(S,.4,-.1,.016,-1);S.ev.push({t:S.t,type:'aigua'});}return;}
+ if(role==='creix'){S.HEAD=1.7;S.TO=Math.min(.34,S.TO+.05);S.TW=Math.min(.36,Math.max(.13,S.TW+.055));
+  // the fingers that were already long let their tip go as a drop, and grow again
+  for(const f of S.f){if(f.len>.07){const m=oliMidJS(S,f.x);oliDrop(S,f.x+f.lean,m+f.len,f.r*1.3,1,.012);f.LEN=.02;f.re=S.t+2.4;}}oliFinger(S);oliFinger(S);
+  oliDrop(S,-.7+1.4*r(),-S.TO*(.3+.4*r()),.014+.02*r(),-1);oliDrop(S,-.7+1.4*r(),S.TW*(.5+.4*r()),.014+.022*r(),1);S.ev.push({t:S.t,type:'creix'});return;}
+ if(role==='ple'){S.HEAD=1.9;S.TO=.5;S.TW=.52;S.AMP=2.4;for(const f of S.f){if(f.len>.07){const m=oliMidJS(S,f.x);oliDrop(S,f.x+f.lean,m+f.len,f.r*1.3,1,.012);f.LEN=.02;f.re=S.t+2;}}while(S.f.length<5)oliFinger(S);for(const f of S.f)if(!f.re)f.LEN=.14+.12*r();
+  for(let i=0;i<5;i++){oliDrop(S,-.85+1.7*r(),-.08-.38*r(),.014+.03*r(),-1);oliDrop(S,-.85+1.7*r(),.1+.36*r(),.014+.035*r(),1);}S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: the oil and the water come apart, and each leaves by its own side with its drops
+ S.out=true;S.gv=.01;for(const f of S.f){f.LEN=0;f.re=0;}const c=Math.cos(S.ang),s=Math.sin(S.ang);for(const d of S.d){const y=-s*(d.x-S.AR/2)+c*(d.y-.5),sd=y<oliMidJS(S,0)?-1:1;d.ox=-s*sd;d.oy=c*sd;}S.ev.push({t:S.t,type:'surt'});}
+function oliStep(S,dt){const t=S.t+dt;S.t=t;if(S.gone)return;const e=x=>1-Math.exp(-dt/x);S.to+=(S.TO-S.to)*e(2);S.tw+=(S.TW-S.tw)*e(2);S.head+=(S.HEAD-S.head)*e(2.2);S.amp+=(S.AMP-S.amp)*e(2.5);
+ if(S.out){S.gv+=.045*dt;S.gap+=S.gv*dt;if(S.gap>1.45){S.gone=true;S.d=[];S.f=[];S.TO=S.TW=S.to=S.tw=0;}}
+ for(const f of S.f){if(f.re&&t>f.re){f.re=0;f.LEN=Math.min(S.TW*.75,.12+.1*S.rnd());}f.len+=(f.LEN-f.len)*e(f.LEN<f.len?.7:2.6);}
+ const c=Math.cos(S.ang),s=Math.sin(S.ang);for(const d of S.d){d.a=Math.min(1,d.a+dt/.8);if(S.out){d.vx+=d.ox*S.gv*1.1*dt*8;d.vy+=d.oy*S.gv*1.1*dt*8;const sp=Math.hypot(d.vx,d.vy),mx=S.gv*1.05;if(sp>mx){d.vx*=mx/sp;d.vy*=mx/sp;}}
+  else{const wx=Math.sin(t*.23+d.ph)*.006,wy=Math.cos(t*.19+d.ph*1.7)*.006;d.vx+=((c*.008*d.kind-s*d.dr+wx)-d.vx)*dt;d.vy+=((s*.008*d.kind+c*d.dr+wy)-d.vy)*dt;d.dr*=Math.exp(-dt/6);}d.x+=d.vx*dt;d.y+=d.vy*dt;}
+ if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+function oliCover(S){if(S.gone)return 0;const G=48,H=27,c=Math.cos(S.ang),s=Math.sin(S.ang);let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const vx=(i+.5)/G*S.AR-S.AR/2,vy=(j+.5)/H-.5,x=c*vx+s*vy,y=-s*vx+c*vy,tau=Math.max(0,Math.min(1,(S.head-x)/.24)),kk=Math.sqrt(tau*(2-tau));
+   if((y<-S.gap&&y>-S.gap-S.to*kk)||(y>S.gap&&y<S.gap+S.tw*kk))n++;}return n/(G*H);}
+const oliEmptyNow=S=>S.gone;
+const OLI_FB=new Float32Array(OLI_F*4),OLI_DB=new Float32Array(OLI_D*4);
+function oliDraw(S){if(S.gone)return;const P=OLI_PALS[S.lap%2];S.f.forEach((f,i)=>{const k=i*4;OLI_FB[k]=f.x;OLI_FB[k+1]=f.len;OLI_FB[k+2]=f.r;OLI_FB[k+3]=f.lean;});S.d.forEach((d,i)=>{const k=i*4;OLI_DB[k]=d.x;OLI_DB[k+1]=d.y;OLI_DB[k+2]=d.r*d.a*d.kind;OLI_DB[k+3]=0;});
+ bmbField('oli',{uT:S.t,uAng:S.ang,uC:[S.AR/2,.5],uTo:S.to,uTw:S.tw,uHead:S.head,uGap:S.gap,uAmp:S.amp,uNF:S.f.length,uND:S.d.length,uFing:{arr:OLI_FB,size:4},uDrop:{arr:OLI_DB,size:4},uGlowO:P.glowO,uSigO:P.sigO,uGlowW1:P.glowW1,uGlowW2:P.glowW2,uSigW:P.sigW});}
+
+// Bombolles sense pes · stimulus 8, «Nebulosa»: clouds of coloured gas that gather into a spiral, and stars.
+// The matter: a thin gas that shines with its own light. It comes in from the edges as banks of cloud, fills the screen and winds
+// itself around a bright heart (every point is turned around the centre by an angle that grows with the logarithm of its distance,
+// which is what draws the arms of a spiral); dark lanes of dust cross it and small stars light up slowly, never in a blink. At the
+// end the heart opens and the gas draws back beyond the edges.
+// The gas is one field worked out for every point of the screen, at half the size of the picture (gas is soft); the stars are
+// small dots drawn over it. Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
+
+
+
+// uBank = x, y, how far it reaches, how much of it is there
+bmbKind('nebulosa',BMB_VS_FULL,`#version 300 es
+precision highp float;in vec2 vUv;uniform float uAR,uT,uTwist,uRot,uFill,uHole,uCore,uSpiral,uZoom;uniform vec2 uC;uniform vec4 uBank[4];uniform vec3 uPal[5];out vec4 o;
+${BMB_GLSL_NOISE}
+vec3 nebPal(float x){x=clamp(x,0.,3.999);float i=floor(x),f=x-i;f=f*f*(3.-2.*f);return mix(uPal[int(i)],uPal[int(i)+1],f);}
+void main(){vec2 p=vec2(vUv.x*uAR,1.-vUv.y),v=(p-uC)*uZoom;float r=length(v),sw=uTwist*log(r+.07)+uRot,cs=cos(sw),sn=sin(sw);vec2 s=vec2(cs*v.x-sn*v.y,sn*v.x+cs*v.y);
+ float tt=uT*.02;vec2 w1=vec2(bmbFbm(s*1.6+vec2(0.,tt)),bmbFbm(s*1.6+vec2(5.2,-tt)+3.1))-.5,sq=s*3.6+w1*1.5+vec2(tt*.7,1.);float dt0=bmbFbm(v*7.+w1*1.2+vec2(7.,tt*2.)),gr=abs(2.*bmbFbm(v*15.+w1*2.+3.)-1.),D0=bmbFbm(sq)+(dt0-.5)*.34+(gr-.25)*.1;
+ // how much gas there is here: the banks that came in from the edges, the whole screen once it is full, the hole that opens at the end
+ float M=uFill;for(int i=0;i<4;i++){vec4 b=uBank[i];if(b.w<=0.)continue;M+=b.w*(1.-smoothstep(.25,1.,(length(p-b.xy)+(D0-.5)*.35)/max(b.z,1e-3)));}
+ M=min(M,1.)*smoothstep(uHole-.2,uHole+.16,r/uZoom+(D0-.5)*.5);float arm=cos(2.*atan(s.y,s.x)+r*3.)*uSpiral*smoothstep(.05,.35,r);
+ float vv=(D0-.5)*3.+M*1.2-.62+.34*arm,D=smoothstep(-.3,.8,vv)*smoothstep(0.,.1,M),vl=(bmbFbm(sq+vec2(-.1,-.13))+(bmbFbm(v*7.+w1*1.2+vec2(7.,tt*2.)+vec2(-.2,-.26))-.5)*.34-.5)*3.+M*1.2-.62+.34*arm+(gr-.25)*.3,lit=clamp(.8+(vv-vl)*1.2,.3,1.6);
+ float hue=r*3./uZoom+(bmbFbm(s*.8+w1*1.1+9.)-.5)*4.4+.9*arm+.2;vec3 col=nebPal(hue)*D*D*lit*(.3+1.5*smoothstep(0.,.9,vv));
+ // bright seams where a cloud ends, dark lanes of dust, a fine dust of far stars, the heart
+ float seam=smoothstep(-.1,.1,vv)*(1.-smoothstep(.1,.4,vv));col+=nebPal(hue-.8)*seam*.16*smoothstep(0.,.1,M);
+ float lane=smoothstep(.5,.7,bmbFbm(s*2.6+w1*2.6+13.));col*=1.-.65*lane*smoothstep(.08,.4,r);
+ vec4 sp=bmbN4(p*90.);col+=vec3(1.,.9,.8)*smoothstep(.97,1.,sp.r)*D*sp.g*1.4;
+ float hf=uCore*(1.-smoothstep(0.,.35,uHole));col+=(uPal[0]*(exp(-r*r/.006)*2.2+exp(-r/.13)*.6)+vec3(1.)*exp(-r*r/.0009)*2.)*hf;
+ o=vec4(col,0.);}`);
+// a star: A = x, y, radius · B = colour (linear), how much it shines
+bmbKind('estel',BMB_VS_SPRITE,`#version 300 es
+precision highp float;in vec2 vQ;flat in vec4 vA,vB,vC,vD,vE;out vec4 o;void main(){float r2=dot(vQ,vQ);if(r2>1.){discard;}float g=exp(-r2*9.)+.25*exp(-r2*2.5)*(1.-r2);o=vec4(vB.rgb*vB.a*g,0.);}`);
+const NEB_PALS=Object.freeze([['#ffd9a0','#ff6a4a','#ff2fb4','#22c8ff','#5a3cff'],['#ffe0f0','#ff5fc0','#3cff9a','#2a8cff','#7a3cff']]);
+function nebNew(o={}){const rnd=bmbRandom(o.seed||11),AR=o.AR||16/9,S={kind:'nebulosa',AR,lap:o.lap||0,rnd,t:0,cx:AR*(.44+.12*rnd()),cy:.44+.12*rnd(),rot:rnd()*6,tw:1.1*(rnd()<.5?1:-1),banks:[],fill:0,FILL:0,hole:0,hv:0,core:0,CORE:0,spiral:0,SPIRAL:0,zoom:1,stars:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),out:false,gone:true,post:{spread:.6,bloom:.38,exp:1}};
+ return S;}
+function nebBank(S,e,reach){if(S.banks.length>=4)return;const AR=S.AR,r=S.rnd,u=.2+.6*r(),p=e===0?[-.08,u]:e===2?[AR+.08,u]:e===1?[u*AR,-.08]:[u*AR,1.08];S.banks.push({x:p[0],y:p[1],r:.02,R:reach,a:1});S.ev.push({t:S.t,type:'banc',e});}
+function nebStars(S,n){const r=S.rnd,AR=S.AR,cols=[[1,.92,.8],[.8,.9,1],[1,.8,.9],[1,1,1]];for(let i=0;i<n&&S.stars.length<150;i++)S.stars.push({x:r()*AR,y:r(),r:.0022+.005*r()*r()*r(),c:cols[Math.floor(r()*4)],a:0,A:.4+1.2*r(),t0:S.t+r()*3.5,vx:0,vy:0});S.ev.push({t:S.t,type:'estels',n});}
+function nebPress(S,k,P=S.P){const r=S.rnd,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;S.gone=false;
+ if(role==='arriba'){if(!S.banks.length){nebBank(S,S.e0,.5);nebStars(S,6);}else{S.banks[0].R=.72;nebBank(S,(S.e0+2)%4,.42);nebStars(S,8);}return;}
+ if(role==='creix'){for(const b of S.banks)b.R=Math.min(1.1,b.R*1.22);nebBank(S,(S.e0+1+2*(S.banks.length%2))%4,.5);S.FILL=Math.min(.6,S.FILL+.16);S.SPIRAL=Math.min(.7,S.SPIRAL+.25);S.CORE=Math.min(.6,S.CORE+.2);nebStars(S,14);S.ev.push({t:S.t,type:'creix'});return;}
+ if(role==='ple'){S.FILL=1;S.SPIRAL=1;S.CORE=1;nebStars(S,45);S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: the heart opens and the gas and the stars draw back beyond the edges
+ S.out=true;S.hv=.02;S.ev.push({t:S.t,type:'surt'});}
+function nebStep(S,dt){const t=S.t+dt;S.t=t;if(S.gone)return;const e=x=>1-Math.exp(-dt/x);S.rot+=dt*.035*(S.tw>0?1:-1)*(.6+.8*S.spiral);S.fill+=(S.FILL-S.fill)*e(2.5);S.core+=(S.CORE-S.core)*e(2.5);S.spiral+=(S.SPIRAL-S.spiral)*e(3);
+ for(const b of S.banks)b.r+=(b.R-b.r)*e(2.2);
+ if(S.out){S.hv+=.05*dt;S.hole+=S.hv*dt;S.zoom=1/(1+S.hole*.5);if(S.hole>1.5){S.gone=true;S.stars=[];S.banks=[];S.fill=S.FILL=0;}}
+ for(const s of S.stars){if(t>s.t0)s.a+=(s.A-s.a)*e(1.6);if(S.out){const dx=s.x-S.cx,dy=s.y-S.cy,l=Math.hypot(dx,dy)||1;s.vx+=dx/l*S.hv*2.2*dt;s.vy+=dy/l*S.hv*2.2*dt;s.x+=s.vx*dt;s.y+=s.vy*dt;}}
+ if(S.out)S.stars=S.stars.filter(s=>s.x>-.05&&s.x<S.AR+.05&&s.y>-.05&&s.y<1.05);if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
+function nebCover(S){if(S.gone)return 0;const G=32,H=18;let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,y=(j+.5)/H;let M=S.fill;for(const b of S.banks){const q=Math.hypot(x-b.x,y-b.y)/Math.max(b.r,1e-3);M+=q<.25?1:q>1?0:1-(q-.25)/.75;}
+   if(Math.hypot(x-S.cx,y-S.cy)<S.hole)M=0;if(M>.45)n++;}return n/(G*H);}
+const nebEmptyNow=S=>S.gone;
+const NEB_BANK=new Float32Array(16),NEB_PAL=new Float32Array(15),NEB_STAR=new Float32Array(150*20);
+function nebDraw(S){if(S.gone)return;NEB_BANK.fill(0);S.banks.forEach((b,i)=>{NEB_BANK.set([b.x,b.y,b.r,b.a],i*4);});NEB_PALS[S.lap%2].forEach((h,i)=>NEB_PAL.set(bmbLin(h),i*3));
+ bmbLayer();bmbField('nebulosa',{uT:S.t,uC:[S.cx,S.cy],uTwist:S.tw*(.35+.75*S.spiral),uRot:S.rot,uFill:S.fill,uHole:S.hole,uCore:S.core,uSpiral:S.spiral,uZoom:S.zoom,uBank:{arr:NEB_BANK,size:4},uPal:{arr:NEB_PAL,size:3}});bmbLayerEnd(true);
+ const d=NEB_STAR;let n=0;for(const s of S.stars){if(s.a<.01)continue;const k=n*20;d.fill(0,k,k+20);d[k]=s.x;d[k+1]=s.y;d[k+2]=s.r*2.2;d[k+4]=s.c[0];d[k+5]=s.c[1];d[k+6]=s.c[2];d[k+7]=s.a;n++;}if(n)bmbBodies('estel',d,n,{},true,1);}
+
+window.BM={BMB,bmbSetup,bmbCanvas,bmbBegin,bmbEnd,bmbRopeReset,stim:{sabo:{nou:sboNew,prem:sboPress,pas:sboStep,pinta:sboDraw,cobert:sboCover,buit:sboEmptyNow},mel:{nou:melNew,prem:melPress,pas:melStep,pinta:melDraw,cobert:melCover,buit:melEmptyNow},plasma:{nou:plaNew,prem:plaPress,pas:plaStep,pinta:plaDraw,cobert:plaCover,buit:plaEmptyNow},aigua:{nou:aigNew,prem:aigPress,pas:aigStep,pinta:aigDraw,cobert:aigCover,buit:aigEmptyNow},fum:{nou:fumNew,prem:fumPress,pas:fumStep,pinta:fumDraw,cobert:fumCover,buit:fumEmptyNow},ferro:{nou:ferNew,prem:ferPress,pas:ferStep,pinta:ferDraw,cobert:ferCover,buit:ferEmptyNow},oli:{nou:oliNew,prem:oliPress,pas:oliStep,pinta:oliDraw,cobert:oliCover,buit:oliEmptyNow},nebulosa:{nou:nebNew,prem:nebPress,pas:nebStep,pinta:nebDraw,cobert:nebCover,buit:nebEmptyNow}}};})();</script>
+<script>(()=>{const B=window.BM,nota=document.getElementById('nota'),NOMS=[['sabo','Bombolles de sabó'],['mel','Mel i caramel'],['plasma','Plasma'],['aigua',"Esferes d'aigua"],['fum','Anells de fum'],['ferro','Ferrofluid'],['oli','Oli i aigua'],['nebulosa','Nebulosa']];let quin='sabo',P=8,S=null,k=0,lap=0,seed=11,last=0,cv=null,W=0,H=0;
+ const mida=()=>{const d=Math.min(2,window.devicePixelRatio||1);W=window.innerWidth;H=window.innerHeight;if(!B.bmbSetup(W*d,H*d)){document.getElementById('err').style.display='grid';return false;}
+  if(!cv){cv=B.bmbCanvas();document.body.insertBefore(cv,document.body.firstChild);}return true;};
+ const nou=()=>{S=B.stim[quin].nou({seed,lap,AR:W/H,presses:P});k=0;};
+ const prem=()=>{if(!S)return;const ST=B.stim[quin];if(k>=P){if(!ST.buit(S))return;lap++;seed=(seed*7+3)%9973;nou();}k++;ST.prem(S,k,P);nota.style.opacity=0;};
+ const tria=q=>{quin=q;lap=0;nou();nota.style.opacity=1;const i=NOMS.findIndex(n=>n[0]===q);document.getElementById('nom').textContent=(i+1)+' · '+NOMS[i][1];};
+ addEventListener('keydown',e=>{if(e.repeat)return;if(e.code==='Space'||e.code==='Enter'){e.preventDefault();prem();}else if(e.key>='1'&&e.key<='8'){if(B.stim[NOMS[+e.key-1][0]])tria(NOMS[+e.key-1][0]);}
+  else if(e.key==='p'||e.key==='P'){P=P===8?12:P===12?4:8;document.getElementById('np').textContent=P;tria(quin);}});
+ addEventListener('pointerdown',e=>{e.preventDefault();prem();});addEventListener('resize',()=>{if(mida())nou();});
+ if(!mida())return;nou();
+ const pas=t=>{requestAnimationFrame(pas);const dt=Math.min(.05,Math.max(0,(t-last)/1000));last=t;if(!S||B.BMB.lost)return;const ST=B.stim[quin];
+  // the simulation runs in steps of 1/60 s at most
+  let r=dt;while(r>1e-5){const h=Math.min(r,1/60);ST.pas(S,h);r-=h;}
+  if(B.bmbBegin(S.t)){B.bmbRopeReset();ST.pinta(S);B.bmbEnd(S.post||{});}};
+ requestAnimationFrame(t=>{last=t;requestAnimationFrame(pas);});})();</script></body></html>
