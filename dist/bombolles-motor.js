@@ -49,6 +49,8 @@ export function bmbSetup(W,H){const gl=bmbInit();if(!gl||BMB.lost)return false;b
 export function bmbCanvas(){return BMB.cv;}
 // one frame: bmbBegin, the things to draw in order (the later ones over the earlier ones), bmbEnd
 export function bmbBegin(t=0){const gl=BMB.gl,S=BMB.S;if(!gl||!S||BMB.lost)return false;BMB.t=t;BMB.px=BMB.view.px;BMB.lay=null;gl.bindFramebuffer(gl.FRAMEBUFFER,S.hdr.f);gl.viewport(0,0,S.hdr.w,S.hdr.h);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.enable(gl.BLEND);return true;}
+// after work of its own on the card (a simulation: its framebuffers, viewport and blending), a stimulus draws again into the picture
+export function bmbRebind(){const gl=BMB.gl,S=BMB.S;if(!gl||!S||BMB.lost)return false;const t=BMB.lay||S.hdr;gl.bindFramebuffer(gl.FRAMEBUFFER,t.f);gl.viewport(0,0,t.w,t.h);gl.enable(gl.BLEND);gl.bindVertexArray(null);return true;}
 // bodies: `data` holds n × 20 numbers; `add` = true: light added to what is there (films, sparks) · false: laid over it ·
 // 'liquid': drawn twice, first filtering what is under it and then adding its own light (see bmbThrough in the shaders)
 export function bmbBodies(kind,data,n,u={},add=true,pad=1.3){const gl=BMB.gl;if(!gl||!n)return;const o=bmbUse(gl,kind);if(!o)return;n=Math.min(n,BMB_MAXSPR);

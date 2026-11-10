@@ -16,18 +16,21 @@ import {bmbRole,sboNew,sboPress,sboStep,sboDraw,sboEmptyNow} from './bombolles-s
 import {plaNew,plaPress,plaStep,plaDraw,plaEmptyNow} from './bombolles-plasma.js';
 import {aigNew,aigPress,aigStep,aigDraw,aigEmptyNow} from './bombolles-aigua.js';
 import {fumNew,fumPress,fumStep,fumDraw,fumEmptyNow} from './bombolles-fum.js';
+import {lavNew,lavPress,lavStep,lavDraw,lavEmptyNow} from './bombolles-lava.js';
 import {ferNew,ferPress,ferStep,ferDraw,ferEmptyNow} from './bombolles-ferro.js';
 import {oliNew,oliPress,oliStep,oliDraw,oliEmptyNow} from './bombolles-oli.js';
 import {nebNew,nebPress,nebStep,nebDraw,nebEmptyNow} from './bombolles-nebulosa.js';
 
-export const BB_CAUSE=Object.freeze({id:'bubbles',code:'CE05',type:'ce',level:'01 · Descobrir',name:'Bombolles sense pes',desc:'Set matèries sense pes que entren per una vora sobre negre, creixen fins a omplir la pantalla i se’n van: bombolles de sabó, plasma, aigua, fum, ferrofluid, oli i una nebulosa, cadascuna amb la seva música.',tag:'7 matèries · una música per a cadascuna',time:'Al teu ritme',bombolles:true,recorded:true});
+export const BB_CAUSE=Object.freeze({id:'bubbles',code:'CE05',type:'ce',level:'01 · Descobrir',name:'Bombolles sense pes',desc:'Vuit matèries que apareixen sobre negre, creixen fins a omplir la pantalla i se’n van: bombolles de sabó, plasma, aigua, fum, una làmpada de lava, ferrofluid, oli i una nebulosa, cadascuna amb la seva música.',tag:'8 matèries · una música per a cadascuna',time:'Al teu ritme',bombolles:true,recorded:true});
 
-// The seven matters, in this order (Mel i caramel taken out in 0.63.2: Marc, 10 November 2026, «irrecuperable»). what: the words of the status for a screen reader.
+// The eight matters, in this order (Mel i caramel taken out in 0.63.2: Marc, 10 November 2026, «irrecuperable»; the lava lamp added
+// in 0.64 at his request, the only one with weight). what: the words of the status for a screen reader.
 export const BB_STIMS=Object.freeze([
  {id:'sabo',name:'Bombolles de sabó',what:'bombolles iridescents',nou:sboNew,prem:sboPress,pas:sboStep,pinta:sboDraw,buit:sboEmptyNow},
  {id:'plasma',name:'Plasma',what:'fils de llum entre punts que brillen',nou:plaNew,prem:plaPress,pas:plaStep,pinta:plaDraw,buit:plaEmptyNow},
  {id:'aigua',name:'Esferes d’aigua',what:'boles d’aigua amb tinta de colors',nou:aigNew,prem:aigPress,pas:aigStep,pinta:aigDraw,buit:aigEmptyNow},
  {id:'fum',name:'Anells de fum',what:'anells de fum de colors',nou:fumNew,prem:fumPress,pas:fumStep,pinta:fumDraw,buit:fumEmptyNow},
+ {id:'lava',name:'Làmpada de lava',what:'bombolles de cera de colors',nou:lavNew,prem:lavPress,pas:lavStep,pinta:lavDraw,buit:lavEmptyNow},
  {id:'ferro',name:'Ferrofluid',what:'un líquid magnètic que fa punxes',nou:ferNew,prem:ferPress,pas:ferStep,pinta:ferDraw,buit:ferEmptyNow},
  {id:'oli',name:'Oli i aigua',what:'dos líquids que no es barregen',nou:oliNew,prem:oliPress,pas:oliStep,pinta:oliDraw,buit:oliEmptyNow},
  {id:'nebulosa',name:'Nebulosa',what:'gas de colors i estels que s’encenen',nou:nebNew,prem:nebPress,pas:nebStep,pinta:nebDraw,buit:nebEmptyNow}]);
@@ -75,12 +78,13 @@ export function bbStatus(game,s){const F=game?.bombolles;if(!F)return '';const M
  if(F.phase==='run')return role==='arriba'?`${M.name}: ${M.what} entren per una vora.`:role==='ple'?`${M.name}: ${M.what} omplen tota la pantalla, amb tota la música.`:`${M.name}: ${M.what} creixen. Pulsació ${F.k} de ${F.P}.`;
  return F.k>=F.P-1?`${M.name}: la pantalla és plena. La pulsació següent ho fa sortir tot.`:`${M.name}: espera la pulsació següent. Pulsació ${F.k} de ${F.P}.`;}
 export function bbProgress(game,s){const F=game?.bombolles;if(!F)return '';const done=F.phase==='out'||F.phase==='black'?F.P:F.k;return Array.from({length:F.P},(_,i)=>`<span class="${i<done?'done':''}"></span>`).join('');}
-export function bbHelp(s){const P=bbPresses(s);return `<strong>Cada pulsació fa entrar i créixer una matèria sense pes, amb la seva música. A la pulsació ${P-1} omple la pantalla, i a la ${P} se’n va per les vores fins que tot torna a ser negre. Després ve la matèria següent: bombolles, mel, plasma, aigua, fum, ferrofluid, oli i nebulosa.</strong><br>${s?.lock!==false?'Espera que acabi cada frase de música abans de tornar a prémer.':'Pots tornar a prémer abans que acabi la música.'} Mentre la matèria surt, les pulsacions no fan res.`;}
+export function bbHelp(s){const P=bbPresses(s);return `<strong>Cada pulsació fa entrar i créixer una matèria, amb la seva música. A la pulsació ${P-1} omple la pantalla, i a la ${P} se’n va fins que tot torna a ser negre. Després ve la matèria següent: ${BB_STIMS.map(x=>x.name.toLowerCase()).join(', ').replace(/, ([^,]*)$/,' i $1')}.</strong><br>${s?.lock!==false?'Espera que acabi cada frase de música abans de tornar a prémer.':'Pots tornar a prémer abans que acabi la música.'} Mentre la matèria surt, les pulsacions no fan res.`;}
 
 // ── The music ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Each matter has its key, its mode, its metre and its instruments (criteria of design, after the plan of 9 November 2026: the soap
-// bubbles bright and high in E lydian, the honey slow and low in A flat (65 to the crotchet), the plasma quick in B lydian, the water in D dorian and 6/8,
-// the smoke in F with a flute and a clarinet that follows it in canon, the ferrofluid in E flat minor with two instruments that take
+// bubbles bright and high in E lydian, the plasma quick in B lydian, the water in D dorian and 6/8, the smoke in F with a flute and a
+// clarinet that follows it in canon, the lava lamp slow in B flat dorian with a clarinet over a vibraphone (a lamp makes no sound of its
+// own: no recorded effects), the ferrofluid in E flat minor with two instruments that take
 // turns, the oil in G mixolydian and 6/8, the nebula slow in D flat). unit: the seconds of an eighth note; M: eighths in a bar.
 // prog: the degree of the chord of each press; cont: melodic shapes (steps of the scale above the root of the chord); snap: the
 // pitch classes the melody keeps to (a pentatonic over the chords); trem: the middle voice in tremolo; canon: a second voice that
@@ -94,9 +98,11 @@ export const BB_MUSIC=Object.freeze({
  plasma:{key:71,mode:'lydian',meter:'44',unit:.227,M:8,lead:'vibRec',mid:'guitarRec',bass:'dsArpa',spark:'dsTriangle',trem:true,prog:[0,1,0,1,4,5,1,0],cont:[3,0,5,2],
   ev:{pol:['vibRec',0,.14]},fx:{pol:['fireRec','shimmer',.035,1],ple:['fizzRec','fizz',.025,4]}},
  aigua:{key:62,mode:'dorian',meter:'68',unit:.333,M:6,lead:'kalimbaRec',mid:'dsMarimba',bass:'uduRec',spark:'glockRec',prog:[0,3,0,6,0,3,4,0],cont:[1,4,2,5],
-  ev:{fusio:['kalimbaRec',0,.18],tinta:['glockRec',1,.1]},fx:{entra:['pouRec','bombolles',.06,1],tinta:['masiaRec','degoteig',.05,.6],fusio:['pintaRec','gota',.06,.35]}},
+  ev:{fusio:['kalimbaRec',0,.18],tinta:['glockRec',1,.1],trenca:['glockRec',2,.08]},fx:{entra:['pouRec','bombolles',.06,1],tinta:['masiaRec','degoteig',.05,.6],fusio:['pintaRec','gota',.06,.35]}},
  fum:{key:65,mode:'major',meter:'44',unit:.48,M:8,lead:'dsFlauta',mid:'harpRec',bass:'celliPizzRec',spark:'harpRec',canon:'clarinetRec',snap:[0,2,4,7,9],prog:[0,3,5,4,0,5,3,4],cont:[0,2,4,3],
   ev:{anell:['harpRec',0,.15]},fx:{anell:['masiaRec','whoosh',.04,.9]}},
+ lava:{key:58,mode:'dorian',meter:'44',unit:.42,M:8,lead:'clarinetRec',mid:'vibRec',bass:'celliPizzRec',spark:'kalimbaRec',snap:[0,3,5,7,10],prog:[0,3,0,4,5,3,4,0],cont:[2,0,4,1],
+  ev:{trenca:['vibRec',0,.13],fusio:['kalimbaRec',0,.13]},fx:{}},
  ferro:{key:63,mode:'minor',meter:'44',unit:.3,M:8,lead:'kalimbaRec',mid:'vibRec',bass:'dsMarimba',spark:'dsGlock',sync:true,gong:true,snap:[0,3,5,7,10],prog:[0,5,6,0,3,5,6,0],cont:[3,1,5,0],
   ev:{gota:['dsGlock',0,.12],camp:['vibRec',0,.13]},fx:{gota:['pintaRec','gota',.04,.5]}},
  oli:{key:67,mode:'mixo',meter:'68',unit:.3,M:6,lead:'guitarRec',mid:'harpRec',bass:'celliPizzRec',spark:'kalimbaRec',prog:[0,6,3,0,6,3,4,0],cont:[2,5,0,4],

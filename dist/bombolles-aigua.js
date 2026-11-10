@@ -1,80 +1,81 @@
-// Bombolles sense pes · stimulus 4, «Esferes d'aigua»: balls of clear water with ink inside.
-// The matter: water without weight gathers into spheres. Each sphere is a lens (a bright rim, a dark ring just inside it, the window
-// of the room reflected on it), it trembles when something touches it (the oscillations of a drop that Rayleigh described in 1879:
-// the bigger the drop, the slower) and two spheres that touch flow into one through a neck. Each press drops ink of a new colour
-// into the big sphere, where it unfolds in slow clouds. At the end the sphere breaks into drops that leave by every edge.
-// The water is one field worked out for every point of the screen (up to 16 balls that melt into each other where they are close).
-// Scene units: x ∈ [0, AR], y ∈ [0, 1] from the top.
-import {BMB_VS_FULL,BMB_GLSL_NOISE} from './bombolles-shaders.js';
-import {bmbKind,bmbField,bmbBodies,bmbRandom,bmbLin} from './bombolles-motor.js';
+// Bombolles sense pes · «Esferes d'aigua» (rebuilt in 0.64 as a simulation): water without weight, squirted into the air of a cabin.
+// The motion is not drawn: it is the liquid solver (bombolles-lbm.js), water and air with surface tension (Navier–Stokes with a
+// phase field, Fakhari et al., 2017). A press only opens nozzles outside the screen (water comes out for a while at a speed that
+// slows down, and the nozzle is then cut), pushes a little ink through a syringe into a drop, or fires the thruster of the cabin.
+// What the water does then comes from the equations: a squirt gathers into a ball (surface tension), two balls that meet merge and
+// wobble (the bigger, the slower), a fast collision throws small drops, the ink is carried in mushrooms by the flow inside the drop,
+// and when the cabin accelerates everything falls out through one side, bent by the air that holds it back.
+// Momentum is the rule of the choreography: each press aims its water so that the total momentum given stays near zero (two
+// squirts that meet head on stop), which keeps the water on the screen without any invisible spring.
+// Scales (one choice, stated): the screen is about 40 cm high (180 cells, 2.2 mm each); surface tension and density give one step of
+// about 1.3 ms, and the solver runs 600 steps a second, a little slower than real time. The water is about 25 times more viscous
+// than real water and 10 times denser than the air (instead of 830): the lattice cannot go lower and stay stable.
+// The picture: the 2D section is the cut through the middle of the drops; the thickness for the light is the «inflated» section
+// (a round drop gets the profile of a sphere). The drop reflects and bends the lights of the cabin; the inks are fluorescent.
+import {BMB_VS_FULL} from './bombolles-shaders.js';
+import {BMB,bmbKind,bmbField,bmbRandom,bmbLin,bmbRebind} from './bombolles-motor.js';
 import {bmbRole} from './bombolles-sabo.js';
-const AIG_MAX=16;
-// uBall = x, y, radius, seed · uWob = the two oscillations (size, angle, size, angle) · uInk = how much ink, how many colours, –, –
-bmbKind('aigua',BMB_VS_FULL,`#version 300 es
-precision highp float;in vec2 vUv;uniform float uAR,uT,uN,uPass,uPx;uniform vec4 uBall[${AIG_MAX}],uWob[${AIG_MAX}],uInk[${AIG_MAX}];uniform vec3 uPal[5];out vec4 o;
-${BMB_GLSL_NOISE}
-float aigWindow(vec3 r,vec3 L,float sz){float k=dot(r,L);if(k<=.05)return 0.;vec3 tx=normalize(cross(vec3(0.,1.,0.),L)),ty=cross(L,tx);float a=dot(r,tx)/k,b=dot(r,ty)/k;a+=b*.22;
- float e=.1*sz,box=smoothstep(sz+e,sz-e,abs(a))*smoothstep(sz*.78+e,sz*.78-e,abs(b));return box*smoothstep(.015*sz,.07*sz,abs(a+.1*sz))*(.55+.45*smoothstep(sz,-sz,b));}
-vec3 aigPal(float x){x=mod(x,5.);float i=floor(x),f=x-i;f=f*f*(3.-2.*f);vec3 a=uPal[int(i)],b=uPal[int(mod(i+1.,5.))];return mix(a,b,f);}
-void main(){vec2 p=vec2(vUv.x*uAR,1.-vUv.y);float d=1e3,R=.1,seed=0.;vec2 g=vec2(0.,1.),ctr=p,ink=vec2(0.);bool first=true;
- for(int i=0;i<${AIG_MAX};i++){if(float(i)>=uN)break;vec4 b=uBall[i];if(b.z<=1e-4)continue;vec2 v=p-b.xy;float l=length(v)+1e-5,th=atan(v.y,v.x);vec4 w=uWob[i];
-  float rr=b.z*(1.+w.x*cos(2.*th-w.y)+w.z*cos(3.*th-w.w)),di=l-rr;
-  if(first){first=false;d=di;R=rr;g=v/l;ctr=b.xy;ink=uInk[i].xy;seed=b.w;}
-  else{float k=min(.05,.7*min(R,rr)),h=clamp(.5+.5*(d-di)/k,0.,1.);d=mix(d,di,h)-k*h*(1.-h);g=mix(g,v/l,h);R=mix(R,rr,h);ctr=mix(ctr,b.xy,h);ink=mix(ink,uInk[i].xy,h);seed=mix(seed,b.w,h);}}
- float aa=1.2/uPx;if(d>aa){discard;}float ed=1.-smoothstep(-aa,aa,d),dd=clamp(-d,0.,R),nz=sqrt(max(0.,dd*(2.*R-dd)))/R;g=normalize(g);vec3 n=normalize(vec3(g*(1.-dd/R),nz+1e-4));
- // the ink: clouds that fold slowly inside the ball, seen through its lens
- vec2 ip=(p-ctr)/R,il=ip*(.82+.18*nz)*(1.+2.2*R)+seed*17.;float tt=uT*.04;vec2 w1=vec2(bmbFbm(il*.8+vec2(0.,tt)),bmbFbm(il*.8+vec2(5.2,-tt)+3.1))-.5;
- vec2 w2=vec2(bmbFbm(il*1.9+w1*2.2+vec2(tt,1.7)),bmbFbm(il*1.9+w1*2.2+vec2(8.3,-tt)))-.5;
- vec2 iq=il*1.3+w2*1.7+w1*.8;float D0=bmbFbm(iq),M=ink.x*(1.-smoothstep(.15,1.,length(ip+w1*1.1+w2*.5)/(.42+.8*ink.x))),v=(D0-.5)*2.7+M*1.15-.55,inside=smoothstep(.04,.42,nz);
- float D=smoothstep(-.05,.6,v)*inside*smoothstep(0.,.12,M);float rimw=1.-nz,band=smoothstep(.5,.82,rimw)*(1.-smoothstep(.88,1.,rimw));
- if(uPass<.5){o=vec4(mix(vec3(1.),vec3(.9,.96,1.)*(1.-.5*band)*(1.-.9*D),ed),1.);return;}
- float vl=(bmbFbm(iq+vec2(-.085,-.11))-.5)*2.7+M*1.15-.55,lit=clamp(.8+(v-vl)*1.5,.3,1.45)*(.6+.5*smoothstep(.0,.6,v));
- vec3 ic=aigPal(1.2+ink.y*.8+(bmbFbm(il*.45+w1*.9+9.)-.5)*(5.+2.5*ink.y)+v*.7);vec3 col=ic*D*lit*1.7;
- // the water itself: the thin bright rim, the light gathered on the far side, the window and the sky of the room on its skin
- float fr=pow(rimw,3.),an=atan(n.y,n.x);vec3 rimc=mix(vec3(.2,.85,1.),vec3(.55,.42,1.),.5+.5*sin(an*2.+seed*6.+1.));col+=rimc*(fr*.8+pow(rimw,10.)*2.6);
- float ca=smoothstep(.15,.9,dot(g,vec2(.6,.78)))*smoothstep(.3,.75,rimw)*(1.-smoothstep(.8,.98,rimw));col+=vec3(.25,.8,1.)*ca*.55;
- vec3 rf=vec3(2.*nz*n.xy,2.*nz*nz-1.);float w0=aigWindow(rf,normalize(vec3(-.58,-.64,.5)),mix(.3,.15,smoothstep(.15,.6,R))),tl=dot(g,vec2(-.62,-.78));
- float arc=smoothstep(.7,.78,rimw)*(1.-smoothstep(.84,.9,rimw))*smoothstep(.55,.9,tl+.25*(bmbN4(vec2(an*3.,seed*9.)).g-.5)),arc2=smoothstep(.6,.66,rimw)*(1.-smoothstep(.7,.76,rimw))*smoothstep(.75,.95,-tl);
- col+=vec3(.95,1.,1.)*w0*1.2+vec3(.8,.97,1.)*arc*1.3+vec3(.4,.6,1.)*arc2*.5+vec3(.006,.02,.035)*nz;
- // a few bubbles of air caught in the water
- if(R>.05){vec2 q=ip*7.+vec2(seed*9.,-uT*.06),id=floor(q);float hb=bmbN4(id+.5).b;if(hb>.9){vec2 c=id+.5+(bmbN4(id+3.7).rg-.5)*.5,dv=q-c;float rb=.1+.14*bmbN4(id+9.1).a,db=length(dv)/rb;
-   if(db<1.){col+=(vec3(.6,.9,1.)*smoothstep(.6,1.,db)*.6+vec3(1.)*smoothstep(.9,.97,dot(normalize(vec3(dv/rb,sqrt(1.-db*db))),normalize(vec3(-.4,-.5,.76))))*1.2)*inside;}}}
- o=vec4(col*ed,0.);}`);
-// the inks of the two laps (five each)
-export const AIG_PALS=Object.freeze([['#1f5bff','#b23cff','#ff3fd0','#19d9e6','#7dff3a'],['#ff7a1a','#ff4f9e','#8dff3a','#ffb02e','#b25cff']]);
-export function aigNew(o={}){const rnd=bmbRandom(o.seed||11);return {kind:'aigua',AR:o.AR||16/9,lap:o.lap||0,rnd,t:0,b:[],dots:[],ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*4),main:null,post:{spread:.5,bloom:.14,exp:1}};}
-function aigOutside(S,x,y,m){const AR=S.AR,d=[x,y,AR-x,1-y];let e=0;for(let i=1;i<4;i++)if(d[i]<d[e])e=i;return e===0?[-m,y]:e===2?[AR+m,y]:e===1?[x,-m]:[x,1+m];}
-function aigAdd(S,o){const r=S.rnd,s=o.from||aigOutside(S,o.tx,o.ty,o.R*1.15+.03),b={x:s[0],y:s[1],vx:0,vy:0,tx:o.tx,ty:o.ty,r:o.r??o.R,R:o.R,seed:r(),a2:.05*r(),v2:0,p2:r()*6.28,a3:.02*r(),v3:0,p3:r()*6.28,ink:o.ink||0,INK:o.ink||0,hue:o.hue||0,ph:r()*40,into:null,out:false,gone:false,stiff:o.stiff||1};S.b.push(b);return b;}
-function aigDots(S,x,y,n,sp){const r=S.rnd;for(let i=0;i<n;i++){const a=r()*6.283,q=.02+sp*r();S.dots.push({x:x+Math.cos(a)*q,y:y+Math.sin(a)*q,vx:Math.cos(a)*.01*r(),vy:Math.sin(a)*.01*r(),r:.004+.009*r()*r(),ph:r()*30});}}
-function aigEdgeSpot(S,R){const AR=S.AR,r=S.rnd,M=S.main;let best=null;for(let i=0;i<24;i++){const e=Math.floor(r()*4),u=.15+.7*r(),m=R*.9+.04,x=e===0?m:e===2?AR-m:u*AR,y=e===1?m:e===3?1-m:u;let c=9;for(const b of S.b){if(b.gone)continue;const d=Math.hypot(x-b.tx,y-b.ty)-b.R-R;if(d<c)c=d;}if(!best||c>best.c)best={c,x,y};}return best;}
-export function aigPress(S,k,P=S.P){const r=S.rnd,AR=S.AR,role=bmbRole(k,P),cx=AR/2,cy=.5;S.k=k;S.P=P;S.role=role;
- if(role==='arriba'){if(!S.main){const e=S.e0,u=.35+.3*r(),R=.2,t=e===0?[.13,u]:e===2?[AR-.13,u]:e===1?[u*AR,.13]:[u*AR,.87];S.main=aigAdd(S,{tx:t[0],ty:t[1],R});aigDots(S,t[0],t[1],4,.3);S.ev.push({t:S.t,type:'entra',R});}
-  else{const M=S.main;M.R=.25;M.tx+=(cx-M.tx)*.3;M.ty+=(cy-M.ty)*.3;M.INK=.38;M.v2+=.5;const f=aigEdgeSpot(S,.11);aigAdd(S,{tx:f.x,ty:f.y,R:.1+.03*r()});S.ev.push({t:S.t,type:'tinta',hue:0});}return;}
- const M=S.main;if(!M)return;
- if(role==='creix'){const free=S.b.filter(b=>b!==M&&!b.into&&!b.gone&&!b.out).sort((a,b)=>Math.hypot(a.tx-M.tx,a.ty-M.ty)-Math.hypot(b.tx-M.tx,b.ty-M.ty));if(free.length)free[0].into=M;
-  M.tx+=(cx-M.tx)*.35;M.ty+=(cy-M.ty)*.35;M.R=Math.min(.46,M.R*1.13);M.INK=Math.min(.9,M.INK+.17);M.hue+=.6;
-  for(let i=0;i<2;i++){const R=.08+.06*r(),f=aigEdgeSpot(S,R);aigAdd(S,{tx:f.x,ty:f.y,R});}aigDots(S,M.tx,M.ty,3,M.R+.2);S.ev.push({t:S.t,type:'tinta',hue:M.hue});return;}
- if(role==='ple'){for(const b of S.b)if(b!==M&&!b.gone)b.into=M;M.tx=cx;M.ty=cy;M.R=.63;M.INK=1;M.hue+=1;M.v2+=.6;
-  for(let i=0;i<3;i++){const a=.6+i*2.1+r()*.8,R=.12+.08*r();aigAdd(S,{tx:cx+Math.cos(a)*(.63+R*.45)*1.12,ty:cy+Math.sin(a)*(.63+R*.45)*.8,R,ink:.3*r()});}aigDots(S,cx,cy,8,.75);S.ev.push({t:S.t,type:'ple'});return;}
- // the way out: the big ball breaks into drops, and every drop leaves by the edge in front of it
- const n=6,a0=r()*6.283;for(let i=0;i<n;i++){const a=a0+i/n*6.283+(r()-.5)*.4,R=M.r*(.36+.1*r()),c=aigAdd(S,{from:[M.x+Math.cos(a)*M.r*.42,M.y+Math.sin(a)*M.r*.42],tx:0,ty:0,R,r:R*.2,ink:M.ink*(.5+.4*r()),hue:M.hue});c.out=true;c.ox=Math.cos(a);c.oy=Math.sin(a)*.8;c.wait=.5+.25*i*r();c.acc=.1+.05*r();}
- M.R=0;M.dying=true;for(const b of S.b){if(b===M||b.out)continue;b.into=null;const dx=b.x-cx,dy=b.y-cy,l=Math.hypot(dx,dy)||1;b.out=true;b.ox=dx/l;b.oy=dy/l;b.wait=.3*r();b.acc=.1;}
- for(const d of S.dots){const dx=d.x-cx,dy=d.y-cy,l=Math.hypot(dx,dy)||1;d.ox=dx/l;d.oy=dy/l;}S.out=true;S.ev.push({t:S.t,type:'surt'});}
-export function aigStep(S,dt){const AR=S.AR,t=S.t+dt;S.t=t;
- for(const b of S.b){b.r+=(b.R-b.r)*(1-Math.exp(-dt/(b.dying?.5:.9)));b.ink+=(b.INK-b.ink)*(1-Math.exp(-dt/2.2));
-  if(b.out){b.wait-=dt;if(b.wait<=0){b.vx+=b.ox*b.acc*dt;b.vy+=b.oy*b.acc*dt;}else{b.vx+=b.ox*.02*dt;b.vy+=b.oy*.02*dt;}}
-  else if(b.into){const M=b.into,dx=M.x-b.x,dy=M.y-b.y,l=Math.hypot(dx,dy)||1;b.vx+=(dx/l*.35-b.vx*1.6)*dt;b.vy+=(dy/l*.35-b.vy*1.6)*dt;
-   if(l<M.r+b.r*.2&&!b.fused){b.fused=true;M.R=Math.min(.7,Math.sqrt(M.R*M.R+b.R*b.R*.6));b.R=0;M.v2+=1.1*Math.min(1,b.r/M.r*3);M.p2=Math.atan2(-dy,-dx)*2;M.v3+=.5;S.ev.push({t,type:'fusio',R:b.r,x:b.x/AR});}
-   if(b.fused&&b.r<.004)b.gone=true;}
-  else{const wx=Math.sin(t*.19+b.ph)*.02+Math.sin(t*.08+b.ph*2.3)*.015,wy=Math.cos(t*.15+b.ph*1.7)*.02+Math.sin(t*.1+b.ph*.7)*.012;b.vx+=((b.tx+wx-b.x)*.9-b.vx*1.9)*dt;b.vy+=((b.ty+wy-b.y)*.9-b.vy*1.9)*dt;}
-  b.x+=b.vx*dt;b.y+=b.vy*dt;const w2=Math.min(9,Math.max(1.3,.22*Math.pow(Math.max(b.r,.01),-1.5)*.5)),w3=w2*1.9;b.v2+=(-w2*w2*b.a2-.9*b.v2)*dt;b.a2+=b.v2*dt;b.v3+=(-w3*w3*b.a3-1.4*b.v3)*dt;b.a3+=b.v3*dt;b.a2=Math.max(-.09,Math.min(.09,b.a2));b.a3=Math.max(-.05,Math.min(.05,b.a3));
-  if(b.dying&&b.r<.004)b.gone=true;if(b.out&&(b.x<-b.r-.08||b.x>AR+b.r+.08||b.y<-b.r-.08||b.y>1+b.r+.08))b.gone=true;}
- for(const d of S.dots){if(S.out){d.vx+=d.ox*.08*dt;d.vy+=d.oy*.08*dt;}else{d.vx+=(Math.sin(t*.3+d.ph)*.004-d.vx*.5)*dt;d.vy+=(Math.cos(t*.26+d.ph*1.3)*.004-d.vy*.5)*dt;}d.x+=d.vx*dt;d.y+=d.vy*dt;}
- if(S.out)S.dots=S.dots.filter(d=>d.x>-.05&&d.x<AR+.05&&d.y>-.05&&d.y<1.05);
- if(S.b.some(b=>b.gone)){S.b=S.b.filter(b=>!b.gone);if(S.main&&S.main.gone)S.main=null;}if(S.ev.length>200)S.ev.splice(0,S.ev.length-200);}
-export function aigCover(S){const G=48,H=27;let n=0;for(let j=0;j<H;j++)for(let i=0;i<G;i++){const x=(i+.5)/G*S.AR,y=(j+.5)/H;for(const b of S.b){const dx=x-b.x,dy=y-b.y;if(dx*dx+dy*dy<b.r*b.r){n++;break;}}}return n/(G*H);}
-export const aigEmptyNow=S=>!S.b.length&&!S.dots.length;
-const AIG_B=new Float32Array(AIG_MAX*4),AIG_W=new Float32Array(AIG_MAX*4),AIG_I=new Float32Array(AIG_MAX*4),AIG_D=new Float32Array(64*20),AIG_P=new Float32Array(15);
-export function aigDraw(S){const L=S.b.slice().sort((a,b)=>b.r-a.r).slice(0,AIG_MAX),n=L.length;if(n){L.forEach((b,i)=>{const k=i*4;AIG_B[k]=b.x;AIG_B[k+1]=b.y;AIG_B[k+2]=b.r;AIG_B[k+3]=b.seed;AIG_W[k]=b.a2;AIG_W[k+1]=b.p2;AIG_W[k+2]=b.a3;AIG_W[k+3]=b.p3;AIG_I[k]=b.ink;AIG_I[k+1]=b.hue;});
-  AIG_PALS[S.lap%2].forEach((h,i)=>AIG_P.set(bmbLin(h),i*3));bmbField('aigua',{uN:n,uBall:{arr:AIG_B,size:4},uWob:{arr:AIG_W,size:4},uInk:{arr:AIG_I,size:4},uPal:{arr:AIG_P,size:3},uT:S.t},'liquid');}
- let m=0;const d=AIG_D;for(const o of S.dots){if(m>=64)break;const k=m*20;d.fill(0,k,k+20);d[k]=o.x;d[k+1]=o.y;d[k+2]=o.r;d[k+4]=.35;d[k+5]=.8;d[k+6]=1;d[k+7]=1;m++;}if(m)bmbBodies('dot',d,m,{},true,1.2);}
+import {lbmU,lbmDyeTex,lbmInflateTex} from './bombolles-lbm.js';
+import {lqBox,lqCell,lqScrX,lqNozzle,lqSyringe,lqBig,lqGap,lqEdge,lqThrustStart,lqThrust,lqRun,lqStep,lqMake} from './bombolles-liquids.js';
+// the box: cells per screen height, the margin around the screen (cells), the liquids, steps a second, the most steps in a frame
+// (not frozen: the review tool makes the box smaller; nozzle sizes follow Hs)
+export const AIG_PHYS={Hs:180,margin:24,rhoL:.1,rhoH:1,tauL:.03,tauH:.03,sigma:.012,xi:4,tauPhi:.3,sps:600,maxSteps:14,chunk:2};
+// two palettes: the three fluorescent inks (fluorescein, rhodamine, a blue coumarin · an orange, a cyan, a violet), the lights of the cabin
+export const AIG_PALS=Object.freeze([{ink:['#7dff3a','#ff2f9a','#3a8bff'],lights:['#fff1dc','#5fd8ff','#ff7ad0','#ffd27a']},
+ {ink:['#ff8a1f','#22f0ff','#a35cff'],lights:['#e8f4ff','#ffb35c','#7affc8','#c58cff']}]);
+// the cabin: two small lamps in front (the highlights), two behind the water (seen bent through it: the lens), direction (x, y up,
+// z towards the viewer) and size (rad); and a faint band of light all round the horizon that gives the thin bright rim
+const AIG_LIGHTS=[[-.45,.55,.7,.075],[.62,.35,.7,.06],[.35,-.5,-.79,.16],[-.55,-.2,-.81,.12]];
+bmbKind('aigua2',BMB_VS_FULL,`#version 300 es
+precision highp float;in vec2 vUv;uniform sampler2D uU,uQ,uD;uniform vec2 uN,uM,uSc,uDN;uniform float uPxc,uXi,uGlow;uniform vec3 uInk[3],uL[4];uniform vec4 uLd[4];out vec4 o;
+vec4 bil(sampler2D t,vec2 q,vec2 N){q=q-.5;vec2 f=fract(q);ivec2 i=ivec2(floor(q));vec4 r=vec4(0.);for(int k=0;k<4;k++){ivec2 d=ivec2(k&1,k>>1),p=clamp(i+d,ivec2(0),ivec2(N)-1);r+=texelFetch(t,p,0)*((k&1)==1?f.x:1.-f.x)*((k>>1)==1?f.y:1.-f.y);}return r;}
+float hAt(vec2 c){return sqrt(max(bil(uQ,c,uN).x,0.));}
+uniform vec3 uRim;
+vec3 env(vec3 d){vec3 c=vec3(.0015,.002,.004)*(1.+.6*d.y)+uRim*exp(-d.z*d.z*18.);for(int i=0;i<4;i++){float k=dot(d,normalize(uLd[i].xyz));c+=uL[i]*smoothstep(cos(uLd[i].w),cos(uLd[i].w*.4),k);}return c;}
+void main(){vec2 c=uM+vUv*uSc;float phi=bil(uU,c,uN).w;if(phi<.02){o=vec4(0.);return;}
+ // the edge: the distance to the middle of the interface (tanh profile of width ξ), one pixel soft
+ float p=clamp(phi,.001,.999),d=.25*uXi*log(p/(1.-p)),a=clamp(d*uPxc+.5,0.,1.);if(a<=0.){o=vec4(0.);return;}
+ float h=hAt(c),e=.7,hx=hAt(c+vec2(e,0.))-hAt(c-vec2(e,0.)),hy=hAt(c+vec2(0.,e))-hAt(c-vec2(0.,e));vec3 n=normalize(vec3(-hx/(2.*e),-hy/(2.*e),1.));
+ vec3 v=vec3(0.,0.,1.);float F=.02+.98*pow(1.-max(n.z,0.),5.);vec3 refl=env(reflect(-v,n));
+ vec3 t=refract(-v,n,.75),out1=normalize(vec3(t.xy*2.2,t.z));vec3 back=env(out1);
+ float T=2.*h;vec3 ink=max(bil(uD,c*uDN/uN,uDN).rgb,vec3(0.));
+ vec3 absorb=exp(-T*(vec3(.0016,.0007,.0003)+.02*(ink.r+ink.g+ink.b)));
+ vec3 glow=(uInk[0]*ink.r+uInk[1]*ink.g+uInk[2]*ink.b)*(1.-exp(-.035*T))*uGlow;
+ vec3 col=F*refl+(1.-F)*(back*absorb)+glow;o=vec4(col*a,a);}`);
+export function aigNew(o={}){const rnd=bmbRandom(o.seed||41),AR=o.AR||16/9;
+ return {kind:'aigua',AR,lap:o.lap||0,rnd,t:0,ev:[],role:'buit',k:0,P:o.presses||8,e0:Math.floor(rnd()*2),...lqBox(AIG_PHYS,AR),post:{bloom:.32,spread:.62,exp:1}};}
+const INK=[[1,0,0,1],[0,1,0,1],[0,0,1,1]];
+export function aigPress(S,k,P=S.P){const r=S.rnd,role=bmbRole(k,P);S.k=k;S.P=P;S.role=role;const c=(x,y)=>lqCell(S,x,y),AR=S.AR,big=lqBig(S),lap=S.lap;
+ if(role==='arriba'){// two squirts from opposite edges that meet: one ball at rest (the first one left of the middle, the second right)
+  const p=k===1?[AR*(.36+.06*r()),.45+.12*r()]:[AR*(.66+.05*r()),.4+.2*r()],T=c(...p);
+  if((k+lap+S.e0)%2===0){lqNozzle(S,0,p[1],T,{dur:2.6+.4*r()});lqNozzle(S,2,p[1]+(r()-.5)*.1,T,{dur:2.6+.4*r()});}
+  else{lqNozzle(S,1,p[0]/AR,T,{dur:2.4+.4*r(),r:12});lqNozzle(S,3,p[0]/AR+(r()-.5)*.1,T,{dur:2.4+.4*r(),r:12});}
+  S.ev.push({t:S.t,type:'entra',x:p[0]/AR});return;}
+ if(role==='creix'){
+  // ink into the biggest drops (a syringe: a little water with ink, pushed in), and more water: aimed at the emptiest place (or, one
+  // press in three, at the biggest drop), from the edge that brings the total momentum back towards zero
+  const ink=big.slice(0,1+(k%2));ink.forEach((b,i)=>lqSyringe(S,b,INK[(k+i+lap)%3]));if(ink.length)S.ev.push({t:S.t,type:'tinta',x:lqScrX(S,ink[0].x)});
+  const tgt=(k%3===2&&big.length)?[big[0].x,big[0].y]:(()=>{const g=lqGap(S);return [g.x,g.y];})();
+  const e=lqEdge(S),u=e===0||e===2?1-(tgt[1]-S.my)/S.Hs:(tgt[0]-S.mx)/S.Ws;
+  lqNozzle(S,e,Math.min(.9,Math.max(.1,u+(r()-.5)*.15)),tgt,{dur:1.3+1.1*r(),r:8+4*r(),U:.06+.02*r()});
+  // and, now and then, a fast thin squirt across: it breaks into small drops when it hits
+  if(k%3===0)lqNozzle(S,(e+2)%4,.25+.5*r(),tgt,{dur:1.2,r:5,U:.085,delay:.4});
+  S.ev.push({t:S.t,type:'entra',x:lqScrX(S,tgt[0])});return;}
+ if(role==='ple'){// squirts from the four edges at once, at the biggest drops and at the emptiest places: they crash and merge, plus ink
+  for(let e=0;e<4;e++){const b=big[e%Math.max(1,Math.min(3,big.length))],g=lqGap(S),T=e<2&&b?[b.x,b.y]:[g.x,g.y];lqNozzle(S,e,.25+.5*r(),T,{dur:2.2+.8*r(),r:10+4*r(),U:.07+.015*r(),delay:.2*e});}
+  const g=lqGap(S);lqNozzle(S,(S.e0+1)%4,.5,[g.x,g.y],{dur:2,r:9,delay:1.2});
+  big.slice(0,3).forEach((b,i)=>lqSyringe(S,b,INK[i]));S.ev.push({t:S.t,type:'ple'});return;}
+ // the way out: the cabin accelerates (a thruster), so in the cabin everything falls towards one side, faster and faster, and leaves
+ // the screen through it, bent by the air that holds it back
+ lqThrustStart(S,(S.e0+lap+1)%4,AIG_PHYS,8);S.ev.push({t:S.t,type:'surt'});}
+export const aigStep=lqStep;
+export function aigDraw(S){const gl=BMB.gl;if(!gl)return;const P=AIG_PHYS;
+ const sim=lqRun(S,P,()=>lqMake(gl,S,P),(S,sim)=>{sim.acc=lqThrust(S,P);});
+ bmbRebind();
+ const pal=AIG_PALS[S.lap%2],L=new Float32Array(12),Ld=new Float32Array(16),I=new Float32Array(9);
+ pal.lights.forEach((h,i)=>{const c=bmbLin(h),g=[9,6,2.2,1.6][i];L.set([c[0]*g,c[1]*g,c[2]*g],i*3);Ld.set(AIG_LIGHTS[i],i*4);});pal.ink.forEach((h,i)=>I.set(bmbLin(h).map(x=>x*1.6),i*3));
+ bmbField('aigua2',{uU:{tex:lbmU(sim),unit:0},uQ:{tex:lbmInflateTex(sim),unit:1},uD:{tex:lbmDyeTex(sim),unit:3},uN:[S.W,S.H],uM:[S.mx,S.my],uSc:[S.Ws,S.Hs],uDN:[sim.dye.w,sim.dye.h],
+  uPxc:BMB.view.H/S.Hs,uXi:P.xi,uGlow:1,uRim:bmbLin(pal.lights[1]).map(x=>x*.22),uInk:{arr:I,size:3},uL:{arr:L,size:3},uLd:{arr:Ld,size:4}},false);}
+// empty: on the way out, no water left on the screen (or, without a graphics card, some seconds after the thruster starts)
+export function aigEmptyNow(S){if(S.role!=='surt')return false;if(!S.sim)return S.outT!=null&&S.t-S.outT>6;return S.simT-S.thrust.t0>2&&S.vis<30;}
+export const aigCover=S=>S.cover;

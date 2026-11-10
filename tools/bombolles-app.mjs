@@ -1,7 +1,7 @@
 // Bombolles sense pes (CE05, 0.63) in the app: the folder and the card, the activity through the whole arc of its first matter (with
 // the setting of 4 presses: in, growth, the full moment, the way out to black) and the first press of the next one, the tab of its
 // settings; the notes the app plays (window.__pimpamSoundLog), the recordings started, the errors of the page, and stills.
-// Usage: node tools/bombolles-app.mjs <built.html | http://…/> <outdir> [width] [height] [dpr]
+// Usage: node tools/bombolles-app.mjs <built.html | http://…/> <outdir> [width] [height] [dpr]   env BMB_FIRST: the first matter (id)
 // Headless Chromium draws with the processor (SwiftShader): the activity runs here much slower than on a graphics card.
 import {createRequire} from 'node:module';
 import {mkdirSync} from 'node:fs';
@@ -26,7 +26,7 @@ await page.evaluate(()=>document.querySelector('[data-start="bubbles"]')?.click(
 // the settings of the activity: 4 presses
 await page.evaluate(()=>document.querySelector('.stage-tools [data-settings]')?.click());await page.waitForTimeout(500);await page.evaluate(()=>document.querySelector('[data-tab="activity"]')?.click());await page.waitForTimeout(400);
 const fields=await page.evaluate(()=>['bbPresses','bbFirst'].map(id=>{const e=document.getElementById(id);return e?id+':'+[...e.options].map(o=>o.textContent).join('/'):id+' MISSING';}));console.log(fields.join(' | '));
-await shot('02_ajustos');await page.selectOption('#bbPresses','4');await page.waitForTimeout(200);await page.keyboard.press('Escape');await page.waitForTimeout(300);await page.evaluate(()=>document.querySelector('dialog[open]')?.close());await page.waitForTimeout(300);
+await shot('02_ajustos');await page.selectOption('#bbPresses','4');if(process.env.BMB_FIRST){await page.selectOption('#bbFirst',process.env.BMB_FIRST);await page.waitForTimeout(200);}await page.waitForTimeout(200);await page.keyboard.press('Escape');await page.waitForTimeout(300);await page.evaluate(()=>document.querySelector('dialog[open]')?.close());await page.waitForTimeout(300);
 // closing the settings leaves the game paused: a press resumes it
 if(/paused/.test(await phase())){await press();await page.waitForTimeout(800);}
 console.log('start',await phase(),'|',await status());await shot('03_inici');
