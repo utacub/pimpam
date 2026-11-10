@@ -1,1 +1,1 @@
-{"name":"pim-pam-local","version":"0.65","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs"}}
+{"name":"pim-pam-local","version":"0.66","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs"}}

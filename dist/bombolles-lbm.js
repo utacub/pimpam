@@ -101,7 +101,9 @@ void main(){ivec2 x=ivec2(gl_FragCoord.xy);vec4 a=texelFetch(uH0,x,0),b=texelFet
 const LBM_FS_DYE=LBM_HEAD+LBM_SHAPES+`uniform sampler2D uD,uU;uniform vec2 uDN;uniform float uDt,uFade;uniform vec4 uDyeC[8];
 vec2 vel(vec2 q){q=q-.5;vec2 f=fract(q);ivec2 i=ivec2(floor(q));vec2 r=vec2(0.);for(int k=0;k<4;k++){ivec2 o=ivec2(k&1,k>>1),p=i+o;p=clamp(p,ivec2(0),uN-1);r+=texelFetch(uU,p,0).xy*((k&1)==1?f.x:1.-f.x)*((k>>1)==1?f.y:1.-f.y);}return r;}
 out vec4 o;void main(){vec2 x=gl_FragCoord.xy,s=vec2(uN)/uDN,c=x*s;vec2 u=vel(c);vec2 b=(c-uDt*u)/s;
- vec4 d=texture(uD,b/uDN);d*=uFade;
+ // what comes in from outside the box is the clean fluid of the still room: no dye (clamped reads would bring the dye of the edge
+ // in again and again, an endless trail where a side blows in)
+ vec4 d=(b.x<0.||b.y<0.||b.x>uDN.x||b.y>uDN.y)?vec4(0.):texture(uD,b/uDN);d*=uFade;
  for(int i=0;i<8;i++){if(i>=uNS)break;vec4 A=uA[i],B=uB[i],C=uC[i];vec2 q=c-A.xy;float cs=cos(B.x),sn=sin(B.x);q=vec2(cs*q.x+sn*q.y,-sn*q.x+cs*q.y);
   float r=length(q/A.zw),edge=max(C.y,.5)/min(A.z,A.w),m=C.x*clamp((1.-r)/edge+.5,0.,1.);if(m>0.)d=mix(d,uDyeC[i],m*uDyeC[i].a>0.?m:0.);}
  o=d;}`;

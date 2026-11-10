@@ -1,3 +1,23 @@
+# Pim Pam 0.66 · Bombolles sense pes: «Anells de fum» simulats de debò
+
+Base: 0.65 (commit d547bb3, publicada). Continua la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar «com a fluids d’acord amb les lleis de la física».
+
+## Què canvia
+
+- **«Anells de fum», refets com a simulació.** Cada pulsació és una bufada: un pistó empeny l’aire per una escletxa de fora de la pantalla durant mig segon, amb fum de color. Els cantons de l’escletxa deixen anar vorticitat, que s’enrotlla en dos remolins que giren al revés l’un de l’altre (el tall d’un anell de fum pel mig). Aquest parell s’emporta el fum i avança tot sol, i es va alentint a mesura que la viscositat l’eixampla (Saffman, 1992; Gharib, Rambod i Shariff, 1998). No es dibuixa ni es guia res: l’aire és el simulador de fluids (aquí un sol fluid, amb les equacions de Navier–Stokes incompressibles) i el fum és un tint que l’aire transporta. Dos anells que es troben de cara intercanvien les parelles i surten cap als costats, i un anell que n’atrapa un altre hi passa per dins. Tot això es veu en les espirals del fum.
+- **Les fases:** primer, un anell i després un altre des de l’altre costat; mentre creix, dos anells seguits per la mateixa escletxa, un des de dalt o des de baix, o dos de cara; al moment ple, anells des dels quatre costats i un parell que els segueix. A la sortida s’obre una finestra en un costat i el corrent d’aire s’ho emporta tot.
+- **El simulador:** el tint que entra des de fora de la caixa ara és net. Abans, la lectura a la vora repetia el tint del límit i deixava una cua sense fi allà on entrava un corrent.
+- **Escales triades** (criteri, declarat al codi): la pantalla fa un metre d’alt, un anell avança uns 15 cm per segon i travessa la pantalla en uns deu segons, i l’aire és unes 30 vegades més viscós que el real, perquè la xarxa no pot baixar gaire més i ser estable.
+- **So:** es manté com era (una nota d’arpa a cada anell i un buf suau enregistrat).
+- **Comprovat** amb el processador (Chromium amb SwiftShader), fotograma a fotograma: els anells es formen com a parells de remolins amb espirals, dos anells de cara intercanvien les parelles, la simulació és estable amb la bufada més forta, al moment ple el fum omple tota la pantalla, i a la sortida la pantalla queda negra uns 6 segons després de l’última pulsació. Dins l’app: la llista d’ajustos, els textos d’estat i 65 notes, sense errors. Proves de codi: 440 de 443 (les tres que fallen ja fallaven abans: mides dels sons enregistrats).
+- **No comprovat:** l’aspecte i la fluïdesa amb una targeta gràfica real, i l’auditoria de flaixos.
+
+## Referències
+
+Gharib, M., Rambod, E., & Shariff, K. (1998). A universal time scale for vortex ring formation. *Journal of Fluid Mechanics, 360*, 121–140. https://doi.org/10.1017/S0022112097008410
+
+Saffman, P. G. (1992). *Vortex dynamics*. Cambridge University Press. https://doi.org/10.1017/CBO9780511624063
+
 # Pim Pam 0.65 · Bombolles sense pes: «Oli i aigua» simulada de debò
 
 Base: 0.64 (commit 4552ccb, publicada). Continua la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar «com a fluids d’acord amb les lleis de la física».
