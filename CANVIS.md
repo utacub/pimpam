@@ -1,3 +1,24 @@
+# Pim Pam 0.69 · Bombolles sense pes: el «Plasma» simulat de debò
+
+Base: 0.68 (commit 3f640e2, publicada). Tanca la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar d’acord amb les lleis de la física. Amb aquesta versió, les vuit matèries de «Bombolles sense pes» són simulacions.
+
+## Què canvia
+
+- **«Plasma», refet com a simulació.** Unes esferes petites (elèctrodes) sobre negre, unes positives i unes negatives, dins d’un gas. Cada pulsació hi posa tensió: de cada elèctrode creixen canals de gas ionitzat que es ramifiquen cap on el camp elèctric és més fort, i quan un canal toca un conductor a un altre potencial (un altre elèctrode, o la vora, que és a terra) salta l’arc: el camí que uneix els dos elèctrodes s’encén blanc i rosat, els elèctrodes es buiden i la resta de branques s’apaguen. Les pulsacions afegeixen elèctrodes i pugen la tensió; al moment ple hi ha una tempesta de descàrregues mentre duri; a la sortida es talla la tensió i tot s’apaga.
+- **El model** (`dist/bombolles-plasma.js`): el model de ruptura dielèctrica (Niemeyer et al., 1984). El potencial elèctric compleix l’equació de Laplace al gas, resolta per sobrerelaxació successiva vermell-negre (Press et al., 2007); els canals són conductors amb una petita caiguda de potencial al llarg i només creixen on el camp supera el de ruptura (Wiesmann & Zeller, 1986); cada tros nou creix cap a una de les vuit cel·les veïnes amb una probabilitat proporcional al camp. Positius i negatius creixen igual (en l’aire real, els positius arrenquen més fàcilment; Raizer, 1991).
+- **La llum i el color** (criteris, declarats al codi): la llum de cada canal segueix el corrent que hi passa (el nombre de cel·les que alimenta més enllà), i l’arc, que porta la càrrega dels dos elèctrodes, és el més brillant i el més blanc. Neó i argó a la primera volta (canals violeta i arcs rosats, com en un globus de plasma) i xenó a la segona (blau); els colors no estan calculats a partir dels espectres.
+- **El temps** (declarat): una descàrrega real travessa l’espai en microsegons; aquí un canal triga al voltant d’un segon a travessar i la llum un altre segon a apagar-se (alentit un milió de vegades). Cap arc no és un flaix: s’encén en un quart de segon i s’apaga en un segon, i entre dos arcs hi ha com a mínim mig segon.
+- **Validat** (`tools/bombolles-plasma-proves.mjs`): el camp entre un disc i un cercle a terra difereix com a molt 0,013 (sobre una tensió d’1) del de la línia coaxial, ln(r/R)/ln(r0/R). La dimensió fractal d’una descàrrega radial, per la massa dins d’un radi, surt 1,70 de mitjana en cinc descàrregues (d’1,53 a 1,85) amb un tros per solució del camp, com el model (Niemeyer et al., 1984, van trobar 1,75); amb deu trossos per solució, com en els moments més ràpids de l’estímul, surt 1,59: figures una mica més esclarissades.
+- **So:** cada elèctrode que apareix fa una nota de vibràfon, i cada arc una altra nota i un espetec suau enregistrat; el moment ple, el xiuxiueig d’espurnes que ja hi era. El text d’estat ara diu «descàrregues elèctriques entre punts de llum».
+- **No verificat:** l’aspecte i la velocitat en una targeta gràfica real (la revisió s’ha fet amb el processador) i l’auditoria de flaixos (no demanada).
+
+## Referències
+
+- Niemeyer, L., Pietronero, L., & Wiesmann, H. J. (1984). Fractal dimension of dielectric breakdown. *Physical Review Letters, 52*(12), 1033–1036. https://doi.org/10.1103/PhysRevLett.52.1033
+- Press, W. H., Teukolsky, S. A., Vetterling, W. T., & Flannery, B. P. (2007). *Numerical recipes: The art of scientific computing* (3a ed.). Cambridge University Press.
+- Raizer, Y. P. (1991). *Gas discharge physics*. Springer.
+- Wiesmann, H. J., & Zeller, H. R. (1986). A fractal model of dielectric breakdown and prebreakdown in solid dielectrics. *Journal of Applied Physics, 60*(5), 1770–1773. https://doi.org/10.1063/1.337219
+
 # Pim Pam 0.68 · Bombolles sense pes: la «Nebulosa» simulada de debò
 
 Base: 0.67 (commit 89eb53e, publicada). Continua la petició d’en Marc del 10 de novembre de 2026 a les 8:26 (hora de Catalunya): les matèries s’han de comportar «com a fluids d’acord amb les lleis de la física».

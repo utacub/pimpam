@@ -27,7 +27,7 @@ export const BB_CAUSE=Object.freeze({id:'bubbles',code:'CE05',type:'ce',level:'0
 // in 0.64 at his request, the only one with weight). what: the words of the status for a screen reader.
 export const BB_STIMS=Object.freeze([
  {id:'sabo',name:'Bombolles de sabó',what:'bombolles iridescents',nou:sboNew,prem:sboPress,pas:sboStep,pinta:sboDraw,buit:sboEmptyNow},
- {id:'plasma',name:'Plasma',what:'fils de llum entre punts que brillen',nou:plaNew,prem:plaPress,pas:plaStep,pinta:plaDraw,buit:plaEmptyNow},
+ {id:'plasma',name:'Plasma',what:'descàrregues elèctriques entre punts de llum',nou:plaNew,prem:plaPress,pas:plaStep,pinta:plaDraw,buit:plaEmptyNow},
  {id:'aigua',name:'Esferes d’aigua',what:'boles d’aigua amb tinta de colors',nou:aigNew,prem:aigPress,pas:aigStep,pinta:aigDraw,buit:aigEmptyNow},
  {id:'fum',name:'Anells de fum',what:'anells de fum de colors',nou:fumNew,prem:fumPress,pas:fumStep,pinta:fumDraw,buit:fumEmptyNow},
  {id:'lava',name:'Làmpada de lava',what:'bombolles de cera de colors',nou:lavNew,prem:lavPress,pas:lavStep,pinta:lavDraw,buit:lavEmptyNow},
@@ -82,7 +82,7 @@ export function bbHelp(s){const P=bbPresses(s);return `<strong>Cada pulsació fa
 
 // ── The music ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Each matter has its key, its mode, its metre and its instruments (criteria of design, after the plan of 9 November 2026: the soap
-// bubbles bright and high in E lydian, the plasma quick in B lydian, the water in D dorian and 6/8, the smoke in F with a flute and a
+// bubbles bright and high in E lydian, the plasma quick in B lydian (a vibraphone note and a soft recorded crackle for each arc), the water in D dorian and 6/8, the smoke in F with a flute and a
 // clarinet that follows it in canon, the lava lamp slow in B flat dorian with a clarinet over a vibraphone (a lamp makes no sound of its
 // own: no recorded effects), the ferrofluid in E flat minor with two instruments that take
 // turns (a drop that comes off a spike rings a glockenspiel, and drips when it falls back), the oil in G mixolydian and 6/8 (water pushed into oil between plates is silent: no recorded effects), the nebula slow in D flat, a glockenspiel note for each star that lights up and a harp for each group of supernovae: space carries no sound, so no recorded effects). unit: the seconds of an eighth note; M: eighths in a bar.
@@ -96,7 +96,7 @@ export const BB_MUSIC=Object.freeze({
  sabo:{key:64,mode:'lydian',meter:'34',unit:.4,M:6,lead:'dsGlock',mid:'harpRec',bass:'celliPizzRec',spark:'vibRec',prog:[0,1,0,4,5,1,4,0],cont:[0,1,3,5],
   ev:{esclat:['harpRec',1,.16],fusio:['vibRec',0,.14]},fx:{esclat:['cincRec','berta-pop-v1',.1,.25],toc:['toonRec','plop',.025,.45],entra:['masiaRec','bombolles',.05,.8]}},
  plasma:{key:71,mode:'lydian',meter:'44',unit:.227,M:8,lead:'vibRec',mid:'guitarRec',bass:'dsArpa',spark:'dsTriangle',trem:true,prog:[0,1,0,1,4,5,1,0],cont:[3,0,5,2],
-  ev:{pol:['vibRec',0,.14]},fx:{pol:['fireRec','shimmer',.035,1],ple:['fizzRec','fizz',.025,4]}},
+  ev:{pol:['vibRec',0,.14],arc:['vibRec',1,.15]},fx:{arc:['fireRec','crackle',.03,.7],ple:['fizzRec','fizz',.025,4]}},
  aigua:{key:62,mode:'dorian',meter:'68',unit:.333,M:6,lead:'kalimbaRec',mid:'dsMarimba',bass:'uduRec',spark:'glockRec',prog:[0,3,0,6,0,3,4,0],cont:[1,4,2,5],
   ev:{fusio:['kalimbaRec',0,.18],tinta:['glockRec',1,.1],trenca:['glockRec',2,.08]},fx:{entra:['pouRec','bombolles',.06,1],tinta:['masiaRec','degoteig',.05,.6],fusio:['pintaRec','gota',.06,.35]}},
  fum:{key:65,mode:'major',meter:'44',unit:.48,M:8,lead:'dsFlauta',mid:'harpRec',bass:'celliPizzRec',spark:'harpRec',canon:'clarinetRec',snap:[0,2,4,7,9],prog:[0,3,5,4,0,5,3,4],cont:[0,2,4,3],

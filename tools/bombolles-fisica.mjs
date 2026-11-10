@@ -2,7 +2,7 @@
 // by frame (its solver runs inside its drawing), with the presses of a whole arc, and stills at chosen moments, plus what the
 // stimulus reports (coverage, drops, events). Usage:
 //   node tools/bombolles-fisica.mjs OUTDIR aigua [W H] [--gpu]      env BMB_PRESSES (8), BMB_GAP (s, 5), BMB_SEED, BMB_SHOTS='[["name",s],…]',
-//   BMB_PHYS='{"Hs":90,…}' (a smaller box to review faster without a graphics card), BMB_FPS (frames a second of the review, 30)
+//   BMB_PHYS='{"Hs":90,…}' (a smaller box to review faster without a graphics card), BMB_FPS (frames a second of the review, 30), BMB_LAP (the lap: 1 for the second palette)
 // Without --gpu Chromium draws with the processor (SwiftShader): many times slower than a graphics card.
 import {createRequire} from 'node:module';
 import http from 'node:http';
@@ -23,7 +23,7 @@ const ok=await page.evaluate(async([W,H,stim,seed,P,phys])=>{const M=await impor
  if(!M.bmbSetup(W,H))return 'no WebGL2';const cv=M.bmbCanvas();cv.style.cssText='display:block;width:100%;height:100%';document.body.appendChild(cv);
  const pre=Object.keys(mod).find(k=>k.endsWith('New')).slice(0,-3),phy=Object.keys(mod).find(k=>/_PHYS$/.test(k));
  if(phys&&phy)Object.assign(mod[phy],JSON.parse(phys));
- window.R={M,mod,pre,S:mod[pre+'New']({seed,lap:0,AR:W/H,presses:P}),k:0,t:0,ev:{}};return 'ok';},[W,H,stim,seed,P,process.env.BMB_PHYS||'']);
+ window.R={M,mod,pre,S:mod[pre+'New']({seed,lap:+(process.env.BMB_LAP||0),AR:W/H,presses:P}),k:0,t:0,ev:{}};return 'ok';},[W,H,stim,seed,P,process.env.BMB_PHYS||'']);
 if(ok!=='ok'){console.log(ok,errors);process.exit(1);}
 const t1=Date.now();
 for(const [name,at] of shots){
