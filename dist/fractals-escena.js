@@ -6,6 +6,8 @@ import {FRM,frmSetup,frmDraw,frmCanvas,frmReady,frmProgramsList,frmSettle,frLin}
 import {glLoadShare,glAdapt} from './carrega.js';
 import {escWaitClock,ESC_WAIT_START} from './escenari.js';
 import {frStim,FR_STIMS,FR_OUT} from './fractals.js';
+// the frame of every stimulus: the size of its concept picture (ChatGPT, 2026-11-11), filling the screen (cut at the sides of a narrower one)
+export const FR_FW=1672,FR_FH=941;
 const FRR={st:{scale:1,ema:16,slow:0,fast:0,last:0},fixed:0,pals:new Map()};
 export function frLoad(){if(typeof document==='undefined')return 1;const list=frmProgramsList();if(!list.length)return 1;return glLoadShare(FRM.gl,list,FRM.par,frmSettle);}
 export function frPrewarm(){if(typeof document==='undefined'||!frmReady()||!FRM.par)return false;frmProgramsList();return true;}
@@ -18,7 +20,8 @@ const frPal=hexes=>{const k=hexes.join();let p=FRR.pals.get(k);if(!p){p=hexes.ma
 export function frUniforms(M,S,s){const T=S.t,still=!!s?.reduced;
  const view=still?[0,0,1,0]:[.004*Math.sin(T*.07+S.seed),.003*Math.sin(T*.053+S.seed*.3),1+.025*Math.sin(T*.041+1.3)+(S.full>=0?.02*Math.min(1,(T-S.full)/6):0),.012*Math.sin(T*.033+S.seed*.7)];
  const fade=S.exit>=0?Math.max(0,1-Math.max(0,T-S.exit-FR_OUT*.6)/(FR_OUT*.4)):1;
- return {T,pal:frPal(M.pal),pal2:frPal(M.pal2||M.pal),view,wind:still?0:(M.wind||0),exit:S.exit,exitDur:FR_OUT,pulses:S.pulses,pulseV:M.pulseV||.42,fade,look:M.look,dmax:S.st.dmax};}
+ const AR=FRM.view?.AR||16/9,k=Math.max(1/FR_FH,AR/FR_FW);
+ return {T,frame:[(AR-FR_FW*k)/2,(1-FR_FH*k)/2,k],pal:frPal(M.pal),pal2:frPal(M.pal2||M.pal),view,wind:still?0:(M.wind||0),exit:S.exit,exitDur:FR_OUT,pulses:S.pulses,pulseV:M.pulseV||.42,fade,look:M.look,dmax:S.st.dmax};}
 export function frDraw(c,w,h,G,s,preview=false){const F=G?.fractals,cv=c.canvas,W=cv.width,H=cv.height;
  c.save();c.setTransform(1,0,0,1,0,0);c.globalAlpha=1;c.globalCompositeOperation='source-over';c.fillStyle='#000';c.fillRect(0,0,W,H);
  if(!F||preview||!frmReady()){c.restore();return;}

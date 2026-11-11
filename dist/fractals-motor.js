@@ -58,7 +58,7 @@ export function frmSetup(W,H){const gl=frmInit();if(!gl||FRM.lost)return false;f
 export const frmCanvas=()=>FRM.cv;
 const frmPalArr=p=>{const a=new Float32Array(15);for(let i=0;i<5;i++){const c=p[Math.min(i,p.length-1)];a[i*3]=c[0];a[i*3+1]=c[1];a[i*3+2]=c[2];}return {arr:a,size:3};};
 // One frame: layers [{st, u}], drawn one over the other (MAX), then the glow and the screen with the look of the last one.
-// u: T (the clock of the form), pal [5 linear colours], pal2, view [dx, dy, zoom, turn], wind, exit (the moment the way out began, or
+// u: T (the clock of the form), frame [ox, oy, k] (the units of the stimulus → scene units), pal [5 linear colours], pal2, view [dx, dy, zoom, turn], wind, exit (the moment the way out began, or
 // −1), exitDur, pulses [up to 4 start times], fade, dmax, look {bloom, exp, spread, halo, glow, minW}, dim.
 let FRM_USE=0;
 function frmSlot(st){const I=FRM.inst;let o=I.find(x=>x.uid===st.uid);if(!o){o=I[0].used<=I[1].used?I[0]:I[1];o.uid=st.uid;o.up=0;}o.used=++FRM_USE;return o;}
@@ -68,7 +68,7 @@ export function frmDraw(layers,dim=1){const gl=FRM.gl,S=FRM.S;if(!gl||!S||FRM.lo
   gl.bindBuffer(gl.ARRAY_BUFFER,I.buf);if(st.n>I.up){gl.bufferSubData(gl.ARRAY_BUFFER,I.up*FR_STRIDE*4,st.seg,I.up*FR_STRIDE,(st.n-I.up)*FR_STRIDE);I.up=st.n;}
   const o=frmUse(gl,'line');if(!o)return false;gl.enable(gl.BLEND);gl.blendEquation(gl.MAX);gl.blendFunc(gl.ONE,gl.ONE);gl.bindVertexArray(I.vao);const ps=u.pulses||[];
   frmSet(gl,o,{uT:u.T,uAR:FRM.view.AR,uPx:FRM.view.H,uDmax:Math.max(1e-3,u.dmax??st.dmax),uExit:u.exit??-1,uExitDur:u.exitDur||4,uWind:u.wind||0,uFade:u.fade??1,uPulseV:u.pulseV||.5,
-   uMinW:L.minW??.9,uGlowW:L.glow??3,uHalo:L.halo??.22,uView:u.view||[0,0,1,0],uPulse:[ps[0]??-1,ps[1]??-1,ps[2]??-1,ps[3]??-1],uPalA:frmPalArr(u.pal),uPalB:frmPalArr(u.pal2||u.pal)});
+   uMinW:L.minW??.9,uGlowW:L.glow??3,uFrame:{arr:new Float32Array(u.frame||[0,0,1]),size:3},uHalo:L.halo??.22,uCore:L.core??.7,uView:u.view||[0,0,1,0],uPulse:[ps[0]??-1,ps[1]??-1,ps[2]??-1,ps[3]??-1],uPalA:frmPalArr(u.pal),uPalB:frmPalArr(u.pal2||u.pal)});
   gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,st.n);gl.blendEquation(gl.FUNC_ADD);}
  gl.disable(gl.BLEND);gl.bindVertexArray(FRM.quad);
  let p=frmUse(gl,'down');if(!p)return false;let src=S.hdr;for(const t of S.bl){gl.bindFramebuffer(gl.FRAMEBUFFER,t.f);gl.viewport(0,0,t.w,t.h);frmSet(gl,p,{uS:{tex:src.t,unit:0},uTx:[.5/src.w,.5/src.h]});gl.drawArrays(gl.TRIANGLES,0,3);src=t;}
