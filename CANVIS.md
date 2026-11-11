@@ -21,6 +21,14 @@ Base: 0.74.1 (a208ded; la 0.74.1 és el retoc del teló d’«El vestidor fantà
 - No s’ha vist en una targeta gràfica real (només amb SwiftShader); l’auditoria de flaixos la fa en Marc.
 - Els sons d’ElevenLabs continuen sense escoltar.
 
+# Pim Pam 0.74.1 · El vestidor: els artistes reculen abans del teló
+
+Base: 0.74 (3c61a7c). Respon al comentari d’en Marc de l’11 de novembre de 2026 («Abans de que es tanqui el teló els personatges haurien d’allunyar-se cap al fons…»).
+
+- **Abans que es tanqui el teló**, l’artista i la Pipa (o els quatre artistes i la Pipa, a l’espectacle de grup) fan unes passes enrere cap al fons de l’escenari i es fan una mica més petits (fins al 76 %), amb el so de les seves sabates. Ara tenen els peus per sobre de la vora de baix del teló, i el teló els passa per davant. La salutació dura 3 s (abans 3,4) i el teló 1,9 s (abans 1,5): la durada total no canvia.
+- **El teló** ja no té una franja més clara a dalt: es retalla per sota de la biga daurada i rep la mateixa llum de sala i el mateix vel de decorat que l’escenari.
+- Proves: les mateixes; comprovat amb imatges fixes (espectacle sol i de grup, 1280×720 i 1024×768, decorat atenuat).
+
 # Pim Pam 0.74 · Fractals a la natura (CE46)
 
 Base: 0.73 (b05a293). Respon als missatges d’en Marc de l’11 de novembre de 2026: «una nova activitat basada en estímuls de línies de colors sobre fons negre… Fractals a la natura… 20 estímuls diferents per una activitat de causa efecte» (15:59), «Cada pulsació mostrarà l'escena completa, 20 estímuls, 20 pulsacions i després es torna a començar» (16:13), «esforça't en obtenir un resultat idèntic al del concept art… que el procés d'aparició… faci evident la seva naturalesa fractal» (16:56), la fitxa d’informació sense referències (17:18 i 17:26) i «Quan hagis acabat l'activitat… la pots publicar directament» (17:27).

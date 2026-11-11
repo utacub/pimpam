@@ -34,7 +34,7 @@ export const VS_FACE=Object.freeze({riu:1,llengua:2,sorpresa:3,parpelleig:4,ups:
 // of the piece to the wrong place («despistes») adds VS_SLIP. The last pick: the piece (VS_LAST), the dressing-room wall rises (VS_UP), the
 // number (VS_NUMBER, «Durada del número»), the bow (VS_BOW), every fourth show the four artists together (VS_GROUP), the curtain (VS_CLOSE)
 // and the dressing room coming down again with the next artist (VS_BACK).
-export const VS_FLY=.8,VS_STEP=5,VS_SLIP=1.6,VS_LAST=4,VS_UP=1.6,VS_BOW=3.4,VS_GROUP=5.2,VS_CLOSE=1.5,VS_BACK=1.1,VS_GROUP_EVERY=4;
+export const VS_FLY=.8,VS_STEP=5,VS_SLIP=1.6,VS_LAST=4,VS_UP=1.6,VS_BOW=3,VS_GROUP=5.2,VS_CLOSE=1.9,VS_BACK=1.1,VS_GROUP_EVERY=4;
 export const VS_NUMBER=Object.freeze({curt:9,normal:13,llarg:17});
 export const vsClamp=(x,a=0,b=1)=>x<a?a:x>b?b:x;
 export const vsEase=u=>{u=vsClamp(u);return u*u*(3-2*u);};
