@@ -150,6 +150,7 @@ export function frTree(S,G,seeds,o){const R=o.R||S.rnd,k=S.k;let id=1e5;const tr
  let q=seeds.map(s=>({par:-1,...s,lv:0,id:id++}));
  for(let lv=0;lv<=o.depth&&q.length;lv++){const next=[];
   for(let i=q.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[q[i],q[j]]=[q[j],q[i]];}
+  if(q.some(b=>b.pri))q.sort((a,b)=>(b.pri||0)-(a.pri||0));// the branches of a higher priority take their room first
   for(const b of q){const turn=(R()-.5)*2*(o.bend??.3),up=typeof o.up==='function'?o.up(lv):o.up??.25,s0=b.s0??Math.max(6,b.w*.8+o.pad(lv)+3);
    // the curve of an angle: a bend at random and a pull upwards (towards −π/2), spread along the branch
    // (the pull upwards bends the branch most near its start, as a lyre: it leaves its mother aside and then rises)
@@ -158,15 +159,17 @@ export function frTree(S,G,seeds,o){const R=o.R||S.rnd,k=S.k;let id=1e5;const tr
    let best=null;for(const da of tries){const c=curve(b.a+da,b.len),f=free(c);if(!best||f>best.f+4)best={c,f,a:b.a+da};if(f>=b.len*.98)break;}
    let len=best.f>=b.len*.98?b.len:best.f-o.pad(lv)-2;if(len<o.minLen*(lv?1:2))continue;
    const c=len===b.len?best.c:curve(best.a,len);G.mark(c.pts,b.w*.5+o.pad(lv),b.id);
-   const T=Math.max(o.T(lv)*k+(o.t0||0),b.t??0),dur=o.dur(lv)*k,col=o.C(lv),e=c.nodes[c.nodes.length-1];
-   frGrow(S,c.pts,T,dur,{w0:b.w,w1:b.w*o.wr,c0:col[0],c1:col[1],lum:o.lum?.(lv)??1,d0:b.d,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01});
+   const wEnd=b.w*(b.wr??o.wr),T=Math.max(o.T(lv)*k+(o.t0||0),b.t??0),dur=o.dur(lv)*k,col=o.Cw?[o.Cw(b.w),o.Cw(wEnd)]:o.C(lv),e=c.nodes[c.nodes.length-1];
+   frGrow(S,c.pts,T,dur,{w0:b.w,w1:wEnd,c0:col[0],c1:col[1],lum:o.lum?.(lv)??1,d0:b.d,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01});
    out.push({x:e.x,y:e.y,a:e.a,lv,len});
-   if(lv>=o.depth||len*o.ratio<o.minLen){
+   if(lv>=o.depth||len*(o.mono?o.mono.rm:o.ratio)<o.minLen){
     // the last fork, a small Y at every tip (too small to need room)
-    if(o.tipFork){const l=len*o.tipFork,T2=Math.max(o.T(lv+1)*k+(o.t0||0),T+dur*.9),c2=o.C(lv+1)||col;for(const sd of [-1,1]){const b2=e.a+sd*o.sp*(.8+.4*R());
-     frLine(S,e.x,e.y,e.x+Math.cos(b2)*l*(.8+.4*R()),e.y+Math.sin(b2)*l*(.8+.4*R()),T2,dur*.7,{w0:b.w*o.wr*.94,w1:b.w*o.wr*.7,c0:c2[1],lum:o.lum?.(lv+1)??1,d0:b.d+len,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01},40);}}
+    if(o.tipFork){const l=len*o.tipFork,T2=Math.max(o.T(lv+1)*k+(o.t0||0),T+dur*.9),c2=o.Cw?[o.Cw(wEnd*.8),o.Cw(wEnd*.6)]:(o.C(lv+1)||col);for(const sd of [-1,1]){const b2=e.a+sd*o.sp*(.8+.4*R());
+     frLine(S,e.x,e.y,e.x+Math.cos(b2)*l*(.8+.4*R()),e.y+Math.sin(b2)*l*(.8+.4*R()),T2,dur*.7,{w0:wEnd*.94,w1:wEnd*.7,c0:c2[1],lum:o.lum?.(lv+1)??1,d0:b.d+len,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01},40);}}
     continue;}
-   const sd=R()<.5?-1:1,i0=id;id+=2;for(const s of [sd,-sd]){const big=s===sd;
-    next.push({x:e.x,y:e.y,a:e.a+s*o.sp*(.75+.5*R()),len:len*o.ratio*(big?1.04:.9)*(.88+.24*R()),w:b.w*o.wr*.94,d:b.d+len,t:T+dur*.92,id:big?i0:i0+1,sib:big?i0+1:i0,par:b.id,gp:b.par});}}
+   const sd=R()<.5?-1:1,i0=id;id+=2;for(const s of [sd,-sd]){const big=s===sd,M=o.mono;
+    // a fork in two alike (dichotomous), or a stem that goes on with a side branch (monopodial: o.mono {rm, am, wm, rs, as, ws})
+    const ang=M?(big?M.am:M.as):o.sp,rat=M?(big?M.rm:M.rs):o.ratio*(big?1.04:.9),wr=M?(big?M.wm:M.ws):o.wr;
+    next.push({x:e.x,y:e.y,a:e.a+s*ang*(.75+.5*R()),len:len*rat*(.88+.24*R()),w:wEnd*(M?(big?1:M.ws/M.wm):.94),wr,d:b.d+len,t:T+dur*.92,id:big?i0:i0+1,sib:big?i0+1:i0,par:b.id,gp:b.par,pri:b.pri});}}
   q=next;}
  return out;}

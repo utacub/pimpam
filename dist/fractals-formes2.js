@@ -130,3 +130,37 @@ export const FR_ROMANESCO={id:'romanesco',name:'Romanesco',what:'els cons en esp
   for(const e of all){const K=e.key,hid=(x,y)=>{const l=grid.get(key(Math.floor(x/CS),Math.floor(y/CS)));if(!l)return false;for(const f of l)if(f.key<K&&frConeIn(f.c,x,y,1.5))return true;return false;};
    frConeDraw(S,e.c,e.T,e.dur,e.o,hid);}
   frEvent(S,'tronc',CX/941,t0);frEvent(S,'branca',.6,t0+.6*k);frEvent(S,'branca',1.2,t0+1.1*k);frEvent(S,'fulla',.5,t0+1.5*k);frEvent(S,'fulla',1.4,t0+2.2*k);frEvent(S,'fulla',.9,t0+2.8*k);}]};
+
+// ── 9 · Neurones ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+// A neuron gathers its signals with a tree of dendrites: each one forks again and again, thinner at every fork, until the whole tree
+// fills the space round the cell. Its branches keep away from each other (self-avoidance) and keep their wiring short, and those two
+// rules alone grow dendrites that cannot be told from real ones (Cuntz, Forstner, Borst & Häusser, 2010); their fractal dimension is
+// between 1.3 and 1.7 (Caserta et al., 1995). Growth: the cell bodies; the thick first dendrites; then each order of forks, all the
+// neurons at once, down to the finest tips. Concept 09: a pyramidal neuron at the bottom with its long apical dendrite rising to a
+// crown of branches, three star-shaped neurons round it; magenta at the cell, violet, blue, cyan at the tips.
+const FR_NEURONS=[
+ // x, y, radius of the body, first dendrites [angle°, length, width]
+ {x:806,y:795,r:22,den:[[178,190,9],[3,190,9],[150,110,7],[30,110,7],[118,80,6],[62,80,6],[-150,90,6],[-32,90,6]],apical:true},
+ {x:268,y:553,r:20,den:[[-100,120,8],[-55,120,7],[-148,115,7],[-10,130,8],[35,110,7],[85,120,7],[130,115,7],[178,110,7]]},
+ {x:1345,y:417,r:20,den:[[-75,130,8],[-125,120,7],[-170,120,7],[-20,120,7],[20,120,7],[65,120,7],[115,115,7],[160,110,7]]},
+ {x:205,y:153,r:14,den:[[-90,75,5],[-30,80,5],[30,75,5],[90,70,5],[150,75,5],[-150,75,5]]}];
+const FR_APICAL=[806,773,812,700,808,620,813,540,808,460,812,380,816,300];
+export const FR_NEURONES={id:'neurones',name:'Neurones',what:'les dendrites de les neurones, de la cèl·lula a les puntes',
+ pal:['#ff2ad6','#c03cff','#7a5cff','#3a86ff','#38dcff'],pal2:['#ff3a9a','#e040ff','#9a5cff','#4a6aff','#58b4ff'],
+ look:{bloom:.26,glow:2.1,halo:.14,core:.3,spread:.5,minW:1.1},wind:0,
+ acts:[(S,t0)=>{const k=S.k,R=S.rnd,G=frRoom(9),seeds=[],D=Math.PI/180;
+  FR_NEURONS.forEach((N,i)=>{
+   // the cell body: a ring of light
+   frLoop(S,N.x,N.y,N.r,N.r,0,t0,.35*k,{w0:5,c0:0,lum:1,d0:0,hot:.4},28,-Math.PI/2);G.mark(frArc(N.x,N.y,N.r,0,FR_TAU),12,20+i);
+   for(const [a,l,w] of N.den){const A=a*D;seeds.push({x:N.x+Math.cos(A)*N.r,y:N.y+Math.sin(A)*N.r,a:A,len:l*.8*(.92+.16*R()),w:w*.95,d:N.r,t:t0+.3*k,s0:16,par:20+i});}});
+  // the apical dendrite of the pyramidal neuron: a long shaft straight up, with oblique branches, ending in a crown
+  const ap=frSpline(FR_APICAL,6);frGrow(S,ap.pts,t0+.3*k,.75*k,{w0:8,w1:5.5,c0:.04,c1:.16,lum:1,d0:22,hot:.8});G.mark(ap.pts,14,30);
+  for(const [u,a,l] of [[.12,-150,95],[.15,-28,95],[.33,-35,80],[.52,-148,85],[.55,-32,80],[.74,-145,80],[.8,-38,75]]){const q=frAt(ap,u);
+   seeds.push({x:q.x,y:q.y,a:a*D,len:l*.85,w:4.2,d:22+q.s,t:t0+(.35+.6*u)*k,s0:8,par:30,pri:1});}
+  for(const a of [-150,-118,-90,-62,-30])seeds.push({x:816,y:300,a:a*D,len:a===-90?150:160,w:6,d:22+ap.len,t:t0+1.05*k,s0:30,par:30,pri:2});
+  // the colour by the thickness: magenta in the thick stems near the cell, violet, blue, cyan in the finest tips
+  frTree(S,G,seeds,{mono:{rm:.72,am:.3,wm:.8,rs:.58,as:.62,ws:.64},ratio:.7,wr:.72,minLen:5.5,depth:8,up:0,lyre:0,bend:.5,tipFork:.6,
+   tries:[0,.18,-.18,.36,-.36,.55,-.55],pad:lv=>Math.max(2.5,10-lv*1.2),Cw:w=>Math.min(.86,Math.max(.02,.02+.9*Math.pow(1-Math.min(1,w/8.5),1.5))),
+   t0,T:lv=>.35+lv*.34,dur:lv=>.4,hot:.6,sway:0,lum:lv=>1+lv*.02});
+  frEvent(S,'tronc',806/941,t0);frEvent(S,'tronc',268/941,t0+.05*k);frEvent(S,'tronc',1345/941,t0+.1*k);frEvent(S,'tronc',205/941,t0+.15*k);
+  for(let i=0;i<6;i++)frEvent(S,i<2?'branca':'fulla',.2+((i*.37)%1)*1.4,t0+(.8+i*.45)*k);}]};
