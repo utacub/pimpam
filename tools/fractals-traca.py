@@ -389,7 +389,7 @@ for r in roots:
     e=E[jj];fw=e['u']==r;pts=e['pts'] if fw else e['pts'][::-1]
     q=pts[min(len(pts)-1,np.searchsorted(np.concatenate([[0],np.cumsum(np.hypot(*np.diff(pts,axis=0).T))]),25))];p0=pts[0];dv=p0-q;dv/=max(1e-6,np.hypot(*dv))
     dist=min([(-p0[0])/dv[0] if dv[0]<-1e-3 else 1e9,(W-p0[0])/dv[0] if dv[0]>1e-3 else 1e9,(-p0[1])/dv[1] if dv[1]<-1e-3 else 1e9,(H-p0[1])/dv[1] if dv[1]>1e-3 else 1e9])
-    if dist>60: continue
+    if dist>P.get('rootext',60): continue
     ext=np.array([p0+dv*(dist+20)]);n0=1
     if fw:
       e['pts']=np.vstack([ext,e['pts']]);e['ws']=np.concatenate([[e['ws'][0]],e['ws']]);e['cs']=np.concatenate([[e['cs'][0]],e['cs']])

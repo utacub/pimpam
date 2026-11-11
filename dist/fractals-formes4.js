@@ -1,7 +1,7 @@
 // Fractals a la natura (CE46, 0.73) · stimuli 16–20: ploma de paó, serralades, arrels, petxina de triangles, dent de lleó. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
 import {frEvent,frTraced,frDrawTraced} from './fractals-formes.js';
-import {FR_TR_PAO,FR_TR_SERRA} from './fractals-traces.js';
+import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS} from './fractals-traces.js';
 
 // ── 16 · Ploma de paó ─────────────────────────────────────────────────────────────────────────────────────────────────────
 // A feather is a shaft (the rachis) with a row of barbs on each side, and every barb is a small shaft with a row of barbules on
@@ -36,3 +36,18 @@ export const FR_SERRA={id:'serra',name:'Serralades',what:'les carenes de les mun
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_SERRA),t0,{wk:.8,wpow:1,wmin:.6,lumw:[.7,.8,2.5],tipx:[10,.5,.2],taper:.4,lumv:[.8,1.2,.25],lum:1,hot:.5,sway:0});
   FR_SERRA_X.forEach((x,i)=>frEvent(S,'tronc',x/941,t0+i*.28*k));
   frEvent(S,'branca',.5,t0+1.2*k);frEvent(S,'branca',1.2,t0+1.8*k);for(let i=0;i<5;i++)frEvent(S,'fulla',.2+i*.33,t0+(1.9+i*.35)*k);}]};
+
+// ── 18 · Arrels ───────────────────────────────────────────────────────────────────────────────────────────────────────────
+// A root system branches again and again, each root sending out finer roots that branch in their turn, down to root hairs a fraction
+// of a millimetre wide: the same pattern at every scale, which packs an enormous length of absorbing surface into the soil (the
+// root systems of plants have fractal dimensions of about 1.4–1.8 in a plane; Fitter & Stickland, 1992; Tatsumi, Yamauchi & Kono,
+// 1989; Lynch, 1995). Concept 18: five root systems hanging from the top, gold at the collar, orange, then pink towards the tips.
+// The network is traced from the concept (FR_TR_ARRELS): the main roots grow down first, the laterals leave them as they pass, and
+// the finest rootlets last.
+const FR_ARRELS_X=[257,464,843,1221,1450];
+export const FR_ARRELS={id:'arrels',name:'Arrels',what:'les arrels principals, les laterals i les arrels més fines',
+ pal:['#ff40c8','#ff5cac','#ff8070','#ffa448','#ffd450'],pal2:['#e070ff','#ff70d8','#ff7a68','#ff9c40','#ffe468'],
+ look:{bloom:.18,glow:1.2,halo:.18,core:.75,tubeW:1.3,tubeP:3,spread:.3,minW:.45,gsat:1.5,sat:1.1,white:2.5,exp:1.3},wind:.002,
+ acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_ARRELS),t0,{wk:.7,wpow:1,wmin:1,lumw:[.9,.8,2.5],tipx:[6,.4,.3],taper:.4,fork:[10,.2,1,.6,.95],lumv:[.6,1,.5],lum:1,hot:.5,sway:.1});
+  FR_ARRELS_X.forEach((x,i)=>frEvent(S,'tronc',x/941,t0+i*.1*k));
+  frEvent(S,'branca',.5,t0+.9*k);frEvent(S,'branca',1.3,t0+1.3*k);for(let i=0;i<5;i++)frEvent(S,'fulla',.2+i*.33,t0+(1.6+i*.35)*k);}]};
