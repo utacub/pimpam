@@ -6,7 +6,7 @@ import {frStart,frPress,frTick,frBlocked,FR_STIMS} from '../dist/fractals.js';
 import {frDraw,frFixedScale} from '../dist/fractals-escena.js';
 window.FR_IDS=FR_STIMS.map(x=>x.id);
 window.frShots=(id,n,gap,shots,W=1920,H=1080,lap=0)=>{const cv=document.getElementById('c');cv.width=W;cv.height=H;cv.style.width=W+'px';cv.style.height=H+'px';const c=cv.getContext('2d');frFixedScale(1);
- const s={frFirst:id,lock:false,waitCue:false,sound:false,reduced:false},g={};frStart(g,s);g.fractals.lap=lap;g.fractals.seed=12345;
+ const s={frFirst:id,lock:false,waitCue:false,sound:false,reduced:!!window.FR_STILL},g={};frStart(g,s);g.fractals.lap=lap;g.fractals.seed=12345;
  const out=[],dt=1/30;let t=0,k=0,t0=performance.now();const presses=[...Array(n)].map((_,i)=>.2+i*gap);
  shots=[...shots].sort((a,b)=>a-b);
  while(shots.length){if(k<presses.length&&t>=presses[k]){frPress(g,s);k++;}frTick(g,s,dt);t+=dt;

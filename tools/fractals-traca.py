@@ -60,8 +60,15 @@ for i in range(N):
 def wid(i):
   d=dt[ys[i],xs[i]];v=P.get('wmin',.7)+V[ys[i],xs[i]]*P.get('wv',.8)
   return max(2*d*P.get('wk',.8),v) if d>0 else v
+# the colour of a line: of its brightest pixel, or (P.hb: σ px) of the picture blurred with the bright pixels weighing most, which
+# keeps the colour of a fine line (whose pixels are mixed with the dark) as steady as that of its neighbours
+if 'hb' in P:
+  wv_=V**2;den=ndi.gaussian_filter(wv_,P['hb'])+1e-6;ab=np.stack([ndi.gaussian_filter(a[...,c]*wv_,P['hb'])/den for c in range(3)],2)
 def col(i):
-  x,y=xs[i],ys[i];bx,by=x,y
+  x,y=xs[i],ys[i]
+  if 'hb' in P:
+    h,s,v=colorsys.rgb_to_hsv(*ab[y,x]);return h*360,V[y,x]
+  bx,by=x,y
   for dy in (-1,0,1):
     for dx in (-1,0,1):
       xx,yy=min(W-1,max(0,x+dx)),min(H-1,max(0,y+dy))
@@ -73,7 +80,7 @@ for u,v,path in raw:
   E.append(dict(u=u,v=v,pts=pts,w=np.array([wid(i) for i in path]),h=hv[:,0],val=hv[:,1],L=np.hypot(*np.diff(pts,axis=0).T).sum()))
 Bd=P.get('border',25);atB=lambda q:q[0]<Bd or q[0]>W-Bd or q[1]<Bd or q[1]>H-Bd
 # ── short spurs (bits of skeleton sticking out of a wide line) pruned; a line cut by the border of the picture is not one
-for it in range(4):
+for it in range(P.get('spurit',4)):  # (P.spurit: 1 when the spur is long, else each round eats the end of a line back to its next fork)
   deg=np.zeros(nc,int)
   for e in E: deg[e['u']]+=1;deg[e['v']]+=1
   wmax=np.zeros(nc)
@@ -117,9 +124,10 @@ for e in E:
   e['pts']=e['pts'].copy();e['pts'][0]=newpos[e['u']];e['pts'][-1]=newpos[e['v']]
 cpos=newpos
 # ── the steps of the pixels smoothed away (the ends kept where they are)
-K=P.get('smooth',4)
+K0=P.get('smooth',4)
 for e in E:
-  pts=e['pts']
+  pts=e['pts'];K=K0+(int(round(np.median(e['w'])*P['smoothw'])) if 'smoothw' in P else 0)
+  if 'smoothw' in P: K=min(K,max(1,(len(pts)-3)//2))  # a short edge (between two forks of a wide line) smoothed as far as it can be
   if len(pts)>2*K+2:
     for _ in range(2):
       q=pts.copy();cs_=np.cumsum(np.vstack([[0,0],pts]),axis=0)
@@ -127,6 +135,112 @@ for e in E:
         r=min(K,j,len(pts)-1-j);q[j]=(cs_[j+r+1]-cs_[j-r])/(2*r+1)
       pts=q
   e['pts']=pts;e['L']=np.hypot(*np.diff(pts,axis=0).T).sum()
+# ── a wide line onto its ridge (P.snap: [the least width, the power of the brightness]): the skeleton of a wide line and its glow may
+# run off its middle (pulled by the lines that leave it on one side); each point moves across the line to the middle of its bright
+# core, the moves smoothed along it, its ends kept
+if 'snap' in P:
+  Vs=ndi.gaussian_filter(V,1);inc_=[[] for _ in range(len(cpos))]
+  for j,e in enumerate(E): inc_[e['u']].append(j);inc_[e['v']].append(j)
+  # the forks and ends first, across their widest line (no farther than a third of its width)
+  for i in range(len(cpos)):
+    if not inc_[i]: continue
+    j=max(inc_[i],key=lambda j:np.median(E[j]['w']));e=E[j];mw=np.median(e['w'])
+    if mw<P['snap'][0] or len(e['pts'])<3: continue
+    q=e['pts'] if e['u']==i else e['pts'][::-1];tg=q[min(len(q)-1,4)]-q[0];tg/=max(1e-6,np.hypot(*tg));nr=np.array([-tg[1],tg[0]])
+    off=np.linspace(-mw*.9,mw*.9,15);X=cpos[i,0]+nr[0]*off;Y=cpos[i,1]+nr[1]*off
+    v=ndi.map_coordinates(Vs,[Y,X],order=1,mode='nearest')**(P['snap'][1]*2);sh=np.clip((v*off).sum()/max(1e-6,v.sum()),-mw/3,mw/3)
+    cpos[i]=cpos[i]+nr*sh
+    for j in inc_[i]:
+      if E[j]['u']==i: E[j]['pts'][0]=cpos[i]
+      if E[j]['v']==i: E[j]['pts'][-1]=cpos[i]
+  for e in E:
+    mw=np.median(e['w']);pts=e['pts'];n=len(pts)
+    if mw<P['snap'][0] or n<5: continue
+    tg=np.gradient(pts,axis=0);tg/=np.maximum(1e-6,np.hypot(*tg.T))[:,None];nr=np.stack([-tg[:,1],tg[:,0]],1)
+    off=np.linspace(-mw*.9,mw*.9,15);X=pts[:,0,None]+nr[:,0,None]*off;Y=pts[:,1,None]+nr[:,1,None]*off
+    v=ndi.map_coordinates(Vs,[Y.ravel(),X.ravel()],order=1,mode='nearest').reshape(X.shape)**P['snap'][1]
+    sh=(v*off).sum(1)/np.maximum(1e-6,v.sum(1));sh=np.convolve(np.pad(sh,6,mode='edge'),np.ones(13)/13,mode='same')[6:-6]
+    sh[0]=sh[-1]=0;sh[1:-1]*=np.clip(np.minimum(np.arange(1,n-1),np.arange(n-2,0,-1))/4,0,1)
+    e['pts']=pts+nr*sh[:,None];e['L']=np.hypot(*np.diff(e['pts'],axis=0).T).sum()
+# ── the pieces cut off from the network (a fine line fades where it leaves a wider one, so the picture shows a gap there) joined
+# back to it (P.join: the farthest gap, px; needs P.roots): from its end nearest to the network, a curve that leaves the line it
+# meets along that line, forwards, and turns into the piece, as a barbule leaves its barb
+if 'join' in P and 'roots' in P:
+  from scipy.spatial import cKDTree
+  JM=P['join'];cpos=np.vstack([cpos,np.zeros((0,2))])
+  for it in range(4):
+    nc=len(cpos);adj=[[] for _ in range(nc)]
+    for j,e in enumerate(E): adj[e['u']].append(j);adj[e['v']].append(j)
+    comp=-np.ones(nc,int);nco=0
+    for i in range(nc):
+      if comp[i]>=0 or not adj[i]: continue
+      st=[i];comp[i]=nco
+      while st:
+        x_=st.pop()
+        for j in adj[x_]:
+          for y_ in (E[j]['u'],E[j]['v']):
+            if comp[y_]<0: comp[y_]=nco;st.append(y_)
+      nco+=1
+    dg=np.array([len(a_) for a_ in adj]);live=np.nonzero(dg>0)[0]
+    main={comp[live[np.argmin(np.hypot(*(cpos[live]-np.array(r)).T))]] for r in P['roots']}
+    sx=[];sj=[];si=[]
+    for j,e in enumerate(E):
+      if comp[e['u']] in main:
+        sx.append(e['pts']);sj+= [j]*len(e['pts']);si+=list(range(len(e['pts'])))
+    tree=cKDTree(np.vstack(sx));sj=np.array(sj);si=np.array(si);best={}
+    for n_ in live:
+      c_=comp[n_]
+      if c_ in main or dg[n_]!=1: continue
+      dd,q=tree.query(cpos[n_])
+      if dd<=JM and (c_ not in best or dd<best[c_][0]): best[c_]=(dd,n_,sj[q],si[q])
+    if not best: break
+    used=set();nj=0
+    for dd,n_,j,i_ in sorted(best.values()):
+      if j in used: continue
+      used.add(j);e=E[j];pts=e['pts'];m=len(cpos)
+      if i_<=1: m=e['u']
+      elif i_>=len(pts)-2: m=e['v']
+      else:
+        a1=dict(u=e['u'],v=m,**{k_:e[k_][:i_+1] for k_ in ('pts','w','h','val')});a2=dict(u=m,v=e['v'],**{k_:e[k_][i_:] for k_ in ('pts','w','h','val')})
+        for a_ in (a1,a2): a_['L']=np.hypot(*np.diff(a_['pts'],axis=0).T).sum()
+        E[j]=a1;E.append(a2);cpos=np.vstack([cpos,pts[i_]])
+      Pp=pts[i_];tg=pts[min(len(pts)-1,i_+3)]-pts[max(0,i_-3)];tg=tg/max(1e-6,np.hypot(*tg))
+      e2=E[adj[n_][0]];q2=e2['pts'] if e2['u']==n_ else e2['pts'][::-1];w2=e2['w'] if e2['u']==n_ else e2['w'][::-1]
+      h2=e2['h'] if e2['u']==n_ else e2['h'][::-1];v2=e2['val'] if e2['u']==n_ else e2['val'][::-1]
+      Q=cpos[n_];dq=q2[min(len(q2)-1,5)]-q2[0];dq=dq/max(1e-6,np.hypot(*dq));L=np.hypot(*(Q-Pp))
+      if np.dot(tg,Q-Pp)<0: tg=-tg
+      ns=max(3,int(L));tt=np.linspace(0,1,ns)[:,None];c1=Pp+tg*L*.5;c2=Q-dq*L*.4
+      bz=(1-tt)**3*Pp+3*(1-tt)**2*tt*c1+3*(1-tt)*tt**2*c2+tt**3*Q
+      E.append(dict(u=m,v=n_,pts=bz,w=np.full(ns,w2[0]),h=np.full(ns,h2[0]),val=np.full(ns,v2[0]),L=np.hypot(*np.diff(bz,axis=0).T).sum()));nj+=1
+    print('join round',it,'joined',nj)
+  nc=len(cpos)
+# ── a fine line leaves a wider one along it, forwards, and turns away from it gradually (P.tang: [the most width of the fine line,
+# the ratio of widths, the share of its length that turns, the least px]): the skeleton makes it leave square
+if 'tang' in P:
+  TW,TR,TF,TM=P['tang'];inc_=[[] for _ in range(len(cpos))]
+  for j,e in enumerate(E): inc_[e['u']].append(j);inc_[e['v']].append(j)
+  mws=[np.median(e['w']) for e in E];nt=0
+  for j,e in enumerate(E):
+    if mws[j]>TW or len(e['pts'])<6: continue
+    for end in ('u','v'):
+      m=e[end];oth=[k for k in inc_[m] if k!=j]
+      if not oth: continue
+      k=max(oth,key=lambda k:mws[k])
+      if mws[k]<mws[j]*TR: continue
+      fw=end=='u';q=e['pts'] if fw else e['pts'][::-1];sq=np.concatenate([[0],np.cumsum(np.hypot(*np.diff(q,axis=0).T))]);L=sq[-1]
+      iq=int(np.searchsorted(sq,max(TM,L*TF)));
+      if iq>=len(q)-2: continue
+      pe=E[k]['pts'] if E[k]['u']==m else E[k]['pts'][::-1];tg=pe[min(len(pe)-1,4)]-pe[0];tg/=max(1e-6,np.hypot(*tg))
+      Q=q[iq];dq=q[min(len(q)-1,iq+3)]-q[max(0,iq-3)];dq/=max(1e-6,np.hypot(*dq));A=q[0];D=np.hypot(*(Q-A))
+      if np.dot(tg,Q-A)<0:
+        # the other side of the fork: the wider line runs on beyond it (its other edge) or this is its end
+        tg=-tg
+      tt=np.linspace(0,1,iq+1)[:,None];c1=A+tg*D*.45;c2=Q-dq*D*.35
+      bz=(1-tt)**3*A+3*(1-tt)**2*tt*c1+3*(1-tt)*tt**2*c2+tt**3*Q;q=np.vstack([bz,q[iq+1:]])
+      e['pts']=q if fw else q[::-1];nt+=1
+      break
+    e['L']=np.hypot(*np.diff(e['pts'],axis=0).T).sum()
+  print('tangent starts',nt)
 # ── each edge: its order (by its width), its widths smoothed, its colours (the place along the palette, from the hue and the dimness)
 WO=P.get('wo',[6,3]);T0=P.get('T',[0,.8,1.5]);SP=P.get('sp',[800,350,160])
 HUE=P.get('hue',[[90,0],[125,.2],[156,.45],[175,.65],[182,.72]]);DIM=P.get('dim',[.9,.9])
@@ -140,7 +254,7 @@ for e in E:
     ws=np.clip(wa+(wb-wa)*(e['s']/max(1e-6,e['L'])-.3)/.4,min(wa,wb)*.85,max(wa,wb)*1.15)
   else: ws=np.full(n,np.median(w))
   e['ws']=ws
-  c=np.interp(e['h'],[h for h,_ in HUE],[c for _,c in HUE])+np.clip(DIM[0]-e['val'],0,1)*DIM[1];e['cs']=np.clip(smooth(c,5),0,1)
+  c=np.interp(e['h'],[h for h,_ in HUE],[c for _,c in HUE])+np.clip(DIM[0]-e['val'],0,1)*DIM[1];e['cs']=np.clip(smooth(c,P.get('csm',5)),0,1)
 nc_=nc;adj=[[] for _ in range(nc_)]
 for j,e in enumerate(E): adj[e['u']].append(j);adj[e['v']].append(j)
 # a line that runs on through a fork keeps its width there: the two widest edges of each fork meet at the mean of their widths, the
@@ -246,15 +360,17 @@ for e,ii,ts0,d0,a_,b_ in parts_:
     n_=ntip[b_] if b_>=0 and out_[b_] else 1;ws_=np.clip(LW[0]*n_**LW[1],LW[2],LW[3])*np.ones(len(k2))
     if tip: ws_*=np.linspace(1,.6,len(k2))
     w=np.where(w<LW[4],np.minimum(ws_,LW[4]),w)
-  paths.append(dict(x=pts[k2,0],y=pts[k2,1],w=w,c=e['cs'][ii][k2],t0=ts0,sp=sp,d0=d0,o=e['o'],tip=bool(tip) and P.get('tips',0)))
+  paths.append(dict(x=pts[k2,0],y=pts[k2,1],w=w,c=e['cs'][ii][k2],t0=ts0,sp=sp,d0=d0,o=e['o'],tip=bool(tip) and P.get('tips',0),b=float(np.median(e['val']))))
 paths.sort(key=lambda p:p['t0'])
 np_=sum(len(p['x']) for p in paths);tend=max(p['t0']+np.hypot(np.diff(p['x']),np.diff(p['y'])).sum()/p['sp'] for p in paths)
 print('paths',len(paths),'points',np_,'grown at',round(tend,2),'s')
 # ── packed: per path n (+32768 when it ends in a free tip), x0, y0 (½ px, from −64), d0 (px), t0 (ms), speed (px/s) as u16; per point dx, dy (½ px, i8), w (0.1 px), c (/255) as u8
-b=bytearray()
+# (P.lumv: the packing starts with 65535, 2 and each path carries one more u16, its brightness in the picture, ‰: the median of its pixels)
+b=bytearray(struct.pack('<HH',65535,2) if P.get('lumv') else b'')
 for p in paths:
   n=len(p['x']);x0=int(round((p['x'][0]+64)*2));y0=int(round((p['y'][0]+64)*2))
   b+=struct.pack('<HHHHHH',n|(32768 if p['tip'] else 0),x0,y0,int(min(65535,p['d0'])),int(round(p['t0']*1000)),int(p['sp']));px,py=x0,y0
+  if P.get('lumv'): b+=struct.pack('<H',int(round(min(1,p['b'])*1000)))
   for i in range(n):
     X=int(round((p['x'][i]+64)*2));Y=int(round((p['y'][i]+64)*2));dx=max(-127,min(127,X-px));dy=max(-127,min(127,Y-py));px+=dx;py+=dy
     b+=struct.pack('<bbBB',dx,dy,int(min(255,round(p['w'][i]*10))),int(round(p['c'][i]*255)))

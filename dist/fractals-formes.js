@@ -198,25 +198,37 @@ export function frVoronoi(R,box,sp,inside,jit=.85){const pts=[],gw=Math.ceil((bo
 // u8. Unpacked once.
 const FR_TRACED=new Map();
 export function frTraced(b64){let P=FR_TRACED.get(b64);if(P)return P;P=[];const t=atob(b64),u=new Uint8Array(t.length);for(let i=0;i<t.length;i++)u[i]=t.charCodeAt(i);
- const dv=new DataView(u.buffer);let p=0;
+ const dv=new DataView(u.buffer);let p=0;const v2=u.length>4&&dv.getUint16(0,true)===65535;if(v2)p=4;
  while(p+12<=u.length){const n0=dv.getUint16(p,true),n=n0&32767,tip=n0>32767;let x=dv.getUint16(p+2,true),y=dv.getUint16(p+4,true);const d0=dv.getUint16(p+6,true),t0=dv.getUint16(p+8,true)/1000,sp=dv.getUint16(p+10,true);p+=12;
+  const b=v2?dv.getUint16(p,true)/1000:1;if(v2)p+=2;
   const pts=new Float32Array(n*2),w=new Float32Array(n),c=new Float32Array(n),ts=new Float32Array(n);let s=0;
   for(let i=0;i<n;i++,p+=4){x+=dv.getInt8(p);y+=dv.getInt8(p+1);pts[i*2]=x/2-64;pts[i*2+1]=y/2-64;w[i]=u[p+2]/10;c[i]=u[p+3]/255;
    if(i)s+=Math.hypot(pts[i*2]-pts[i*2-2],pts[i*2+1]-pts[i*2-1]);ts[i]=t0+s/sp;}
-  P.push({pts,w,c,ts,d0,t0,tip,len:s});}
+  P.push({pts,w,c,ts,d0,t0,tip,len:s,b});}
  FR_TRACED.set(b64,P);return P;}
+// a free tip of a traced line carried on (the faint end that the tracing lost), narrowing to a point: o = [the most px, the share of
+// the line's length]; the line keeps its pace
+function frTipX(p,o){const n=p.w.length,x=p.pts[n*2-2],y=p.pts[n*2-1],dx=x-p.pts[n*2-4],dy=y-p.pts[n*2-3],l=Math.hypot(dx,dy)||1,
+ e=Math.min(o[0],o[1]*p.len),v=p.len/Math.max(.02,p.ts[n-1]-p.ts[0]);
+ const pts=new Float32Array(p.pts.length+2),w=new Float32Array(n+1),c=new Float32Array(n+1),ts=new Float32Array(n+1);
+ pts.set(p.pts);w.set(p.w);c.set(p.c);ts.set(p.ts);pts[n*2]=x+dx/l*e;pts[n*2+1]=y+dy/l*e;w[n]=p.w[n-1]*(o[2]??.15);c[n]=p.c[n-1];ts[n]=p.ts[n-1]+e/v;
+ return {...p,pts,w,c,ts,len:p.len+e};}
 // Its drawing: every path grows point by point at its moment (scaled by the growth setting k) from t0; o: wk (width factor), wpow
 // (widths pressed towards the thin ones: w^wpow), wmin, lum, lumw [the brightness of the finest lines, from the width w0 up to w1
-// where it is whole], hot, sway, under (see below), and fork: [length, half angle, levels, ratio, brightness] of the last small forks that every free
+// where it is whole], lumv [its brightness in the picture that is whole, a power, the least] (traced with lumv), hot, sway, under
+// (see below), tipx (frTipX), taper, and fork: [length, half angle, levels, ratio, brightness] of the last small forks that every free
 // tip makes (the finest orders, too fine to be traced from the picture), or none.
 export function frDrawTraced(S,P,t0,o={}){const k=S.k,wk=o.wk??1,wm=o.wmin??0,wp=o.wpow??1,R=S.rnd,W=w=>Math.max(wm,Math.pow(w,wp)*wk);
- for(const p of P){const ts=Array.from(p.ts,t=>t0+t*k),n=p.w.length,wa=p.w.reduce((a,b)=>a+b,0)/n,
-  lum=(o.lum??1)*(o.lumw?Math.min(1,o.lumw[0]+(1-o.lumw[0])*Math.max(0,wa-o.lumw[1])/(o.lumw[2]-o.lumw[1])):1),
+ for(let p of P){if(o.tipx&&p.tip&&p.w.length>1)p=frTipX(p,o.tipx);
+  const ts=Array.from(p.ts,t=>t0+t*k),n=p.w.length,wa=p.w.reduce((a,b)=>a+b,0)/n,
+  lum=(o.lum??1)*(o.lumw?Math.min(1,o.lumw[0]+(1-o.lumw[0])*Math.max(0,wa-o.lumw[1])/(o.lumw[2]-o.lumw[1])):1)*(o.lumv?Math.max(o.lumv[2]??0,Math.pow(Math.min(1,p.b/o.lumv[0]),o.lumv[1])):1),
   base={d0:p.d0,lum,hot:o.hot??.7,sway:o.sway??0,seed:p.pts[0]*.01};
   // under a wide line, a wider and dimmer one of a deeper colour: the glow at its edges (o.under: [the least mean width, the width
   // factor, its brightness, the shift of its colour])
   if(o.under&&wa>=o.under[0])frPathT(S,p.pts,ts,{...base,lum:lum*o.under[2],hot:0,wf:i=>W(p.w[i])*o.under[1],cf:i=>Math.min(1,p.c[i]+o.under[3])});
-  frPathT(S,p.pts,ts,{...base,wf:i=>W(p.w[i]),cf:i=>p.c[i]});
+  // (o.taper: a line that ends in a free tip narrows along its whole length to this share of its width)
+  const tp=o.taper&&p.tip?(()=>{const a=new Float32Array(n);let s=0;for(let i=1;i<n;i++){s+=Math.hypot(p.pts[i*2]-p.pts[i*2-2],p.pts[i*2+1]-p.pts[i*2-1]);a[i]=s;}return i=>1-(1-o.taper)*a[i]/Math.max(1e-6,s);})():null;
+  frPathT(S,p.pts,ts,{...base,wf:tp?i=>W(p.w[i])*tp(i):i=>W(p.w[i]),cf:i=>p.c[i]});
   if(o.fork&&p.tip&&n>1){const v=Math.max(40,p.len/Math.max(.05,p.ts[n-1]-p.ts[0]));
    // the forks of the forks: each level a Y smaller by o.fork[3] (o.fork[2] levels)
    const Y=(x,y,a,l,we,T,c,d,lv)=>{for(const sd of [-1,1]){const b=a+sd*o.fork[1]*(.7+.6*R()),L=l*(.75+.5*R()),x1=x+Math.cos(b)*L,y1=y+Math.sin(b)*L,dur=L/v*k;
