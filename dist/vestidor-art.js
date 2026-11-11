@@ -11,7 +11,7 @@ import {TL_STRIP,tlRound,tlRing} from './tauler.js';
 import {escVeil} from './escenari.js';
 import {VS_BOX,VS_PARROT} from './vestidor-dades.js';
 import {VS_COSTUMES,VS_OBJECTS,VS_FLY,VS_STEP,VS_SLIP,VS_UP,VS_BOW,VS_ACTS,vsRoundOf,vsPicks,vsSlotOf,vsSlots,vsSlip,vsMirror,vsTimeline,vsNumber,vsBackdrop,vsCode,vsClamp,vsEase,vsOut,vsIn,vsPh,vsSettle,vsHash,VS_FACE} from './vestidor.js';
-import {vsPic,vsWant,vsShare,vsNamesOf,VS_COMMON,VS_FOOT,VS_REL,VS_TOP,vsOutfit,vsPipaOutfit,vsFigure,vsT,vsDrawFigure,vsAt,vsDrawLayer,vsDrawPic,vsSticker,vsPieceNames,vsDevice} from './vestidor-motor.js';
+import {vsPic,vsWant,vsShare,vsNamesOf,VS_COMMON,VS_FOOT,VS_REL,VS_TOP,vsOutfit,vsPipaOutfit,vsFigure,vsT,vsDrawFigure,vsAt,vsDrawLayer,vsDrawPic,vsSticker,vsPieceNames,vsCardNames,vsDevice} from './vestidor-motor.js';
 import {vsState,vsGag,VS_GAG_LEN,vsPerform,vsGait,vsDrawFx,vsStar} from './vestidor-gags.js';
 const VS_TAU2=Math.PI*2; // (VS_TAU is vestidor-gags.js's: every module shares one scope in the standalone file)
 // ── the geometry of the screen (CSS pixels) ───────────────────────────────────────────────────────────────────────────────────────
@@ -142,7 +142,7 @@ export function vsBoard(c,w,h,state,game,s,view){const preview=!!view.preview,G=
  if(preview||!options.length)return;
  // the scene goes dim under the cards
  c.save();c.fillStyle=`rgba(28,16,34,${(.42*vsEase(enter*1.6)).toFixed(3)})`;c.fillRect(0,0,G.w,G.h);c.restore();
- options.forEach((id,i)=>{const z=zones[i];if(!z)return;const u=vsClamp(enter*1.25-i*.09),foc=i===f&&!view.waiting;vsCard(c,G,z,vsPieceNames(who,slot,id),{u,alpha:1,light:view.lights?.[i]??1,rot:foc?.035*Math.sin(t*2.6):0,grow:foc?1.05:1});});
+ options.forEach((id,i)=>{const z=zones[i];if(!z)return;const u=vsClamp(enter*1.25-i*.09),foc=i===f&&!view.waiting;vsCard(c,G,z,vsCardNames(who,slot,id),{u,alpha:1,light:view.lights?.[i]??1,rot:foc?.035*Math.sin(t*2.6):0,grow:foc?1.05:1});});
  // the ring of the focus waits until its card has come out of the wardrobe and sits in its place
  vsVeilRing(c,G,f>=0&&vsClamp(enter*1.25-f*.09)<.98?{...view,focus:-1}:view);}
 function vsVeilRing(c,G,view){const wait=view.wait??(view.waiting?1:0);if(wait>0){c.save();c.fillStyle=`rgba(10,8,16,${(.34*wait).toFixed(3)})`;c.fillRect(0,0,G.w,G.h);c.restore();}
@@ -154,9 +154,15 @@ function vsPiecePlace(who,slot,id,wrong=null){if(wrong==='peus'){const b=fBox(wh
  if(slot==='objecte')return vsObjSpot(who);const names=vsPieceNames(who,slot,id),bs=names.map(n=>VS_BOX[n]).filter(Boolean);if(!bs.length)return [512,700];
  const x0=Math.min(...bs.map(b=>b[0])),y0=Math.min(...bs.map(b=>b[1])),x1=Math.max(...bs.map(b=>b[0]+b[2])),y1=Math.max(...bs.map(b=>b[1]+b[3]));return [(x0+x1)/2,(y0+y1)/2];}
 // The flying piece: the layer pictures moved as one from (x0, y0) at scale k0 to (x1, y1) at scale k1 (the centre of the piece).
-function vsFlyPiece(c,names,from,to,u,turn=0){const bs=names.map(n=>VS_BOX[n]).filter(Boolean);if(!bs.length)return;const x0=Math.min(...bs.map(b=>b[0])),y0=Math.min(...bs.map(b=>b[1])),x1=Math.max(...bs.map(b=>b[0]+b[2])),y1=Math.max(...bs.map(b=>b[1]+b[3])),cx=(x0+x1)/2,cy=(y0+y1)/2;
+function vsFlyPiece(c,names,from,to,u,turn=0,alpha=1){if(!(alpha>0))return;const bs=names.map(n=>VS_BOX[n]).filter(Boolean);if(!bs.length)return;const x0=Math.min(...bs.map(b=>b[0])),y0=Math.min(...bs.map(b=>b[1])),x1=Math.max(...bs.map(b=>b[0]+b[2])),y1=Math.max(...bs.map(b=>b[1]+b[3])),cx=(x0+x1)/2,cy=(y0+y1)/2;
  const e=vsEase(u),x=from[0]+(to[0]-from[0])*e,y=from[1]+(to[1]-from[1])*e-Math.sin(Math.PI*u)*Math.abs(to[0]-from[0])*.25,k=from[2]*Math.pow(to[2]/from[2],e);
- c.save();c.translate(x,y);c.rotate(turn*Math.sin(Math.PI*u));c.scale(k,k);for(const n of names){const b=VS_BOX[n],im=vsPic(n);if(b&&im)c.drawImage(im,b[0]-cx,b[1]-cy,b[2],b[3]);}c.restore();}
+ c.save();if(alpha<1)c.globalAlpha*=alpha;c.translate(x,y);c.rotate(turn*Math.sin(Math.PI*u));c.scale(k,k);for(const n of names){const b=VS_BOX[n],im=vsPic(n);if(b&&im)c.drawImage(im,b[0]-cx,b[1]-cy,b[2],b[3]);}c.restore();}
+// The size of a set of pictures (the side of a square of the same area), to match the card's picture with the layers it turns into.
+function vsSpan(names){const bs=names.map(n=>VS_BOX[n]).filter(Boolean);if(!bs.length)return 1;const w=Math.max(...bs.map(b=>b[0]+b[2]))-Math.min(...bs.map(b=>b[0])),h=Math.max(...bs.map(b=>b[1]+b[3]))-Math.min(...bs.map(b=>b[1]));return Math.sqrt(Math.max(1,w*h));}
+// The chosen piece in flight: it leaves the card as the card's picture and turns into the layers that fit the artist just before it
+// lands (the layers miss what the body hides, so they show only where the body is).
+function vsFlyCard(c,card,names,from,to,u,turn){if(card.join()===names.join()){vsFlyPiece(c,names,from,to,u,turn);return;}
+ const r=vsSpan(names)/vsSpan(card),m=vsEase(vsPh(u,.55,.95));vsFlyPiece(c,card,from,[to[0],to[1],to[2]*r],u,turn,1-m);vsFlyPiece(c,names,[from[0],from[1],from[2]/r],to,u,turn,m);}
 // The size of a card's piece (the scale that fits it in its zone) and its centre on the screen.
 function vsCardFit(G,z,names){const bs=names.map(n=>VS_BOX[n]).filter(Boolean);if(!bs.length||!z)return [G.w/2,G.h/2,.5];const w=Math.max(...bs.map(b=>b[0]+b[2]))-Math.min(...bs.map(b=>b[0])),h=Math.max(...bs.map(b=>b[1]+b[3]))-Math.min(...bs.map(b=>b[1]));return [z.x+z.w/2,z.y+z.h/2,Math.min(z.w*.8/(w+28),z.h*.8/(h+28))];}
 // The state of the artist, of Pipa and of the mirror at time t of a pick (the step, or the first part of the last pick).
@@ -181,12 +187,12 @@ export function vsResult(c,w,h,state,game,s,view,time){const G=vsGeom(w,h,false)
  vsDressingRoom(c,G,{who,P:X.P,S:X.S,pP:X.pP,pS:X.pS,mP:X.mP,mS:X.mS,decor:view.decor,light:R.light,open,t:clock});
  const veil=1-vsPh(t,0,.5);if(veil>0){c.save();c.fillStyle=`rgba(28,16,34,${(.42*veil).toFixed(3)})`;c.fillRect(0,0,G.w,G.h);c.restore();}
  // the other cards go back into the wardrobe
- options.forEach((o,i)=>{if(i===chosen||!zones[i])return;const u=1-vsPh(t,0,.6);if(u>0)vsCard(c,G,zones[i],vsPieceNames(who,slot,o),{u,alpha:1,light:view.lights?.[i]??.6});});
+ options.forEach((o,i)=>{if(i===chosen||!zones[i])return;const u=1-vsPh(t,0,.6);if(u>0)vsCard(c,G,zones[i],vsCardNames(who,slot,o),{u,alpha:1,light:view.lights?.[i]??.6});});
  // the chosen piece flies onto the artist (or first to the wrong place)
- const names=vsPieceNames(who,slot,id),k=G.kCam*VS_REL[who],T0=vsT({x:G.cam.x,y:G.cam.y,k});
- if(t<VS_FLY){const z=zones[chosen],[zx,zy,zk]=vsCardFit(G,z,names);if(z&&t<.18){c.save();c.globalAlpha*=1-t/.18;c.fillStyle='rgba(255,248,236,.9)';c.fillRect(z.x,z.y,z.w,z.h);c.restore();}
-  if(slot==='objecte'){const [px,py]=vsPiecePlace(who,slot,id),[tx,ty]=vsAt(who,T0,px,py);vsFlyPiece(c,names,[zx,zy,zk],[tx,ty,k*FIG_H(who)/FIG_H('rita')*.8],t/VS_FLY,.5);}
-  else{const [px,py]=vsPiecePlace(who,slot,id,X.slip),[tx,ty]=vsAt(who,T0,px,py);vsFlyPiece(c,names,[zx,zy,zk],[tx,ty,k],t/VS_FLY,.4);}}
+ const names=vsPieceNames(who,slot,id),card=vsCardNames(who,slot,id),k=G.kCam*VS_REL[who],T0=vsT({x:G.cam.x,y:G.cam.y,k});
+ if(t<VS_FLY){const z=zones[chosen],[zx,zy,zk]=vsCardFit(G,z,card);if(z&&t<.18){c.save();c.globalAlpha*=1-t/.18;c.fillStyle='rgba(255,248,236,.9)';c.fillRect(z.x,z.y,z.w,z.h);c.restore();}
+  if(slot==='objecte'){const [px,py]=vsPiecePlace(who,slot,id),[tx,ty]=vsAt(who,T0,px,py);vsFlyCard(c,card,names,[zx,zy,zk],[tx,ty,k*FIG_H(who)/FIG_H('rita')*.8],t/VS_FLY,.5);}
+  else{const [px,py]=vsPiecePlace(who,slot,id,X.slip),[tx,ty]=vsAt(who,T0,px,py);vsFlyCard(c,card,names,[zx,zy,zk],[tx,ty,k],t/VS_FLY,.4);}}
  else if(X.slip&&t<X.land){const u=t-VS_FLY,[ax,ay]=vsAt(who,T0,...vsPiecePlace(who,slot,id,X.slip)),[bx,by]=vsAt(who,T0,...vsPiecePlace(who,slot,id));
   if(u<1){c.save();c.translate(ax,ay+Math.sin(u*9)*4*k);c.rotate(.12*Math.sin(u*6));c.translate(-ax,-ay);vsFlyPiece(c,names,[ax,ay,k],[ax,ay,k],0);c.restore();}
   else vsFlyPiece(c,names,[ax,ay,k],[bx,by,k],vsClamp((u-1)/(VS_SLIP-1)),.3);}

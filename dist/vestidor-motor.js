@@ -23,7 +23,7 @@ export function vsWant(names){for(const n of names)vsPic(n);}
 // The share of a set that has arrived (the loading cover waits for the dressing room, the stage, Pipa and the first artists).
 export function vsShare(names){if(typeof Image==='undefined')return 1;vsWant(names);let k=0;for(const n of names){const e=VS_PICS.get(n);if(!e||e.done)k++;}return names.length?k/names.length:1;}
 export const vsNamesOf=prefix=>Object.keys(VS_BOX).filter(n=>n.startsWith(prefix+'-'));
-export const VS_COMMON=Object.freeze(['cam-1','cam-2','esc-1','esc-2','public','mans','vidre',...Object.keys(VS_BOX).filter(n=>/^(pipa|lloro|obj|fons)-/.test(n))]);
+export const VS_COMMON=Object.freeze(['cam-1','cam-2','esc-1','esc-2','public','mans','vidre',...Object.keys(VS_BOX).filter(n=>/^(pipa|lloro|obj|fons|peca)-/.test(n))]);
 // Where each figure stands in its drawing (the middle of the feet on the floor) and its size against Hug's, as on the stage stills
 // (escenari5.py: Rita is the smallest, Hug the tallest; Pipa is a small dog).
 export const VS_FOOT=Object.freeze({rita:[512,1364],hug:[512,1410],quim:[512,1376],ona:[512,1376],pipa:[540,895]});
@@ -102,10 +102,13 @@ export function vsSticker(names,px){const boxes=names.map(n=>VS_BOX[n]).filter(B
  x.save();x.shadowColor='rgba(60,30,20,.28)';x.shadowBlur=10;x.shadowOffsetY=4;for(let i=0;i<16;i++){const a=i/16*Math.PI*2;x.drawImage(tmp,Math.cos(a)*9,Math.sin(a)*9);}x.restore();
  for(let i=0;i<16;i++){const a=i/16*Math.PI*2;x.drawImage(tmp,Math.cos(a)*9,Math.sin(a)*9);}
  // the astronaut helmet is a bubble of clear glass: on its own it would read as an empty ring, so the sticker gets a pale-blue glass
- if(names.length===1&&/-41$/.test(names[0])){const g=x.createRadialGradient(cw*.4,ch*.36,0,cw/2,ch*.46,Math.max(cw,ch)*.46);g.addColorStop(0,'rgba(236,248,255,.95)');g.addColorStop(1,'rgba(176,214,238,.95)');x.fillStyle=g;x.beginPath();x.ellipse(cw/2,ch*.46,cw*.4,ch*.4,0,0,Math.PI*2);x.fill();}
+ if(names.length===1&&/^(rita|hug|quim|ona)-41$/.test(names[0])){const g=x.createRadialGradient(cw*.4,ch*.36,0,cw/2,ch*.46,Math.max(cw,ch)*.46);g.addColorStop(0,'rgba(236,248,255,.95)');g.addColorStop(1,'rgba(176,214,238,.95)');x.fillStyle=g;x.beginPath();x.ellipse(cw/2,ch*.46,cw*.4,ch*.4,0,0,Math.PI*2);x.fill();}
  paint(x);e={cv,w:cw/q,h:ch/q,q,x0:x0-m/q,y0:y0-m/q};VS_STICK.set(key,e);if(VS_STICK.size>40){const k0=VS_STICK.keys().next().value;VS_STICK.delete(k0);}return e;}
 // The pictures behind a piece of a choice: a head, body or feet layer of the artist (the royal cape with its collar), or the object alone.
 export function vsPieceNames(who,slot,id){if(slot==='objecte')return ['obj-'+(['paraigua','tuba','globus','regadora','ventall','cinta'].indexOf(id)+1)];const code=vsCode(slot,id);
  if(code==='62')return [`${who}-62c`,`${who}-62`,`${who}-62k`];return [`${who}-${code}`];}
+// The picture of a card: the garment drawn alone and whole (lot 9, peca-<code>, the same for every artist) when there is one; the object
+// alone; else the layers lifted from the artist, which miss what the body hid (Marc, 0.74.3).
+export function vsCardNames(who,slot,id){if(slot!=='objecte'){const n='peca-'+vsCode(slot,id);if(VS_BOX[n])return [n];}return vsPieceNames(who,slot,id);}
 // ── the scale of the screen ───────────────────────────────────────────────────────────────────────────────────────────────────────
 export const vsDevice=c=>{try{return escScale(c)||1;}catch{return 1;}};

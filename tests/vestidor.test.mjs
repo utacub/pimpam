@@ -10,6 +10,7 @@ import {VS_ARTISTS,VS_COSTUMES,VS_OBJECTS,VS_SLOTS,VS_WORD,VS_NAME,VS_NUMBER,VS_
 import {VS_INST,VS_SFX,vsStepScore,vsFinalScore,vsPattern,vsTaste,vsAmbience} from '../dist/vestidor-so.js';
 import {VS_BOX} from '../dist/vestidor-dades.js';
 import {vsLayout} from '../dist/vestidor-art.js';
+import {vsCardNames,vsPieceNames,VS_COMMON} from '../dist/vestidor-motor.js';
 import {SCAN_ACTIVITIES,createScanState,scanChoices,scanContent,chooseScan,finishScan} from '../dist/scan-catalog.js';
 import {renderScanActivity} from '../dist/scan-art.js';
 import {SAMPLE_BANK} from '../dist/sampler.js';
@@ -78,6 +79,12 @@ test('the recordings: every file on disk, strict banks, credited with the unveri
  const credits=read('../dist/assets/samples/CREDITS.md');assert.match(credits,/## El vestidor fantàstic \(EN06, 0\.73\)/);assert.match(credits,/no s’han verificat/);
  for(const bank of ['vestidorRec','vestidorVeu']){const b=SAMPLE_BANK[bank];assert.equal(b.strict,true);assert.equal(b.fallback,null);for(const z of b.zones){assert.ok(fs.existsSync(new URL('../dist/assets/samples/'+z[0],import.meta.url)),z[0]);assert.ok(credits.includes(z[0].split('/').pop()),z[0]);}}});
 
+test('the cards (0.74.x): every garment has its picture alone and whole (lot 9), loaded with the shared pictures; the objects keep theirs',()=>{
+ for(const who of VS_ARTISTS)for(const slot of ['cap','cos','peus'])for(const id of VS_COSTUMES){const n=vsCardNames(who,slot,id);
+  assert.equal(n.length,1);assert.match(n[0],/^peca-[1-6][1-3]$/);assert.ok(VS_BOX[n[0]],n[0]);assert.ok(VS_COMMON.includes(n[0]),n[0]);
+  assert.ok(fs.existsSync(new URL(`../dist/assets/vestidor/${n[0]}.webp`,import.meta.url)),n[0]);assert.notDeepEqual(n,vsPieceNames(who,slot,id));}
+ for(const id of VS_OBJECTS)assert.deepEqual(vsCardNames('rita','objecte',id),vsPieceNames('rita','objecte',id));
+ assert.equal(Object.keys(VS_BOX).filter(n=>n.startsWith('peca-')).length,18);});
 test('the drawing: board and effects with finite coordinates, with and without the decor, at any size',()=>{
  const item={id:'vestidor'};for(const s of [S(),S({background:'none'}),S({background:'dim',scanOptions:4}),S({vsSteps:'3',scanOptions:2})])for(const [w,h] of [[1280,720],[800,1280],[320,180]])for(let round=0;round<4;round++){
   const st=createScanState('vestidor',s);st.round=round;st.armed=true;

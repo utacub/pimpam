@@ -1,5 +1,10 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.74.3 · El vestidor: les cartes amb la peça sola
+
+- Imatges `peca-<codi>` (11 a 63) de `tools/vestidor-assets.py LOT9 --peces`: cada peça del lot 9 (transparent o sobre blanc) sense taques ni boira i amb el costat llarg a 640 px; afegeix les caixes a `dist/vestidor-dades.js` i conserva les altres i `VS_PARROT`. Són a `VS_COMMON`.
+- `vsCardNames` (`dist/vestidor-motor.js`) dona la imatge de la carta: `peca-<codi>` si n’hi ha, l’objecte sol, o les capes de l’artista com abans. `vsFlyCard` (`dist/vestidor-art.js`) fa volar la imatge de la carta i la fon amb les capes que encaixen entre el 55 % i el 95 % del vol, amb la mida igualada per l’arrel de l’àrea (`vsSpan`).
+
 ## 0.74.2 · Fractals a la natura: marxa enrere i creixement més lent
 
 - **Fases.** `F.phase`: `run` (creix) → `full` (sencera, a `F.fullAt`) → `back` (a `F.backAt`, com a mínim `FR_HOLD` = 3,2 s després) → `rest` (a `F.end` = `backAt + backDur + FR_BLACK`, amb `FR_BLACK` = 0,35 s de negre). `frBusy(F)` és cert a `run`, `full` i `back`; `frBlocked` i `frRate` el fan servir.

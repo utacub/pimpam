@@ -1,3 +1,12 @@
+# Pim Pam 0.74.3 · El vestidor: les cartes amb la peça sola i sencera
+
+Base: 0.74.2 (d0de781, merge 65b62d0). Respon al comentari d’en Marc de l’11 de novembre de 2026 («quan es trien les peces de roba es vegin malament… potser necessites imatges dels objectes sols per posar-les a l’encercament, i després un cop es tria, canviar a la imatge que encaixa bé»).
+
+- **Les cartes de l’encercament** mostren cada barret, roba i calçat sol i sencer, sense cos a dins ni parts tallades: 18 dibuixos nous fets amb ChatGPT (lot 9, l’11 de novembre), els mateixos per als quatre artistes. Els objectes màgics ja eren sols i no canvien.
+- **Quan es tria**, la peça surt de la carta amb el dibuix sencer i, just abans d’arribar, es fon amb la que encaixa a l’artista (els darrers 0,3 s del vol).
+- Les 18 imatges pesen 0,76 MB i es carreguen amb les comunes de l’activitat.
+- Proves: una de nova a `tests/vestidor.test.mjs` (cada peça té la seva imatge de carta, al disc i a la llista comuna; els objectes conserven la seva). Comprovat amb imatges fixes del tauler (cap, cos, peus, amb 3 i 4 cartes, dos artistes) i del vol.
+
 # Pim Pam 0.74.2 · Fractals a la natura: marxa enrere i creixement més lent
 
 Base: 0.74.1 (a208ded; la 0.74.1 és el retoc del teló d’«El vestidor fantàstic», més avall). Respon al missatge d’en Marc de l’11 de novembre de 2026 (21:10): «Seria més bonica si allargues cada estímuls per fer marxa enrere en la crescuda de l'estímul fins que la pantalla torni a quedar en negre, i així el següent estímul comença sobre la pantalla negra. El creixement fractal també hauria de ser més lent, durar un parell de segons més, perquè es pugui apreciar millor.»

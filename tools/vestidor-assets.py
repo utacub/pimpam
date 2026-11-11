@@ -1,7 +1,9 @@
 """El vestidor fantàstic (EN06, 0.73): the pictures of the activity, from the ChatGPT drawings and the layers lifted from them
 (propostes/vestidor_chatgpt, eines/v2: capes*.py, completa.py, coll.py, braq.py, to_pell.py) to dist/assets/vestidor/*.webp and the
 table of boxes dist/vestidor-dades.js. Every layer is cropped to what it draws and keeps its place in its source picture (the boxes).
-Usage: python3 -I tools/vestidor-assets.py SRC   (SRC = the folder that holds pilot/, lot2r/ ... lot8/, as in the art thread)."""
+Usage: python3 -I tools/vestidor-assets.py SRC   (SRC = the folder that holds pilot/, lot2r/ ... lot8/, as in the art thread).
+       python3 -I tools/vestidor-assets.py LOT9 --peces   (only the garments alone of the cards, PECA-*.png anywhere under LOT9;
+       the other boxes are read back from the table)."""
 import sys, os, json
 from pathlib import Path
 import numpy as np
@@ -136,16 +138,37 @@ def anchors():
         ys, xs = np.where(hat); x0 = int(xs.min()); y_tip = float(ys[xs <= x0 + 6].mean()); w = int(xs.max() - xs.min())
         out[who] = [x0, round(y_tip, 1), round(w / (757 - 245), 4)]
     return out
+PECA_SIDE = 640
+def peces(d):
+    """The garments alone for the cards (lot 9, 0.74.3): PECA-<code>_*.png, each one garment (or one pair of shoes) drawn whole on a
+    transparent or white 1024 x 1024 canvas. Specks and faint haze are dropped; the picture is scaled so its longest side is PECA_SIDE."""
+    for p in sorted(Path(d).rglob('PECA-*.png')):
+        code = p.name.split('_')[0].split('-', 1)[1]
+        im = Image.open(p)
+        a = np.asarray(im.convert('RGBA'))[..., 3] if im.mode in ('RGBA', 'LA', 'PA') or 'transparency' in im.info else None
+        if a is None or a.min() == 255: im = base(p)
+        else: im = im.convert('RGBA')
+        arr = np.asarray(im).copy(); al = arr[..., 3]; al[al < 8] = 0
+        lab, n = ndimage.label(al > 0)
+        if n > 1:
+            size = ndimage.sum(al > 0, lab, range(1, n + 1)); keep = 1 + np.where(size >= size.max() * .02)[0]
+            al[~np.isin(lab, keep)] = 0
+        arr[..., 3] = al; im = Image.fromarray(arr, 'RGBA')
+        bb = im.getchannel('A').getbbox(); side = max(bb[2] - bb[0], bb[3] - bb[1])
+        save(f'peca-{code}', im, k=min(1.0, PECA_SIDE / side))
+        print('peca', code, im.size, 'side', side)
 if __name__ == '__main__':
-    if '--anchors' in sys.argv or '--helmets' in sys.argv:   # a part only: the other boxes are read back from the table
+    parrot = None
+    if '--anchors' in sys.argv or '--helmets' in sys.argv or '--peces' in sys.argv:   # a part only: the other boxes are read back from the table
         old = (ROOT / 'dist' / 'vestidor-dades.js').read_text(); BOX.update(json.loads(old.split('VS_BOX=Object.freeze(', 1)[1].split(');', 1)[0]))
         if '--helmets' in sys.argv: helmets()
+        if '--peces' in sys.argv: peces(SRC); parrot = json.loads(old.split('VS_PARROT=Object.freeze(', 1)[1].split(');', 1)[0])
     else: artists(); helmets(); pipa(); props(); scenes()
     total = sum(p.stat().st_size for p in OUT.glob('*.webp'))
     js = ('// El vestidor fantàstic (EN06): where each picture of dist/assets/vestidor sits in its source drawing, [x, y, w, h, W, H]\n'
           '// (made by tools/vestidor-assets.py; do not edit by hand).\n'
           'export const VS_BOX=Object.freeze(' + json.dumps(BOX, separators=(',', ':')) + ');\n'
           '// The left tip of each artist\'s pirate hat and its width against Rita\'s: where the parrot perches [x, y, scale].\n'
-          'export const VS_PARROT=Object.freeze(' + json.dumps(anchors(), separators=(',', ':')) + ');\n')
+          'export const VS_PARROT=Object.freeze(' + json.dumps(parrot or anchors(), separators=(',', ':')) + ');\n')
     (ROOT / 'dist' / 'vestidor-dades.js').write_text(js)
     print(len(BOX), 'pictures,', round(total / 1e6, 2), 'MB')
