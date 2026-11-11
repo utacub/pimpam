@@ -938,3 +938,79 @@ i0937	Nebulosa
 i0938	Una nebulosa és un núvol fosc d’hidrogen on neixen estels. La llum ultraviolada d’un estel nou i molt massiu arrenca electrons al gas del voltant, i aquest gas brilla.
 i0939	El gas encès, molt més calent, empeny el núvol i obre una bombolla que creix. Darrere els nusos de gas dens queda una ombra: un pilar que apunta a l’estel, com els de la nebulosa de l’Àguila.
 i0940	Al final els estels esclaten com a supernoves i les ones de l’explosió escombren el gas. A l’ordinador passa en segons el que a l’espai triga milions d’anys.
+i0941	Les vint formes de la natura, en l’ordre de l’activitat, i per què cadascuna es repeteix dins seu.
+i0942	Falgueres
+i0943	Cada fronda de falguera està feta de pínnules amb la mateixa forma que la fronda, i cada pínnula, de peces més petites de la mateixa forma. Aquesta repetició d’una forma a escales diferents és el que anomenem fractal.
+i0944	Les frondes joves neixen enrotllades en espiral, com el cap d’un bàcul, i es desenrotllen a mesura que creixen.
+i0945	N’hi ha prou amb quatre regles senzilles (encongir, girar i desplaçar), repetides milers de vegades, perquè un ordinador dibuixi una falguera que sembla de veritat.
+i0946	Flocs de neu
+i0947	Un floc de neu té sis braços perquè les molècules d’aigua del gel s’enllacen formant hexàgons. Les puntes sobresurten cap a l’aire humit, reben més vapor i creixen més de pressa: així surten branques, i d’aquestes, branquetes.
+i0948	Els sis braços s’assemblen tant perquè creixen alhora i passen per la mateixa temperatura i la mateixa humitat mentre el floc cau. Les estrelles més ramificades es fan a uns quinze graus sota zero, amb l’aire molt humit.
+i0949	Els matemàtics van imaginar un floc ideal, el de Koch, en què cada costat es divideix sense fi: té una vora infinitament llarga que, tot i així, tanca una superfície limitada.
+i0950	El que sembla una flor és un capítol de centenars de floretes, i els «pètals» de la vora també són flors. Cada floreta neix girada uns 137,5 graus respecte de l’anterior, l’angle d’or, i així omplen el disc sense deixar forats.
+i0951	Amb aquest angle apareixen espirals en els dos sentits, i si es compten surten molt sovint dos nombres seguits de la successió de Fibonacci, com 34 i 55 o 55 i 89.
+i0952	La mateixa manera de repartir les peces es troba a les pinyes, a les escates de la pinya tropical i a les fulles de moltes plantes al voltant de la tija.
+i0953	Llamps
+i0954	Un llamp no baixa d’un sol cop: un canal d’aire carregat avança cap a terra a salts d’unes desenes de metres, i a cada salt es pot dividir en branques que es tornen a dividir.
+i0955	Quan una de les branques toca a terra, el corrent hi passa amb tota la força i aquell camí brilla molt més que els altres. Les branques que no hi han arribat queden com un ramatge més fi.
+i0956	Les mateixes ramificacions apareixen quan una descàrrega travessa un bloc de plàstic o de fusta. Tenen una dimensió fractal d’uns 1,7: són més que una línia (1) i menys que una superfície (2).
+i0957	Arbre
+i0958	Cada branca d’un arbre s’assembla a un arbre més petit, i cada branqueta a una branca: la mateixa regla de dividir-se es repeteix fins a les puntes, on surten les fulles i les flors.
+i0959	Leonardo da Vinci ja va observar que, quan una branca es divideix, les branques filles juntes fan més o menys el mateix gruix que la mare: la secció total es manté de nivell en nivell.
+i0960	Amb aquesta forma l’arbre posa moltes fulles al sol i, alhora, porta l’aigua de les arrels fins a l’última fulla per camins curts.
+i0961	Riu i afluents
+i0962	Un riu recull l’aigua de tot un territori per una xarxa d’afluents: rierols que s’ajunten en rieres i rieres que s’ajunten en rius. Vista des de l’aire, cada tros de la xarxa s’assembla a la xarxa sencera.
+i0963	Els geògrafs numeren els trams: dos rierols de primer ordre en fan un de segon, dos de segon, un de tercer, fins al riu principal. A tot el món, cada ordre té entre tres i cinc vegades menys trams que l’anterior.
+i0964	La xarxa s’escampa fins que gairebé no queda cap racó lluny d’un rierol: és una línia que tendeix a omplir una superfície.
+i0965	Un corall ramificat és una colònia de milers de pòlips petits, parents de les anemones. Cada pòlip fabrica un esquelet de calç sota seu, i quan en neixen de nous la branca s’allarga o es divideix.
+i0966	Les branques es reparteixen l’espai per rebre la llum i l’aigua que porta l’aliment, i la mateixa manera de dividir-se es repeteix des de les branques gruixudes fins a les puntes.
+i0967	Dins dels pòlips viuen unes algues microscòpiques que els donen aliment i color. Quan l’aigua s’escalfa massa, els pòlips les expulsen i el corall es torna blanc.
+i0968	Cada con del romanesco està fet de cons més petits posats en espiral, i cadascun d’aquests torna a estar fet de cons encara més petits. A simple vista se’n poden seguir uns quants nivells.
+i0969	Les espirals segueixen el mateix angle d’or que el gira-sol, i si es compten en cada sentit surten nombres de la successió de Fibonacci.
+i0970	Passa perquè els brots que haurien de fer flors no ho acaben de fer: cadascun es converteix en una tija que torna a fer brots, que tampoc no floreixen, i el procés es repeteix cada vegada més de pressa.
+i0971	Neurones
+i0972	Les neurones reben els senyals d’altres neurones per les dendrites, unes prolongacions que es ramifiquen com un arbre: del cos de la cèl·lula surten branques que es divideixen una vegada i una altra.
+i0973	Ramificant-se així, una sola neurona pot tocar milers d’altres neurones amb molt poc cable. Algunes neurones grans del cerebel en reben més de cent mil contactes.
+i0974	Amb l’experiència i l’aprenentatge, les dendrites guanyen o perden petites branques i espines: la forma de l’arbre canvia al llarg de la vida.
+i0975	Illa i costa
+i0976	Les línies d’aquesta illa són corbes de nivell, com les dels mapes: cadascuna uneix els punts que són a la mateixa altura, des del cim fins a la línia de la costa.
+i0977	Quant fa una costa? Depèn del regle: com més curt és, més entrants i sortints recull i més llarga surt la mesura. És l’exemple amb què el matemàtic Benoît Mandelbrot va explicar els fractals.
+i0978	Les badies tenen badies més petites, i aquestes, cales i roques: a cada escala la costa és igual d’irregular. Per això en una foto costa endevinar si es veuen cent metres o cent quilòmetres.
+i0979	Els nervis porten l’aigua a tota la fulla i se n’emporten el sucre que hi fabrica la llum. Del nervi central surten els secundaris, d’aquests els terciaris, fins a una xarxa tan fina que cap cèl·lula no queda lluny d’un nervi.
+i0980	A diferència d’un arbre, la xarxa fina es tanca en anelles: si un insecte talla un nervi, l’aigua pot fer la volta i arribar igualment.
+i0981	Plantes molt antigues, com el ginkgo, tenen nervis que només es bifurquen, sense anelles.
+i0982	Gel a la finestra
+i0983	Quan el vidre d’una finestra és molt més fred que l’aire humit de dins, el vapor d’aigua s’hi enganxa directament en forma de gel, sense passar per aigua líquida.
+i0984	El gel comença en una ratlla o un gra de pols i creix en agulles. Les puntes sobresurten, reben més vapor i creixen més de pressa; d’elles en neixen de noves, i així es formen plomes que semblen falgueres.
+i0985	És el mateix que fa créixer les branques dels flocs de neu, però sobre una superfície plana.
+i0986	Nautilus
+i0987	El nàutil és un parent del pop que viu dins una closca. A mesura que creix construeix cambres noves, cadascuna una mica més gran que l’anterior, i tanca les velles amb una paret; el gas de dins l’ajuda a surar.
+i0988	Com que les cambres creixen sempre en la mateixa proporció, la closca té la mateixa forma petita o gran: és una espiral logarítmica, i un tros de la closca és una còpia en petit del conjunt.
+i0989	Sovint es diu que segueix la proporció àuria, però les mesures mostren que no: cada closca té la seva proporció, i gairebé mai no és aquesta.
+i0990	Micel·li
+i0991	El bolet només és el fruit: el fong viu sota terra com una xarxa de fils molt prims, les hifes, que creixen per la punta i es ramifiquen. Totes juntes formen el micel·li.
+i0992	Quan una punta troba aliment, la xarxa reforça aquell camí i el fa més gruixut; on no en troba, les branques s’aturen. Així explora el terra amb el mínim de fil.
+i0993	Molts fongs s’uneixen a les arrels dels arbres i els donen aigua i sals a canvi de sucres. Sota un bosc d’Oregon, un sol fong ocupa gairebé deu quilòmetres quadrats.
+i0994	Fang esquerdat
+i0995	Quan el fang s’asseca, la capa de dalt s’encongeix però el fons la reté, i la tensió l’esquerda. Primer s’obren unes esquerdes llargues que divideixen el terra en peces grans.
+i0996	Després cada peça s’esquerda per dins, i les esquerdes noves van a parar a les velles en angle recte: peces dins de peces, cada vegada més petites.
+i0997	Si el fang es mulla i s’asseca moltes vegades, les unions en angle recte giren a poc a poc fins a fer angles de 120 graus, com les columnes de basalt que es formen quan la lava es refreda.
+i0998	Ploma de paó
+i0999	Una ploma és un arbre de tres nivells: de l’eix surten les barbes, i de cada barba, centenars de barbetes. A les plomes de volar, les barbetes s’enganxen amb ganxets minúsculs i fan una superfície tancada.
+i1000	Els colors del paó no són pigments: dins les barbetes hi ha unes barretes de melanina ben ordenades que només reflecteixen certs colors de la llum, com una bombolla de sabó. Per això el color canvia quan la ploma es mou.
+i1001	Els «ulls» de la cua serveixen per al festeig: el mascle aixeca les plomes en ventall i les fa vibrar davant la femella.
+i1002	Serralades
+i1003	Una serralada té una carena principal de la qual surten contraforts, i dels contraforts, esperons més petits. Entre cada parell, un torrent excava una vall: carenes i valls són dues xarxes encaixades.
+i1004	Vista de lluny o de prop, una muntanya és igual d’aspra: un roc pot semblar un cim. Per això a les fotos de geologia s’hi posa un objecte al costat, perquè se’n vegi la mida.
+i1005	Les muntanyes de moltes pel·lícules es fan amb ordinador repetint una regla: dividir el terreny, aixecar o enfonsar cada tros una mica a l’atzar, i tornar a dividir.
+i1006	Arrels
+i1007	D’una arrel principal en surten de laterals, i d’aquestes, arrels encara més fines, cobertes de pèls absorbents. La ramificació permet explorar molta terra per trobar aigua i sals minerals.
+i1008	Les arrels creixen per la punta i noten on hi ha més aigua o més aliment: allà es ramifiquen més, i on la terra és pobra creixen poc.
+i1009	Un estudi clàssic va mesurar totes les arrels d’una sola planta de sègol de quatre mesos: sumaven uns 600 quilòmetres, i comptant-hi els pèls absorbents, més de 10.000.
+i1010	Petxina de triangles
+i1011	Algunes petxines de con tenen un dibuix de triangles de totes les mides, molt semblant al triangle de Sierpinski, un fractal fet de triangles dins de triangles.
+i1012	El dibuix es pinta a la vora de la closca a mesura que creix, línia a línia. Cada cèl·lula de la vora posa pigment o no segons el que fan les veïnes: unes s’encomanen l’activitat i d’altres l’apaguen.
+i1013	Uns programes molt simples, els autòmats cel·lulars, fan el mateix: amb unes poques regles entre veïns, creen dibuixos d’una gran complexitat.
+i1014	La bola blanca és el fruit de tot un capítol de floretes: cada floreta deixa una llavor amb un bec llarg i, a dalt, un plomall d’un centenar de filaments oberts com les varetes d’un paraigua.
+i1015	L’aire passa entre els filaments i, just a sobre del plomall, es forma un remolí en forma d’anell que no s’hi desenganxa i el frena. Així la llavor cau molt a poc a poc, i amb vent pot viatjar quilòmetres.
+i1016	La forma es repeteix a cada escala: el capítol porta llavors, cada llavor porta un plomall, i cada filament té petites dents als costats.

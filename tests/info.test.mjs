@@ -9,7 +9,7 @@ import {SELVA_NAMES} from '../dist/selva.js';
 import {SABANA_NAMES} from '../dist/sabana.js';
 import {POU_NAMES} from '../dist/pou.js';
 import {GG_NAMES} from '../dist/gegants.js';
-const expected={jelly:20,jungle:20,savanna:20,well:21,pot:11,castells:11,orchestra:6,sounds:8,sources:9,giants:20,pinta:5,masia:6,viatge:7,encaix:20,fira:5,flower:20,'color-rain':20,bubbles:8};
+const expected={jelly:20,jungle:20,savanna:20,well:21,pot:11,castells:11,orchestra:6,sounds:8,sources:9,giants:20,pinta:5,masia:6,viatge:7,encaix:20,fira:5,flower:20,'color-rain':20,bubbles:8,fractals:20};
 test('each dive has every scene, with a picture and one to three short lines',()=>{
   assert.deepEqual(Object.keys(SCENE_INFO).sort(),Object.keys(expected).sort());
   for(const [id,n] of Object.entries(expected)){
@@ -33,6 +33,12 @@ test('the Laboratori de matèria has one card for each matter, and says that its
   const src=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
   assert.match(src,/\$\{t\(it\.bombolles\?'No són dibuixos sinó simulacions/);
 });
+// 0.74: Fractals a la natura (Marc, 11 November 2026: «fitxa d’informació respecte a la naturalesa fractal de cada estímul», «sense
+// referències, només l’explicació rigorosa, però planera»): one card for each form, with its name, in the order of the activity.
+test('Fractals a la natura has one card for each form, in its order and with its name',async()=>{
+  const {FR_STIMS}=await import('../dist/fractals.js');
+  assert.deepEqual(SCENE_INFO.fractals.map(s=>s.t),FR_STIMS.map(x=>x.name));
+});
 test('the scene titles follow the activity names',()=>{
   const names={jelly:FONS_NAMES,jungle:SELVA_NAMES,savanna:SABANA_NAMES,well:POU_NAMES,giants:GG_NAMES};
   for(const [id,list] of Object.entries(names))list.slice(0,20).forEach((n,i)=>assert.equal(SCENE_INFO[id][i].t,n,`${id} ${i+1}`));
@@ -45,7 +51,7 @@ test('the game header (both tool rows) and the home cards offer the panel',()=>{
 // 0.35: the home cards of the four dives are pictures; drawing them live compiled their WebGL shaders while the menu opened (it hung).
 test('the dives have a picture for their home card, and the previews are painted a few per frame',async()=>{
   const {CARD_IMG}=await import('../dist/info-escenes.js');
-  for(const id of ['jelly','jungle','savanna','well','giants','pinta','masia','viatge','flower','color-rain','vehicles','pluja-colors'])assert.match(CARD_IMG[id]||'',/^data:image\/jpeg;base64,\/9j\//,id);
+  for(const id of ['jelly','jungle','savanna','well','giants','pinta','masia','viatge','flower','color-rain','vehicles','pluja-colors','fractals'])assert.match(CARD_IMG[id]||'',/^data:image\/jpeg;base64,\/9j\//,id);
   const src=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
   assert.match(src,/function paintPreview\(canvas\)\{[^\n]*CARD_IMG\[id\]/);assert.match(src,/performance\.now\(\)-t0<12/);
 });

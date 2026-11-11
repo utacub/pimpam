@@ -938,3 +938,79 @@ i0937	Nebulosa
 i0938	Una nebulosa es una nube oscura de hidrógeno donde nacen estrellas. La luz ultravioleta de una estrella nueva y muy masiva arranca electrones al gas de alrededor, y ese gas brilla.
 i0939	El gas encendido, mucho más caliente, empuja la nube y abre una burbuja que crece. Detrás de los nudos de gas denso queda una sombra: un pilar que apunta a la estrella, como los de la nebulosa del Águila.
 i0940	Al final las estrellas estallan como supernovas y las ondas de la explosión barren el gas. En el ordenador pasa en segundos lo que en el espacio tarda millones de años.
+i0941	Las veinte formas de la naturaleza, en el orden de la actividad, y por qué cada una se repite dentro de sí misma.
+i0942	Helechos
+i0943	Cada fronda de helecho está hecha de pinnas con la misma forma que la fronda, y cada pinna, de piezas más pequeñas con la misma forma. Esta repetición de una forma a escalas distintas es lo que llamamos fractal.
+i0944	Las frondas jóvenes nacen enrolladas en espiral, como la cabeza de un báculo, y se desenrollan a medida que crecen.
+i0945	Bastan cuatro reglas sencillas (encoger, girar y desplazar), repetidas miles de veces, para que un ordenador dibuje un helecho que parece de verdad.
+i0946	Copos de nieve
+i0947	Un copo de nieve tiene seis brazos porque las moléculas de agua del hielo se enlazan formando hexágonos. Las puntas sobresalen hacia el aire húmedo, reciben más vapor y crecen más deprisa: así salen ramas, y de estas, ramitas.
+i0948	Los seis brazos se parecen tanto porque crecen a la vez y pasan por la misma temperatura y la misma humedad mientras el copo cae. Las estrellas más ramificadas se forman a unos quince grados bajo cero, con el aire muy húmedo.
+i0949	Los matemáticos imaginaron un copo ideal, el de Koch, en el que cada lado se divide sin fin: tiene un borde infinitamente largo que, aun así, encierra una superficie limitada.
+i0950	Lo que parece una flor es un capítulo de cientos de florecillas, y los «pétalos» del borde también son flores. Cada florecilla nace girada unos 137,5 grados respecto de la anterior, el ángulo de oro, y así llenan el disco sin dejar huecos.
+i0951	Con este ángulo aparecen espirales en los dos sentidos, y si se cuentan salen muy a menudo dos números seguidos de la sucesión de Fibonacci, como 34 y 55 o 55 y 89.
+i0952	La misma manera de repartir las piezas se encuentra en las piñas, en las escamas de la piña tropical y en las hojas de muchas plantas alrededor del tallo.
+i0953	Rayos
+i0954	Un rayo no baja de una sola vez: un canal de aire cargado avanza hacia el suelo a saltos de unas decenas de metros, y en cada salto puede dividirse en ramas que vuelven a dividirse.
+i0955	Cuando una de las ramas toca el suelo, la corriente pasa por ella con toda su fuerza y ese camino brilla mucho más que los demás. Las ramas que no han llegado quedan como un ramaje más fino.
+i0956	Las mismas ramificaciones aparecen cuando una descarga atraviesa un bloque de plástico o de madera. Tienen una dimensión fractal de unos 1,7: son más que una línea (1) y menos que una superficie (2).
+i0957	Árbol
+i0958	Cada rama de un árbol se parece a un árbol más pequeño, y cada ramita a una rama: la misma regla de dividirse se repite hasta las puntas, donde salen las hojas y las flores.
+i0959	Leonardo da Vinci ya observó que, cuando una rama se divide, las ramas hijas juntas tienen más o menos el mismo grosor que la madre: la sección total se mantiene de nivel en nivel.
+i0960	Con esta forma el árbol pone muchas hojas al sol y, a la vez, lleva el agua de las raíces hasta la última hoja por caminos cortos.
+i0961	Río y afluentes
+i0962	Un río recoge el agua de todo un territorio por una red de afluentes: arroyos que se juntan en riachuelos y riachuelos que se juntan en ríos. Vista desde el aire, cada trozo de la red se parece a la red entera.
+i0963	Los geógrafos numeran los tramos: dos arroyos de primer orden forman uno de segundo, dos de segundo, uno de tercero, hasta el río principal. En todo el mundo, cada orden tiene entre tres y cinco veces menos tramos que el anterior.
+i0964	La red se extiende hasta que casi no queda ningún rincón lejos de un arroyo: es una línea que tiende a llenar una superficie.
+i0965	Un coral ramificado es una colonia de miles de pólipos pequeños, parientes de las anémonas. Cada pólipo fabrica un esqueleto de cal debajo de sí, y cuando nacen otros nuevos la rama se alarga o se divide.
+i0966	Las ramas se reparten el espacio para recibir la luz y el agua que trae el alimento, y la misma manera de dividirse se repite desde las ramas gruesas hasta las puntas.
+i0967	Dentro de los pólipos viven unas algas microscópicas que les dan alimento y color. Cuando el agua se calienta demasiado, los pólipos las expulsan y el coral se vuelve blanco.
+i0968	Cada cono del romanesco está hecho de conos más pequeños puestos en espiral, y cada uno de ellos vuelve a estar hecho de conos aún más pequeños. A simple vista se pueden seguir unos cuantos niveles.
+i0969	Las espirales siguen el mismo ángulo de oro que el girasol, y si se cuentan en cada sentido salen números de la sucesión de Fibonacci.
+i0970	Ocurre porque los brotes que deberían formar flores no llegan a hacerlo: cada uno se convierte en un tallo que vuelve a formar brotes, que tampoco florecen, y el proceso se repite cada vez más deprisa.
+i0971	Neuronas
+i0972	Las neuronas reciben las señales de otras neuronas por las dendritas, unas prolongaciones que se ramifican como un árbol: del cuerpo de la célula salen ramas que se dividen una y otra vez.
+i0973	Ramificándose así, una sola neurona puede tocar miles de otras neuronas con muy poco cable. Algunas neuronas grandes del cerebelo reciben más de cien mil contactos.
+i0974	Con la experiencia y el aprendizaje, las dendritas ganan o pierden pequeñas ramas y espinas: la forma del árbol cambia a lo largo de la vida.
+i0975	Isla y costa
+i0976	Las líneas de esta isla son curvas de nivel, como las de los mapas: cada una une los puntos que están a la misma altura, desde la cima hasta la línea de la costa.
+i0977	¿Cuánto mide una costa? Depende de la regla: cuanto más corta es, más entrantes y salientes recoge y más larga sale la medida. Es el ejemplo con el que el matemático Benoît Mandelbrot explicó los fractales.
+i0978	Las bahías tienen bahías más pequeñas, y estas, calas y rocas: a cada escala la costa es igual de irregular. Por eso en una foto cuesta adivinar si se ven cien metros o cien kilómetros.
+i0979	Los nervios llevan el agua a toda la hoja y se llevan el azúcar que fabrica en ella la luz. Del nervio central salen los secundarios, de estos los terciarios, hasta una red tan fina que ninguna célula queda lejos de un nervio.
+i0980	A diferencia de un árbol, la red fina se cierra en anillos: si un insecto corta un nervio, el agua puede dar la vuelta y llegar igualmente.
+i0981	Plantas muy antiguas, como el ginkgo, tienen nervios que solo se bifurcan, sin anillos.
+i0982	Hielo en la ventana
+i0983	Cuando el cristal de una ventana está mucho más frío que el aire húmedo de dentro, el vapor de agua se pega a él directamente en forma de hielo, sin pasar por agua líquida.
+i0984	El hielo empieza en una raya o un grano de polvo y crece en agujas. Las puntas sobresalen, reciben más vapor y crecen más deprisa; de ellas nacen otras nuevas, y así se forman plumas que parecen helechos.
+i0985	Es lo mismo que hace crecer las ramas de los copos de nieve, pero sobre una superficie plana.
+i0986	Nautilus
+i0987	El nautilo es un pariente del pulpo que vive dentro de una concha. A medida que crece construye cámaras nuevas, cada una un poco más grande que la anterior, y cierra las viejas con una pared; el gas de dentro le ayuda a flotar.
+i0988	Como las cámaras crecen siempre en la misma proporción, la concha tiene la misma forma pequeña o grande: es una espiral logarítmica, y un trozo de la concha es una copia en pequeño del conjunto.
+i0989	A menudo se dice que sigue la proporción áurea, pero las medidas muestran que no: cada concha tiene su proporción, y casi nunca es esa.
+i0990	Micelio
+i0991	La seta solo es el fruto: el hongo vive bajo tierra como una red de hilos muy finos, las hifas, que crecen por la punta y se ramifican. Todas juntas forman el micelio.
+i0992	Cuando una punta encuentra alimento, la red refuerza ese camino y lo hace más grueso; donde no lo encuentra, las ramas se detienen. Así explora el suelo con el mínimo de hilo.
+i0993	Muchos hongos se unen a las raíces de los árboles y les dan agua y sales a cambio de azúcares. Bajo un bosque de Oregón, un solo hongo ocupa casi diez kilómetros cuadrados.
+i0994	Barro agrietado
+i0995	Cuando el barro se seca, la capa de arriba se encoge pero el fondo la retiene, y la tensión la agrieta. Primero se abren unas grietas largas que dividen el suelo en piezas grandes.
+i0996	Después cada pieza se agrieta por dentro, y las grietas nuevas van a parar a las viejas en ángulo recto: piezas dentro de piezas, cada vez más pequeñas.
+i0997	Si el barro se moja y se seca muchas veces, las uniones en ángulo recto giran poco a poco hasta formar ángulos de 120 grados, como las columnas de basalto que se forman cuando la lava se enfría.
+i0998	Pluma de pavo real
+i0999	Una pluma es un árbol de tres niveles: del eje salen las barbas, y de cada barba, cientos de bárbulas. En las plumas de volar, las bárbulas se enganchan con ganchitos minúsculos y forman una superficie cerrada.
+i1000	Los colores del pavo real no son pigmentos: dentro de las bárbulas hay unas varillas de melanina bien ordenadas que solo reflejan ciertos colores de la luz, como una pompa de jabón. Por eso el color cambia cuando la pluma se mueve.
+i1001	Los «ojos» de la cola sirven para el cortejo: el macho levanta las plumas en abanico y las hace vibrar delante de la hembra.
+i1002	Cordilleras
+i1003	Una cordillera tiene una cresta principal de la que salen contrafuertes, y de los contrafuertes, espolones más pequeños. Entre cada par, un torrente excava un valle: crestas y valles son dos redes encajadas.
+i1004	Vista de lejos o de cerca, una montaña es igual de áspera: una roca puede parecer una cima. Por eso en las fotos de geología se pone un objeto al lado, para que se vea el tamaño.
+i1005	Las montañas de muchas películas se hacen con ordenador repitiendo una regla: dividir el terreno, levantar o hundir cada trozo un poco al azar, y volver a dividir.
+i1006	Raíces
+i1007	De una raíz principal salen otras laterales, y de estas, raíces aún más finas, cubiertas de pelos absorbentes. La ramificación permite explorar mucha tierra para encontrar agua y sales minerales.
+i1008	Las raíces crecen por la punta y notan dónde hay más agua o más alimento: allí se ramifican más, y donde la tierra es pobre crecen poco.
+i1009	Un estudio clásico midió todas las raíces de una sola planta de centeno de cuatro meses: sumaban unos 600 kilómetros, y contando los pelos absorbentes, más de 10.000.
+i1010	Concha de triángulos
+i1011	Algunas conchas de cono tienen un dibujo de triángulos de todos los tamaños, muy parecido al triángulo de Sierpinski, un fractal hecho de triángulos dentro de triángulos.
+i1012	El dibujo se pinta en el borde de la concha a medida que crece, línea a línea. Cada célula del borde pone pigmento o no según lo que hacen sus vecinas: unas se contagian la actividad y otras la apagan.
+i1013	Unos programas muy simples, los autómatas celulares, hacen lo mismo: con unas pocas reglas entre vecinos, crean dibujos de una gran complejidad.
+i1014	La bola blanca es el fruto de todo un capítulo de florecillas: cada florecilla deja una semilla con un pico largo y, arriba, un vilano de un centenar de filamentos abiertos como las varillas de un paraguas.
+i1015	El aire pasa entre los filamentos y, justo encima del vilano, se forma un remolino en forma de anillo que no se despega y lo frena. Así la semilla cae muy despacio, y con viento puede viajar kilómetros.
+i1016	La forma se repite a cada escala: el capítulo lleva semillas, cada semilla lleva un vilano, y cada filamento tiene pequeños dientes a los lados.

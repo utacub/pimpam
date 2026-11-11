@@ -938,3 +938,79 @@ i0937	Nebula
 i0938	A nebula is a dark cloud of hydrogen where stars are born. The ultraviolet light of a new, very massive star tears electrons off the surrounding gas, and that gas glows.
 i0939	The glowing gas, much hotter, pushes the cloud and opens a growing bubble. Behind the knots of dense gas a shadow remains: a pillar pointing at the star, like those in the Eagle Nebula.
 i0940	In the end the stars explode as supernovae and the shock waves sweep the gas away. In the computer, what takes millions of years in space happens in seconds.
+i0941	The twenty forms of nature, in the order of the activity, and why each one repeats itself within itself.
+i0942	Ferns
+i0943	Each fern frond is made of pinnae with the same shape as the frond, and each pinna of smaller pieces with the same shape. This repetition of a shape at different scales is what we call a fractal.
+i0944	Young fronds are born rolled up in a spiral, like the head of a bishop’s crook, and unroll as they grow.
+i0945	Four simple rules (shrink, turn and shift), repeated thousands of times, are enough for a computer to draw a fern that looks real.
+i0946	Snowflakes
+i0947	A snowflake has six arms because the water molecules of ice link up in hexagons. The tips stick out into the damp air, receive more vapour and grow faster: so branches come out, and from them, smaller branches.
+i0948	The six arms look so alike because they grow at the same time and go through the same temperature and humidity as the flake falls. The most branched stars form at about fifteen degrees below zero, in very damp air.
+i0949	Mathematicians imagined an ideal flake, Koch’s, in which every side is divided without end: its edge is infinitely long and yet it encloses a limited area.
+i0950	What looks like one flower is a head of hundreds of small florets, and the «petals» around the edge are flowers too. Each floret is born turned about 137.5 degrees from the one before, the golden angle, and so they fill the disc without gaps.
+i0951	With this angle, spirals appear in both directions, and if you count them you very often get two consecutive numbers of the Fibonacci sequence, such as 34 and 55 or 55 and 89.
+i0952	The same way of sharing out the pieces is found in pine cones, in the scales of pineapples and in the leaves of many plants around the stem.
+i0953	Lightning
+i0954	Lightning does not come down all at once: a channel of charged air moves towards the ground in jumps of a few tens of metres, and at each jump it can split into branches that split again.
+i0955	When one of the branches touches the ground, the current runs through it with all its force and that path shines much brighter than the others. The branches that did not reach the ground remain as a finer tracery.
+i0956	The same branchings appear when a discharge goes through a block of plastic or wood. They have a fractal dimension of about 1.7: more than a line (1) and less than a surface (2).
+i0957	Tree
+i0958	Each branch of a tree looks like a smaller tree, and each twig like a branch: the same rule of splitting is repeated up to the tips, where the leaves and flowers come out.
+i0959	Leonardo da Vinci already noticed that when a branch splits, the daughter branches together are about as thick as the mother: the total cross-section is kept from level to level.
+i0960	With this shape the tree puts many leaves in the sun and, at the same time, carries water from the roots to the last leaf along short paths.
+i0961	River and tributaries
+i0962	A river gathers the water of a whole territory through a network of tributaries: brooks that join into streams and streams that join into rivers. Seen from the air, each piece of the network looks like the whole network.
+i0963	Geographers number the stretches: two first-order brooks make one of the second order, two of the second, one of the third, up to the main river. All over the world, each order has three to five times fewer stretches than the one before.
+i0964	The network spreads until hardly any corner is left far from a brook: it is a line that tends to fill a surface.
+i0965	A branching coral is a colony of thousands of small polyps, relatives of sea anemones. Each polyp builds a limestone skeleton beneath it, and when new ones are born the branch grows longer or splits.
+i0966	The branches share out the space to catch the light and the water that brings food, and the same way of splitting is repeated from the thick branches to the tips.
+i0967	Inside the polyps live microscopic algae that give them food and colour. When the water gets too warm, the polyps expel them and the coral turns white.
+i0968	Each cone of the Romanesco is made of smaller cones set in a spiral, and each of these is made again of even smaller cones. Several levels can be followed with the naked eye.
+i0969	The spirals follow the same golden angle as the sunflower, and if you count them in each direction you get numbers of the Fibonacci sequence.
+i0970	It happens because the buds that should make flowers never quite do: each one turns into a stem that makes buds again, which do not flower either, and the process repeats faster and faster.
+i0971	Neurons
+i0972	Neurons receive signals from other neurons through their dendrites, extensions that branch like a tree: from the body of the cell come branches that split again and again.
+i0973	By branching like this, a single neuron can reach thousands of other neurons with very little wiring. Some large neurons of the cerebellum receive more than a hundred thousand contacts.
+i0974	With experience and learning, dendrites gain or lose small branches and spines: the shape of the tree changes throughout life.
+i0975	Island and coast
+i0976	The lines of this island are contour lines, like those on maps: each one joins the points at the same height, from the summit down to the coastline.
+i0977	How long is a coast? It depends on the ruler: the shorter it is, the more inlets and headlands it picks up and the longer the measurement comes out. It is the example the mathematician Benoît Mandelbrot used to explain fractals.
+i0978	Bays have smaller bays, and these have coves and rocks: at every scale the coast is just as irregular. That is why in a photo it is hard to guess whether you see a hundred metres or a hundred kilometres.
+i0979	The veins carry water to the whole leaf and take away the sugar that light makes in it. From the midrib come the secondary veins, from these the tertiary ones, down to a network so fine that no cell is far from a vein.
+i0980	Unlike a tree, the fine network closes into loops: if an insect cuts a vein, the water can go round and still arrive.
+i0981	Very old plants, like the ginkgo, have veins that only fork, without loops.
+i0982	Frost on the window
+i0983	When the glass of a window is much colder than the damp air inside, water vapour sticks to it directly as ice, without first turning into liquid water.
+i0984	The ice starts at a scratch or a speck of dust and grows in needles. The tips stick out, receive more vapour and grow faster; new ones are born from them, and so feathers that look like ferns are formed.
+i0985	It is the same thing that makes the branches of snowflakes grow, but on a flat surface.
+i0986	Nautilus
+i0987	The nautilus is a relative of the octopus that lives inside a shell. As it grows it builds new chambers, each a little larger than the one before, and closes off the old ones with a wall; the gas inside helps it float.
+i0988	Since the chambers always grow in the same proportion, the shell has the same shape whether small or large: it is a logarithmic spiral, and a piece of the shell is a small copy of the whole.
+i0989	It is often said to follow the golden ratio, but measurements show it does not: each shell has its own proportion, and it is almost never that one.
+i0990	Mycelium
+i0991	The mushroom is only the fruit: the fungus lives underground as a network of very fine threads, the hyphae, which grow at their tips and branch. All together they form the mycelium.
+i0992	When a tip finds food, the network strengthens that path and makes it thicker; where it finds none, the branches stop. So it explores the soil with as little thread as possible.
+i0993	Many fungi join the roots of trees and give them water and minerals in exchange for sugars. Under a forest in Oregon, a single fungus covers almost ten square kilometres.
+i0994	Cracked mud
+i0995	When mud dries, the top layer shrinks but the bottom holds it back, and the tension cracks it. First some long cracks open and divide the ground into large pieces.
+i0996	Then each piece cracks inside, and the new cracks end on the old ones at right angles: pieces within pieces, smaller and smaller.
+i0997	If the mud is wetted and dried many times, the right-angled joints slowly turn until they make angles of 120 degrees, like the basalt columns that form when lava cools.
+i0998	Peacock feather
+i0999	A feather is a tree with three levels: from the shaft come the barbs, and from each barb, hundreds of barbules. In flight feathers, the barbules hook together with tiny hooks and make a closed surface.
+i1000	The peacock’s colours are not pigments: inside the barbules there are neatly ordered rods of melanin that reflect only certain colours of light, like a soap bubble. That is why the colour changes when the feather moves.
+i1001	The «eyes» of the train are for courtship: the male raises the feathers in a fan and makes them quiver in front of the female.
+i1002	Mountain ranges
+i1003	A mountain range has a main ridge from which spurs come out, and from the spurs, smaller spurs. Between each pair a stream carves a valley: ridges and valleys are two networks fitted into each other.
+i1004	Seen from far or near, a mountain is just as rugged: a rock can look like a peak. That is why geology photos put an object beside it, so that its size can be seen.
+i1005	The mountains of many films are made by computer by repeating a rule: divide the ground, raise or sink each piece a little at random, and divide again.
+i1006	Roots
+i1007	From a main root come lateral roots, and from these, even finer roots covered in root hairs. Branching lets the plant explore a lot of soil to find water and minerals.
+i1008	Roots grow at the tip and sense where there is more water or more food: there they branch more, and where the soil is poor they grow little.
+i1009	A classic study measured all the roots of a single four-month-old rye plant: they added up to about 600 kilometres, and counting the root hairs, more than 10,000.
+i1010	Shell of triangles
+i1011	Some cone shells have a pattern of triangles of every size, very like the Sierpinski triangle, a fractal made of triangles within triangles.
+i1012	The pattern is painted at the edge of the shell as it grows, line by line. Each cell of the edge lays down pigment or not depending on what its neighbours do: some pass the activity on and others switch it off.
+i1013	Very simple programs, cellular automata, do the same: with a few rules between neighbours they create patterns of great complexity.
+i1014	The white ball is the fruit of a whole head of florets: each floret leaves a seed with a long beak and, on top, a pappus of about a hundred filaments spread like the ribs of an umbrella.
+i1015	Air flows between the filaments and, just above the pappus, a ring-shaped vortex forms that does not come away and brakes it. So the seed falls very slowly, and with wind it can travel kilometres.
+i1016	The shape repeats at every scale: the head carries seeds, each seed carries a pappus, and each filament has small teeth along its sides.

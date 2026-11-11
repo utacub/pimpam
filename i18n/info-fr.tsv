@@ -938,3 +938,79 @@ i0937	Nébuleuse
 i0938	Une nébuleuse est un nuage sombre d’hydrogène où naissent des étoiles. La lumière ultraviolette d’une étoile nouvelle et très massive arrache des électrons au gaz environnant, et ce gaz brille.
 i0939	Le gaz incandescent, beaucoup plus chaud, pousse le nuage et ouvre une bulle qui grandit. Derrière les nœuds de gaz dense reste une ombre : un pilier qui pointe vers l’étoile, comme ceux de la nébuleuse de l’Aigle.
 i0940	À la fin, les étoiles explosent en supernovae et les ondes de l’explosion balaient le gaz. Dans l’ordinateur, se passe en quelques secondes ce qui prend des millions d’années dans l’espace.
+i0941	Les vingt formes de la nature, dans l’ordre de l’activité, et pourquoi chacune se répète à l’intérieur d’elle-même.
+i0942	Fougères
+i0943	Chaque fronde de fougère est faite de pennes qui ont la même forme que la fronde, et chaque penne, de pièces plus petites de la même forme. Cette répétition d’une forme à des échelles différentes, c’est ce qu’on appelle une fractale.
+i0944	Les jeunes frondes naissent enroulées en spirale, comme la tête d’une crosse, et se déroulent en grandissant.
+i0945	Il suffit de quatre règles simples (rétrécir, tourner et déplacer), répétées des milliers de fois, pour qu’un ordinateur dessine une fougère qui a l’air vraie.
+i0946	Flocons de neige
+i0947	Un flocon de neige a six bras parce que les molécules d’eau de la glace s’assemblent en hexagones. Les pointes avancent dans l’air humide, reçoivent plus de vapeur et poussent plus vite : ainsi naissent des branches, et de celles-ci, des brindilles.
+i0948	Les six bras se ressemblent tant parce qu’ils poussent en même temps et traversent la même température et la même humidité pendant que le flocon tombe. Les étoiles les plus ramifiées se forment vers moins quinze degrés, dans un air très humide.
+i0949	Les mathématiciens ont imaginé un flocon idéal, celui de Koch, dont chaque côté se divise sans fin : son bord est infiniment long et pourtant il enferme une surface limitée.
+i0950	Ce qui ressemble à une fleur est un capitule de centaines de fleurettes, et les « pétales » du bord sont aussi des fleurs. Chaque fleurette naît tournée d’environ 137,5 degrés par rapport à la précédente, l’angle d’or, et elles remplissent ainsi le disque sans laisser de trous.
+i0951	Avec cet angle, des spirales apparaissent dans les deux sens, et si on les compte on obtient très souvent deux nombres consécutifs de la suite de Fibonacci, comme 34 et 55 ou 55 et 89.
+i0952	La même manière de répartir les pièces se retrouve dans les pommes de pin, dans les écailles de l’ananas et dans les feuilles de nombreuses plantes autour de la tige.
+i0953	Éclairs
+i0954	Un éclair ne descend pas d’un seul coup : un canal d’air chargé avance vers le sol par bonds de quelques dizaines de mètres, et à chaque bond il peut se diviser en branches qui se divisent à nouveau.
+i0955	Quand l’une des branches touche le sol, le courant y passe avec toute sa force et ce chemin brille bien plus que les autres. Les branches qui ne sont pas arrivées restent comme un réseau plus fin.
+i0956	Les mêmes ramifications apparaissent quand une décharge traverse un bloc de plastique ou de bois. Elles ont une dimension fractale d’environ 1,7 : plus qu’une ligne (1) et moins qu’une surface (2).
+i0957	Arbre
+i0958	Chaque branche d’un arbre ressemble à un arbre plus petit, et chaque rameau à une branche : la même règle de division se répète jusqu’aux extrémités, où sortent les feuilles et les fleurs.
+i0959	Léonard de Vinci avait déjà remarqué que, quand une branche se divise, les branches filles ensemble ont à peu près la même épaisseur que la mère : la section totale se conserve d’un niveau à l’autre.
+i0960	Avec cette forme, l’arbre expose beaucoup de feuilles au soleil et, en même temps, amène l’eau des racines jusqu’à la dernière feuille par des chemins courts.
+i0961	Fleuve et affluents
+i0962	Un fleuve recueille l’eau de tout un territoire par un réseau d’affluents : des ruisseaux qui se rejoignent en rivières et des rivières qui se rejoignent en fleuves. Vu du ciel, chaque morceau du réseau ressemble au réseau entier.
+i0963	Les géographes numérotent les tronçons : deux ruisseaux de premier ordre en font un de deuxième, deux de deuxième, un de troisième, jusqu’au cours principal. Partout dans le monde, chaque ordre compte trois à cinq fois moins de tronçons que le précédent.
+i0964	Le réseau s’étend jusqu’à ce qu’il ne reste presque aucun recoin loin d’un ruisseau : c’est une ligne qui tend à remplir une surface.
+i0965	Un corail branchu est une colonie de milliers de petits polypes, cousins des anémones. Chaque polype fabrique sous lui un squelette calcaire, et quand de nouveaux polypes naissent, la branche s’allonge ou se divise.
+i0966	Les branches se partagent l’espace pour recevoir la lumière et l’eau qui apporte la nourriture, et la même manière de se diviser se répète des grosses branches jusqu’aux pointes.
+i0967	Dans les polypes vivent des algues microscopiques qui leur donnent nourriture et couleur. Quand l’eau devient trop chaude, les polypes les expulsent et le corail blanchit.
+i0968	Chaque cône du romanesco est fait de cônes plus petits disposés en spirale, et chacun d’eux est à son tour fait de cônes encore plus petits. À l’œil nu, on peut en suivre plusieurs niveaux.
+i0969	Les spirales suivent le même angle d’or que le tournesol, et si on les compte dans chaque sens on obtient des nombres de la suite de Fibonacci.
+i0970	Cela vient de ce que les bourgeons qui devraient donner des fleurs n’y parviennent pas : chacun devient une tige qui refait des bourgeons, qui ne fleurissent pas non plus, et le processus se répète de plus en plus vite.
+i0971	Neurones
+i0972	Les neurones reçoivent les signaux d’autres neurones par les dendrites, des prolongements qui se ramifient comme un arbre : du corps de la cellule partent des branches qui se divisent encore et encore.
+i0973	En se ramifiant ainsi, un seul neurone peut toucher des milliers d’autres neurones avec très peu de câble. Certains grands neurones du cervelet reçoivent plus de cent mille contacts.
+i0974	Avec l’expérience et l’apprentissage, les dendrites gagnent ou perdent de petites branches et des épines : la forme de l’arbre change tout au long de la vie.
+i0975	Île et côte
+i0976	Les lignes de cette île sont des courbes de niveau, comme sur les cartes : chacune relie les points situés à la même altitude, du sommet jusqu’au trait de côte.
+i0977	Combien mesure une côte ? Cela dépend de la règle : plus elle est courte, plus elle suit les creux et les avancées, et plus la mesure est longue. C’est l’exemple avec lequel le mathématicien Benoît Mandelbrot a expliqué les fractales.
+i0978	Les baies ont des baies plus petites, et celles-ci des criques et des rochers : à chaque échelle, la côte est aussi irrégulière. C’est pourquoi, sur une photo, on devine mal si l’on voit cent mètres ou cent kilomètres.
+i0979	Les nervures portent l’eau dans toute la feuille et emportent le sucre que la lumière y fabrique. De la nervure centrale partent les secondaires, de celles-ci les tertiaires, jusqu’à un réseau si fin qu’aucune cellule n’est loin d’une nervure.
+i0980	Contrairement à un arbre, le réseau fin se referme en boucles : si un insecte coupe une nervure, l’eau peut faire le tour et arriver quand même.
+i0981	Des plantes très anciennes, comme le ginkgo, ont des nervures qui ne font que se diviser en deux, sans boucles.
+i0982	Givre sur la fenêtre
+i0983	Quand la vitre d’une fenêtre est beaucoup plus froide que l’air humide de l’intérieur, la vapeur d’eau s’y dépose directement sous forme de glace, sans passer par l’eau liquide.
+i0984	La glace commence sur une rayure ou un grain de poussière et pousse en aiguilles. Les pointes dépassent, reçoivent plus de vapeur et poussent plus vite ; d’elles en naissent de nouvelles, et ainsi se forment des plumes qui ressemblent à des fougères.
+i0985	C’est le même phénomène qui fait pousser les branches des flocons de neige, mais sur une surface plane.
+i0986	Nautile
+i0987	Le nautile est un cousin de la pieuvre qui vit dans une coquille. En grandissant, il construit de nouvelles loges, chacune un peu plus grande que la précédente, et ferme les anciennes par une cloison ; le gaz qu’elles contiennent l’aide à flotter.
+i0988	Comme les loges grandissent toujours dans la même proportion, la coquille garde la même forme, petite ou grande : c’est une spirale logarithmique, et un morceau de la coquille est une copie en petit de l’ensemble.
+i0989	On dit souvent qu’elle suit le nombre d’or, mais les mesures montrent que non : chaque coquille a sa propre proportion, et ce n’est presque jamais celle-là.
+i0990	Mycélium
+i0991	Le champignon qu’on cueille n’est que le fruit : le champignon vit sous terre comme un réseau de fils très fins, les hyphes, qui poussent par la pointe et se ramifient. Ensemble, ils forment le mycélium.
+i0992	Quand une pointe trouve de la nourriture, le réseau renforce ce chemin et l’épaissit ; là où il n’en trouve pas, les branches s’arrêtent. Il explore ainsi le sol avec le moins de fil possible.
+i0993	Beaucoup de champignons s’associent aux racines des arbres et leur donnent eau et sels minéraux en échange de sucres. Sous une forêt de l’Oregon, un seul champignon occupe presque dix kilomètres carrés.
+i0994	Boue craquelée
+i0995	Quand la boue sèche, la couche du dessus se rétracte mais le fond la retient, et la tension la fissure. D’abord s’ouvrent de longues fissures qui divisent le sol en grandes pièces.
+i0996	Ensuite chaque pièce se fissure à l’intérieur, et les nouvelles fissures rejoignent les anciennes à angle droit : des pièces dans des pièces, de plus en plus petites.
+i0997	Si la boue est mouillée et séchée de nombreuses fois, les jonctions à angle droit tournent peu à peu jusqu’à former des angles de 120 degrés, comme les colonnes de basalte qui se forment quand la lave refroidit.
+i0998	Plume de paon
+i0999	Une plume est un arbre à trois niveaux : du rachis partent les barbes, et de chaque barbe, des centaines de barbules. Dans les plumes de vol, les barbules s’accrochent par de minuscules crochets et forment une surface fermée.
+i1000	Les couleurs du paon ne sont pas des pigments : dans les barbules, de petits bâtonnets de mélanine bien ordonnés ne réfléchissent que certaines couleurs de la lumière, comme une bulle de savon. C’est pourquoi la couleur change quand la plume bouge.
+i1001	Les « yeux » de la traîne servent à la parade : le mâle dresse ses plumes en éventail et les fait vibrer devant la femelle.
+i1002	Chaînes de montagnes
+i1003	Une chaîne de montagnes a une crête principale d’où partent des contreforts, et des contreforts, des éperons plus petits. Entre chaque paire, un torrent creuse une vallée : crêtes et vallées sont deux réseaux emboîtés.
+i1004	Vue de loin ou de près, une montagne est aussi accidentée : un rocher peut ressembler à un sommet. C’est pourquoi, sur les photos de géologie, on pose un objet à côté pour donner l’échelle.
+i1005	Les montagnes de nombreux films sont faites par ordinateur en répétant une règle : diviser le terrain, soulever ou enfoncer chaque morceau un peu au hasard, et diviser à nouveau.
+i1006	Racines
+i1007	D’une racine principale partent des racines latérales, et de celles-ci des racines encore plus fines, couvertes de poils absorbants. La ramification permet d’explorer beaucoup de terre pour trouver de l’eau et des sels minéraux.
+i1008	Les racines poussent par la pointe et sentent où il y a plus d’eau ou plus de nourriture : là, elles se ramifient davantage, et là où la terre est pauvre, elles poussent peu.
+i1009	Une étude classique a mesuré toutes les racines d’un seul plant de seigle de quatre mois : elles totalisaient environ 600 kilomètres, et avec les poils absorbants, plus de 10 000.
+i1010	Coquillage à triangles
+i1011	Certains cônes, des coquillages, portent un dessin de triangles de toutes tailles, très semblable au triangle de Sierpinski, une fractale faite de triangles dans des triangles.
+i1012	Le dessin se peint au bord de la coquille à mesure qu’elle grandit, ligne après ligne. Chaque cellule du bord dépose du pigment ou non selon ce que font ses voisines : certaines se transmettent l’activité et d’autres l’éteignent.
+i1013	Des programmes très simples, les automates cellulaires, font la même chose : avec quelques règles entre voisins, ils créent des dessins d’une grande complexité.
+i1014	La boule blanche est le fruit de tout un capitule de fleurettes : chaque fleurette laisse une graine avec un long bec et, au sommet, une aigrette d’une centaine de filaments ouverts comme les baleines d’un parapluie.
+i1015	L’air passe entre les filaments et, juste au-dessus de l’aigrette, se forme un tourbillon en anneau qui ne s’en détache pas et la freine. La graine tombe ainsi très lentement, et avec le vent elle peut parcourir des kilomètres.
+i1016	La forme se répète à chaque échelle : le capitule porte des graines, chaque graine porte une aigrette, et chaque filament a de petites dents sur les côtés.
