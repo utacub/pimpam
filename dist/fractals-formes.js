@@ -207,12 +207,15 @@ export function frTraced(b64){let P=FR_TRACED.get(b64);if(P)return P;P=[];const 
  FR_TRACED.set(b64,P);return P;}
 // Its drawing: every path grows point by point at its moment (scaled by the growth setting k) from t0; o: wk (width factor), wpow
 // (widths pressed towards the thin ones: w^wpow), wmin, lum, lumw [the brightness of the finest lines, from the width w0 up to w1
-// where it is whole], hot, sway, and fork: [length, half angle, levels, ratio, brightness] of the last small forks that every free
+// where it is whole], hot, sway, under (see below), and fork: [length, half angle, levels, ratio, brightness] of the last small forks that every free
 // tip makes (the finest orders, too fine to be traced from the picture), or none.
 export function frDrawTraced(S,P,t0,o={}){const k=S.k,wk=o.wk??1,wm=o.wmin??0,wp=o.wpow??1,R=S.rnd,W=w=>Math.max(wm,Math.pow(w,wp)*wk);
  for(const p of P){const ts=Array.from(p.ts,t=>t0+t*k),n=p.w.length,wa=p.w.reduce((a,b)=>a+b,0)/n,
   lum=(o.lum??1)*(o.lumw?Math.min(1,o.lumw[0]+(1-o.lumw[0])*Math.max(0,wa-o.lumw[1])/(o.lumw[2]-o.lumw[1])):1),
   base={d0:p.d0,lum,hot:o.hot??.7,sway:o.sway??0,seed:p.pts[0]*.01};
+  // under a wide line, a wider and dimmer one of a deeper colour: the glow at its edges (o.under: [the least mean width, the width
+  // factor, its brightness, the shift of its colour])
+  if(o.under&&wa>=o.under[0])frPathT(S,p.pts,ts,{...base,lum:lum*o.under[2],hot:0,wf:i=>W(p.w[i])*o.under[1],cf:i=>Math.min(1,p.c[i]+o.under[3])});
   frPathT(S,p.pts,ts,{...base,wf:i=>W(p.w[i]),cf:i=>p.c[i]});
   if(o.fork&&p.tip&&n>1){const v=Math.max(40,p.len/Math.max(.05,p.ts[n-1]-p.ts[0]));
    // the forks of the forks: each level a Y smaller by o.fork[3] (o.fork[2] levels)

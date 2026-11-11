@@ -1,7 +1,7 @@
 // Fractals a la natura (CE46, 0.73) · stimuli 11–15: nervis d'una fulla, gel a la finestra, nautilus, micel·li, fang esquerdat. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
 import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOut,frLine,frTurn,frRoom,frTree,frInPoly,frVoronoi,frTraced,frDrawTraced,FR_TAU} from './fractals-formes.js';
-import {FR_TR_MICELI} from './fractals-traces.js';
+import {FR_TR_MICELI,FR_TR_FANG} from './fractals-traces.js';
 import {frRandom,frNoise,frIso,frChains} from './fractals-motor.js';
 
 // ── 11 · Nervis d'una fulla ───────────────────────────────────────────────────────────────────────────────────────────────
@@ -138,3 +138,27 @@ export const FR_MICELI={id:'miceli',name:'Micel·li',what:'els cordons del fong,
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_MICELI),t0,{wk:.9,wpow:.9,wmin:.6,fork:[7,.36,1,.6,.8],lumw:[.55,.6,1.8],lum:1,hot:.7,sway:.15});
   for(const [x,y] of [[10,108],[12,927],[1665,6],[1667,935]])frEvent(S,'tronc',x/941,t0);
   frEvent(S,'branca',.5,t0+.8*k);frEvent(S,'branca',1.3,t0+1.1*k);for(let i=0;i<5;i++)frEvent(S,'fulla',.2+i*.33,t0+(1.5+i*.35)*k);}]};
+
+// ── 15 · Fang esquerdat ───────────────────────────────────────────────────────────────────────────────────────────────────
+// Wet mud shrinks as it dries, and the stress opens cracks. The first cracks run long and far; the later ones start from the older
+// ones and end on them, meeting them nearly at right angles, so that every piece is divided into smaller pieces of the same kind, and
+// these again, until the pieces are too small to break: a hierarchy of divisions, the same pattern at every size (Bohn, Douady &
+// Couder, 2005; Bohn, Pauchard & Couder, 2005). After many wettings and dryings the meetings turn towards angles of 120° and the
+// pieces towards hexagons (Goehring, Conroy, Akhter, Clegg & Routh, 2010). Growth: the first, wide cracks open from a few places and
+// run across the whole ground; then the second ones run between them; then the third ones and the finest hairlines, each order in
+// its turn. Concept 15: a dark ground cut by glowing gold cracks, the first ones wide and bright, the finest dim orange; traced.
+export const FR_FANG={id:'fang',name:'Fang esquerdat',what:'les esquerdes del fang, de les primeres a les més fines',
+ pal:['#ffe060','#ffc63c','#ffa41e','#f08a10','#b06008'],pal2:['#fff0a0','#ffc060','#ff9a40','#e86a28','#a03c14'],
+ look:{bloom:.22,glow:1.8,halo:.22,core:.5,tubeW:7,tubeP:2.5,spread:.3,minW:.6,gsat:1.5,sat:1.15,white:3,exp:1.2},wind:0,
+ acts:[(S,t0)=>{const k=S.k,R=S.rnd,P=frTraced(FR_TR_FANG),G=frRoom(4);
+  frDrawTraced(S,P,t0,{wk:.75,wpow:1.15,wmin:.55,lumw:[.55,.6,2.2],lum:1,hot:.8,sway:0,under:[5,1.5,.5,.45]});
+  // the hairline cracks, the last order: short wavy cracks that leave the fine ones and stop at the next crack they meet
+  P.forEach((p,i)=>G.mark(p.pts,u=>p.w[Math.min(p.w.length-1,Math.round(u*(p.w.length-1)))]*.5+1.2,i));const seeds=[];
+  for(const p of P){const n=p.w.length;if(n<2||p.w[0]>3.2)continue;let s=6+R()*18,side=R()<.5?-1:1,acc=0;
+   for(let i=1;i<n;i++){const x0=p.pts[i*2-2],y0=p.pts[i*2-1],dx=p.pts[i*2]-x0,dy=p.pts[i*2+1]-y0,l=Math.hypot(dx,dy);
+    while(s<acc+l){const f=(s-acc)/l,x=x0+dx*f,y=y0+dy*f,a=Math.atan2(dy,dx)+side*(1.05+.5*(R()-.5));side=-side;
+     seeds.push({x,y,a,len:8+R()*13,w:.6,d:p.d0+s,t:t0+(p.ts[i-1]+(p.ts[i]-p.ts[i-1])*f)*k+.25*k,s0:p.w[i]*.5+2.5});s+=22+R()*30;}
+    acc+=l;}}
+  frTree(S,G,seeds,{ratio:.6,sp:.62,wr:.8,minLen:5,depth:0,up:0,bend:1.2,tries:[0,.3,-.3,.6,-.6],pad:lv=>1.2,C:lv=>[[.8,.92],[.92,1]][lv],t0,T:lv=>2.3+lv*.25,dur:lv=>.3,hot:.3,sway:0,lum:lv=>.34});
+  for(const [x,y] of [[470,365],[862,130],[1250,235],[400,565],[1405,515],[860,865]])frEvent(S,'tronc',x/941,t0+(y/941)*.1*k);
+  frEvent(S,'branca',.4,t0+.9*k);frEvent(S,'branca',1.3,t0+1.2*k);for(let i=0;i<5;i++)frEvent(S,'fulla',.2+i*.33,t0+(1.7+i*.35)*k);}]};

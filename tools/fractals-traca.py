@@ -154,6 +154,10 @@ for i in range(nc_):
     e['ws']=e['ws']+(m-e['ws'][k])*f
 deg=np.array([len(x) for x in adj])
 B=P.get('border',25)
+# the colour by the width of the line (P.cwid: [[width, c], …], the widest first or not)
+if 'cwid' in P:
+  tw=sorted(P['cwid'])
+  for e in E: e['cs']=np.clip(np.interp(e['ws'],[a for a,_ in tw],[b for _,b in tw]),0,1)
 # the colour by the distance along the network from the nearest cord (P.cd: [cord c at its widest, at its thinnest, a hypha at the
 # cord, a hypha far away, how far (px), the dimming of the finest lines, their width]): green cords, hyphae that turn cyan as they go
 if 'cd' in P:
