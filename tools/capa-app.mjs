@@ -1,5 +1,5 @@
 // The colour layer of the focus (0.40) in the built HTML: for each look of the highlight (frame and layer), pictures of the menu with its
-// focus, a card activity (EN06) and a board activity (EN26) with the focus part of the way through an option, and the sample in the
+// focus, a card activity (EN22) and a board activity (EN26) with the focus part of the way through an option, and the sample in the
 // settings; lists the errors of the page. Usage: node tools/capa-app.mjs <built.html> <outdir> [width] [height] [dpr]
 import {createRequire} from 'node:module';
 import {mkdirSync} from 'node:fs';
@@ -25,7 +25,7 @@ for(const [name,look] of Object.entries(LOOKS)){
  await press();await run(1200);await page.evaluate(()=>document.querySelector('.scan-target')?.scrollIntoView({block:'center'}));await run(200);await shot('menu');
  const menu=await page.evaluate(()=>{const t=document.querySelector('.scan-target');if(!t)return null;const a=getComputedStyle(t,'::after');return {p:t.style.getPropertyValue('--ring-p'),after:a.content,clip:a.clipPath,root:document.documentElement.className};});
  console.log(name,'menu',JSON.stringify(menu));
- await page.evaluate(()=>{document.querySelector('[data-start="dress"]').click();});await run(1500);await run(1400);await shot('vestidor');
+ await page.evaluate(()=>{document.querySelector('[data-start="lights"]').click();});await run(1500);await run(1400);await shot('llums');
  const card=await page.evaluate(()=>{const s=document.querySelector('.scanned');if(!s)return null;const f=s.querySelector('.ring-fill');const st=document.querySelector('#stage');return {stage:st.className,fill:f?getComputedStyle(f).display+' '+getComputedStyle(f).opacity:null,clip:f?getComputedStyle(f,'::after').clipPath:null};});
  console.log(name,'card',JSON.stringify(card));
  await page.evaluate(()=>{document.querySelector('[data-nav="home"]').click();});await run(800);

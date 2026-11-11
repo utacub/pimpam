@@ -69,7 +69,8 @@ test('nature sounds: every form has one, a recording when the collection has it 
  assert.equal(new Set(names).size,names.length,'one recording per sound');const credits=fs.readFileSync(new URL('CREDITS.md',root),'utf8');
  for(const z of b.zones){assert.ok(fs.existsSync(new URL(z[0],root)),z[0]);bytes+=fs.statSync(new URL(z[0],root)).size;assert.ok(z[7]>=.25&&z[8]>z[7]+8&&z[3]-z[8]>=.25,`${z[0]}: a loop of at least 8 s with a guard`);assert.ok(credits.includes(z[0].split('/').pop()),`${z[0]} credited`);}
  // 0.31: the twelve ambiences of El pou del temps (16 s loops, about 1.6 MB) raised the budget from 4 MB; 0.38: the four ambiences of Pinta el món (cicadas, torrent, windmill, pigeons, about 0.55 MB) raised it to 6.2 MB.
- assert.ok(bytes<6.2e6,`${bytes} bytes of nature recordings`);
+ // 0.73: 6.5 MB, with the two loops of El vestidor fantàstic (the audience behind the wall, the creaking ship, 0.2 MB)
+ assert.ok(bytes<6.5e6,`${bytes} bytes of nature recordings`);
  const key=e=>JSON.stringify(e),extra=(score,plain)=>{const left=new Map();for(const e of plain)left.set(key(e),(left.get(key(e))||0)+1);
   const added=score.filter(e=>{const k=key(e),c=left.get(k);if(c){left.set(k,c-1);return false;}return true;});return {added,unchanged:[...left.values()].every(c=>c===0)};};
  for(let index=0;index<N;index++){const spec=NATURA_MUSIC[index],a=spec.ambience,wanted=[].concat(a.sound);

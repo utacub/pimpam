@@ -43,7 +43,7 @@ test('Piromusical: without the decor, the fireworks go up from the base colour, 
  assert.ok(r.none.n<r.full.n&&r.dim.n>r.none.n);assert.equal(r.none.first,undefined,'the app has already filled the base');
  assert.equal(r.full.first,r.dim.first,'dimmed, the night sky is drawn and veiled');});
 test('the scanning activities with a decor: the scene, the backdrop and the boards follow the setting; the content stays whole',()=>{
- for(const id of ['dress','vehicles','encaix','destinations','sounds','sources','lights']){const item=SCAN_ACTIVITIES.find(x=>x.id===id);assert.ok(item,id);
+ for(const id of ['vehicles','encaix','destinations','sounds','sources','lights']){const item=SCAN_ACTIVITIES.find(x=>x.id===id);assert.ok(item,id);
   const r=measure((c,o)=>{const s={...defaults,...o},state=createScanState(id,s);renderScanActivity(c,1280,720,id,{item,scanState:state,time:null,focusedChoice:scanChoices(state,s)[0],board:{focus:0,lights:[1,.6,.6,.6]}},s);});
   assert.equal(r.none.first,'#000000',`${id}: the base, black`);assert.equal(r.white.first,'#ffffff',`${id}: the base, white`);
   assert.ok(r.none.n<=r.full.n&&r.dim.n>r.none.n,`${id}: ${JSON.stringify(r)}`);}

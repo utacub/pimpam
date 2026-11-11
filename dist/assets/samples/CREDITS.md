@@ -535,3 +535,75 @@ Les 165 notes de la carpeta `detectius/` són fragments editats (retallats a par
 | `tuba_…` | tuba | `dsTuba` (7 notes) |
 | `violi_…` | violí | `dsVioli` (14 notes) |
 | `violoncel_…` | violoncel | `dsCello` (11 notes) |
+
+## El vestidor fantàstic (EN06, 0.73)
+
+Els 54 sons de la carpeta `vestidor` (els efectes del camerino i de l’escenari, el públic, el gosset Pipa i el lloro) i les 69 veus de la carpeta `vestidorVeu` (exclamacions sense paraules dels quatre artistes) s’han generat amb ElevenLabs el 2026-11-11: els efectes amb Sound Effects (model `eleven_text_to_sound_v2`) i les veus amb `eleven_v4`, amb veus de la biblioteca d’ElevenLabs. No són enregistraments reals ni obres de tercers. Els drets d’ús depenen de les condicions d’ElevenLabs i del pla del compte que els va generar, i **no s’han verificat**. Tampoc no s’han escoltat: s’han triat i tallat per mesura (durada, atacs, brillantor), i en Marc els ha d’escoltar abans de donar-los per bons. Les indicacions, les variacions descartades, els scripts de tria i tall i els identificadors de cada generació són a `propostes/vestidor_sons/` (amb `FONTS.md`), a la carpeta del projecte.
+
+Preparació: comencen al primer so amb una entrada de 5 ms i acaben amb una fosa de sortida; alguns porten un filtre passabaix; el volum s’iguala per la sonoritat momentània màxima (EBU R128), sense passar de −1 dBFS de pic; mono, MP3. Els dos ambients (`murmuri.mp3`, el públic que xerra darrere la paret, i `vaixell.mp3`, el vaixell que cruix) són bucles amb mig segon de marge a cada costat. Quatre efectes de la proposta no es fan servir i no són a l’app (l’armari que s’obre, la botzina, el gos que panteixa i el redoble, que és el redoble de caixa enregistrat de `snareRoll`), ni les vuit preses de «Hmm?». La música de l’activitat és feta amb instruments que ja tenia la suite (els de Detectius de sons, VSCO-2 CE, CC0 1.0).
+
+| Fitxer | Indicació (ElevenLabs) | Variació triada (identificador de la generació) |
+|---|---|---|
+| `vestidor/aletes.mp3` | Swim flippers slapping on a wooden floor, two wet floppy flaps | `d02_2` (`raEwrGBhGfkTHJfUrhAa`) |
+| `vestidor/aplaudiments.mp3` | Small theatre audience of children and parents applauding warmly, steady clapping that fades out at the end | `i11_2` (`PUV8s6ZQKoJlEJyxs6MQ`) |
+| `vestidor/armariTanca.mp3` | Wooden wardrobe doors closing softly with a gentle wooden click, close | `a07_3` (`ZoSBaaiNCAKAbbZ3Yn4N`) |
+| `vestidor/awwPublic.mp3` | Theatre audience saying aww together, sweet and tender | `i09_1` (`j5IftLakVjmljpj1YpXD`) |
+| `vestidor/badumtss.mp3` | Comedy drum rimshot, snare and cymbal, ba-dum-tss | `i04_1` (`c62ccsLXv5ir2ikTDKTT`) |
+| `vestidor/barretPosa.mp3` | A felt hat plopped onto a head, soft muffled thump, close | `a05_4` (`b0MCNiwogFi2y3aCOBMY`) |
+| `vestidor/barretVola.mp3` | A short airy whoosh of a hat flying off | `h03_4` (`fXU4dM91hu5wctWIdrSb`) |
+| `vestidor/bombolles.mp3` | Bubbles blown through a snorkel underwater, three soft blub blub sounds, close | `d01_4` (`xsVXpBblq9nKhZBVDawC`) |
+| `vestidor/botesLluna.mp3` | Heavy padded boots landing softly, a low muffled thump with a springy wobble | `e02_4` (`cPl36BqtcR2XOsGTDoiw`) |
+| `vestidor/botesPirata.mp3` | Four clear wooden boot stomps on a wooden stage, evenly spaced, steady rhythm, close, no music | `b08_3` (`tbxIwRBvq6eU8ZSAqsVe`) |
+| `vestidor/capaEnrotlla.mp3` | Heavy fabric being wrapped around and around a body, thick cloth rustles | `g03_1` (`8URcCMUpoWWjaJkEH6EO`) |
+| `vestidor/capaGira.mp3` | A long velvet cape swooshing through the air as someone spins around | `g02_4` (`LaXXurnwWMFz8WahJlaJ`) |
+| `vestidor/casc.mp3` | A space helmet clicking shut with a short pressurised air hiss | `e01_4` (`WTwI3K5GxH8tRvpSWgDy`) |
+| `vestidor/cinta.mp3` | A gymnastics ribbon swishing through the air in loops, silky whooshes | `h07_1` (`6FzdKieNYPQyE8Dalre1`) |
+| `vestidor/confeti.mp3` | Paper confetti bursting out with a soft pop and a gentle paper rustle | `h08_3` (`B3hWGbU0NYIKpU9AKaFA`) |
+| `vestidor/corona.mp3` | A small metal crown wobbling on a head, light rattling clinks | `g01_1` (`FL2JwBNutQ6U2RBm9rBC`) |
+| `vestidor/esclops.mp3` | Three wooden clog steps on a wooden stage floor, clop clop clop, evenly spaced, close, no music | `f05_2` (`3PQNW7PQmzWwa6GbGZgo`) |
+| `vestidor/farina.mp3` | A puff of flour blown into the air, soft powdery whoomph | `f01_2` (`bqYgq1pmOEyFqiTc9eTn`) |
+| `vestidor/focus.mp3` | A big old theatre spotlight switching on with a heavy clunk | `i02_3` (`s03VsBG7TMouPaGbvTLW`) |
+| `vestidor/globus.mp3` | A rubber balloon squeaking as it is squeezed, short playful squeaks | `h04_3` (`ag8kFNjm6V3o9W0H66w5`) |
+| `vestidor/gorroCreix.mp3` | A long rising rubbery stretching squeak, like a balloon being stretched slowly | `f02_4` (`y1jiVAOf2UOJS5FSj56c`) |
+| `vestidor/gosBorda.mp3` | A small fluffy dog giving two happy high barks, close | `j01_3` (`HjibLbObkCpwZNVanxVg`) |
+| `vestidor/gosCanta.mp3` | A small dog howling along musically, a short cute aroo | `j07_1` (`XnieR0Z8e6Z6NPJrSa4U`) |
+| `vestidor/gosEsternuda.mp3` | A small dog sneezing once, a short cute sneeze | `j04_3` (`HeL71tCrmgPEyPGkcxt1`) |
+| `vestidor/gosPotes.mp3` | A small dog's paws tapping quickly across a wooden floor | `j06_4` (`K7AhyzpbbxRMseijaGB9`) |
+| `vestidor/gosSacseja.mp3` | A small dog shaking its fur and floppy ears, quick flappy rustle | `j05_3` (`LkWdsPC2OzVwBQm73Ldr`) |
+| `vestidor/gosYip.mp3` | A small dog giving one excited yip, close | `j02_4` (`qPnkY9SOvnr6mscEfCpV`) |
+| `vestidor/lloroAles.mp3` | A parrot flapping its wings quickly, feathery flutter, close | `b03_1` (`aITe0dVlCk4IUtrRaOLM`) |
+| `vestidor/lloroCrida.mp3` | A cheerful parrot squawk, one short bright call, close | `b01_3` (`kitrpiTC0VlvLU4wPoCk`) |
+| `vestidor/lloroXerra.mp3` | A parrot chattering playfully, a short burst of squawky babble, close | `b04_2` (`Gvmeqlp0XaUFGWTWyMPG`) |
+| `vestidor/lloroXiula.mp3` | A parrot whistling a short cheerful two-note whistle, close | `b02_4` (`p2fNIvKrC6k32Btfsh28`) |
+| `vestidor/mirall.mp3` | Short magical glass shimmer, a soft bright twinkle like a wind chime brushed once | `a08_4` (`ixvbSQgHiBhYd9PugpYn`) |
+| `vestidor/murmuri.mp3` | Theatre audience murmuring quietly before a show begins, distant chatter with no clear words, calm and even | `i15_3` (`gR8uLQFuUYUP8RstRgiw`) |
+| `vestidor/neda.mp3` | Two gentle swimming strokes splashing in a pool | `d03_1` (`8dxfgyYQWgFY9j2UuCNN`) |
+| `vestidor/neopre.mp3` | A rubber wetsuit being stretched and snapping back, rubbery squeak and slap | `d04_1` (`MSDCUCdMtuqxmuTT7LAt`) |
+| `vestidor/oohPublic.mp3` | Theatre audience of children and adults saying a long ooooh together in amazement | `i14_3` (`2TwfDJ7ZWHkVZ6YLxppu`) |
+| `vestidor/ovacio.mp3` | Enthusiastic theatre audience applause with happy cheers and whistles, children and adults, fading out at the end | `i12_3` (`h6QCnntQKzfiCk9HHJqT`) |
+| `vestidor/paraigua.mp3` | An umbrella snapping open with a quick whoosh and fabric pop | `h01_1` (`y5a9XEWvHB7GBUQCQh8E`) |
+| `vestidor/passosMitjons.mp3` | Four soft padded footsteps of a child in socks on a wooden stage floor, evenly spaced, close, no music | `a10_3` (`USsTlGoockCgdS5kh95d`) |
+| `vestidor/pirueta.mp3` | A quick spinning swish of a tulle tutu, airy fabric swirl | `c02_3` (`I99deaL3OyyZTld3Own0`) |
+| `vestidor/puntetes.mp3` | Ballet slippers tiptoeing quickly across a wooden stage, light soft taps | `c01_3` (`HygMoT3UisCKf8KbloGt`) |
+| `vestidor/regadora.mp3` | Water sprinkling from a watering can onto leaves, gentle shower, short | `h05_1` (`ueC1DaVR9MJsNGkwJ2c1`) |
+| `vestidor/rellisca.mp3` | A shoe slipping on a slippery floor, quick squeak and a sliding scrape | `f03_1` (`lnP8XMBAvAYves1hRkvW`) |
+| `vestidor/riallesPublic.mp3` | Small theatre audience laughing warmly together, children and adults, a burst of laughter that settles down | `i13_3` (`6aHpd87l6VAwjZjshkD0`) |
+| `vestidor/robaPosa.mp3` | A soft cloth garment dropping onto a person's shoulders, quick fabric rustle and gentle pat, close | `a04_3` (`dwK16HbOHXzdGeHOVWVn`) |
+| `vestidor/robaVola.mp3` | Several pieces of clothing flying quickly past through the air, soft fabric flaps and whooshes, no music | `a03_1` (`Fz5yVHQVCU3H41g9uc59`) |
+| `vestidor/sabatesPosa.mp3` | Feet slipping into shoes, quick soft leather squeak and a light tap, close | `a06_1` (`lamR2LW1jUV7KDJCS8fe`) |
+| `vestidor/teloner.mp3` | A heavy theatre curtain being raised, fabric swoosh and a rope pulley creak | `i01_4` (`QY8mlZEDesGOUpRoHmiA`) |
+| `vestidor/tuba.mp3` | A tuba playing one silly low out-of-tune blat, short and funny | `h02_1` (`t5GKMuC6UUERkilz0UV4`) |
+| `vestidor/tutuPop.mp3` | A soft playful pop like a small cork coming out, gentle | `c03_4` (`bs4Kq4gZjSuCRwAtHqUb`) |
+| `vestidor/vaixell.mp3` | Wooden ship deck creaking gently with small waves lapping against the hull, calm and even, no music | `b07_4` (`0v5R1R9peV4xdfqwJ07a`) |
+| `vestidor/ventada.mp3` | A sudden magical gust of wind rushing out of a cupboard, airy whoosh with fluttering fabric, no music | `a02_3` (`ruxWdGqEHbwmru7WtGTX`) |
+| `vestidor/ventall.mp3` | A paper folding fan snapping open, then two quick fanning flutters | `h06_2` (`JoVsZ0jQcqySOFYPxzNH`) |
+| `vestidor/vestitInfla.mp3` | A puffy suit inflating quickly with air, soft rubbery whoosh, no pop | `e03_4` (`yw6Bqc7H6G92Cg1OjxH4`) |
+
+| Artista | Veu de la biblioteca d’ElevenLabs | Fitxers |
+|---|---|---|
+| Rita | Betty – Quirky, Cartoonish & Warm | `ritaEsforc1.mp3`, `ritaEsforc2.mp3`, `ritaIupi1.mp3`, `ritaIupi2.mp3`, `ritaOh1.mp3`, `ritaOh2.mp3`, `ritaOoh1.mp3`, `ritaOoh2.mp3`, `ritaRialleta1.mp3`, `ritaRialleta2.mp3`, `ritaRiure1.mp3`, `ritaRiure2.mp3`, `ritaTada1.mp3`, `ritaTada2.mp3`, `ritaUau1.mp3`, `ritaUau2.mp3`, `ritaUps1.mp3`, `ritaUps2.mp3` |
+| Hug | Wilf – Cheerful, Quirky and Northern | `hugEsforc1.mp3`, `hugEsforc2.mp3`, `hugIupi1.mp3`, `hugIupi2.mp3`, `hugOh1.mp3`, `hugOh2.mp3`, `hugOoh1.mp3`, `hugOoh2.mp3`, `hugRialleta1.mp3`, `hugRiure1.mp3`, `hugRiure2.mp3`, `hugTada1.mp3`, `hugTada2.mp3`, `hugUau1.mp3`, `hugUau2.mp3`, `hugUps1.mp3`, `hugUps2.mp3` |
+| Avi Quim | El Abuelo Charlie – Anciano Narrador de Historias | `quimEsforc1.mp3`, `quimEsforc2.mp3`, `quimIupi1.mp3`, `quimIupi2.mp3`, `quimOh1.mp3`, `quimOh2.mp3`, `quimOoh1.mp3`, `quimOoh2.mp3`, `quimRialleta1.mp3`, `quimRialleta2.mp3`, `quimRiure1.mp3`, `quimRiure2.mp3`, `quimTada1.mp3`, `quimTada2.mp3`, `quimUau1.mp3`, `quimUau2.mp3`, `quimUps1.mp3`, `quimUps2.mp3` |
+| Ona | Lulu Lollipop – Sweet & Bubbly Girl | `onaEsforc1.mp3`, `onaEsforc2.mp3`, `onaIupi1.mp3`, `onaIupi2.mp3`, `onaOh1.mp3`, `onaOh2.mp3`, `onaOoh1.mp3`, `onaOoh2.mp3`, `onaRialleta1.mp3`, `onaRiure1.mp3`, `onaRiure2.mp3`, `onaTada1.mp3`, `onaTada2.mp3`, `onaUau1.mp3`, `onaUps1.mp3`, `onaUps2.mp3` |
+
+Crèdit: «Sons i veus generats amb ElevenLabs».
