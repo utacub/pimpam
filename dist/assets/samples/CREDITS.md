@@ -607,3 +607,52 @@ Preparació: comencen al primer so amb una entrada de 5 ms i acaben amb una fosa
 | Ona | Lulu Lollipop – Sweet & Bubbly Girl | `onaEsforc1.mp3`, `onaEsforc2.mp3`, `onaIupi1.mp3`, `onaIupi2.mp3`, `onaOh1.mp3`, `onaOh2.mp3`, `onaOoh1.mp3`, `onaOoh2.mp3`, `onaRialleta1.mp3`, `onaRiure1.mp3`, `onaRiure2.mp3`, `onaTada1.mp3`, `onaTada2.mp3`, `onaUau1.mp3`, `onaUps1.mp3`, `onaUps2.mp3` |
 
 Crèdit: «Sons i veus generats amb ElevenLabs».
+
+## Fractals a la natura (CE46, 0.74)
+
+Els 40 sons de la carpeta `fractals` (per a cada una de les vint formes, sis segons del lloc on viu, que sonen sota el creixement, i un accent propi: una fulla, un cristall, una abella, una onada…) s’han generat amb ElevenLabs el 2026-11-11 amb Sound Effects (model `eleven_text_to_sound_v2`, influència de la indicació 0,4), al flux `a2wJiA3YtKsf1XaMrs56`. No són enregistraments reals ni obres de tercers. Els drets d’ús depenen de les condicions d’ElevenLabs i del pla del compte que els va generar, i **no s’han verificat**. Tampoc no s’han escoltat: de dues a quatre variacions de cada indicació, s’han triat i tallat per mesura (constància i absència de tons fixos en els ambients; un sol esclat, l’atac al principi i la durada en els accents), i en Marc els ha d’escoltar abans de donar-los per bons.
+
+Preparació: els ambients comencen al principi de la presa amb una entrada de 0,3 s i acaben amb una fosa de sortida d’1,5 s; els accents comencen al primer so amb una entrada de 5 ms i acaben amb una fosa de 0,15 s; el volum s’iguala per la sonoritat momentània màxima (EBU R128: −30 LUFS els ambients, −24 els accents), sense passar de −1 dBFS de pic; mono, MP3 de 96 kb/s.
+
+| Fitxer | Indicació (ElevenLabs) | Variació triada (identificador de la generació) |
+|---|---|---|
+| `fractals/falgueresAmb.mp3` | Quiet damp forest floor among ferns, a soft breeze brushing through the fronds, a few slow water drips nearby, calm and gentle, no birds, no music | `01a_4` (`bAM9ohyjOsMLN6g8mVA2`) |
+| `fractals/falgueresAcc.mp3` | A single soft fern frond uncurling and brushing against other leaves, gentle leafy rustle, close, quiet | `01b_3` (`kjOcSrl7oYVYsUrjCWhO`) |
+| `fractals/flocsAmb.mp3` | Gentle snowfall in still winter air, a soft hush of falling snow, faint distant wind, calm and peaceful, no music | `02a_3` (`xLEvpOKRNuoEarY6OrHp`) |
+| `fractals/flocsAcc.mp3` | Tiny ice crystals tinkling softly, a delicate glassy sparkle, close and gentle | `02b_1` (`cGjJS2c5H4MjwKjZgJr0`) |
+| `fractals/girasolAmb.mp3` | Warm summer sunflower field, bees humming softly around the flowers, a light breeze through tall stems, calm, no music | `03a_1` (`vyV6svffXkufOtCjwiZL`) |
+| `fractals/girasolAcc.mp3` | One bumblebee flying past close by, a short soft buzz that comes and goes | `03b_3` (`vxjzNd5XizlZF36HJ8jq`) |
+| `fractals/llampsAmb.mp3` | Very distant soft thunder rolling far away over the hills, low and muffled, gentle, no rain, no sharp crack, no music (filtre passabaix de 2,5 kHz) | `04a_2` (`uo3B78tvNRDaLUfSUTnl`) |
+| `fractals/llampsAcc.mp3` | A soft crackle of static electricity, quick faint sparkling crackle, gentle and quiet | `04b_1` (`KAgpRwtn0BHLkRTmkqfp`) |
+| `fractals/arbreAmb.mp3` | The leaves of a large old tree rustling in a gentle wind, a few soft birds chirping far away, calm, no music | `05a_3` (`WLsTCIubwerJKXtlrenC`) |
+| `fractals/arbreAcc.mp3` | A short rustle of a leafy branch swaying once in the wind, close | `05b_3` (`m6yUW4fVgBnsr267ImeC`) |
+| `fractals/riuAmb.mp3` | A wide calm river flowing gently, soft steady water murmur over sand and pebbles, peaceful, no music | `06a_2` (`k3t8BtFLXjLOTCvpB4eA`) |
+| `fractals/riuAcc.mp3` | A small trickle of water, a short gentle babble of a little stream over stones, close | `06b_2` (`Ev7dK7pc8JYWWJSokqtF`) |
+| `fractals/corallAmb.mp3` | Underwater coral reef ambience, soft muffled water, gentle bubbles rising, faint crackling of tiny reef creatures, calm, no music | `07a_3` (`rBaw8P4SdylTlvtrTTp5`) |
+| `fractals/corallAcc.mp3` | A few small air bubbles rising underwater, soft round blub sounds, close | `07b_3` (`TaGCL66p5QIAWKTbempY`) |
+| `fractals/romanescoAmb.mp3` | A quiet vegetable garden early in the morning, a soft breeze through big cabbage leaves, a few distant birds, calm, no music | `08a_3` (`xFzcK4gsDKrak8CCC5Qe`) |
+| `fractals/romanescoAcc.mp3` | Crisp fresh cabbage leaves gently rubbing together, a short soft squeaky leafy crunch, close | `08b_2` (`pFlPfx5e6HWafFMc5Obl`) |
+| `fractals/neuronesAmb.mp3` | A slow calm heartbeat and soft breathing heard from inside the body, warm, muffled and peaceful, no music | `09a_2` (`E1N7edaTsD9eLxrGEEPd`) |
+| `fractals/neuronesAcc.mp3` | A tiny soft electric tick, a gentle little spark of electricity, short and quiet | `09b_3` (`kYsKOHYBzSuvqiuazmgi`) |
+| `fractals/costaAmb.mp3` | Gentle waves washing slowly onto a sandy shore, calm sea, one seagull calling far away, peaceful, no music | `10a_2` (`NbeHPepQh0vMW5GhCXW5`) |
+| `fractals/costaAcc.mp3` | One small wave lapping onto pebbles and pulling back, short and soft | `10b_3` (`V1JRod0SFPpHwEG6t6xx`) |
+| `fractals/fullaAmb.mp3` | Light gentle rain falling on large green leaves in a garden, soft patter, no thunder, calm, no music | `11a_2` (`Ar5gRhMZRIrRt3dVuBE2`) |
+| `fractals/fullaAcc.mp3` | A single water drop falling onto a leaf, one soft clear tap | `11b_3` (`3GlFzIMvqiONJuEdHUvz`) |
+| `fractals/gelAmb.mp3` | A cold quiet winter night, frost slowly forming on a glass window pane with faint delicate crackling, soft distant wind, no music | `12a_1` (`ujgdpvsfjqvc5OcAyXXt`) |
+| `fractals/gelAcc.mp3` | Thin ice crackling softly, a short crisp delicate crack, close and quiet | `12b_1` (`vpk8Jd8zRbdXvVRvwIe3`) |
+| `fractals/nautilusAmb.mp3` | Deep calm ocean ambience, slow soft underwater swell, a very faint distant whale song, peaceful, no music | `13a_1` (`zm68BDtPW7VetgNYMAJr`) |
+| `fractals/nautilusAcc.mp3` | A soft underwater swoosh, as of a shell gliding slowly through the water, gentle | `13b_2` (`NoR2dYV5CS6yBd9xuvF7`) |
+| `fractals/miceliAmb.mp3` | A quiet forest floor at night, damp moss and soil, faint creak of old wood, tiny crickets far away, calm, no music | `14a_2` (`hqfBW1Dj1yIMynBrah55`) |
+| `fractals/miceliAcc.mp3` | A soft crunch of damp leaves and soil, gentle and close, short | `14b_1` (`k7ECtapvv8coBE7iSX4P`) |
+| `fractals/fangAmb.mp3` | A hot dry afternoon over cracked earth, a warm gentle wind, faint cicadas far away, calm, no music (filtre passabaix de 7 kHz) | `15a_2` (`CvM3ZmRW1VHhkFdSTSo1`) |
+| `fractals/fangAcc.mp3` | Dry mud cracking softly, a small brittle crack of drying clay, close | `15b_3` (`DYUiKEzqkwsdsIPwh2nD`) |
+| `fractals/paoAmb.mp3` | A peaceful garden at dusk, a small fountain trickling softly, one peacock calling once far away, calm, no music | `16a_2` (`fIFSQDsb5satyuuzKWTR`) |
+| `fractals/paoAcc.mp3` | A peacock's long tail feathers fanning open, a soft feathery shiver and rustle, close | `16b_2` (`hJtGMajxBjvnUdsRAPTd`) |
+| `fractals/serraAmb.mp3` | High mountain wind blowing softly over rocky peaks, wide open space, one eagle crying far away, calm, no music | `17a_1` (`ZedO9HqwXG7oa3xzvDoq`) |
+| `fractals/serraAcc.mp3` | A few small pebbles trickling down a rocky slope, short, soft and distant | `17b_1` (`Nhd3kKo02cPwhLhBBs0a`) |
+| `fractals/arrelsAmb.mp3` | Underground among roots, slow water seeping and dripping through soil, soft low creaks of roots, muffled and calm, no music (filtre passabaix de 3 kHz (tons fixos aguts retallats)) | `18a_1` (`fltTIfUMAqoEUdZVQMz8`) |
+| `fractals/arrelsAcc.mp3` | A soft low creak of a wooden root stretching in the earth, short and gentle | `18b_3` (`91fh1lbgEYjcsGTkrdOR`) |
+| `fractals/petxinaAmb.mp3` | The soft ocean roar heard inside a seashell held to the ear, a gentle hollow whooshing sea sound, calm, no music | `19a_1` (`TTG6eoRX17BrpOezW6L7`) |
+| `fractals/petxinaAcc.mp3` | Two small seashells clinking gently together, a light porcelain click, close | `19b_1` (`ZpsiR9pZfI7wWyACc2S6`) |
+| `fractals/dentAmb.mp3` | A soft summer breeze across a meadow, gentle airy wind through grass, a few birds far away, calm, no music | `20a_2` (`gctmRGs7GSy3xptZGEyu`) |
+| `fractals/dentAcc.mp3` | A gentle breath blowing on a dandelion clock, a soft airy puff, close | `20b_1` (`MXQ7FXqi6XerAHrKPPIG`) |

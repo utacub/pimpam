@@ -81,18 +81,62 @@ export function frHelp(s){return `<strong>Cada pulsació fa créixer sencera una
 // Each form has its key, mode, metre and recorded instruments (plucked or struck, as in the rest of Pim Pam: no pads, no organs, every
 // note dies away); the phrases are made by the phrase maker of the Laboratori de matèria (bbPhrase). The events of the growth (a new
 // frond, a new crystal, a spiral that lights up) add a note of the chord, and some a recorded sound of their own.
+// The sound of the place of each form (amb: six seconds under the growth) and its accent (fx, on the new branches and tips, no closer than
+// the gap): their levels, set by measurement against the music (tools/fractals-audio.mjs): the place some 10 LU under the music, the
+// accents some 6–9 dB under its loudest moment (the short, sharp ones a little higher, 1.4×).
+export const FR_AMB=.95,FR_ACC=.65;
 export const FR_MUSIC=Object.freeze({
- falgueres:{key:62,mode:'mixo',meter:'68',unit:.36,M:6,lead:'kalimbaRec',mid:'guitarRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,6,3,0,4,6,3,0],cont:[2,4,0,5],ev:{neix:['harpRec',0,.16]},fx:{}},
- girasol:{key:67,mode:'major',meter:'34',unit:.42,M:6,lead:'dsGlock',mid:'harpRec',bass:'celliPizzRec',spark:'vibRec',prog:[0,4,5,3,0,1,4,0],cont:[0,3,1,5],ev:{neix:['vibRec',0,.15],espiral:['harpRec',1,.14]},fx:{}},
- flocs:{key:64,mode:'lydian',meter:'34',unit:.45,M:6,lead:'dsPiano',mid:'dsArpa',bass:'celliPizzRec',spark:'dsGlock',prog:[0,1,0,4,5,1,4,0],cont:[4,0,2,5],ev:{neix:['dsGlock',1,.12],gel:['glockRec',1,.06]},fx:{}},
- arbre:{key:65,mode:'major',meter:'44',unit:.4,M:8,lead:'dsFlauta',mid:'guitarRec',bass:'celliPizzRec',spark:'kalimbaRec',canon:'clarinetRec',snap:[0,2,4,7,9],prog:[0,3,5,4,0,5,3,4],cont:[0,2,4,3],ev:{neix:['harpRec',0,.14],flor:['glockRec',1,.1]},fx:{}}});
+ falgueres:{key:62,mode:'mixo',meter:'68',unit:.36,M:6,lead:'kalimbaRec',mid:'guitarRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,6,3,0,4,6,3,0],cont:[2,4,0,5],
+  ev:{tronc:['guitarRec',0,.15],branca:['harpRec',0,.14],fulla:['kalimbaRec',1,.13]},amb:['fractalsRec','falgueresAmb',FR_AMB],fx:{branca:['fractalsRec','falgueresAcc',FR_ACC,1.1],fulla:['fractalsRec','falgueresAcc',FR_ACC,1.1]}},
+ flocs:{key:64,mode:'lydian',meter:'34',unit:.45,M:6,lead:'glockRec',mid:'harpRec',bass:'celliPizzRec',spark:'vibRec',prog:[0,1,0,4,5,1,4,0],cont:[4,0,2,5],
+  ev:{tronc:['vibRec',0,.12],branca:['glockRec',1,.08],fulla:['glockRec',2,.06]},amb:['fractalsRec','flocsAmb',FR_AMB],fx:{tronc:['fractalsRec','flocsAcc',FR_ACC,1.1],branca:['fractalsRec','flocsAcc',FR_ACC,1.1]}},
+ girasol:{key:67,mode:'major',meter:'34',unit:.42,M:6,lead:'vibRec',mid:'harpRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,4,5,3,0,1,4,0],cont:[0,3,1,5],
+  ev:{tronc:['harpRec',0,.15],branca:['vibRec',0,.14],fulla:['glockRec',1,.1]},amb:['fractalsRec','girasolAmb',FR_AMB],fx:{branca:['fractalsRec','girasolAcc',FR_ACC,1.1],fulla:['fractalsRec','girasolAcc',FR_ACC,1.1]}},
+ llamps:{key:59,mode:'dorian',meter:'44',unit:.3,M:8,lead:'marimbaRec',mid:'vibRec',bass:'celliPizzRec',spark:'glockRec',sync:true,snap:[0,3,5,7,10],prog:[0,3,0,4,5,3,4,0],cont:[3,1,5,0],
+  ev:{tronc:['timpaniRec',-1,.2],branca:['vibRec',0,.14],fulla:['glockRec',1,.1]},amb:['fractalsRec','llampsAmb',FR_AMB],fx:{branca:['fractalsRec','llampsAcc',FR_ACC*1.4,1.1],fulla:['fractalsRec','llampsAcc',FR_ACC*1.4,1.1]}},
+ arbre:{key:65,mode:'major',meter:'44',unit:.4,M:8,lead:'fluteRec',mid:'guitarRec',bass:'celliPizzRec',spark:'kalimbaRec',canon:'clarinetRec',snap:[0,2,4,7,9],prog:[0,3,5,4,0,5,3,4],cont:[0,2,4,3],
+  ev:{tronc:['guitarRec',0,.15],branca:['harpRec',0,.14],fulla:['glockRec',1,.1]},amb:['fractalsRec','arbreAmb',FR_AMB],fx:{branca:['fractalsRec','arbreAcc',FR_ACC,1.1],fulla:['fractalsRec','arbreAcc',FR_ACC,1.1]}},
+ riu:{key:62,mode:'dorian',meter:'68',unit:.34,M:6,lead:'harpRec',mid:'marimbaRec',bass:'celliPizzRec',spark:'kalimbaRec',prog:[0,3,0,6,0,3,4,0],cont:[1,4,2,5],
+  ev:{tronc:['marimbaRec',0,.15],branca:['harpRec',0,.14],fulla:['kalimbaRec',1,.12]},amb:['fractalsRec','riuAmb',FR_AMB],fx:{branca:['fractalsRec','riuAcc',FR_ACC,1.1],fulla:['fractalsRec','riuAcc',FR_ACC,1.1]}},
+ corall:{key:60,mode:'lydian',meter:'68',unit:.38,M:6,lead:'vibRec',mid:'harpRec',bass:'uduRec',spark:'glockRec',prog:[0,1,4,0,5,1,4,0],cont:[0,5,3,1],
+  ev:{tronc:['uduRec',0,.2],branca:['vibRec',0,.13],fulla:['glockRec',1,.09]},amb:['fractalsRec','corallAmb',FR_AMB],fx:{branca:['fractalsRec','corallAcc',FR_ACC,1.1],fulla:['fractalsRec','corallAcc',FR_ACC,1.1]}},
+ romanesco:{key:69,mode:'major',meter:'44',unit:.33,M:8,lead:'marimbaRec',mid:'guitarRec',bass:'celliPizzRec',spark:'vibRec',prog:[0,5,3,4,0,3,4,0],cont:[3,0,4,2],
+  ev:{tronc:['marimbaRec',-1,.16],branca:['marimbaRec',0,.14],fulla:['vibRec',1,.11]},amb:['fractalsRec','romanescoAmb',FR_AMB],fx:{branca:['fractalsRec','romanescoAcc',FR_ACC,1.1],fulla:['fractalsRec','romanescoAcc',FR_ACC,1.1]}},
+ neurones:{key:61,mode:'dorian',meter:'44',unit:.3,M:8,lead:'vibRec',mid:'kalimbaRec',bass:'marimbaRec',spark:'glockRec',sync:true,snap:[0,3,5,7,10],prog:[0,5,6,0,3,5,6,0],cont:[3,1,5,0],
+  ev:{tronc:['vibRec',-1,.14],branca:['kalimbaRec',0,.13],fulla:['glockRec',1,.08]},amb:['fractalsRec','neuronesAmb',FR_AMB],fx:{branca:['fractalsRec','neuronesAcc',FR_ACC*1.4,1.1],fulla:['fractalsRec','neuronesAcc',FR_ACC*1.4,1.1]}},
+ costa:{key:64,mode:'mixo',meter:'68',unit:.4,M:6,lead:'guitarRec',mid:'harpRec',bass:'celliPizzRec',spark:'vibRec',prog:[0,6,3,0,4,6,3,0],cont:[4,2,0,5],
+  ev:{tronc:['celliPizzRec',0,.2],branca:['harpRec',0,.13],fulla:['vibRec',1,.1]},amb:['fractalsRec','costaAmb',FR_AMB],fx:{branca:['fractalsRec','costaAcc',FR_ACC,1.1],fulla:['fractalsRec','costaAcc',FR_ACC,1.1]}},
+ fulla:{key:63,mode:'major',meter:'34',unit:.44,M:6,lead:'harpRec',mid:'guitarRec',bass:'celliPizzRec',spark:'kalimbaRec',prog:[0,3,4,0,5,3,4,0],cont:[2,0,5,3],
+  ev:{tronc:['guitarRec',0,.14],branca:['harpRec',0,.14],fulla:['kalimbaRec',1,.12]},amb:['fractalsRec','fullaAmb',FR_AMB],fx:{branca:['fractalsRec','fullaAcc',FR_ACC*1.4,1.1],fulla:['fractalsRec','fullaAcc',FR_ACC*1.4,1.1]}},
+ gel:{key:71,mode:'lydian',meter:'34',unit:.46,M:6,lead:'glockRec',mid:'vibRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,1,0,4,5,1,4,0],cont:[1,4,0,2],
+  ev:{tronc:['vibRec',-1,.12],branca:['glockRec',0,.08],fulla:['glockRec',1,.06]},amb:['fractalsRec','gelAmb',FR_AMB],fx:{branca:['fractalsRec','gelAcc',FR_ACC*1.4,1.1],fulla:['fractalsRec','gelAcc',FR_ACC*1.4,1.1]}},
+ nautilus:{key:58,mode:'dorian',meter:'68',unit:.42,M:6,lead:'harpRec',mid:'vibRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,3,0,6,0,3,4,0],cont:[0,3,5,1],
+  ev:{tronc:['harpRec',-1,.16],branca:['vibRec',0,.13],fulla:['glockRec',1,.08]},amb:['fractalsRec','nautilusAmb',FR_AMB],fx:{branca:['fractalsRec','nautilusAcc',FR_ACC,1.1],fulla:['fractalsRec','nautilusAcc',FR_ACC,1.1]}},
+ miceli:{key:57,mode:'minor',meter:'44',unit:.36,M:8,lead:'kalimbaRec',mid:'marimbaRec',bass:'uduRec',spark:'vibRec',snap:[0,3,5,7,10],prog:[0,3,0,4,5,3,4,0],cont:[2,0,4,1],
+  ev:{tronc:['uduRec',0,.2],branca:['marimbaRec',0,.13],fulla:['kalimbaRec',1,.12]},amb:['fractalsRec','miceliAmb',FR_AMB],fx:{branca:['fractalsRec','miceliAcc',FR_ACC,1.1],fulla:['fractalsRec','miceliAcc',FR_ACC,1.1]}},
+ fang:{key:62,mode:'mixo',meter:'44',unit:.32,M:8,lead:'guitarRec',mid:'marimbaRec',bass:'celliPizzRec',spark:'kalimbaRec',prog:[0,6,3,0,4,6,3,0],cont:[3,1,5,0],
+  ev:{tronc:['marimbaRec',-1,.16],branca:['guitarRec',0,.13],fulla:['kalimbaRec',1,.12]},amb:['fractalsRec','fangAmb',FR_AMB],fx:{branca:['fractalsRec','fangAcc',FR_ACC*1.4,1.1],fulla:['fractalsRec','fangAcc',FR_ACC*1.4,1.1]}},
+ pao:{key:67,mode:'lydian',meter:'68',unit:.36,M:6,lead:'vibRec',mid:'harpRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,1,4,0,5,1,4,0],cont:[5,2,0,4],
+  ev:{tronc:['harpRec',-1,.15],branca:['vibRec',0,.13],fulla:['glockRec',1,.09]},amb:['fractalsRec','paoAmb',FR_AMB],fx:{branca:['fractalsRec','paoAcc',FR_ACC,1.1],fulla:['fractalsRec','paoAcc',FR_ACC,1.1]}},
+ serra:{key:60,mode:'dorian',meter:'44',unit:.4,M:8,lead:'marimbaRec',mid:'guitarRec',bass:'celliPizzRec',spark:'vibRec',canon:'clarinetRec',snap:[0,2,3,7,9],prog:[0,3,5,4,0,5,3,4],cont:[0,2,4,3],
+  ev:{tronc:['timpaniRec',-1,.2],branca:['guitarRec',0,.14],fulla:['vibRec',1,.11]},amb:['fractalsRec','serraAmb',FR_AMB],fx:{branca:['fractalsRec','serraAcc',FR_ACC*1.4,1.1],fulla:['fractalsRec','serraAcc',FR_ACC*1.4,1.1]}},
+ arrels:{key:55,mode:'minor',meter:'68',unit:.4,M:6,lead:'marimbaRec',mid:'harpRec',bass:'uduRec',spark:'kalimbaRec',snap:[0,3,5,7,10],prog:[0,5,6,0,3,5,6,0],cont:[1,4,2,5],
+  ev:{tronc:['uduRec',0,.2],branca:['marimbaRec',0,.14],fulla:['kalimbaRec',1,.12]},amb:['fractalsRec','arrelsAmb',FR_AMB],fx:{branca:['fractalsRec','arrelsAcc',FR_ACC,1.1],fulla:['fractalsRec','arrelsAcc',FR_ACC,1.1]}},
+ petxina:{key:64,mode:'major',meter:'34',unit:.45,M:6,lead:'harpRec',mid:'vibRec',bass:'celliPizzRec',spark:'glockRec',prog:[0,4,5,3,0,1,4,0],cont:[0,5,3,1],
+  ev:{tronc:['harpRec',-1,.14],branca:['vibRec',0,.12],fulla:['glockRec',1,.08]},amb:['fractalsRec','petxinaAmb',FR_AMB],fx:{branca:['fractalsRec','petxinaAcc',FR_ACC,1.1],fulla:['fractalsRec','petxinaAcc',FR_ACC,1.1]}},
+ dent:{key:65,mode:'major',meter:'68',unit:.38,M:6,lead:'kalimbaRec',mid:'guitarRec',bass:'celliPizzRec',spark:'glockRec',sync:true,prog:[0,3,4,0,5,3,4,0],cont:[4,0,2,5],
+  ev:{tronc:['guitarRec',-1,.15],branca:['kalimbaRec',0,.13],fulla:['glockRec',2,.07]},amb:['fractalsRec','dentAmb',FR_AMB],fx:{branca:['fractalsRec','dentAcc',FR_ACC,1.1],fulla:['fractalsRec','dentAcc',FR_ACC,1.1]}}});
 
 // ── Sounds ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 class FrSound{
  constructor(ctx,out){this.context=ctx;this.input=ctx.createGain();this.input.gain.value=1;this.input.connect(out);this.active=new Set();}
  one(bank,name,level=1,pan=0,when=0,rate=1){const z=sampleZone(bank,0,name);if(!z||!z.buffer)return;const c=this.context,o=c.createBufferSource(),g=c.createGain(),p=c.createStereoPanner(),t=c.currentTime+when;o.buffer=z.buffer;o.playbackRate.value=rate;g.gain.value=level;p.pan.value=Math.max(-1,Math.min(1,pan));
   o.connect(g);g.connect(p);p.connect(this.input);o.start(t,(z.offset||0)+z.shift,z.duration||undefined);this.active.add(o);o.onended=()=>{this.active.delete(o);o.disconnect();g.disconnect();p.disconnect();};}
- stop(){for(const o of this.active){try{o.stop();}catch{}}this.active.clear();}}
+ // the sound of the place: one at a time, the one before fades out in half a second
+ amb(bank,name,level=1){const z=sampleZone(bank,0,name);this.hush(.5);if(!z||!z.buffer)return;const c=this.context,o=c.createBufferSource(),g=c.createGain(),t=c.currentTime;o.buffer=z.buffer;g.gain.value=level;
+  o.connect(g);g.connect(this.input);o.start(t,(z.offset||0)+z.shift,z.duration||undefined);this.place={o,g};this.active.add(o);o.onended=()=>{this.active.delete(o);o.disconnect();g.disconnect();if(this.place?.o===o)this.place=null;};}
+ hush(fade){const p=this.place;if(!p)return;this.place=null;const t=this.context.currentTime;try{p.g.gain.cancelScheduledValues(t);p.g.gain.setValueAtTime(p.g.gain.value,t);p.g.gain.linearRampToValueAtTime(0,t+fade);p.o.stop(t+fade+.05);}catch{}}
+ stop(){for(const o of this.active){try{o.stop();}catch{}}this.active.clear();this.place=null;}}
 let FR_BUS=null;
 const frBus=(ctx,out)=>{if(!ctx||!out)return null;if(!FR_BUS||FR_BUS.context!==ctx)FR_BUS=new FrSound(ctx,out);return FR_BUS;};
 export function frSilence(){FR_BUS?.stop();}
@@ -103,8 +147,9 @@ export function frEvents(F,play,fx){const S=F.S;if(F.old)F.old.ev.length=0;if(!S
   if(n&&F.t-F.lastEv>=.22){F.lastEv=F.t;const tones=[0,2,4],d=F.chord+tones[(F.uid++)%3],ev={inst:n[0],midi:[bbFit(n[0],bbMidi(U,d,n[1]))],vel:n[2],len:1.4,pan};out.push(['note',ev]);play?.(ev,0,1.4);}
   if(f&&F.t-(F.lastFx[f[1]]??-9)>=f[3]){F.lastFx[f[1]]=F.t;out.push(['fx',f]);fx?.(f,pan);}}
  S.ev.length=0;return out;}
-export function frAudio(game,s,ctx,out,play){const F=game?.fractals;if(!F)return;F.cues.splice(0);
+export function frAudio(game,s,ctx,out,play){const F=game?.fractals;if(!F)return;const cues=F.cues.splice(0);
  if(!s.sound||ctx?.state!=='running'){for(const n of F.notes)if(!n.sent&&n.at<F.t+.5)n.sent=true;if(F.S)F.S.ev.length=0;return;}
  const bus=frBus(ctx,out),lat=Math.min(.1,Math.max(0,ctx.outputLatency||ctx.baseLatency||0));
+ if(cues.includes('form')){const a=(FR_MUSIC[frStim(F).id]||{}).amb;if(a)bus?.amb(a[0],a[1],a[2]);}
  for(const n of F.notes){if(n.sent||n.at>F.t+.5)continue;n.sent=true;if(n.at<F.t-.12)continue;play(n.ev,Math.max(0,n.at-F.t-lat),n.ev.len);}
  frEvents(F,play,(f,pan)=>bus?.one(f[0],f[1],f[2],pan,0,.94+.12*Math.random()));}
