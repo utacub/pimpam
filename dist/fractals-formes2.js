@@ -1,26 +1,30 @@
 // Fractals a la natura (CE46, 0.74) · stimuli 6–10: riu i afluents, corall, romanesco, neurones, illa i costa. As in fractals-formes1.js:
 // each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
-import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOutline,frOut,frLine,frDendrite,frTurn,frColonize,frScatter,frDrawNet,frRoom,frTree,FRF_TAU} from './fractals-formes.js';
+import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOutline,frOut,frLine,frDendrite,frFlow,frTurn,frColonize,frScatter,frDrawNet,frRoom,frTree,FRF_TAU} from './fractals-formes.js';
 import {frRandom,frfNoise,frIso,frChains} from './fractals-motor.js';
 
 // ── 6 · Riu i afluents ────────────────────────────────────────────────────────────────────────────────────────────────────
 // A river basin seen from the air is a tree that fills the land: every tributary has its own tributaries, and the numbers and lengths
 // of the streams of each order keep the same ratios from one order to the next (Horton, 1945; Strahler, 1957), which makes the network
-// self-similar, a fractal (Rodríguez-Iturbe & Rinaldo, 1997). The network grows upstream from the mouth, by headward erosion. Growth:
-// the main river from the sea; its great tributaries; then each order of smaller streams, all at once. Concept 06: a wide blue river
-// coming in at the bottom and opening into tributaries that cover the whole screen, cyan, then green, the finest yellow-green.
+// self-similar, a fractal (Rodríguez-Iturbe & Rinaldo, 1997). The network is built from the mouth upstream (as headward erosion
+// carves it), order by order, and then played the way the water runs (0.75.3, Marc): the finest streams first, all at once, each
+// running down to its junction; then each order of greater streams; the main river last, down to the mouth (frFlow). On the way back
+// the water keeps running down: the network drains, the sources first and the mouth last (flow). Concept 06: a wide blue river coming
+// in at the bottom and opening into tributaries that cover the whole screen, cyan, then green, the finest yellow-green.
 const FR_RIVER={P:[640,975,690,885,830,805,880,722,840,662,700,602,652,540,700,480,772,430,792,385],kids:[
  [650,540,520,515,400,512,300,555,210,595,110,612,20,600],[792,385,700,342,600,322,530,252,490,172,420,92,380,10],[792,385,832,300,852,222,812,150,790,60,800,-10],
  [775,430,900,382,1050,322,1200,302,1300,252,1380,172,1430,90],[872,712,960,672,1050,632,1160,602,1270,622,1380,582,1480,522,1560,452,1640,400],[835,792,720,742,600,762,480,782,380,830,300,900],
  [1200,302,1300,330,1420,360,1540,330,1650,300],[1160,602,1180,700,1250,780,1300,880],[905,700,960,620,1010,550,1080,490,1120,410]]};
-export const FR_RIU={id:'riu',name:'Riu i afluents',what:'creixen el riu i els seus afluents, de l’un a l’altre',
+export const FR_RIU={id:'riu',name:'Riu i afluents',what:'baixen els rierols, s’ajunten en afluents i acaben en el riu principal',back:'l’aigua baixa fins al mar i la xarxa s’apaga',flow:true,
  pal:['#2a5cff','#1aa8ff','#1ae6e6','#2ee88a','#9cf03a'],pal2:['#3a4cff','#1a8cff','#1ad0f0','#2ee8b0','#c8f03a'],
  look:{bloom:.42,glow:2.3,halo:.16,core:.15,spread:.6},wind:0,
- acts:[(S,t0)=>{const k=S.k,O={W:[40,19,10,4.6,2.2,1.2],C:[[0,.1],[.32,.44],[.44,.54],[.56,.7],[.72,.86],[.88,1]],every:[0,85,40,19,10],len:[0,0,230,105,48,21],spread:.75,meander:1.4,
+ acts:[(S,t0)=>{const k=S.k,n0=S.st.n,O={W:[40,19,10,4.6,2.2,1.2],C:[[0,.1],[.32,.44],[.44,.54],[.56,.7],[.72,.86],[.88,1]],every:[0,85,40,19,10],len:[0,0,230,105,48,21],spread:.75,meander:1.4,
    bias:(x,y)=>Math.atan2(y-990,x-760),biasK:.3,T:[0,.8,1.45,2.05,2.6,3.05],dur:[1,.8,.65,.55,.45,.35],fork:2,maxLv:5,hot:.7,lum:[.62,.85,.95,1,1,1]};
   const m=frSpline(FR_RIVER.P,6);frDendrite(S,m.pts,0,{...O,maxLv:0},t0);
   for(const P of FR_RIVER.kids){const c=frSpline(P,6);frDendrite(S,c.pts,1,O,t0,300);}
-  frEvent(S,'tronc',.8,t0);frEvent(S,'branca',.9,t0+.85*k);frEvent(S,'fulla',1.1,t0+1.6*k);frEvent(S,'fulla',.6,t0+2.3*k);}]};
+  // the way the water runs; each order now starts when the one above it (finer) has run down: at t1 + t2 − its old end
+  const {t1,t2}=frFlow(S,n0),at=lv=>Math.max(t1,t1+t2-(t0+(O.T[lv]+O.dur[lv])*k));
+  frEvent(S,'fulla',.6,at(5));frEvent(S,'fulla',1.1,at(3));frEvent(S,'branca',.9,at(1));frEvent(S,'tronc',.8,at(0));}]};
 
 // ── 7 · Corall ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 // A branching coral grows at its tips, where the water brings food and light, and each tip splits when it widens: the colony repeats

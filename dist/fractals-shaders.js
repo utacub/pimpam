@@ -12,7 +12,7 @@ layout(location=0) in vec2 aP;out vec2 vUv;void main(){vUv=aP*.5+.5;gl_Position=
 export const FR_VS_LINE=`#version 300 es
 precision highp float;
 layout(location=0) in vec2 aQ;layout(location=1) in vec4 aA;layout(location=2) in vec4 aB;layout(location=3) in vec4 aC;layout(location=4) in vec4 aD;layout(location=5) in vec4 aE;
-uniform float uT,uAR,uPx,uDmax,uExit,uExitDur,uWind,uFade,uPulseV,uMinW,uGlowW;uniform vec3 uFrame,uBack;uniform vec4 uView;uniform vec4 uPulse;uniform vec3 uPalA[5];uniform vec3 uPalB[5];
+uniform float uT,uAR,uPx,uDmax,uExit,uExitDur,uWind,uFade,uPulseV,uMinW,uGlowW;uniform vec3 uFrame;uniform vec4 uBack;uniform vec4 uView;uniform vec4 uPulse;uniform vec3 uPalA[5];uniform vec3 uPalB[5];
 out vec2 vP;flat out vec2 vA,vB;flat out float vW,vR,vTip;flat out vec3 vCol,vHot;
 vec3 frPal(float c,float which){c=clamp(c,0.,1.)*4.;int i=int(min(floor(c),3.));float f=c-float(i);vec3 a=which<.5?uPalA[i]:uPalB[i],b=which<.5?uPalA[i+1]:uPalB[i+1];return mix(a,b,smoothstep(0.,1.,f));}
 // the wind: a smooth field of the place, felt more the further the point is from the root (so a trunk stays and the tips move)
@@ -21,16 +21,18 @@ vec2 frWind(vec2 p,float d,float sway,float seed){if(sway<=0.||uWind<=0.)return 
  return k*vec2(a,.35*sin(uT*.93+p.x*2.7+seed*3.));}
 vec2 frView(vec2 p){vec2 c=vec2(uAR*.5,.5);float s=sin(uView.w),co=cos(uView.w);vec2 q=(p-c)*uView.z;q=vec2(co*q.x-s*q.y,s*q.x+co*q.y);return c+q+uView.xy;}
 void main(){
- // 0.74.2, the way back (uBack: its start, the moment the form was whole, its speed): the clock of the lines runs backwards, and so does
- // the drift of the objects that fly away
- float tg=uT,td=uT;bool bk=uBack.x>=0.&&uT>uBack.x;if(bk){float b=(uT-uBack.x)*uBack.z;tg=uBack.y-b;td=uBack.x-b;}
- float t0=aB.x,dur=max(aB.y,1e-3),g=clamp((tg-t0)/dur,0.,1.);
+ // 0.74.2, the way back (uBack: its start, the moment the form was whole, its speed, 0): the clock of the lines runs backwards, and so
+ // does the drift of the objects that fly away. 0.75.3, a form that drains (uBack: its start, the birth of its first line, its speed,
+ // 1): the lines stay grown and each one empties from its first end to its last, in the order they were born (h, the part gone).
+ float tg=uT,td=uT,h=0.;bool bk=uBack.x>=0.&&uT>uBack.x;float t0=aB.x,dur=max(aB.y,1e-3);
+ if(bk){float b=(uT-uBack.x)*uBack.z;if(uBack.w>.5)h=clamp((uBack.y+b-t0)/dur,0.,1.);else{tg=uBack.y-b;td=uBack.x-b;}}
+ float g=clamp((tg-t0)/dur,0.,1.);
  float r=0.;if(uExit>=0.){float dn=clamp(aC.w/max(uDmax,1e-4),0.,1.),rs=uExit+(1.-dn)*uExitDur*.62;r=clamp((uT-rs)/(uExitDur*.38),0.,1.);}
  float e=g*(1.-r);
- if(e<=0.){gl_Position=vec4(2.,2.,2.,1.);vW=0.;return;}
+ if(e<=0.||h>=1.){gl_Position=vec4(2.,2.,2.,1.);vW=0.;return;}
  // a whole object that drifts (a snow crystal, a seed that flies away): all its lines move together from the moment tm
  float age=aE.y>0.?max(0.,td-aE.y):0.;vec2 mv=aD.yz*age+vec2(0.,aE.z*age*age*.5);
- vec2 p0=aA.xy,p1=mix(aA.xy,aA.zw,e);float d0=aC.z,d1=mix(aC.z,aC.w,e);
+ vec2 p0=mix(aA.xy,aA.zw,h),p1=mix(aA.xy,aA.zw,e);float d0=mix(aC.z,aC.w,h),d1=mix(aC.z,aC.w,e);
  vec2 q0=uFrame.xy+(p0+mv)*uFrame.z,q1=uFrame.xy+(p1+mv)*uFrame.z;
  vec2 a=frView(q0+frWind(q0,d0,aD.x,aE.w))*uPx,b=frView(q1+frWind(q1,d1,aD.x,aE.w))*uPx;
  float w=max(mix(aB.z,aB.w,e)*uFrame.z*uPx*uView.z,uMinW),R=max(w*uGlowW,2.5)+1.;if(g<1.&&aD.w>0.)R=max(R,clamp(w*1.6,2.2,9.)*4.5+1.);

@@ -1,3 +1,22 @@
+# Pim Pam 0.75.3 · Fractals a la natura: el riu baixa de les fonts al mar
+
+Base: 0.75.2 (81d77a9; la 0.75.2 és el barret de cuiner de la Pipa d’«El vestidor fantàstic», més avall). Respon al comentari d’en Marc de l’11 de novembre de 2026 (22:45): «la única cosa que canviaria és la del rius, que per lògica hauria de començar en els afluent i acabar en el riu principal, ara ho fa al revés, és com si l'aigua pugés del riu cap als afluents».
+
+## Què canvia
+
+- **«Riu i afluents» creix com corre l’aigua.** Primer apareixen alhora els rierols més fins, que baixen fins on s’ajunten; després cada ordre d’afluents més grans, i al final el riu principal, que arriba a la desembocadura (a baix). La xarxa és la mateixa d’abans i continua creixent ordre a ordre (ara del més petit al més gran); el que canvia és el sentit: cada línia creix des de la seva punta de dalt cap avall, i les línies que abans naixien les últimes ara neixen les primeres. Les ones de llum també baixen, de les fonts a la desembocadura, i el punt blanc del front de l’aigua va riu avall.
+- **La marxa enrere del riu no puja.** Fer-la al revés del creixement nou tornaria a fer pujar l’aigua, i per això el riu, en lloc de desfer-se al revés, es buida en el sentit de l’aigua: les línies s’esborren des de dalt cap avall, primer els rierols i al final el riu principal, fins a la desembocadura. Dura el mateix que la marxa enrere de les altres formes. Les altres 19 formes no canvien.
+- **Textos.** La descripció del creixement («baixen els rierols, s’ajunten en afluents i acaben en el riu principal») i la de la marxa enrere del riu («l’aigua baixa fins al mar i la xarxa s’apaga»), als sis idiomes. Les notes dels esdeveniments segueixen el mateix ordre (primer les fulles, al final el tronc).
+
+## Proves
+
+- `tests/fractals.test.mjs` (12): una de nova per al riu (el riu principal creix cap avall i la desembocadura és l’última que s’assoleix, els rierols comencen abans que el riu, l’ordre dels esdeveniments, la marxa enrere que es buida i el text del lector de pantalla; les altres 19 formes continuen desfent-se al revés).
+- Imatges fixes del creixement i de la marxa enrere del riu.
+
+## No verificat
+
+- No s’ha vist en una targeta gràfica real (només amb SwiftShader); l’auditoria de flaixos la fa en Marc.
+
 # Pim Pam 0.75.1 · El vestidor: les cartes amb la peça sola i sencera
 
 Base: 0.75 (ca0d7c0). Respon al comentari d’en Marc de l’11 de novembre de 2026 («quan es trien les peces de roba es vegin malament… potser necessites imatges dels objectes sols per posar-les a l’encercament, i després un cop es tria, canviar a la imatge que encaixa bé»).

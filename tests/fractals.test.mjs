@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {FR_STRIDE,frGrownAt} from '../dist/fractals-motor.js';
 import {FR_CAUSE,FR_STIMS,FR_IDS,FR_MUSIC,FR_GROW,FR_SPAN,FR_RUN,FR_HOLD,FR_BACK,FR_BLACK,FR_AMB,FR_ACC,frGrowK,frStart,frPress,frTick,frBlocked,frRate,frStatus,frProgress,frHelp,frNumber,frEvents,frStim} from '../dist/fractals.js';
 import {SAMPLE_BANK} from '../dist/sampler.js';
 import {SYNTH_INSTRUMENTS} from '../dist/synth.js';
@@ -41,7 +42,7 @@ test('the arc: a press grows one whole form, a wave runs through it, it comes un
   run(g,S,F.fullAt-F.t+.05);assert.equal(F.phase,'full');assert.ok(frBlocked(g,S));assert.equal(frPress(g,S),false,'no press while the wave runs');
   assert.equal(frStatus(g,S),`${head}, completa: una ona de llum la recorre.`);
   run(g,S,F.backAt-F.t+.05);assert.equal(F.phase,'back');assert.ok(F.S.back,'the way back');assert.ok(frBlocked(g,S));assert.equal(frPress(g,S),false,'no press on the way back');
-  assert.equal(frStatus(g,S),`${head}: la forma es desfà al revés de com ha crescut.`);
+  assert.equal(frStatus(g,S),`${head}: ${M.back||'la forma es desfà al revés de com ha crescut'}.`);
   run(g,S,F.end-F.t+.1);assert.equal(F.phase,'rest');assert.ok(!frBlocked(g,S));
   assert.equal(frStatus(g,S),`${head}, acabada. La pantalla és negra i la pulsació següent en porta una altra.`);
   assert.equal((frProgress(g,S).match(/class="done"/g)||[]).length,k+1);}
@@ -62,6 +63,23 @@ test('the way back: the growth plays backwards (its events reversed, softer, wit
   const notes=[],accents=[];while(F.phase==='back'){frTick(g,s,1/30);frEvents(F,e=>notes.push(e),f=>accents.push(f));}
   assert.ok(notes.length>=1,`${id}: the reversed growth sounds`);assert.equal(accents.length,0,`${id}: no accents on the way back`);
   for(const e of notes)assert.ok(e.vel>0&&e.vel<=.21,id);assert.ok(F.cues.includes('black'),id);}
+});
+
+test('the river (0.75.3): the water runs down, the finest streams first and the main river last to its mouth; on the way back it drains to the sea',()=>{
+ const s={...S,frFirst:'riu'},g={};frStart(g,s);const F=g.fractals;frPress(g,s);const st=F.S.st,a=st.seg;assert.equal(F.S.flow,true);
+ // the mouth (the lowest point of the main river, col < 0.1) is the last to be reached; the finest streams (col ≥ 0.88) come first
+ let mouth=null,fine=Infinity,main=Infinity;for(let i=0;i<st.n;i++){const j=i*FR_STRIDE,end=a[j+4]+a[j+5];
+  if(a[j+8]<.1){main=Math.min(main,a[j+4]);if(!mouth||Math.max(a[j+1],a[j+3])>mouth.y)mouth={y:Math.max(a[j+1],a[j+3]),end,grows:a[j+3]>a[j+1]};}
+  if(a[j+8]>=.88)fine=Math.min(fine,a[j+4]);}
+ assert.ok(mouth.grows,'the main river grows downwards, to its mouth');assert.ok(Math.abs(mouth.end-frGrownAt(st))<1e-3,'the mouth is the last to be reached');
+ assert.ok(fine<main-1,`the finest streams start before the main river (${fine.toFixed(2)} < ${main.toFixed(2)})`);
+ const evs=F.S.evq.slice().sort((x,y)=>x.at-y.at).map(e=>e.type);assert.equal(evs[0],'fulla');assert.equal(evs[evs.length-1],'tronc');
+ run(g,s,F.backAt-F.t+.05);assert.equal(F.phase,'back');assert.equal(F.S.back.drain,true);assert.ok(F.S.back.born<F.S.back.from);
+ assert.equal(frStatus(g,s),'Riu i afluents, forma 1 de 20: l’aigua baixa fins al mar i la xarxa s’apaga.');
+ // the events of the way back come in the order of the growth (fulla first, tronc last), and every other form still goes back in reverse
+ const back=F.S.evq.slice().sort((x,y)=>x.at-y.at).map(e=>e.type);assert.equal(back[0],'fulla');assert.equal(back[back.length-1],'tronc');
+ for(const id of FR_IDS.filter(x=>x!=='riu')){const g2={},s2={...S,frFirst:id};frStart(g2,s2);frPress(g2,s2);const F2=g2.fractals;assert.ok(!F2.S.flow,id);run(g2,s2,F2.backAt-F2.t+.05);assert.ok(!F2.S.back.drain,id);}
+ run(g,s,F.end-F.t+.1);assert.equal(F.phase,'rest');
 });
 
 test('the first form can be any; «Espera que acabi cada efecte» off lets a press bring the next form at once',()=>{
@@ -114,7 +132,7 @@ test('in the app: the folder «Formes, llum i música» after the Laboratori de 
  let at=build.indexOf("'bombolles-escena.js'");assert.ok(at>0);for(const f of order){const i=build.indexOf(`'${f}'`);assert.ok(i>at,f);at=i;}assert.ok(at<build.indexOf("'art.js'"));
  // every text of the activity has its translation in the five other languages
  const texts=[FR_CAUSE.name,FR_CAUSE.desc,FR_CAUSE.tag,'Creixement de cada forma','Primera forma','Ràpid','Lent','La pantalla és negra i espera la primera pulsació. Cada pulsació fa créixer una forma de la natura.',
-  'Mentre una forma creix i es desfà, les pulsacions no fan res.','Com més lent, millor es veu com cada nivell de la forma surt de l’anterior.','Pots prémer mentre una forma creix: ve la següent.',...FR_STIMS.map(x=>x.name),...FR_STIMS.map(x=>x.what)];
+  'Mentre una forma creix i es desfà, les pulsacions no fan res.','Com més lent, millor es veu com cada nivell de la forma surt de l’anterior.','Pots prémer mentre una forma creix: ve la següent.',...FR_STIMS.map(x=>x.name),...FR_STIMS.map(x=>x.what),...FR_STIMS.filter(x=>x.back).map(x=>x.back)];
  const help=frHelp(S).match(/<strong>(.*?)<\/strong>/)[1];texts.push(help);
  for(const l of ['es','eu','gl','en','fr']){const d=JSON.parse(read(`../dist/i18n/${l}.json`));for(const x of texts)assert.ok(d.s[x],`${l}: ${x}`);
   for(const p of ['{x}, forma {n} de {n2}: {y}.','{x}, forma {n} de {n2}, completa: una ona de llum la recorre.','{x}, forma {n} de {n2}: la forma es desfà al revés de com ha crescut.','{x}, forma {n} de {n2}, acabada. La pantalla és negra i la pulsació següent en porta una altra.'])assert.ok(d.p.some(([ca])=>ca===p),`${l}: ${p}`);}

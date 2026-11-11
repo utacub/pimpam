@@ -1,7 +1,7 @@
 // Fractals a la natura (CE46, 0.74) · the common tools of the stimuli: a stimulus is a list of acts (each press runs one or more of
 // them all, one after the other, see frGrowForm in fractals.js), and an act lays down segments that grow from a moment on. Live models (the snow crystals) also
 // step on each frame and lay down their lines as they grow.
-import {frSeg} from './fractals-motor.js';
+import {frSeg,FR_STRIDE} from './fractals-motor.js';
 export const FRF_TAU=Math.PI*2,FR_GOLD=Math.PI*(3-Math.sqrt(5));
 // A polyline that grows from its first point at `speed` (scene units per second) from the moment t0. pts: [x, y, x, y, …].
 // o: w0 w1 (width at the start and at the end), c0 c1 (place in the palette), lum, d0 (distance of the first point from the root)
@@ -67,6 +67,15 @@ export const frTurn=(a,b,f)=>{let d=((b-a)%FRF_TAU+3*Math.PI)%FRF_TAU-Math.PI;re
 // every scale. o: W [width at the root of each order], C [[c0, c1] of each order], every [spacing of the daughters along a channel of
 // each order], len [length of the channels of each order], spread (angle of the daughters), bias (x, y) → angle the daughters lean
 // to, biasK, meander (bends per channel), T, dur, fork (the tips of the last orders fork in two), hot, sway, lum.
+// 0.75.3 (Marc: «per lògica hauria de començar en els afluents i acabar en el riu principal… ara és com si l’aigua pugés del riu cap als
+// afluents»): the lines stored since n0 are played the other way in time and along themselves. A line born last is born first, each
+// line grows from its far end to its root end, and the distance from the root (the pulses of light) is counted from the far end: the
+// finest streams come first, run down and join, and the main river comes last, to its mouth. Returns the first and last moments.
+export function frFlow(S,n0){const st=S.st,a=st.seg;let t1=Infinity,t2=-Infinity,dm=0;
+ for(let i=n0;i<st.n;i++){const j=i*FR_STRIDE;t1=Math.min(t1,a[j+4]);t2=Math.max(t2,a[j+4]+a[j+5]);dm=Math.max(dm,a[j+10],a[j+11]);}
+ for(let i=n0;i<st.n;i++){const j=i*FR_STRIDE,t=a[j+4],d=a[j+5];a[j+4]=t1+(t2-(t+d));
+  let x=a[j];a[j]=a[j+2];a[j+2]=x;x=a[j+1];a[j+1]=a[j+3];a[j+3]=x;x=a[j+6];a[j+6]=a[j+7];a[j+7]=x;x=a[j+10];a[j+10]=dm-a[j+11];a[j+11]=dm-x;}
+ return {t1,t2};}
 export function frDendrite(S,pts,lv,o,t0,d0=0){const k=S.k,R=S.rnd,n=pts.length/2,W=o.W[lv],C=o.C[lv],T=t0+o.T[lv]*k;
  let L=0;for(let i=1;i<n;i++)L+=Math.hypot(pts[i*2]-pts[i*2-2],pts[i*2+1]-pts[i*2-1]);
  const vis=pts.some((v,i)=>i%2===0&&!frOut(v,pts[i+1],0));

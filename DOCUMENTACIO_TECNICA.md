@@ -1,5 +1,11 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.75.3 · Fractals a la natura: el riu baixa de les fonts al mar
+
+- **`frFlow(S,n0)`** (`dist/fractals-formes.js`): gira en el temps i al llarg d’elles mateixes les línies desades des de `n0`: `t0' = t1 + t2 − (t0 + dur)`, s’intercanvien els extrems i els gruixos, i la distància a l’arrel es compta des de l’altre cap (`d' = dmax − d`). La xarxa del riu es construeix igual que abans (des de la desembocadura) i després es gira; els esdeveniments es posen al començament de cada ordre girat.
+- **Forma que flueix** (`flow: true` a l’estímul, `S.flow`): `frGoBack` fa `S.back = {…, born, drain: true}` i torna a posar els esdeveniments en l’ordre del creixement. Al shader, `uBack` és ara un `vec4` (inici, `from` o `born`, velocitat, buidar); amb `w = 1` les línies queden crescudes i cadascuna es buida del primer cap a l’últim (`h = clamp((born + b − t0)/dur)`), en l’ordre en què han nascut.
+- **Text de la marxa enrere** per estímul: `M.back` (si no n’hi ha, «la forma es desfà al revés de com ha crescut»).
+
 ## 0.75.1 · El vestidor: les cartes amb la peça sola
 
 - Imatges `peca-<codi>` (11 a 63) de `tools/vestidor-assets.py LOT9 --peces`: cada peça del lot 9 (transparent o sobre blanc) sense taques ni boira i amb el costat llarg a 640 px; afegeix les caixes a `dist/vestidor-dades.js` i conserva les altres i `VS_PARROT`. Són a `VS_COMMON`.

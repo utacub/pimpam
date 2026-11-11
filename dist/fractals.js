@@ -52,7 +52,7 @@ export function frStart(game,s){game.fractals=frNew(s);game.count=0;game.complet
 export const frBusy=F=>F.phase==='run'||F.phase==='full'||F.phase==='back';
 export function frBlocked(game,s){const F=game?.fractals;if(!F)return false;return frBusy(F)&&s?.lock!==false;}
 // The state of a form: its clock, its segments, its seed and its acts.
-export function frForm(M,seed,lap,AR){const S={id:M.id,t:0,st:frStore(8192),AR,rnd:frRandom(seed),seed,lap,pulses:[],exit:-1,ev:[],evq:[],evLog:[],live:[],wake:[],acts:M.acts,full:-1,back:null};M.init?.(S);return S;}
+export function frForm(M,seed,lap,AR){const S={id:M.id,t:0,st:frStore(8192),AR,rnd:frRandom(seed),seed,lap,pulses:[],exit:-1,ev:[],evq:[],evLog:[],live:[],wake:[],acts:M.acts,full:-1,back:null,flow:!!M.flow};M.init?.(S);return S;}
 // The whole form: its acts one after the other over FR_SPREAD·k seconds, a pulse of light at the start and a wave when it is grown.
 export function frGrowForm(S,k=1){const n=S.acts.length,t0=S.t+.05;S.k=k;S.acts.forEach((act,j)=>act(S,t0+(n>1?j/(n-1):0)*FR_SPREAD*k,j));S.pulses=[t0];
  // whole when its last line has grown: known now for the drawn forms; for the live ones (the snow crystals grow frame by frame) from FR_SPAN
@@ -64,9 +64,11 @@ export function frStepForm(S,dt){S.t+=dt;
  if(S.evq.length){S.evq.sort((a,b)=>a.at-b.at);while(S.evq.length&&S.evq[0].at<=S.t){const e=S.evq.shift();S.ev.push(e);if(!e.rev)S.evLog.push(e);}if(S.ev.length>24)S.ev.splice(0,S.ev.length-24);}}
 // 0.74.2: the way back. The clock of the lines runs backwards from the moment the form was whole (from), v times faster than it grew,
 // so the last lines to be born are the first to go and the root goes last; the events of the growth come back in reverse order.
-export function frGoBack(S,dur){const from=frGrownAt(S.st),born=Math.min(from,frBornAt(S.st)),v=Math.max(.2,(from-born)/Math.max(.5,dur));
- S.back={at:S.t,from,v,end:S.t+(from-born)/v};S.live.length=0;S.wake.length=0;S.evq.length=0;S.ev.length=0;
- for(const e of S.evLog)if(e.at>=born)S.evq.push({type:e.type,x:e.x,at:S.t+(from-e.at)/v,rev:true});return S.back;}
+// A form that flows (the river, 0.75.3) does not go back: it drains the way it grew, each line going from its first end to its last
+// (the water keeps running down to the mouth), in the order the lines were born, and its events come back in the same order.
+export function frGoBack(S,dur){const from=frGrownAt(S.st),born=Math.min(from,frBornAt(S.st)),v=Math.max(.2,(from-born)/Math.max(.5,dur)),drain=S.flow;
+ S.back={at:S.t,from,born,v,end:S.t+(from-born)/v,drain};S.live.length=0;S.wake.length=0;S.evq.length=0;S.ev.length=0;
+ for(const e of S.evLog)if(e.at>=born)S.evq.push({type:e.type,x:e.x,at:S.t+(drain?e.at-born:from-e.at)/v,rev:true});return S.back;}
 export const frEmpty=S=>S.exit>=0&&S.t-S.exit>=FR_OUT;
 
 // A press: the form on the screen goes back to its roots, and the next one grows whole, with its phrase of music.
@@ -106,7 +108,7 @@ export function frStatus(game,s){const F=game?.fractals;if(!F)return '';
  const M=frStim(F),n=frNumber(F);
  if(F.phase==='run')return `${M.name}, forma ${n} de ${FR_STIMS.length}: ${M.what}.`;
  if(F.phase==='full')return `${M.name}, forma ${n} de ${FR_STIMS.length}, completa: una ona de llum la recorre.`;
- if(F.phase==='back')return `${M.name}, forma ${n} de ${FR_STIMS.length}: la forma es desfà al revés de com ha crescut.`;
+ if(F.phase==='back')return `${M.name}, forma ${n} de ${FR_STIMS.length}: ${M.back||'la forma es desfà al revés de com ha crescut'}.`;
  return `${M.name}, forma ${n} de ${FR_STIMS.length}, acabada. La pantalla és negra i la pulsació següent en porta una altra.`;}
 export function frProgress(game,s){const F=game?.fractals;if(!F)return '';const n=F.S?frNumber(F):0;return Array.from({length:FR_STIMS.length},(_,i)=>`<span class="${i<n?'done':''}"></span>`).join('');}
 export function frHelp(s){return `<strong>Cada pulsació fa créixer sencera una forma de la natura amb línies de llum de colors, i una ona de llum la recorre. Després la forma es desfà al revés de com ha crescut, fins que la pantalla torna a ser negra. N’hi ha vint, i després tornen a començar amb uns altres colors.</strong><br>${s?.lock!==false?'Mentre una forma creix i es desfà, les pulsacions no fan res.':'Pots prémer mentre una forma creix: ve la següent.'}`;}
