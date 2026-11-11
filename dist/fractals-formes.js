@@ -60,3 +60,68 @@ export function frPathT(S,pts,ts,o={}){const n=pts.length/2;let d=o.d0||0;const 
  return d;}
 // the pieces of a polyline that lie outside the circle (cx, cy, r): what is in front of a disc hides what is behind it
 export function frClipOut(pts,cx,cy,r){const out=[];let cur=null;for(let i=0;i<pts.length;i+=2){const ok=Math.hypot(pts[i]-cx,pts[i+1]-cy)>=r;if(ok){if(!cur){cur=[];out.push(cur);}cur.push(pts[i],pts[i+1]);}else cur=null;}return out.filter(p=>p.length>=4);}
+// The angle a turned towards the angle b by the fraction f (the short way round)
+export const frTurn=(a,b,f)=>{let d=((b-a)%FR_TAU+3*Math.PI)%FR_TAU-Math.PI;return a+d*f;};
+// A dendritic network grown order by order: a channel (pts) of order lv sprouts, on alternate sides, channels of the next order, and
+// so on down to maxLv; all the channels of one order start together (o.T[lv] after t0), so the same branching is seen happening at
+// every scale. o: W [width at the root of each order], C [[c0, c1] of each order], every [spacing of the daughters along a channel of
+// each order], len [length of the channels of each order], spread (angle of the daughters), bias (x, y) → angle the daughters lean
+// to, biasK, meander (bends per channel), T, dur, fork (the tips of the last orders fork in two), hot, sway, lum.
+export function frDendrite(S,pts,lv,o,t0,d0=0){const k=S.k,R=S.rnd,n=pts.length/2,W=o.W[lv],C=o.C[lv],T=t0+o.T[lv]*k;
+ let L=0;for(let i=1;i<n;i++)L+=Math.hypot(pts[i*2]-pts[i*2-2],pts[i*2+1]-pts[i*2-1]);
+ const vis=pts.some((v,i)=>i%2===0&&!frOut(v,pts[i+1],0));
+ if(vis)frPath(S,pts,T+(o.lag?.(pts[0],pts[1])||0)*k,L/Math.max(.05,o.dur[lv]*k),{w0:W,w1:Math.max(o.W[o.W.length-1],W*.62),c0:C[0],c1:C[1],lum:o.lum?.[lv]??1,d0,hot:o.hot??.8,sway:o.sway||0,seed:pts[0]*.01});
+ if(lv>=o.maxLv)return;
+ const ev=o.every[lv],m=o.meander??1.2;let acc=-ev*(.3+.5*R()),side=R()<.5?-1:1,s=0;
+ const kid=(x,y,a,len)=>{const ph=R()*FR_TAU,A=m*(.6+.8*R()),c=frCurve(x,y,a,len,Math.max(4,Math.round(len/7)),u=>A*Math.sin(u*FR_TAU*.9+ph)/len);frDendrite(S,c.pts,lv+1,o,t0,d0+s);};
+ for(let i=1;i<n;i++){const x0=pts[i*2-2],y0=pts[i*2-1],x1=pts[i*2],y1=pts[i*2+1],l=Math.hypot(x1-x0,y1-y0);s+=l;acc+=l;
+  if(acc>=ev&&s<L*.97){acc=-ev*(R()-.5)*.5;side=-side;const a=Math.atan2(y1-y0,x1-x0);let ac=a+side*o.spread*(.75+.5*R());if(o.bias)ac=frTurn(ac,o.bias(x1,y1),o.biasK??.3);
+   kid(x1,y1,ac,o.len[lv+1]*(.65+.7*R())*(1-.35*s/L));}}
+ if(o.fork&&lv>=o.fork){const x=pts[n*2-2],y=pts[n*2-1],a=Math.atan2(y-pts[n*2-3],x-pts[n*2-4]);for(const sd of [-1,1])kid(x,y,a+sd*o.spread*.7,o.len[lv+1]*.55);}}
+
+// ── Space colonization (Runions, Fuhrer, Lane, Federl, Rolland-Lagan & Prusinkiewicz, 2005; Runions, Lane & Prusinkiewicz, 2007) ──
+// Points of attraction fill a region; the network grows from its roots one step D at a time towards the points that each node is the
+// nearest to (within di), and a point dies when a node comes within dk of it. The networks of leaf veins, roots, rivers, corals and
+// fungi come out of this one rule. Then: the Horton–Strahler order of every node (Horton, 1945; Strahler, 1957), the thickness by the
+// pipe model (a parent carries what all its children carry: w^g = Σ w_child^g), and the network cut into streams, each of one order.
+// roots [{x, y, a}] (a: the first direction), pts: Float32Array [x, y, …] of points of attraction. Returns {nodes, streams, top}.
+export function frColonize(roots,pts,o={}){const D=o.D||9,di=o.di||70,dk=o.dk||D*1.6,maxIt=o.it||400,P=pts.length/2,alive=new Uint8Array(P).fill(1);
+ const N=[];for(const r of roots)N.push({x:r.x,y:r.y,p:-1,dx:Math.cos(r.a??-Math.PI/2),dy:Math.sin(r.a??-Math.PI/2),k:[],root:N.length});
+ // each point keeps its nearest node; only the new nodes of each step can change it (a grid of the points finds those near a node)
+ const cs=di,GW=Math.ceil(2600/cs)+2,GH=Math.ceil(1900/cs)+2,cell=(x,y)=>Math.min(GH-1,Math.max(0,Math.floor((y+500)/cs)))*GW+Math.min(GW-1,Math.max(0,Math.floor((x+500)/cs)));
+ const PG=Array.from({length:GW*GH},()=>null);for(let j=0;j<P;j++){const c=cell(pts[j*2],pts[j*2+1]);(PG[c]||(PG[c]=[])).push(j);}
+ const near=new Int32Array(P).fill(-1),nd=new Float32Array(P).fill(1e9);
+ const touch=i=>{const n=N[i],c0=cell(n.x,n.y);for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const l=PG[c0+b*GW+a];if(!l)continue;
+   for(const j of l){if(!alive[j])continue;const d=Math.hypot(pts[j*2]-n.x,pts[j*2+1]-n.y);if(d<dk){alive[j]=0;continue;}if(d<nd[j]){nd[j]=d;near[j]=i;}}}};
+ N.forEach((_,i)=>touch(i));
+ for(let it=0;it<maxIt;it++){const acc=new Map();
+  for(let j=0;j<P;j++){if(!alive[j]||nd[j]>=di)continue;const i=near[j],x=pts[j*2],y=pts[j*2+1],bd=nd[j];let v=acc.get(i);if(!v)acc.set(i,v=[0,0,0]);v[0]+=(x-N[i].x)/bd;v[1]+=(y-N[i].y)/bd;v[2]++;}
+  if(!acc.size)break;const fresh=[];
+  for(const [i,v] of acc){const n=N[i];let dx=v[0]/v[2]+n.dx*(o.inertia??.3)+(o.pull?o.pull[0]:0),dy=v[1]/v[2]+n.dy*(o.inertia??.3)+(o.pull?o.pull[1]:0);const l=Math.hypot(dx,dy);if(l<1e-6)continue;dx/=l;dy/=l;
+   N.push({x:n.x+dx*D,y:n.y+dy*D,p:i,dx,dy,k:[],root:n.root});n.k.push(N.length-1);fresh.push(N.length-1);}
+  for(const i of fresh)touch(i);}
+ // the order of every node (from the tips down), the thickness, the distance from the root
+ const ord=new Int8Array(N.length),w=new Float32Array(N.length),g=o.g||2.4;
+ for(let i=N.length-1;i>=0;i--){const k=N[i].k;if(!k.length){ord[i]=1;w[i]=1;continue;}let m=0,c=0,s=0;for(const j of k){if(ord[j]>m){m=ord[j];c=1;}else if(ord[j]===m)c++;s+=Math.pow(w[j],g);}ord[i]=c>1?m+1:m;w[i]=Math.pow(s,1/g);}
+ const dist=new Float32Array(N.length);for(let i=0;i<N.length;i++)if(N[i].p>=0)dist[i]=dist[N[i].p]+D;
+ // the streams: from each root, the child of the highest order (and then the thickest) carries the stream on; the others begin new ones
+ const streams=[],todo=N.map((n,i)=>n.p<0?i:-1).filter(i=>i>=0).map(i=>({i,from:-1}));
+ while(todo.length){const {i,from}=todo.pop(),s={o:ord[i],ids:from>=0?[from,i]:[i]};let c=i;
+  for(;;){const k=N[c].k;if(!k.length)break;let b=k[0];for(const j of k)if(ord[j]>ord[b]||(ord[j]===ord[b]&&w[j]>w[b]))b=j;for(const j of k)if(j!==b)todo.push({i:j,from:c});if(ord[b]!==s.o&&o.split!==false){todo.push({i:b,from:c});break;}s.ids.push(b);c=b;}
+  streams.push(s);}
+ let top=0;for(const s of streams)top=Math.max(top,s.o);return {nodes:N,ord,w,dist,streams,top};}
+// points of attraction scattered in a region: n tries in the box [x0, y0, x1, y1], kept where inside(x, y) (a density 0–1, or true)
+export function frScatter(R,n,box,inside=()=>1){const out=[];for(let i=0;i<n;i++){const x=box[0]+R()*(box[2]-box[0]),y=box[1]+R()*(box[3]-box[1]),d=inside(x,y);if(d===true||R()<d)out.push(x,y);}return new Float32Array(out);}
+// a colonized network drawn stream by stream: the streams of the highest order first, then each lower order all at once, each stream
+// growing from where it leaves its parent. o: W (the width of the thickest), wMin, C(order fraction 0 = trunk … 1 = finest, u along)
+// → palette place, step (the time between orders), dur, lum, sway, hot
+export function frDrawNet(S,net,t0,o={}){const {nodes:N,w,dist,streams,top}=net,k=S.k,wMax=Math.max(...net.w),W=o.W||20,wMin=o.wMin||1,step=(o.step||.55)*k,dur=(o.dur||.7)*k;
+ const smooth=p=>{for(let it=0;it<2;it++){if(p.length<6)break;const q=[p[0],p[1]];for(let i=0;i<p.length-2;i+=2){const ax=p[i],ay=p[i+1],bx=p[i+2],by=p[i+3];q.push(ax*.75+bx*.25,ay*.75+by*.25,ax*.25+bx*.75,ay*.25+by*.75);}q.push(p[p.length-2],p[p.length-1]);p=q;}return p;};
+ const wid=i=>Math.max(wMin,W*Math.pow(w[i]/wMax,o.wExp??.75));
+ for(const s of streams){if(s.ids.length<2)continue;const lvl=(top-s.o)/Math.max(1,top-1),T=t0+(top-s.o)*step+(o.lag?o.lag(N[s.ids[0]]):0)*k;
+  const raw=[];for(const i of s.ids)raw.push(N[i].x,N[i].y);const pts=smooth(raw),n=pts.length/2,m=s.ids.length;
+  if(!pts.some((v,j)=>j%2===0&&!frOut(v,pts[j+1],0)))continue;
+  const ts=[],L=[0];for(let j=1;j<n;j++)L.push(L[j-1]+Math.hypot(pts[j*2]-pts[j*2-2],pts[j*2+1]-pts[j*2-1]));const tot=L[n-1]||1,d=dur*(o.durK?o.durK(s.o,top):1);for(let j=0;j<n;j++)ts.push(T+d*L[j]/tot);
+  const at=j=>s.ids[Math.min(m-1,Math.round(j/(n-1)*(m-1)))];
+  frPathT(S,pts,ts,{wf:j=>wid(at(j)),cf:j=>o.C(lvl,j/(n-1)),lum:o.lum?o.lum(lvl):1,d0:dist[s.ids[0]],hot:o.hot??.7,sway:o.sway||0,seed:pts[0]*.01});}
+ return top;}
