@@ -135,6 +135,31 @@ for e in E:
         r=min(K,j,len(pts)-1-j);q[j]=(cs_[j+r+1]-cs_[j-r])/(2*r+1)
       pts=q
   e['pts']=pts;e['L']=np.hypot(*np.diff(pts,axis=0).T).sum()
+# ── small loops (a hole in a wide line, which the skeleton goes round on both sides) opened (P.loop: the longest loop, px): the
+# narrower of two edges that close a loop that short is dropped
+if 'loop' in P:
+  nl=0
+  for it in range(3):
+    inc_=[[] for _ in range(len(cpos))]
+    for j,e in enumerate(E): inc_[e['u']].append(j);inc_[e['v']].append(j)
+    order=sorted(range(len(E)),key=lambda j:np.median(E[j]['w']));drop=set()
+    for j in order:
+      e=E[j]
+      if e['L']>P['loop'] or len(inc_[e['u']])<3 or len(inc_[e['v']])<3: continue
+      # the shortest way from u to v without this edge, no longer than the loop allows
+      dist={e['u']:0.};pq=[(0.,e['u'])];found=False
+      while pq:
+        du,u=heapq.heappop(pq)
+        if du>dist[u]: continue
+        if u==e['v']: found=du+e['L']<=P['loop'];break
+        for k in inc_[u]:
+          if k==j or k in drop: continue
+          q=E[k];v=q['v'] if q['u']==u else q['u'];nd=du+q['L']
+          if nd+e['L']<=P['loop'] and nd<dist.get(v,1e18): dist[v]=nd;heapq.heappush(pq,(nd,v))
+      if found: drop.add(j);inc_[e['u']].remove(j);inc_[e['v']].remove(j)
+    if not drop: break
+    E=[e for j,e in enumerate(E) if j not in drop];nl+=len(drop)
+  print('loops opened',nl)
 # ── a wide line onto its ridge (P.snap: [the least width, the power of the brightness]): the skeleton of a wide line and its glow may
 # run off its middle (pulled by the lines that leave it on one side); each point moves across the line to the middle of its bright
 # core, the moves smoothed along it, its ends kept
@@ -254,7 +279,72 @@ for e in E:
     ws=np.clip(wa+(wb-wa)*(e['s']/max(1e-6,e['L'])-.3)/.4,min(wa,wb)*.85,max(wa,wb)*1.15)
   else: ws=np.full(n,np.median(w))
   e['ws']=ws
-  c=np.interp(e['h'],[h for h,_ in HUE],[c for _,c in HUE])+np.clip(DIM[0]-e['val'],0,1)*DIM[1];e['cs']=np.clip(smooth(c,P.get('csm',5)),0,1)
+  hh=np.where(e['h']<P['hwrap'],e['h']+360,e['h']) if 'hwrap' in P else e['h']  # (P.hwrap: hues below it go on past 360, for a palette that runs through red)
+  c=np.interp(hh,[h for h,_ in HUE],[c for _,c in HUE])+np.clip(DIM[0]-e['val'],0,1)*DIM[1];e['cs']=np.clip(smooth(c,P.get('csm',5)),0,1)
+# (P.peaks: [the least fall, px; the reach, px; the least width]): the summits of the wide lines become nodes to grow from. A summit is
+# a point higher on the screen than every point of the wide lines within the reach along them, from which they fall by the least fall
+PEAKS=[]
+if 'peaks' in P:
+  PR,PWN,PMW=P['peaks'];wide=[j for j,e in enumerate(E) if e['mw']>=PMW]
+  # the points of the wide lines, every ~3 px, as a graph (the nodes shared)
+  gp=[];gadj=[];key={}
+  def gnode(x_,y_,k_=None):
+    if k_ is not None and k_ in key: return key[k_]
+    gp.append((x_,y_));gadj.append([]);i_=len(gp)-1
+    if k_ is not None: key[k_]=i_
+    return i_
+  own=[]
+  for j in wide:
+    e=E[j];n_=len(e['pts']);idx_=list(range(0,n_,3))
+    if idx_[-1]!=n_-1: idx_.append(n_-1)
+    prev=None
+    for q_ in idx_:
+      k_=('n',e['u']) if q_==0 else ('n',e['v']) if q_==n_-1 else None;g=gnode(*e['pts'][q_],k_);own.append((g,j,q_))
+      if prev is not None: d_=np.hypot(gp[g][0]-gp[prev][0],gp[g][1]-gp[prev][1]);gadj[g].append((prev,d_));gadj[prev].append((g,d_))
+      prev=g
+  gp=np.array(gp);where={}
+  for g,j,q_ in own: where.setdefault(g,(j,q_))
+  found=[]
+  for g in range(len(gp)):
+    if any(gp[h][1]<gp[g][1] for h,_ in gadj[g]): continue
+    dist={g:0.};pq=[(0.,g)];ok=True;fall=0.
+    while pq:
+      du,u=heapq.heappop(pq)
+      if du>dist[u]: continue
+      if gp[u][1]<gp[g][1]-1e-6: ok=False;break
+      fall=max(fall,gp[u][1]-gp[g][1])
+      for v_,dl in gadj[u]:
+        if du+dl<=PWN and du+dl<dist.get(v_,1e18): dist[v_]=du+dl;heapq.heappush(pq,(du+dl,v_))
+    if ok and fall>=PR and all(np.hypot(*(gp[g]-gp[f_]))>PWN*.5 for f_ in found): found.append(g)
+  # each summit: the node it is, or a new node where its line is cut
+  cuts={}
+  for g in found:
+    j,q_=where[g];e=E[j]
+    if q_==0: PEAKS.append(e['u'])
+    elif q_==len(e['pts'])-1: PEAKS.append(e['v'])
+    else: cuts.setdefault(j,[]).append(q_)
+  newE=[]
+  for j,e in enumerate(E):
+    if j not in cuts: newE.append(e);continue
+    cut=sorted(cuts[j]);b_=[0]+cut+[len(e['pts'])-1];ids=[e['u']]
+    for i in cut: cpos=np.vstack([cpos,e['pts'][i]]);ids.append(len(cpos)-1);PEAKS.append(len(cpos)-1)
+    ids.append(e['v'])
+    for a_ in range(len(b_)-1):
+      i0,i1=b_[a_],b_[a_+1];q=dict(e);q['u']=ids[a_];q['v']=ids[a_+1]
+      for k_ in ('pts','w','h','val','ws','cs'): q[k_]=e[k_][i0:i1+1]
+      q['s']=e['s'][i0:i1+1]-e['s'][i0];q['L']=q['s'][-1];newE.append(q)
+  E=newE;nc=len(cpos);print('peaks',len(PEAKS),[(int(cpos[r,0]),int(cpos[r,1])) for r in PEAKS])
+# (P.relw: [w0, w1]: the order of an edge by its width over the width of the widest lines of its network (their 90th percentile))
+if 'relw' in P:
+  nn_=len(cpos);par=list(range(nn_))
+  def fd(x_):
+    while par[x_]!=x_: par[x_]=par[par[x_]];x_=par[x_]
+    return x_
+  for e in E: par[fd(e['u'])]=fd(e['v'])
+  cw_={}
+  for e in E: cw_.setdefault(fd(e['u']),[]).append(e['mw'])
+  cw_={k_:np.percentile(v_,90) for k_,v_ in cw_.items()}
+  for e in E: r_=e['mw']/cw_[fd(e['u'])];e['o']=0 if r_>=P['relw'][0] else 1 if r_>=P['relw'][1] else 2
 nc_=nc;adj=[[] for _ in range(nc_)]
 for j,e in enumerate(E): adj[e['u']].append(j);adj[e['v']].append(j)
 # a line that runs on through a fork keeps its width there: the two widest edges of each fork meet at the mean of their widths, the
@@ -307,15 +397,37 @@ for r in roots:
       e['pts']=np.vstack([e['pts'],ext]);e['ws']=np.concatenate([e['ws'],[e['ws'][-1]]]);e['cs']=np.concatenate([e['cs'],[e['cs'][-1]]])
     e['s']=np.concatenate([[0],np.cumsum(np.hypot(*np.diff(e['pts'],axis=0).T))]);e['L']=e['s'][-1]
 t=np.full(nc_,np.inf);d=np.full(nc_,np.inf)
+# (P.lag: [0, lag1, lag2]: a line of a higher order than the lowest at its fork waits that long before it leaves)
+LAG=P.get('lag',[0,0,0]);mo=[min([E[j]['o'] for j in adj[i]],default=0) for i in range(nc_)]
 def spread(pq):
   while pq:
     tu,u=heapq.heappop(pq)
     if tu>t[u]: continue
     for j in adj[u]:
-      e=E[j];v=e['v'] if e['u']==u else e['u'];ta=max(tu,T0[e['o']])+e['L']/SP[e['o']]
+      e=E[j];v=e['v'] if e['u']==u else e['u'];ta=max(tu+(LAG[e['o']] if e['o']>mo[u] else 0),T0[e['o']])+e['L']/SP[e['o']]
       if ta<t[v]: t[v]=ta;d[v]=d[u]+e['L'];heapq.heappush(pq,(ta,v))
-for r in roots: t[r]=0;d[r]=0
-spread([(0,r) for r in roots])
+# (P.top: [the span of the start times, s; the least length of a network, px]): each separate network (a mountain range) grows from its
+# highest point, the ranges higher in the picture (farther) first, the start times spread over the span by height
+rt={r:0. for r in roots}
+if PEAKS:
+  roots=PEAKS;ys_=cpos[roots,1];y0_,y1_=ys_.min(),ys_.max();rt={r:P.get('peakT',2.5)*(cpos[r,1]-y0_)/max(1,y1_-y0_) for r in roots}
+if 'top' in P:
+  comp=-np.ones(nc_,int);nco=0;roots=[]
+  for i in range(nc_):
+    if comp[i]>=0 or deg[i]==0: continue
+    st=[i];comp[i]=nco;mem=[i]
+    while st:
+      x_=st.pop()
+      for j in adj[x_]:
+        for y_ in (E[j]['u'],E[j]['v']):
+          if comp[y_]<0: comp[y_]=nco;st.append(y_);mem.append(y_)
+    if sum(E[j]['L'] for m_ in mem for j in adj[m_])/2>=P['top'][1]: roots.append(min(mem,key=lambda m_:cpos[m_,1]))
+    nco+=1
+  ys_=np.array([cpos[r,1] for r in roots]);y0_,y1_=ys_.min(),ys_.max()
+  rt={r:P['top'][0]*(cpos[r,1]-y0_)/max(1,y1_-y0_) for r in roots}
+  print('ranges',len(roots),'summits',[(int(cpos[r,0]),int(cpos[r,1]),round(rt[r],2)) for r in roots])
+for r in roots: t[r]=rt[r];d[r]=0
+spread([(rt[r],r) for r in roots])
 # pieces not joined to the network start from the nearest point that is
 for i in range(nc_):
   if np.isfinite(t[i]) or deg[i]==0: continue
@@ -333,7 +445,8 @@ parts_=[]
 for e in E:
   if not (np.isfinite(t[e['u']]) and np.isfinite(t[e['v']])): continue
   s=e['s'];L=e['L'];sp=SP[e['o']];st=T0[e['o']];I=np.arange(len(s))
-  tu=max(t[e['u']],st)+s/sp;tv=max(t[e['v']],st)+(L-s)/sp
+  lu=LAG[e['o']] if e['o']>mo[e['u']] else 0;lv_=LAG[e['o']] if e['o']>mo[e['v']] else 0
+  tu=max(t[e['u']]+lu,st)+s/sp;tv=max(t[e['v']]+lv_,st)+(L-s)/sp
   if np.all(tu<=tv+1e-6): parts_.append((e,I,tu[0],d[e['u']],e['u'],e['v']))
   elif np.all(tv<=tu+1e-6): parts_.append((e,I[::-1],tv[-1],d[e['v']],e['v'],e['u']))
   else: m=int(np.argmin(np.abs(tu-tv)));parts_+= [(e,I[:m+1],tu[0],d[e['u']],e['u'],-1),(e,I[m:][::-1],tv[-1],d[e['v']],e['v'],-1)]
