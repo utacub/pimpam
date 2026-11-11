@@ -18,7 +18,7 @@ export const FR_DARK=.5;
 const frPal=hexes=>{const k=hexes.join();let p=FRR.pals.get(k);if(!p){p=hexes.map((h,i)=>frLin(h,1+.5*i/4));FRR.pals.set(k,p);}return p;};
 // the uniforms of a form at its moment: palettes, the slow breathing of the view, the wind, the way out
 export function frUniforms(M,S,s){const T=S.t,still=!!s?.reduced;
- const view=still?[0,0,1,0]:[.004*Math.sin(T*.07+S.seed),.003*Math.sin(T*.053+S.seed*.3),1+.025*Math.sin(T*.041+1.3)+(S.full>=0?.02*Math.min(1,(T-S.full)/6):0),.012*Math.sin(T*.033+S.seed*.7)];
+ const view=still?[0,0,1,0]:[.003*Math.sin(T*.07+S.seed),.002*Math.sin(T*.053+S.seed*.3),1+.008*Math.sin(T*.041+1.3)+(S.full>=0?.01*Math.min(1,(T-S.full)/6):0),.004*Math.sin(T*.033+S.seed*.7)];
  const fade=S.exit>=0?Math.max(0,1-Math.max(0,T-S.exit-FR_OUT*.6)/(FR_OUT*.4)):1;
  const AR=FRM.view?.AR||16/9,k=Math.max(1/FR_FH,AR/FR_FW);
  return {T,frame:[(AR-FR_FW*k)/2,(1-FR_FH*k)/2,k],pal:frPal(M.pal),pal2:frPal(M.pal2||M.pal),view,wind:still?0:(M.wind||0),exit:S.exit,exitDur:FR_OUT,pulses:S.pulses,pulseV:M.pulseV||.42,fade,look:M.look,dmax:S.st.dmax};}

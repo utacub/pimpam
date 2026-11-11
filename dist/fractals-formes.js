@@ -155,16 +155,16 @@ export function frTree(S,G,seeds,o){const R=o.R||S.rnd,k=S.k;let id=1e5;const tr
    // the curve of an angle: a bend at random and a pull upwards (towards −π/2), spread along the branch
    // (the pull upwards bends the branch most near its start, as a lyre: it leaves its mother aside and then rises)
    const curve=(a,len)=>{let d=((-Math.PI/2-a)%FR_TAU+3*Math.PI)%FR_TAU-Math.PI;const K=(turn+d*up)/Math.max(1,len),ly=o.lyre??0;return frCurve(b.x,b.y,a,len,Math.max(2,Math.round(len/7)),u=>K*(1+ly*(1-2*u)));};
-   const free=c=>{for(const q2 of c.nodes){if(q2.s<s0)continue;const w=G.who(q2.x,q2.y);if(w===-2||(w>=0&&w!==b.par&&w!==b.id&&w!==b.sib&&w!==b.gp))return q2.s;}return c.len;};
+   const free=c=>{for(const q2 of c.nodes){if(o.inside&&q2.s>2&&!o.inside(q2.x,q2.y))return q2.s;if(q2.s<s0)continue;const w=G.who(q2.x,q2.y);if(w===-2||(w>=0&&w!==b.par&&w!==b.id&&w!==b.sib&&w!==b.gp))return q2.s;}return c.len;};
    let best=null;for(const da of tries){const c=curve(b.a+da,b.len),f=free(c);if(!best||f>best.f+4)best={c,f,a:b.a+da};if(f>=b.len*.98)break;}
    let len=best.f>=b.len*.98?b.len:best.f-o.pad(lv)-2;if(len<o.minLen*(lv?1:2))continue;
    const c=len===b.len?best.c:curve(best.a,len);G.mark(c.pts,b.w*.5+o.pad(lv),b.id);
-   const wEnd=b.w*(b.wr??o.wr),T=Math.max(o.T(lv)*k+(o.t0||0),b.t??0),dur=o.dur(lv)*k,col=o.Cw?[o.Cw(b.w),o.Cw(wEnd)]:o.C(lv),e=c.nodes[c.nodes.length-1];
+   const e=c.nodes[c.nodes.length-1],wEnd=b.w*(b.wr??o.wr),T=Math.max(o.T(lv)*k+(o.t0||0),b.t??0),dur=o.dur(lv)*k,col=o.Cxy?[o.Cxy(b.x,b.y,lv),o.Cxy(e.x,e.y,lv)]:o.Cw?[o.Cw(b.w),o.Cw(wEnd)]:o.C(lv);
    frGrow(S,c.pts,T,dur,{w0:b.w,w1:wEnd,c0:col[0],c1:col[1],lum:o.lum?.(lv)??1,d0:b.d,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01});
    out.push({x:e.x,y:e.y,a:e.a,lv,len});
    if(lv>=o.depth||len*(o.mono?o.mono.rm:o.ratio)<o.minLen){
     // the last fork, a small Y at every tip (too small to need room)
-    if(o.tipFork){const l=len*o.tipFork,T2=Math.max(o.T(lv+1)*k+(o.t0||0),T+dur*.9),c2=o.Cw?[o.Cw(wEnd*.8),o.Cw(wEnd*.6)]:(o.C(lv+1)||col);for(const sd of [-1,1]){const b2=e.a+sd*o.sp*(.8+.4*R());
+    if(o.tipFork){const l=len*o.tipFork,T2=Math.max(o.T(lv+1)*k+(o.t0||0),T+dur*.9),c2=o.Cxy?[0,o.Cxy(e.x,e.y,lv+1)]:o.Cw?[o.Cw(wEnd*.8),o.Cw(wEnd*.6)]:(o.C(lv+1)||col);for(const sd of [-1,1]){const b2=e.a+sd*o.sp*(.8+.4*R());
      frLine(S,e.x,e.y,e.x+Math.cos(b2)*l*(.8+.4*R()),e.y+Math.sin(b2)*l*(.8+.4*R()),T2,dur*.7,{w0:wEnd*.94,w1:wEnd*.7,c0:c2[1],lum:o.lum?.(lv+1)??1,d0:b.d+len,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01},40);}}
     continue;}
    const sd=R()<.5?-1:1,i0=id;id+=2;for(const s of [sd,-sd]){const big=s===sd,M=o.mono;
@@ -173,3 +173,22 @@ export function frTree(S,G,seeds,o){const R=o.R||S.rnd,k=S.k;let id=1e5;const tr
     next.push({x:e.x,y:e.y,a:e.a+s*ang*(.75+.5*R()),len:len*rat*(.88+.24*R()),w:wEnd*(M?(big?1:M.ws/M.wm):.94),wr,d:b.d+len,t:T+dur*.92,id:big?i0:i0+1,sib:big?i0+1:i0,par:b.id,gp:b.par,pri:b.pri});}}
   q=next;}
  return out;}
+
+// A point inside a closed polygon [x, y, …] (even–odd)?
+export function frInPoly(P,x,y){let c=false;for(let i=0,n=P.length/2,j=n-1;i<n;j=i++){const yi=P[i*2+1],yj=P[j*2+1];if((yi>y)!==(yj>y)&&x<P[j*2]+(y-yj)/(yi-yj)*(P[i*2]-P[j*2]))c=!c;}return c;}
+// The walls of a Voronoi tessellation of points scattered on a jittered grid (spacing sp) where inside(x, y): each wall once, as
+// [x0, y0, x1, y1, xs, ys] (xs, ys: the seed of one of its two cells). The cells of leaf veins (areoles), of dried mud, of a
+// honeycomb, of a giraffe's coat come out of this one rule: each place belongs to the nearest centre.
+export function frVoronoi(R,box,sp,inside,jit=.85){const pts=[],gw=Math.ceil((box[2]-box[0])/sp)+1,gh=Math.ceil((box[3]-box[1])/sp)+1,cell=new Int32Array(gw*gh).fill(-1);
+ for(let j=0;j<gh;j++)for(let i=0;i<gw;i++){const x=box[0]+(i+.5+(R()-.5)*jit)*sp,y=box[1]+(j+.5+(R()-.5)*jit)*sp;if(!inside(x,y))continue;cell[j*gw+i]=pts.length/2;pts.push(x,y);}
+ const out=[];for(let j=0;j<gh;j++)for(let i=0;i<gw;i++){const a=cell[j*gw+i];if(a<0)continue;const ax=pts[a*2],ay=pts[a*2+1];
+  // the cell of a: a square round it, cut by the half-planes of its neighbours; each side remembers who cut it
+  let poly=[[ax-2*sp,ay-2*sp,-1],[ax+2*sp,ay-2*sp,-1],[ax+2*sp,ay+2*sp,-1],[ax-2*sp,ay+2*sp,-1]];
+  for(let b2=-2;b2<=2;b2++)for(let a2=-2;a2<=2;a2++){if(!a2&&!b2)continue;const ii=i+a2,jj=j+b2;if(ii<0||jj<0||ii>=gw||jj>=gh)continue;const b=cell[jj*gw+ii];if(b<0)continue;
+   const bx=pts[b*2],by=pts[b*2+1],mx=(ax+bx)/2,my=(ay+by)/2,nx=bx-ax,ny=by-ay,side=p=>(p[0]-mx)*nx+(p[1]-my)*ny,np=[];
+   for(let k=0;k<poly.length;k++){const P=poly[k],Q=poly[(k+1)%poly.length],sp1=side(P),sq=side(Q);if(sp1<=0)np.push(P);
+    if((sp1<=0)!==(sq<=0)){const t=sp1/(sp1-sq);np.push([P[0]+(Q[0]-P[0])*t,P[1]+(Q[1]-P[1])*t,sp1<=0?b:P[2]]);}}
+   // the side that starts at a cut point carries the id of the neighbour that cut it
+   poly=np;for(let k=0;k<poly.length;k++){const P=poly[k],Q=poly[(k+1)%poly.length];if(Math.abs(((P[0]+Q[0])/2-mx)*nx+((P[1]+Q[1])/2-my)*ny)<1e-6*(nx*nx+ny*ny)+1e-6)P[2]=b;}}
+  for(let k=0;k<poly.length;k++){const P=poly[k],Q=poly[(k+1)%poly.length];if(P[2]>=0&&P[2]<a)continue;out.push([P[0],P[1],Q[0],Q[1],ax,ay,P[2]]);}}
+ return {pts,walls:out};}
