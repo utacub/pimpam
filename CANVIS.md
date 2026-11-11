@@ -1,3 +1,7 @@
+# Pim Pam 0.76.1 · Informació: «Un petit «pim» genera un gran «pam».» com a frase pròpia
+
+Base: 0.76 (8a7cddf). Respon a en Marc (11 de novembre de 2026, 23:30). Al primer paràgraf d’«Informació», la frase va després d’un punt: «…cada pulsació té una resposta clara, visual i sonora. Un petit «pim» genera un gran «pam».» Canviat als sis idiomes.
+
 # Pim Pam 0.76 · Instal·lar Pim Pam com una aplicació (PWA)
 
 Base: 0.75.3 (ecc6aa3). Respon a en Marc (11 de novembre de 2026, 23:05): «vull que Pim Pam tingui instal·lació PWA, i que hi hagi un botó a dalt a la dreta a la pàgina principal per iniciar-la, i que quan es premi aquest botó adverteixi de l’espai total que ocupa instal·lada», amb les icones del kit de marca complet que va enviar a les 23:24, i el canvi de text de «Informació» (23:23).
