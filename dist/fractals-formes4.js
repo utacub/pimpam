@@ -1,7 +1,7 @@
 // Fractals a la natura (CE46, 0.73) · stimuli 16–20: ploma de paó, serralades, arrels, petxina de triangles, dent de lleó. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
-import {frEvent,frTraced,frDrawTraced} from './fractals-formes.js';
-import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS,FR_TR_PETXINA} from './fractals-traces.js';
+import {frEvent,frTraced,frDrawTraced,frGrow,frSpline} from './fractals-formes.js';
+import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS,FR_TR_PETXINA,FR_TR_DENT} from './fractals-traces.js';
 
 // ── 16 · Ploma de paó ─────────────────────────────────────────────────────────────────────────────────────────────────────
 // A feather is a shaft (the rachis) with a row of barbs on each side, and every barb is a small shaft with a row of barbules on
@@ -66,3 +66,46 @@ export const FR_PETXINA={id:'petxina',name:'Petxina de triangles',what:'la xarxa
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_PETXINA),t0,{wk:.9,wpow:1,wmin:1.2,lum:1,hot:.6,sway:0,under:[0,2.6,.14,-.45,.95]});
   frEvent(S,'tronc',1645/941,t0);frEvent(S,'tronc',1200/941,t0+.9*k);frEvent(S,'tronc',500/941,t0+2*k);
   for(let i=0;i<6;i++)frEvent(S,i%2?'branca':'fulla',.2+i*.27,t0+(1.6+i*.45)*k);}]};
+
+// ── 20 · Dent de lleó ─────────────────────────────────────────────────────────────────────────────────────────────────────
+// The seed head of a dandelion is a sphere of fruits, each an achene on a long beak crowned by a pappus, a parachute of some hundred
+// bristles; and each bristle bears finer barbs. Beaks radiating from the centre, bristles radiating from the top of each beak, barbs
+// along each bristle: a branching repeated at three scales, and so light that the seed flies on the wind, held up by a ring of air
+// that the bristles, spaced just so, keep spinning above the pappus (a separated vortex ring; Cummins et al., 2018). Concept 20: a gold
+// stem from the bottom left to a head of about forty-five white pappi on gold beaks, and eight seeds flying away to the right, each a
+// gold achene, its beak and its pappus. The stem is drawn here, from the ground up; the head and the seeds are traced from the concept
+// (FR_TR_DENT): from the centre the beaks grow out, then each pappus opens its bristles and their barbs; then, one after another, the
+// seeds that the wind has taken grow from the achene along the beak to their pappus.
+const FR_DENT_STEM=[360,941,364,900,374,850,384,800,396,750,408,700,423,650,439,600,452,560,467,520,478,490,486,462];
+// the hubs of the pappi (where their bristles leave the beak; the brightest points of the concept), [x, y, size]
+const FR_DENT_HUBS=[[642,646,1],[297,669,1],[235,189,1],[1272,524,1.2],[241,476,1],[824,319,1],[136,343,1],[761,184,1],[1528,135,1.1],
+ [858,435,1],[797,565,1],[512,91,1],[459,249,.9],[490,750,1],[580,147,.9],[403,153,.9],[85,501,.9],[587,263,.9],[683,230,.9],[943,513,.9],
+ [827,692,.9],[1432,741,1],[576,808,.9],[354,58,.9],[682,76,.9],[688,367,.9],[104,625,.9],[310,359,.8],[225,303,.8],[326,234,.8],[693,487,.8],
+ [910,586,.8],[972,388,.8],[539,657,.8],[687,799,.8],[946,268,.8],[770,749,.8],[365,298,.8],[910,181,.8],[357,458,.7],
+ [326,563,.7],[134,723,.7],[261,93,.7],[1219,217,.7],[758,427,.7],[384,652,.7],[484,601,.6],[764,502,.6],[791,125,.6],[1043,114,.5],
+ [975,790,.5],[1602,374,.5],[1623,600,.5]];
+let FR_DENT_HT=null,FR_DENT_P=null;
+// the white lines brightest at their hub and dimmer out towards the tips of the bristles, as in the concept (each path's brightness by
+// the distance of its middle from the nearest hub; the gold beaks keep the brightness they have in the picture)
+function frDentLum(P){if(FR_DENT_P)return FR_DENT_P;FR_DENT_P=P.map(p=>{const n=p.w.length,m=n>>1;let cm=0;for(let i=0;i<n;i++)cm+=p.c[i];if(cm/n<.7)return p;
+ const x=p.pts[m*2],y=p.pts[m*2+1];let d=1e9;for(const [hx,hy,z] of FR_DENT_HUBS)d=Math.min(d,Math.hypot(x-hx,y-hy)/z);
+ // and the bristles wider as they leave their hub, where they crowd into one bright point
+ const w=Float32Array.from(p.w,(v,i)=>{let e=1e9;for(const [hx,hy,z] of FR_DENT_HUBS)e=Math.min(e,Math.hypot(p.pts[i*2]-hx,p.pts[i*2+1]-hy)/z);return v*(1+.9*Math.max(0,1-e/24));});
+ return {...p,w,b:Math.max(.55,1-.45*Math.min(1,Math.max(0,d-8)/85))};});return FR_DENT_P;}
+// the moment the tracing reaches each hub
+function frDentHubT(P){if(FR_DENT_HT)return FR_DENT_HT;FR_DENT_HT=FR_DENT_HUBS.map(([x,y])=>{let t=1e9;
+ for(const p of P)for(let i=0;i<p.w.length;i++){const dx=p.pts[i*2]-x,dy=p.pts[i*2+1]-y;if(dx*dx+dy*dy<144&&p.ts[i]<t)t=p.ts[i];}return t<1e9?t:2;});return FR_DENT_HT;}
+const FR_DENT_SEEDS=[[1080,1.9],[1395,2],[1315,2.2],[1188,2.3],[1578,2.4],[940,2.5],[1015,2.6],[1597,2.7]];
+export const FR_DENT={id:'dent',name:'Dent de lleó',what:'el capítol, els becs, els plomalls i les seves barbes',
+ pal:['#e0aa48','#f2c668','#f6deaa','#eceff6','#ffffff'],pal2:['#e8b050','#f8cc70','#f8e2b4','#eef2f8','#ffffff'],
+ look:{bloom:.22,glow:1.6,halo:.28,core:.8,tubeW:2,tubeP:2,spread:.3,minW:.4,gsat:1.3,sat:1,white:2,exp:1.45},wind:.003,
+ acts:[(S,t0)=>{const k=S.k;
+  frGrow(S,frSpline(FR_DENT_STEM,8).pts,t0,.42*k,{w0:16,w1:11,c0:.04,c1:.16,lum:1,hot:.8,sway:.05,seed:3.6});
+  // the glow where the beaks meet, under them
+  for(let i=0;i<12;i++){const a=i/12*Math.PI*2;frGrow(S,[485,456,485+Math.cos(a)*26,456+Math.sin(a)*26],t0+.38*k,.12*k,{w0:16,w1:6,c0:.3,c1:.15,lum:.55,hot:.3,sway:0});}
+  const P=frDentLum(frTraced(FR_TR_DENT)),HT=frDentHubT(P);
+  // each hub a point of light, lit as the bristles leave it
+  FR_DENT_HUBS.forEach(([x,y,z],j)=>frGrow(S,[x-1,y,x+1,y],t0+HT[j]*k,.1*k,{w0:4.5*z,c0:1,lum:.9,hot:0,sway:.1,seed:j}));
+  frDrawTraced(S,P,t0,{wk:.7,wpow:1,wmin:.45,wmax:3,tipx:[8,.5,.2],taper:.4,fork:[7,.35,1,.6,.85],lumv:[1,1,.3],lum:1,hot:.6,sway:.1});
+  frEvent(S,'tronc',360/941,t0);frEvent(S,'branca',485/941,t0+.4*k);for(let i=0;i<4;i++)frEvent(S,'fulla',.15+i*.3,t0+(.9+i*.25)*k);
+  for(const [x,t] of FR_DENT_SEEDS)frEvent(S,'fulla',x/941,t0+t*k);}]};

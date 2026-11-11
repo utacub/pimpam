@@ -10,12 +10,20 @@ from PIL import Image, ImageDraw
 from scipy import ndimage as ndi
 from skimage.morphology import skeletonize, remove_small_objects
 src,out=sys.argv[1],sys.argv[2];P=json.loads(sys.argv[3]) if len(sys.argv)>3 else {}
-a=np.asarray(Image.open(src).convert('RGB')).astype(float)/255
+_im=Image.open(src).convert('RGB')
+if 'mask' in P:  # (P.mask: polygons [[x, y, …], …] blanked before tracing: a part drawn otherwise, such as a stem)
+  _d=ImageDraw.Draw(_im)
+  for pg in P['mask']: _d.polygon(list(zip(pg[0::2],pg[1::2])),fill=(0,0,0))
+a=np.asarray(_im).astype(float)/255
 V=a.max(2);H,W=V.shape
 # ── the skeleton of the bright lines
 bl=ndi.gaussian_filter(V,4)
 mask=(V>P.get('core',.5))|(((V-bl)>P.get('fine',.13))&(V>P.get('vmin',.22)))
 mask=remove_small_objects(mask,max_size=30);mask=ndi.binary_closing(mask,iterations=1)
+HUBS=([P['hub']] if not isinstance(P['hub'][0],list) else P['hub']) if 'hub' in P else []
+if HUBS:  # (P.hub: [x, y, r, reach], or a list of them: the discs where many lines meet, left out of the skeleton; see below)
+  _yy,_xx=np.mgrid[0:H,0:W]
+  for h_ in HUBS: mask[(_xx-h_[0])**2+(_yy-h_[1])**2<h_[2]**2]=False
 sk=skeletonize(mask);pd=12;dt=ndi.distance_transform_edt(np.pad(V>P.get('core',.5),pd))[pd:-pd,pd:-pd]  # padded: a line cut by the border is not wider there
 ys,xs=np.nonzero(sk);N=len(xs);idx=-np.ones((H,W),int);idx[ys,xs]=np.arange(N)
 nb=[[] for _ in range(N)]
@@ -187,6 +195,48 @@ if 'snap' in P:
     sh=(v*off).sum(1)/np.maximum(1e-6,v.sum(1));sh=np.convolve(np.pad(sh,6,mode='edge'),np.ones(13)/13,mode='same')[6:-6]
     sh[0]=sh[-1]=0;sh[1:-1]*=np.clip(np.minimum(np.arange(1,n-1),np.arange(n-2,0,-1))/4,0,1)
     e['pts']=pts+nr*sh[:,None];e['L']=np.hypot(*np.diff(e['pts'],axis=0).T).sum()
+# ── a hub (P.hub: [x, y, r, reach]): round a point where many lines meet (the centre of a dandelion head) the skeleton can only make a
+# tangle of them, so that disc is left out of the skeleton, and the lines are cut at the reach and drawn on to the point straight,
+# all of them meeting there at one node
+for h_ in HUBS:
+  hx_,hy_,hr_=h_[:3];reach_=h_[3] if len(h_)>3 else hr_*1.2;hm_=len(cpos);cpos=np.vstack([cpos,[[hx_,hy_]]])
+  # every line is cut where it comes within the reach (the knots and Us that the lines make where they crowd in are left out) and each
+  # cut end is drawn on straight to the point
+  E2_=[];cut_=[]
+  for e in E:
+    ins_=np.hypot(e['pts'][:,0]-hx_,e['pts'][:,1]-hy_)<reach_
+    if not ins_.any(): E2_.append(e);continue
+    n_=len(ins_);i_=0
+    while i_<n_:
+      if ins_[i_]: i_+=1;continue
+      j_=i_
+      while j_<n_ and not ins_[j_]: j_+=1
+      if j_-i_>=3:
+        q_={k_:e[k_][i_:j_] for k_ in ('pts','w','h','val')}
+        if i_==0: q_['u']=e['u']
+        else: q_['u']=len(cpos);cpos=np.vstack([cpos,q_['pts'][0]]);cut_.append((q_['u'],q_,0))
+        if j_==n_: q_['v']=e['v']
+        else: q_['v']=len(cpos);cpos=np.vstack([cpos,q_['pts'][-1]]);cut_.append((q_['v'],q_,-1))
+        q_['L']=np.hypot(*np.diff(q_['pts'],axis=0).T).sum();E2_.append(q_)
+      i_=j_
+  E=E2_;nh_=0
+  # and the free ends a little farther out that point at it (a line whose last stretch the glow of the hub swallowed)
+  dg_=np.zeros(len(cpos),int)
+  for e in E: dg_[e['u']]+=1;dg_[e['v']]+=1
+  cn_={c_[0] for c_ in cut_}
+  for e in E:
+    for nd_,k_ in ((e['u'],0),(e['v'],-1)):
+      if dg_[nd_]!=1 or nd_ in cn_ or len(e['pts'])<6: continue
+      q_=e['pts'][k_];dq_=np.hypot(q_[0]-hx_,q_[1]-hy_)
+      if dq_>reach_*1.8: continue
+      tg_=q_-(e['pts'][5] if k_==0 else e['pts'][-6]);tg_/=max(1e-6,np.hypot(*tg_))
+      if np.dot(tg_,(np.array([hx_,hy_])-q_)/max(1e-6,dq_))>.6: cut_.append((nd_,e,k_));cn_.add(nd_)
+  for nd_,e,k_ in cut_:
+    L_=np.hypot(cpos[nd_,0]-hx_,cpos[nd_,1]-hy_);ns_=max(3,int(L_/2));tt_=np.linspace(0,1,ns_)[:,None]
+    pts_=np.array([[hx_,hy_]])*(1-tt_)+cpos[nd_][None,:]*tt_
+    E.append(dict(u=hm_,v=nd_,pts=pts_,w=np.full(ns_,e['w'][k_]),h=np.full(ns_,e['h'][k_]),val=np.full(ns_,e['val'][k_]),L=L_));nh_+=1
+  nc=len(cpos)
+if HUBS: print('hubs',len(HUBS))
 # ── the pieces cut off from the network (a fine line fades where it leaves a wider one, so the picture shows a gap there) joined
 # back to it (P.join: the farthest gap, px; needs P.roots): from its end nearest to the network, a curve that leaves the line it
 # meets along that line, forwards, and turns into the piece, as a barbule leaves its barb
@@ -358,6 +408,12 @@ for i in range(nc_):
     e['ws']=e['ws']+(m-e['ws'][k])*f
 deg=np.array([len(x) for x in adj])
 B=P.get('border',25)
+# the colour by the saturation of the line (P.csat: [[saturation, c], …]; from the blurred colour of P.hb): white lines and gold ones
+if 'csat' in P:
+  ts_=sorted(P['csat']);mx_=ab.max(2);sat_=np.where(mx_>1e-6,(mx_-ab.min(2))/np.maximum(mx_,1e-6),0)
+  for e in E:
+    q_=np.round(e['pts']).astype(int);e['sat']=sat_[np.clip(q_[:,1],0,H-1),np.clip(q_[:,0],0,W-1)]
+  for e in E: e['cs']=np.clip(smooth(np.interp(e['sat'],[a for a,_ in ts_],[b for _,b in ts_]),P.get('csm',5)),0,1)
 # the colour by the width of the line (P.cwid: [[width, c], …], the widest first or not)
 if 'cwid' in P:
   tw=sorted(P['cwid'])
@@ -426,8 +482,9 @@ if 'top' in P:
   ys_=np.array([cpos[r,1] for r in roots]);y0_,y1_=ys_.min(),ys_.max()
   rt={r:P['top'][0]*(cpos[r,1]-y0_)/max(1,y1_-y0_) for r in roots}
   print('ranges',len(roots),'summits',[(int(cpos[r,0]),int(cpos[r,1]),round(rt[r],2)) for r in roots])
+if 'rootT' in P and 'roots' in P and not PEAKS and 'top' not in P: rt={r:P['rootT'][i] for i,r in enumerate(roots)}  # (P.rootT: the start time of each root)
 for r in roots: t[r]=rt[r];d[r]=0
-spread([(rt[r],r) for r in roots])
+spread(sorted((rt[r],r) for r in roots))
 # pieces not joined to the network start from the nearest point that is
 for i in range(nc_):
   if np.isfinite(t[i]) or deg[i]==0: continue
@@ -458,7 +515,7 @@ for q in parts_: out_[q[4]].append(q)
 ntip=np.ones(nc_)
 for i in sorted(range(nc_),key=lambda i:-t[i] if np.isfinite(t[i]) else 0):
   if out_[i]: ntip[i]=sum(ntip[q[5]] if q[5]>=0 and out_[q[5]] else 1 for q in out_[i])
-LW=P.get('lw')
+LW=P.get('lw');CF=P.get('cfeed')
 paths=[]
 for e,ii,ts0,d0,a_,b_ in parts_:
   if len(ii)<2: continue
@@ -473,7 +530,11 @@ for e,ii,ts0,d0,a_,b_ in parts_:
     n_=ntip[b_] if b_>=0 and out_[b_] else 1;ws_=np.clip(LW[0]*n_**LW[1],LW[2],LW[3])*np.ones(len(k2))
     if tip: ws_*=np.linspace(1,.6,len(k2))
     w=np.where(w<LW[4],np.minimum(ws_,LW[4]),w)
-  paths.append(dict(x=pts[k2,0],y=pts[k2,1],w=w,c=e['cs'][ii][k2],t0=ts0,sp=sp,d0=d0,o=e['o'],tip=bool(tip) and P.get('tips',0),b=float(np.median(e['val']))))
+  c_=e['cs'][ii][k2]
+  # (P.cfeed: [[tips, c], …], the least length, px): the colour by the number of tips a line feeds, so that the lines that carry a
+  # whole crown (the beak of a dandelion seed) keep a colour of their own whatever the glow of their crown does to it (no shorter ones)
+  if CF and e['L']>=CF[1]: n_=ntip[b_] if b_>=0 and out_[b_] else 1;c_=np.minimum(c_,np.interp(n_,[a for a,_ in CF[0]],[v for _,v in CF[0]]))
+  paths.append(dict(x=pts[k2,0],y=pts[k2,1],w=w,c=c_,t0=ts0,sp=sp,d0=d0,o=e['o'],tip=bool(tip) and P.get('tips',0),b=float(np.median(e['val']))))
 paths.sort(key=lambda p:p['t0'])
 np_=sum(len(p['x']) for p in paths);tend=max(p['t0']+np.hypot(np.diff(p['x']),np.diff(p['y'])).sum()/p['sp'] for p in paths)
 print('paths',len(paths),'points',np_,'grown at',round(tend,2),'s')

@@ -218,7 +218,7 @@ function frTipX(p,o){const n=p.w.length,x=p.pts[n*2-2],y=p.pts[n*2-1],dx=x-p.pts
 // where it is whole], lumv [its brightness in the picture that is whole, a power, the least] (traced with lumv), hot, sway, under
 // (see below), tipx (frTipX), taper, and fork: [length, half angle, levels, ratio, brightness] of the last small forks that every free
 // tip makes (the finest orders, too fine to be traced from the picture), or none.
-export function frDrawTraced(S,P,t0,o={}){const k=S.k,wk=o.wk??1,wm=o.wmin??0,wp=o.wpow??1,R=S.rnd,W=w=>Math.max(wm,Math.pow(w,wp)*wk);
+export function frDrawTraced(S,P,t0,o={}){const k=S.k,wk=o.wk??1,wm=o.wmin??0,wp=o.wpow??1,wx=o.wmax??1e9,R=S.rnd,W=w=>Math.min(wx,Math.max(wm,Math.pow(w,wp)*wk));
  for(let p of P){if(o.tipx&&p.tip&&p.w.length>1)p=frTipX(p,o.tipx);
   const ts=Array.from(p.ts,t=>t0+t*k),n=p.w.length,wa=p.w.reduce((a,b)=>a+b,0)/n,
   lum=(o.lum??1)*(o.lumw?Math.min(1,o.lumw[0]+(1-o.lumw[0])*Math.max(0,wa-o.lumw[1])/(o.lumw[2]-o.lumw[1])):1)*(o.lumv?Math.max(o.lumv[2]??0,Math.pow(Math.min(1,p.b/o.lumv[0]),o.lumv[1])):1),
