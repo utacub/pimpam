@@ -1,7 +1,7 @@
-// Fractals a la natura (CE46, 0.73) · stimuli 6–10: riu i afluents, corall, romanesco, neurones, illa i costa. As in fractals-formes1.js:
+// Fractals a la natura (CE46, 0.74) · stimuli 6–10: riu i afluents, corall, romanesco, neurones, illa i costa. As in fractals-formes1.js:
 // each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
-import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOutline,frOut,frLine,frDendrite,frTurn,frColonize,frScatter,frDrawNet,frRoom,frTree,FR_TAU} from './fractals-formes.js';
-import {frRandom,frNoise,frIso,frChains} from './fractals-motor.js';
+import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOutline,frOut,frLine,frDendrite,frTurn,frColonize,frScatter,frDrawNet,frRoom,frTree,FRF_TAU} from './fractals-formes.js';
+import {frRandom,frfNoise,frIso,frChains} from './fractals-motor.js';
 
 // ── 6 · Riu i afluents ────────────────────────────────────────────────────────────────────────────────────────────────────
 // A river basin seen from the air is a tree that fills the land: every tributary has its own tributaries, and the numbers and lengths
@@ -13,7 +13,7 @@ const FR_RIVER={P:[640,975,690,885,830,805,880,722,840,662,700,602,652,540,700,4
  [650,540,520,515,400,512,300,555,210,595,110,612,20,600],[792,385,700,342,600,322,530,252,490,172,420,92,380,10],[792,385,832,300,852,222,812,150,790,60,800,-10],
  [775,430,900,382,1050,322,1200,302,1300,252,1380,172,1430,90],[872,712,960,672,1050,632,1160,602,1270,622,1380,582,1480,522,1560,452,1640,400],[835,792,720,742,600,762,480,782,380,830,300,900],
  [1200,302,1300,330,1420,360,1540,330,1650,300],[1160,602,1180,700,1250,780,1300,880],[905,700,960,620,1010,550,1080,490,1120,410]]};
-export const FR_RIU={id:'riu',name:'Riu i afluents',what:'el riu i els seus afluents, de l’un a l’altre',
+export const FR_RIU={id:'riu',name:'Riu i afluents',what:'creixen el riu i els seus afluents, de l’un a l’altre',
  pal:['#2a5cff','#1aa8ff','#1ae6e6','#2ee88a','#9cf03a'],pal2:['#3a4cff','#1a8cff','#1ad0f0','#2ee8b0','#c8f03a'],
  look:{bloom:.42,glow:2.3,halo:.16,core:.15,spread:.6},wind:0,
  acts:[(S,t0)=>{const k=S.k,O={W:[40,19,10,4.6,2.2,1.2],C:[[0,.1],[.32,.44],[.44,.54],[.56,.7],[.72,.86],[.88,1]],every:[0,85,40,19,10],len:[0,0,230,105,48,21],spread:.75,meander:1.4,
@@ -66,7 +66,7 @@ function frCoralLimb(S,G,L0,T,d0,seeds,lv,inset=0){const k=S.k,id=10+FR_CORAL_ID
  G.mark(c.pts,u=>(L.w[0]+(L.w[1]-L.w[0])*u)*.5+12,id);frCoralSeeds(c,L.w[0],L.w[1],T,dur,S.rnd,seeds,d0,id);
  for(const K of L.kids||[]){let b=0,bd=1e9;for(const q of c.nodes){const d=Math.hypot(q.x-K.P[0],q.y-K.P[1]);if(d<bd){bd=d;b=q;}}
   frCoralLimb(S,G,K,T+b.u*dur,d0+b.s,seeds,Math.min(2,lv+1),(L.w[0]+(L.w[1]-L.w[0])*b.u)*.5-K.w[0]*.5);}}
-export const FR_CORALL={id:'corall',name:'Corall',what:'les branques del corall, de les més gruixudes a les puntes',
+export const FR_CORALL={id:'corall',name:'Corall',what:'creixen les branques del corall, de les més gruixudes a les puntes',
  pal:['#ff2a9a','#ff4058','#ff8a3a','#ffb860','#ffe8c0'],pal2:['#e83aff','#ff4a8a','#ff7a4a','#ffc070','#fff0d0'],
  look:{bloom:.16,glow:1.6,halo:.06,core:0,rim:.8,spread:.32,minW:1.45},wind:.004,
  acts:[(S,t0)=>{const k=S.k,G=frRoom(9),seeds=[];
@@ -101,7 +101,7 @@ function frConeDraw(S,c,T,dur,o,hid){const k=S.k,ph=Math.PI/2-c.al,half=Math.PI/
   frDrawSeen(S,p,T,dur,{w0:o.w*.8,w1:o.w,c0:o.c,c1:o.c-.06,lum:o.lum,d0:o.d,hot:o.hot,sway:0},hid);}
  const q=o.q||.74;let i=1;for(let d=c.d0*q;;d*=q,i++){const r=d*Math.sin(c.al);if(r<o.rMin)break;const cx=c.tx-c.ux*d,cy=c.ty-c.uy*d,T2=T+dur*.35+i*.07*k;
   for(const sd of [1,-1]){const g=c.a+Math.PI,p=frArc(cx,cy,r,g,g-sd*half);frDrawSeen(S,p,T2,dur*.55,{w0:o.w*.85,w1:o.w*.6,c0:o.c+.06,c1:o.c,lum:o.lum*.95,d0:o.d+c.d0-d,hot:0,sway:0},hid);}}}
-export const FR_ROMANESCO={id:'romanesco',name:'Romanesco',what:'els cons en espiral, i els cons dels cons',
+export const FR_ROMANESCO={id:'romanesco',name:'Romanesco',what:'creixen els cons en espiral, i els cons dels cons',
  pal:['#1a5a00','#3cb80a','#7ed40e','#c8f51e','#f0ff78'],pal2:['#0a5a30','#22b85a','#5ed43a','#b0f540','#e8ffa0'],
  look:{bloom:.24,glow:2,halo:.14,core:.22,spread:.5},wind:0,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd,CX=822,CY=432,AL=.56,B=.05,G=Math.PI*(3-Math.sqrt(5));
@@ -145,13 +145,13 @@ const FR_NEURONS=[
  {x:1345,y:417,r:20,den:[[-75,130,8],[-125,120,7],[-170,120,7],[-20,120,7],[20,120,7],[65,120,7],[115,115,7],[160,110,7]]},
  {x:205,y:153,r:14,den:[[-90,75,5],[-30,80,5],[30,75,5],[90,70,5],[150,75,5],[-150,75,5]]}];
 const FR_APICAL=[806,773,812,700,808,620,813,540,808,460,812,380,816,300];
-export const FR_NEURONES={id:'neurones',name:'Neurones',what:'les dendrites de les neurones, de la cèl·lula a les puntes',
+export const FR_NEURONES={id:'neurones',name:'Neurones',what:'creixen les dendrites de les neurones, de la cèl·lula a les puntes',
  pal:['#ff2ad6','#c03cff','#7a5cff','#3a86ff','#38dcff'],pal2:['#ff3a9a','#e040ff','#9a5cff','#4a6aff','#58b4ff'],
  look:{bloom:.26,glow:2.1,halo:.14,core:.3,spread:.5,minW:1.1},wind:0,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd,G=frRoom(9),seeds=[],D=Math.PI/180;
   FR_NEURONS.forEach((N,i)=>{
    // the cell body: a ring of light
-   frLoop(S,N.x,N.y,N.r,N.r,0,t0,.35*k,{w0:5,c0:0,lum:1,d0:0,hot:.4},28,-Math.PI/2);G.mark(frArc(N.x,N.y,N.r,0,FR_TAU),12,20+i);
+   frLoop(S,N.x,N.y,N.r,N.r,0,t0,.35*k,{w0:5,c0:0,lum:1,d0:0,hot:.4},28,-Math.PI/2);G.mark(frArc(N.x,N.y,N.r,0,FRF_TAU),12,20+i);
    for(const [a,l,w] of N.den){const A=a*D;seeds.push({x:N.x+Math.cos(A)*N.r,y:N.y+Math.sin(A)*N.r,a:A,len:l*.8*(.92+.16*R()),w:w*.95,d:N.r,t:t0+.3*k,s0:16,par:20+i});}});
   // the apical dendrite of the pyramidal neuron: a long shaft straight up, with oblique branches, ending in a crown
   const ap=frSpline(FR_APICAL,6);frGrow(S,ap.pts,t0+.3*k,.75*k,{w0:8,w1:5.5,c0:.04,c1:.16,lum:1,d0:22,hot:.8});G.mark(ap.pts,14,30);
@@ -198,10 +198,10 @@ function frIsleBuild(){const t=atob(FR_ISLE_POLY),u=new Uint8Array(t.length);for
  return {T,nx,ny,g,ox,oy};}
 function frIsle(x,y){const I=FR_ISLE||(FR_ISLE=frIsleBuild()),fx=Math.min(I.nx-1.001,Math.max(0,(x-I.ox)/I.g)),fy=Math.min(I.ny-1.001,Math.max(0,(y-I.oy)/I.g)),i=Math.floor(fx),j=Math.floor(fy),u=fx-i,v=fy-j,T=I.T,c=j*I.nx+i;
  return (T[c]*(1-u)+T[c+1]*u)*(1-v)+(T[c+I.nx]*(1-u)+T[c+I.nx+1]*u)*v;}
-export const FR_COSTA={id:'costa',name:'Illa i costa',what:'les corbes de nivell de l’illa, del cim a la costa',
+export const FR_COSTA={id:'costa',name:'Illa i costa',what:'es dibuixen les corbes de nivell de l’illa, del cim a la costa',
  pal:['#1450ff','#14c4ff','#22e05a','#ffe02a','#ffa8d8'],pal2:['#2a3aff','#14a0ff','#2ee0a0','#fff04a','#ffb890'],
  look:{bloom:.3,glow:2.2,halo:.14,core:.15,spread:.5},wind:0,
- acts:[(S,t0)=>{const k=S.k,N=frNoise((S.seed||7)*13+5),C0=.15;
+ acts:[(S,t0)=>{const k=S.k,N=frfNoise((S.seed||7)*13+5),C0=.15;
   const base=frIsle;
   const H=4,nx=Math.ceil(1712/H)+1,ny=Math.ceil(981/H)+1,f=new Float32Array(nx*ny);
   for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const x=-20+i*H,y=-20+j*H;f[j*nx+i]=base(x,y)+.006*N(x/120,y/120,3);}

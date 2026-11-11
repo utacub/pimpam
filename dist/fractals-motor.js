@@ -1,4 +1,4 @@
-// Fractals a la natura (CE46, 0.73) · the engine of light lines: WebGL2, a half-float picture, MAX blending of the lines, a glow from
+// Fractals a la natura (CE46, 0.74) · the engine of light lines: WebGL2, a half-float picture, MAX blending of the lines, a glow from
 // smaller copies, and the picture brought to the screen. The stimuli (fractals-*.js) only make segments, with frSeg, in a store of
 // their own (frStore); the engine uploads what is new each frame and draws all of it in one call. Scene units: x ∈ [0, AR], y ∈ [0, 1]
 // from the top; widths in the same units (1 / 1080 is one pixel of a full HD screen).
@@ -82,7 +82,7 @@ export function frLin(hex,k=1){const n=parseInt(hex.slice(1),16),f=c=>{c/=255;re
 // a small random generator with a seed (the same seed gives the same picture: the review tools and the tests need it)
 export function frRandom(seed){let s=(seed>>>0)||1;return ()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
 // smooth value noise in 2D (for terrains, wind fields, coasts): fbm of `oct` octaves, about −1…1
-export function frNoise(seed){const R=frRandom(seed),P=new Uint16Array(512),G=new Float32Array(512);const p=[...Array(256).keys()];for(let i=255;i>0;i--){const j=Math.floor(R()*(i+1));[p[i],p[j]]=[p[j],p[i]];}
+export function frfNoise(seed){const R=frRandom(seed),P=new Uint16Array(512),G=new Float32Array(512);const p=[...Array(256).keys()];for(let i=255;i>0;i--){const j=Math.floor(R()*(i+1));[p[i],p[j]]=[p[j],p[i]];}
  for(let i=0;i<512;i++){P[i]=p[i&255];G[i]=R()*2-1;}
  const f=t=>t*t*t*(t*(t*6-15)+10),v=(x,y)=>G[P[(P[x&255]+y)&511]];
  const n=(x,y)=>{const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi,u=f(xf),w=f(yf);const a=v(xi,yi),b=v(xi+1,yi),c=v(xi,yi+1),d=v(xi+1,yi+1);return a+(b-a)*u+(c-a)*w+(a-b-c+d)*u*w;};

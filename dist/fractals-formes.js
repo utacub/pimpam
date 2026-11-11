@@ -1,8 +1,8 @@
-// Fractals a la natura (CE46, 0.73) · the common tools of the stimuli: a stimulus is a list of acts (each press runs one or more of
+// Fractals a la natura (CE46, 0.74) · the common tools of the stimuli: a stimulus is a list of acts (each press runs one or more of
 // them all, one after the other, see frGrowForm in fractals.js), and an act lays down segments that grow from a moment on. Live models (the snow crystals) also
 // step on each frame and lay down their lines as they grow.
 import {frSeg} from './fractals-motor.js';
-export const FR_TAU=Math.PI*2,FR_GOLD=Math.PI*(3-Math.sqrt(5));
+export const FRF_TAU=Math.PI*2,FR_GOLD=Math.PI*(3-Math.sqrt(5));
 // A polyline that grows from its first point at `speed` (scene units per second) from the moment t0. pts: [x, y, x, y, …].
 // o: w0 w1 (width at the start and at the end), c0 c1 (place in the palette), lum, d0 (distance of the first point from the root)
 // and the options of frSeg. Returns {t, d}: the moment it has finished growing and the distance from the root at its end.
@@ -12,7 +12,7 @@ export function frPath(S,pts,t0,speed,o={}){const n=pts.length/2;let L=0;for(let
   const u0=L?acc/L:0,u1=L?(acc+l)/L:1;frSeg(S.st,x0,y0,x1,y1,t0+acc/sp,l/sp,w0+(w1-w0)*u0,w0+(w1-w0)*u1,c0+(c1-c0)*u0,lum,d,d+l,o);acc+=l;d+=l;}
  return {t:t0+L/sp,d};}
 // a closed loop (a floret, a petal, a bud) drawn from its start round to its start again
-export function frLoop(S,cx,cy,rx,ry,rot,t0,dur,o={},n=10,start=0){const pts=[];for(let i=0;i<=n;i++){const a=start+i/n*FR_TAU,x=Math.cos(a)*rx,y=Math.sin(a)*ry;pts.push(cx+x*Math.cos(rot)-y*Math.sin(rot),cy+x*Math.sin(rot)+y*Math.cos(rot));}
+export function frLoop(S,cx,cy,rx,ry,rot,t0,dur,o={},n=10,start=0){const pts=[];for(let i=0;i<=n;i++){const a=start+i/n*FRF_TAU,x=Math.cos(a)*rx,y=Math.sin(a)*ry;pts.push(cx+x*Math.cos(rot)-y*Math.sin(rot),cy+x*Math.sin(rot)+y*Math.cos(rot));}
  let L=0;for(let i=1;i<=n;i++)L+=Math.hypot(pts[i*2]-pts[i*2-2],pts[i*2+1]-pts[i*2-1]);return frPath(S,pts,t0,L/Math.max(.05,dur),o);}
 // an event for the music (a note of the chord at that moment): type, place across the screen (0–1), the moment
 export function frEvent(S,type,x,at){S.evq.push({type,x:Math.max(0,Math.min(1,x/(S.AR||1.78))),at});}
@@ -29,7 +29,7 @@ export function frCurve(x,y,a,len,n,k){const pts=[x,y],nodes=[{x,y,a,s:0,u:0}],d
 export function frGrow(S,pts,t0,dur,o={}){let L=0;for(let i=2;i<pts.length;i+=2)L+=Math.hypot(pts[i]-pts[i-2],pts[i+1]-pts[i-1]);return frPath(S,pts,t0,L/Math.max(.02,dur),o);}
 // the point of a curve at the fraction u of its length (by arc length; the nodes need not be evenly spaced)
 export function frAt(c,u){const n=c.nodes,s=Math.max(0,Math.min(1,u))*c.len;let lo=0,hi=n.length-1;while(hi-lo>1){const m=(lo+hi)>>1;if(n[m].s<=s)lo=m;else hi=m;}
- const A=n[lo],B=n[hi],t=B.s>A.s?(s-A.s)/(B.s-A.s):0;let da=B.a-A.a;if(da>Math.PI)da-=FR_TAU;if(da<-Math.PI)da+=FR_TAU;return {x:A.x+(B.x-A.x)*t,y:A.y+(B.y-A.y)*t,a:A.a+da*t,s,u};}
+ const A=n[lo],B=n[hi],t=B.s>A.s?(s-A.s)/(B.s-A.s):0;let da=B.a-A.a;if(da>Math.PI)da-=FRF_TAU;if(da<-Math.PI)da+=FRF_TAU;return {x:A.x+(B.x-A.x)*t,y:A.y+(B.y-A.y)*t,a:A.a+da*t,s,u};}
 // A smooth curve through control points (Catmull–Rom), resampled every `step` units: {pts, nodes, len} as frCurve gives
 export function frSpline(P,step=4){const raw=[];const n=P.length/2;
  for(let i=0;i<n-1;i++){const i0=Math.max(0,i-1),i2=i+1,i3=Math.min(n-1,i+2),seg=Math.max(4,Math.ceil(Math.hypot(P[i2*2]-P[i*2],P[i2*2+1]-P[i*2+1])/step*2));
@@ -61,7 +61,7 @@ export function frPathT(S,pts,ts,o={}){const n=pts.length/2;let d=o.d0||0;const 
 // the pieces of a polyline that lie outside the circle (cx, cy, r): what is in front of a disc hides what is behind it
 export function frClipOut(pts,cx,cy,r){const out=[];let cur=null;for(let i=0;i<pts.length;i+=2){const ok=Math.hypot(pts[i]-cx,pts[i+1]-cy)>=r;if(ok){if(!cur){cur=[];out.push(cur);}cur.push(pts[i],pts[i+1]);}else cur=null;}return out.filter(p=>p.length>=4);}
 // The angle a turned towards the angle b by the fraction f (the short way round)
-export const frTurn=(a,b,f)=>{let d=((b-a)%FR_TAU+3*Math.PI)%FR_TAU-Math.PI;return a+d*f;};
+export const frTurn=(a,b,f)=>{let d=((b-a)%FRF_TAU+3*Math.PI)%FRF_TAU-Math.PI;return a+d*f;};
 // A dendritic network grown order by order: a channel (pts) of order lv sprouts, on alternate sides, channels of the next order, and
 // so on down to maxLv; all the channels of one order start together (o.T[lv] after t0), so the same branching is seen happening at
 // every scale. o: W [width at the root of each order], C [[c0, c1] of each order], every [spacing of the daughters along a channel of
@@ -73,7 +73,7 @@ export function frDendrite(S,pts,lv,o,t0,d0=0){const k=S.k,R=S.rnd,n=pts.length/
  if(vis)frPath(S,pts,T+(o.lag?.(pts[0],pts[1])||0)*k,L/Math.max(.05,o.dur[lv]*k),{w0:W,w1:Math.max(o.W[o.W.length-1],W*.62),c0:C[0],c1:C[1],lum:o.lum?.[lv]??1,d0,hot:o.hot??.8,sway:o.sway||0,seed:pts[0]*.01});
  if(lv>=o.maxLv)return;
  const ev=o.every[lv],m=o.meander??1.2;let acc=-ev*(.3+.5*R()),side=R()<.5?-1:1,s=0;
- const kid=(x,y,a,len)=>{const ph=R()*FR_TAU,A=m*(.6+.8*R()),c=frCurve(x,y,a,len,Math.max(4,Math.round(len/7)),u=>A*Math.sin(u*FR_TAU*.9+ph)/len);frDendrite(S,c.pts,lv+1,o,t0,d0+s);};
+ const kid=(x,y,a,len)=>{const ph=R()*FRF_TAU,A=m*(.6+.8*R()),c=frCurve(x,y,a,len,Math.max(4,Math.round(len/7)),u=>A*Math.sin(u*FRF_TAU*.9+ph)/len);frDendrite(S,c.pts,lv+1,o,t0,d0+s);};
  for(let i=1;i<n;i++){const x0=pts[i*2-2],y0=pts[i*2-1],x1=pts[i*2],y1=pts[i*2+1],l=Math.hypot(x1-x0,y1-y0);s+=l;acc+=l;
   if(acc>=ev&&s<L*.97){acc=-ev*(R()-.5)*.5;side=-side;const a=Math.atan2(y1-y0,x1-x0);let ac=a+side*o.spread*(.75+.5*R());if(o.bias)ac=frTurn(ac,o.bias(x1,y1),o.biasK??.3);
    kid(x1,y1,ac,o.len[lv+1]*(.65+.7*R())*(1-.35*s/L));}}
@@ -154,7 +154,7 @@ export function frTree(S,G,seeds,o){const R=o.R||S.rnd,k=S.k;let id=1e5;const tr
   for(const b of q){const turn=(R()-.5)*2*(o.bend??.3),up=typeof o.up==='function'?o.up(lv):o.up??.25,s0=b.s0??Math.max(6,b.w*.8+o.pad(lv)+3);
    // the curve of an angle: a bend at random and a pull upwards (towards −π/2), spread along the branch
    // (the pull upwards bends the branch most near its start, as a lyre: it leaves its mother aside and then rises)
-   const curve=(a,len)=>{let d=((-Math.PI/2-a)%FR_TAU+3*Math.PI)%FR_TAU-Math.PI;const K=(turn+d*up)/Math.max(1,len),ly=o.lyre??0;return frCurve(b.x,b.y,a,len,Math.max(2,Math.round(len/7)),u=>K*(1+ly*(1-2*u)));};
+   const curve=(a,len)=>{let d=((-Math.PI/2-a)%FRF_TAU+3*Math.PI)%FRF_TAU-Math.PI;const K=(turn+d*up)/Math.max(1,len),ly=o.lyre??0;return frCurve(b.x,b.y,a,len,Math.max(2,Math.round(len/7)),u=>K*(1+ly*(1-2*u)));};
    const free=c=>{for(const q2 of c.nodes){if(o.inside&&q2.s>2&&!o.inside(q2.x,q2.y))return q2.s;if(q2.s<s0)continue;const w=G.who(q2.x,q2.y);if(w===-2||(w>=0&&w!==b.par&&w!==b.id&&w!==b.sib&&w!==b.gp))return q2.s;}return c.len;};
    let best=null;for(const da of tries){const c=curve(b.a+da,b.len),f=free(c);if(!best||f>best.f+4)best={c,f,a:b.a+da};if(f>=b.len*.98)break;}
    let len=best.f>=b.len*.98?b.len:best.f-o.pad(lv)-2;if(len<o.minLen*(lv?1:2))continue;

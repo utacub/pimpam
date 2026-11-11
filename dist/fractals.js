@@ -1,9 +1,11 @@
-// Fractals a la natura (CE46, 0.73) · the model: twenty fractal forms of nature in turn, drawn with lines of coloured light on black;
+// Fractals a la natura (CE46, 0.74) · the model: twenty fractal forms of nature in turn, drawn with lines of coloured light on black;
 // the presses of each one, its way out to black, and its music.
 // Marc, 11 November 2026: «una nova activitat basada en estímuls de línies de colors sobre fons negre, que sigui ben espectacular i que
 // la temàtica sigui Fractals a la natura… 20 estímuls diferents per una activitat de causa efecte».
-// Each form comes out of a published model of growth (the references are in the comments of each stimulus, fractals-formes.js and the
-// modules after it), never out of a drawing: the shapes appear because the rule of growth makes them.
+// Thirteen forms come out of a published model of growth (the references are in the comments of each stimulus, fractals-formes.js and
+// the modules after it): their shapes appear because the rule of growth makes them. The other seven (micel·li, fang, ploma de paó,
+// serralades, arrels, petxina, dent de lleó) follow the network traced from their concept picture (tools/fractals-traca.py), grown
+// level by level from the root to the tips, so that they look as close as possible to it (Marc: «un resultat idèntic al del concept art»).
 // The arc (Marc, 11 November 2026, 16:13: «Cada pulsació mostrarà l'escena completa, 20 estímuls, 20 pulsacions i després es torna a
 // començar»): each press grows one whole form, all its acts one after the other in a few seconds, and a wave of light runs through it
 // from the root to the tips. It then stays, breathing slowly, until the next press: its lines are gathered back from the tips to the
@@ -18,7 +20,7 @@ import {FR_RIU,FR_CORALL,FR_ROMANESCO,FR_NEURONES,FR_COSTA} from './fractals-for
 import {FR_FULLA,FR_GEL,FR_NAUTILUS,FR_MICELI,FR_FANG} from './fractals-formes3.js';
 import {FR_PAO,FR_SERRA,FR_ARRELS,FR_PETXINA,FR_DENT} from './fractals-formes4.js';
 
-export const FR_CAUSE=Object.freeze({id:'fractals',code:'CE46',type:'ce',level:'01 · Descobrir',name:'Fractals a la natura',desc:'Vint formes de la natura que es repeteixen dins seu creixen amb línies de llum de colors sobre negre: falgueres, gira-sols, flocs de neu, arbres, llamps, rius, corals, neurones… cadascuna amb la seva música.',tag:'20 formes · una a cada pulsació',time:'Al teu ritme',fractals:true,recorded:true});
+export const FR_CAUSE=Object.freeze({id:'fractals',code:'CE46',type:'ce',level:'01 · Descobrir',name:'Fractals a la natura',desc:'Vint formes de la natura que es repeteixen dins seu, fetes de línies de llum de colors sobre negre: falgueres, flocs de neu, gira-sols, llamps, arbres, rius, corals, neurones… Cada pulsació en fa créixer una, amb la seva música.',tag:'20 formes · una a cada pulsació',time:'Al teu ritme',fractals:true,recorded:true});
 
 // The twenty forms, in this order (alternating plants, water and stone, light and animals, so that two forms in a row never look alike).
 export const FR_STIMS=Object.freeze([FR_FALGUERES,FR_FLOCS,FR_GIRASOL,FR_LLAMPS,FR_ARBRE,FR_RIU,FR_CORALL,FR_ROMANESCO,FR_NEURONES,FR_COSTA,FR_FULLA,FR_GEL,FR_NAUTILUS,FR_MICELI,FR_FANG,FR_PAO,FR_SERRA,FR_ARRELS,FR_PETXINA,FR_DENT]);
@@ -72,8 +74,8 @@ export const frNumber=F=>((F.i-F.first)%FR_STIMS.length+FR_STIMS.length)%FR_STIM
 export function frStatus(game,s){const F=game?.fractals;if(!F)return '';
  if(!F.S)return 'La pantalla és negra i espera la primera pulsació. Cada pulsació fa créixer una forma de la natura.';
  const M=frStim(F),n=frNumber(F);
- if(F.phase==='run')return `${M.name}, ${n} de ${FR_STIMS.length}: creixen ${M.what}.`;
- return `${M.name}, ${n} de ${FR_STIMS.length}: la forma és completa. La pulsació següent en porta una altra.`;}
+ if(F.phase==='run')return `${M.name}, forma ${n} de ${FR_STIMS.length}: ${M.what}.`;
+ return `${M.name}, forma ${n} de ${FR_STIMS.length}, completa. La pulsació següent en porta una altra.`;}
 export function frProgress(game,s){const F=game?.fractals;if(!F)return '';const n=F.S?frNumber(F):0;return Array.from({length:FR_STIMS.length},(_,i)=>`<span class="${i<n?'done':''}"></span>`).join('');}
 export function frHelp(s){return `<strong>Cada pulsació fa créixer sencera una forma de la natura amb línies de llum de colors, i una ona de llum la recorre. La pulsació següent la recull cap a l’arrel i en fa créixer una altra: n’hi ha vint, i després tornen a començar amb uns altres colors.</strong><br>${s?.lock!==false?'Mentre una forma creix, les pulsacions no fan res.':'Pots prémer mentre una forma creix: ve la següent.'}`;}
 

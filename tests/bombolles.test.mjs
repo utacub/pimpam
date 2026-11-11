@@ -80,8 +80,8 @@ test('the words for a screen reader and the progress',()=>{
 
 test('in the app: the folder «Formes, llum i música» after Pluja de colors, out of «Per revisar», the loading cover, the black floor, the card picture and the build',async()=>{
  const fs=await import('node:fs'),read=f=>fs.readFileSync(new URL(f,import.meta.url),'utf8'),app=read('../dist/app.js'),build=read('../build_standalone.py'),art=read('../dist/art.js');
- assert.match(app,/ids:\['flower','pluja-colors','bubbles','kaleido'/);assert.doesNotMatch(app,/review:true/);assert.doesNotMatch(app,/'dress'/);
- assert.match(app,/'pluja-colors','bubbles',\.\.\.LOAD_DIVES\]/);assert.match(app,/if\(item\.bombolles\)steps\.push\(\{w:2,share:\(\)=>\{try\{return bbLoad\(\);\}catch\{return 1;\}\}\}\);/);
+ assert.match(app,/ids:\['flower','pluja-colors','bubbles','fractals','kaleido'/);assert.doesNotMatch(app,/review:true/);assert.doesNotMatch(app,/'dress'/);
+ assert.match(app,/'pluja-colors','bubbles','fractals',\.\.\.LOAD_DIVES\]/);assert.match(app,/if\(item\.bombolles\)steps\.push\(\{w:2,share:\(\)=>\{try\{return bbLoad\(\);\}catch\{return 1;\}\}\}\);/);
  assert.match(app,/if\(item\.bombolles\)bbStart\(game,settings\)/);assert.match(app,/game\?\.bombolles\?bbBlocked\(game,settings\):/);assert.match(app,/pjSilence\(\);bbSilence\(\);/);
  assert.match(app,/if\(game\.bombolles\)\{bbTick\(game,settings,Math\.min\(dt,100\)\/1000\);bbAudio\(game,settings,audio,master,/);
  assert.match(art,/if\(id==='bubbles'\)\{bbDraw\(c,w,h,game,s,preview\);return;\}/);

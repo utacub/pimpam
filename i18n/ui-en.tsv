@@ -20,7 +20,7 @@ u0025	Let's play
 u0026	Set up the switches
 u0028	A paper meadow at night, lit up by an open poppy, daisy and sunflower
 u0029	Shapes, light and music
-u0030	Every press brings a new composition with its own music: paper flowers, colour rain, a matter lab, patterns, stained glass, fireworks, dancing drawings and marbled paper.
+u0030	Every press brings a new composition with its own music: paper flowers, colour rain, a matter lab, fractals of nature, patterns, stained glass, fireworks, dancing drawings and marbled paper.
 u0031	Journeys and dives
 u0032	Twenty scenes, one per press: the sea, the rainforest, the savanna, deep time and the giants of the blue.
 u0033	Step-by-step stories
@@ -1931,3 +1931,37 @@ u2107	Long (17 s)
 u2108	Mix-ups
 u2109	Now and then a piece first lands in the wrong place (the hat on the feet, the shoes on the head) and then moves to its own place.
 u2110	Grandpa Quim
+u2111	Fractals in nature
+u2112	Twenty forms of nature that repeat within themselves, made of lines of coloured light on black: ferns, snowflakes, sunflowers, lightning, trees, rivers, corals, neurons… Each press grows one, with its own music.
+u2113	20 forms · one at each press
+u2114	Each press grows a whole form of nature in lines of coloured light, and a wave of light runs through it. The next press gathers it back to the root and grows another: there are twenty, and then they start again in other colours.
+u2115	While a form is growing, presses do nothing.
+u2116	You can press while a form is growing: the next one comes.
+u2117	This computer cannot show the forms of this activity: WebGL 2 is needed. The music still plays.
+u2118	The screen is black and waits for the first press. Each press grows a form of nature.
+u2119	Growth of each form
+u2120	Fast
+u2121	Slow
+u2122	The slower it is, the better you can see how each level of the form comes out of the one before. The music of each form lasts the same.
+u2123	First form
+u2124	The fractals are always shown on black: they have no dimmed scenery, no scenery-off mode and no base colour.
+u2125	the fern fronds grow, pinnule by pinnule
+u2126	the snowflakes grow, arm by arm
+u2127	the sunflower’s spirals and its petals grow
+u2128	the lightning comes down, branch by branch
+u2129	the tree grows, branch by branch, and blossoms
+u2130	the river and its tributaries grow, one after another
+u2131	the coral’s branches grow, from the thickest to the tips
+u2132	the spiral cones grow, and the cones of the cones
+u2133	the neurons’ dendrites grow, from the cell to the tips
+u2134	the island’s contour lines are drawn, from the summit to the coast
+u2135	the leaf’s veins grow, from the large ones to the finest
+u2136	the ice needles grow, from the large ones to the finest
+u2137	the spiral shell grows, chamber by chamber
+u2138	the fungus’s cords, the hyphae and their tips grow
+u2139	the cracks in the mud open, from the first to the finest
+u2140	the peacock’s feathers grow, with the shaft, the barbs and the barbules
+u2141	the mountain ridges rise, with their spurs and small offshoots
+u2142	the main roots, the side roots and the finest ones grow
+u2143	the shell’s network and the triangles within triangles are drawn
+u2144	the seed head, the beaks, the pappi and their bristles grow

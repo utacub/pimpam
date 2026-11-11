@@ -1,4 +1,4 @@
-// Fractals a la natura (CE46, 0.73) · the shaders of the engine of light lines (fractals-motor.js).
+// Fractals a la natura (CE46, 0.74) · the shaders of the engine of light lines (fractals-motor.js).
 // Every line is a segment drawn as an instanced capsule: it grows from its start to its end after its birth, with a hot white point at
 // the tip while it grows; a pulse of light runs along the structure (by the distance to the root); plants sway with a soft wind; at the
 // way out the lines are gathered back from the tips to the root. The lines are drawn with MAX blending into a half-float picture, so

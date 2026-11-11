@@ -20,7 +20,7 @@ u0025	Comecemos a xogar
 u0026	Preparar os conmutadores
 u0028	Un prado de papel de noite, iluminado por unha papoula, unha margarida e un xirasol abertos
 u0029	Formas, luz e música
-u0030	Cada pulsación trae unha composición nova coa súa música: flores de papel, chuvia de cores, un laboratorio de materia, padróns, vidreiras, fogos, debuxos que bailan e papel marmoreado.
+u0030	Cada pulsación trae unha composición nova coa súa música: flores de papel, chuvia de cores, un laboratorio de materia, fractais da natureza, padróns, vidreiras, fogos, debuxos que bailan e papel marmoreado.
 u0031	Viaxes e inmersións
 u0032	Vinte escenas por pulsación: o mar, a selva, a sabana, o tempo e os xigantes do azul.
 u0033	Historias paso a paso
@@ -1931,3 +1931,37 @@ u2107	Longo (17 s)
 u2108	Despistes
 u2109	De cando en vez unha peza cae primeiro no sitio equivocado (o sombreiro nos pés, os zapatos na cabeza) e despois vai ao seu sitio.
 u2110	Avó Quim
+u2111	Fractais na natureza
+u2112	Vinte formas da natureza que se repiten dentro de si, feitas de liñas de luz de cores sobre negro: fentos, folerpas de neve, xirasoles, lóstregos, árbores, ríos, corais, neuronas… Cada pulsación fai medrar unha, coa súa música.
+u2113	20 formas · unha en cada pulsación
+u2114	Cada pulsación fai medrar enteira unha forma da natureza con liñas de luz de cores, e unha onda de luz percórrea. A pulsación seguinte recóllea cara á raíz e fai medrar outra: hai vinte, e despois volven comezar con outras cores.
+u2115	Mentres unha forma medra, as pulsacións non fan nada.
+u2116	Podes premer mentres unha forma medra: chega a seguinte.
+u2117	Este ordenador non pode mostrar as formas desta actividade: cómpre WebGL 2. A música si que soa.
+u2118	A pantalla está negra e agarda a primeira pulsación. Cada pulsación fai medrar unha forma da natureza.
+u2119	Crecemento de cada forma
+u2120	Rápido
+u2121	Lento
+u2122	Canto máis lento, mellor se ve como cada nivel da forma sae do anterior. A música de cada forma dura o mesmo.
+u2123	Primeira forma
+u2124	Os fractais vense sempre sobre negro: non teñen decorado atenuado nin sen decorado, nin cor de base.
+u2125	medran as frondes do fento, pínnula a pínnula
+u2126	medran as folerpas de neve, brazo a brazo
+u2127	medran as espirais do xirasol e os seus pétalos
+u2128	baixan os lóstregos, póla a póla
+u2129	medra a árbore, póla a póla, e florece
+u2130	medran o río e os seus afluentes, un tras outro
+u2131	medran as pólas do coral, das máis grosas ás puntas
+u2132	medran os conos en espiral, e os conos dos conos
+u2133	medran as dendritas das neuronas, da célula ás puntas
+u2134	debúxanse as curvas de nivel da illa, do cume á costa
+u2135	medran os nervios da folla, dos grandes aos máis finos
+u2136	medran as agullas de xeo, das grandes ás máis finas
+u2137	medra a cuncha en espiral, cámara a cámara
+u2138	medran os cordóns do fungo, as hifas e as súas puntas
+u2139	ábrense as gretas da lama, das primeiras ás máis finas
+u2140	medran as plumas do pavón, co eixe, as barbas e as bárbulas
+u2141	érguense as cristas das montañas, os contrafortes e os pequenos esporóns
+u2142	medran as raíces principais, as laterais e as máis finas
+u2143	debúxanse a rede da cuncha e os triángulos dentro de triángulos
+u2144	medran o capítulo, os bicos, os vilanos e as súas barbas

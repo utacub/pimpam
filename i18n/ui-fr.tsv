@@ -20,7 +20,7 @@ u0025	On commence à jouer
 u0026	Préparer les contacteurs
 u0028	Une prairie de papier la nuit, éclairée par un coquelicot, une marguerite et un tournesol ouverts
 u0029	Formes, lumière et musique
-u0030	Chaque appui apporte une nouvelle composition avec sa musique : fleurs de papier, pluie de couleurs, un laboratoire de la matière, motifs, vitraux, feux d’artifice, dessins qui dansent et papier marbré.
+u0030	Chaque appui apporte une nouvelle composition avec sa musique : fleurs de papier, pluie de couleurs, un laboratoire de la matière, fractales de la nature, motifs, vitraux, feux d’artifice, dessins qui dansent et papier marbré.
 u0031	Voyages et plongées
 u0032	Vingt scènes, une par appui : la mer, la forêt tropicale, la savane, le temps et les géants du bleu.
 u0033	Histoires pas à pas
@@ -1931,3 +1931,37 @@ u2107	Long (17 s)
 u2108	Étourderies
 u2109	De temps en temps, une pièce tombe d’abord au mauvais endroit (le chapeau sur les pieds, les chaussures sur la tête), puis va à sa place.
 u2110	Papi Quim
+u2111	Fractales dans la nature
+u2112	Vingt formes de la nature qui se répètent à l’intérieur d’elles-mêmes, faites de lignes de lumière colorée sur fond noir : fougères, flocons de neige, tournesols, éclairs, arbres, fleuves, coraux, neurones… Chaque appui en fait pousser une, avec sa musique.
+u2113	20 formes · une à chaque appui
+u2114	Chaque appui fait pousser une forme entière de la nature en lignes de lumière colorée, et une onde de lumière la parcourt. L’appui suivant la ramène vers la racine et en fait pousser une autre : il y en a vingt, puis elles recommencent avec d’autres couleurs.
+u2115	Pendant qu’une forme pousse, les appuis ne font rien.
+u2116	Tu peux appuyer pendant qu’une forme pousse : la suivante arrive.
+u2117	Cet ordinateur ne peut pas afficher les formes de cette activité : il faut WebGL 2. La musique, elle, se fait entendre.
+u2118	L’écran est noir et attend le premier appui. Chaque appui fait pousser une forme de la nature.
+u2119	Croissance de chaque forme
+u2120	Rapide
+u2121	Lente
+u2122	Plus c’est lent, mieux on voit comment chaque niveau de la forme naît du précédent. La musique de chaque forme dure autant.
+u2123	Première forme
+u2124	Les fractales s’affichent toujours sur fond noir : elles n’ont ni décor atténué, ni mode sans décor, ni couleur de base.
+u2125	les frondes de la fougère poussent, pinnule après pinnule
+u2126	les flocons de neige poussent, bras après bras
+u2127	les spirales du tournesol et ses pétales poussent
+u2128	les éclairs descendent, branche après branche
+u2129	l’arbre pousse, branche après branche, et fleurit
+u2130	le fleuve et ses affluents poussent, l’un après l’autre
+u2131	les branches du corail poussent, des plus épaisses aux pointes
+u2132	les cônes en spirale poussent, et les cônes des cônes
+u2133	les dendrites des neurones poussent, de la cellule aux pointes
+u2134	les courbes de niveau de l’île se dessinent, du sommet à la côte
+u2135	les nervures de la feuille poussent, des grandes aux plus fines
+u2136	les aiguilles de givre poussent, des grandes aux plus fines
+u2137	la coquille en spirale pousse, loge après loge
+u2138	les cordons du champignon, les hyphes et leurs pointes poussent
+u2139	les fissures de la boue s’ouvrent, des premières aux plus fines
+u2140	les plumes du paon poussent, avec le rachis, les barbes et les barbules
+u2141	les crêtes des montagnes se dressent, avec les contreforts et les petits éperons
+u2142	les racines principales, les latérales et les plus fines poussent
+u2143	le réseau de la coquille et les triangles dans les triangles se dessinent
+u2144	le capitule, les becs, les aigrettes et leurs soies poussent

@@ -1,9 +1,9 @@
-// Fractals a la natura (CE46, 0.73) · stimuli 1–5: falgueres, flocs de neu, gira-sol, llamps, arbre. Each one follows the composition,
+// Fractals a la natura (CE46, 0.74) · stimuli 1–5: falgueres, flocs de neu, gira-sol, llamps, arbre. Each one follows the composition,
 // the colours and the look of its concept picture (ChatGPT, 2026-11-11: Marc, «esforça't en obtenir un resultat idèntic al del concept
 // art»), in the units of that picture (1672 × 941). And each one grows level by level, the whole form first as a trunk, then every
 // branch of the first order at once, then every one of the second…, so that the same rule is seen working at each scale («que el
 // procés d'aparició de l'estímul en faci evident la seva naturalesa fractal»).
-import {frPath,frPathT,frClipOut,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frJoin,frOutline,frOut,frLine,FR_TAU} from './fractals-formes.js';
+import {frPath,frPathT,frClipOut,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frJoin,frOutline,frOut,frLine,FRF_TAU} from './fractals-formes.js';
 import {frRandom} from './fractals-motor.js';
 
 // ── 1 · Falgueres ─────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -34,12 +34,12 @@ function frPinna(S,x,y,a,len,side,tP,tQ,cBase,d0,o){
  for(let j=0;j<m;j++)for(const sd of [-1,1]){const v=(j+(sd>0?.5:0)+.6)/(m+.6);if(v>.97)continue;
   const q=frAt(p,v),env=Math.pow(1-v,.75)*(.6+.4*Math.min(1,v*6)),ls=len*.28*env+2;
   frPinnule(S,q.x,q.y,q.a+sd*(1.2-.3*v),ls,sd,tQ+v*.35*S.k,.5*S.k,cBase+.22+.5*v,{d:d0+q.s,sway:o.sway,seed:o.seed});}}
-export const FR_FALGUERES={id:'falgueres',name:'Falgueres',what:'les frondes de falguera, pínnula a pínnula',
+export const FR_FALGUERES={id:'falgueres',name:'Falgueres',what:'creixen les frondes de falguera, pínnula a pínnula',
  pal:['#1ff2e2','#16c87a','#25b81e','#8fd81a','#ffcc14'],pal2:['#1fd4f2','#18c49a','#36c41e','#b4d81a','#ffb814'],
  look:{bloom:.28,glow:1.8,halo:.07,core:.8,spread:.5},wind:.006,
  acts:[(S,t0)=>{const k=S.k;
   FR_FERNS.forEach((f,fi)=>{let c=frSpline(f.P,5),uc=1,R=0,rEnd=0;
-   if(f.coil){const e=c.nodes[c.nodes.length-1];R=f.coil.r;rEnd=R*.06;const tw=f.coil.turns*FR_TAU,cx=e.x+Math.cos(e.a+Math.PI/2)*R,cy=e.y+Math.sin(e.a+Math.PI/2)*R,b=Math.log(.06)/tw,pts=[];
+   if(f.coil){const e=c.nodes[c.nodes.length-1];R=f.coil.r;rEnd=R*.06;const tw=f.coil.turns*FRF_TAU,cx=e.x+Math.cos(e.a+Math.PI/2)*R,cy=e.y+Math.sin(e.a+Math.PI/2)*R,b=Math.log(.06)/tw,pts=[];
     for(let i=0;i<=90;i++){const th=i/90*tw,r=R*Math.exp(b*th),an=e.a-Math.PI/2+th;pts.push(cx+Math.cos(an)*r,cy+Math.sin(an)*r);}
     const sp=frSpline(pts,3);c=frJoin(c,sp);uc=1-sp.len/c.len;}
    const sway={sway:.5,seed:fi*1.7},T0=t0+fi*.08*k,dur=1.25*k,side0=f.side||1,tA=T0+dur*.7+.35*k,tB=T0+dur*.7+1.15*k;
@@ -75,7 +75,7 @@ function frSnowBranch(S,x,y,a,len,lv,maxLv,t0,d0,o){const k=S.k,W=o.W,ends=[x+Ma
  if(lv>=maxLv)return;const pos=(lv===0&&R<200?FR_SNOW_POS.filter((_,i)=>i%3!==2):[FR_SNOW_POS,FR_SNOW_SUB,FR_SNOW_TWIG][lv]),nxt=t0+dur*.92+[.05,.08,.06][lv]*k;
  for(const [u,l] of pos)for(const sd of [-1,1])frSnowBranch(S,x+Math.cos(a)*len*u,y+Math.sin(a)*len*u,a+sd*Math.PI/3,len*l,lv+1,maxLv,nxt+u*.15*k,d0+len*u,o);}
 function frHexPts(x,y,r,rot=-Math.PI/2){const p=[];for(let i=0;i<=6;i++){const a=rot+i*Math.PI/3;p.push(x+Math.cos(a)*r,y+Math.sin(a)*r);}return p;}
-export const FR_FLOCS={id:'flocs',name:'Flocs de neu',what:'els flocs de neu, braç a braç',
+export const FR_FLOCS={id:'flocs',name:'Flocs de neu',what:'creixen els flocs de neu, braç a braç',
  pal:['#e6f7ff','#5cc4ff','#2a8cff','#4a58ff','#a84cff'],pal2:['#e6fffb','#86f0ff','#37c0ff','#4a7cff','#c84cff'],
  look:{bloom:.5,glow:2.4,halo:.2,core:.9,spread:.6},wind:0,
  acts:[(S,t0)=>{const k=S.k;
@@ -110,12 +110,12 @@ export const FR_FLOCS={id:'flocs',name:'Flocs de neu',what:'els flocs de neu, br
 function frHead(S,cx,cy,R,N,fams,t0,dur,o){const rot=o.rot||0,r0=R*.012,ts=r=>t0+dur*Math.pow(r/R,.85);
  // the two visible families of parastichies of the head (Vogel's florets lie on their crossings): m arms each, turning `turn` radians
  // from the middle to the rim along logarithmic spirals
- fams.forEach(([m,turn,wk],fi)=>{for(let j=0;j<m;j++){const th0=j/m*FR_TAU+rot,pts=[],tt=[],cc=[],ll=[];
+ fams.forEach(([m,turn,wk],fi)=>{for(let j=0;j<m;j++){const th0=j/m*FRF_TAU+rot,pts=[],tt=[],cc=[],ll=[];
    for(let i=0;i<=64;i++){const r=r0+(R-r0)*Math.pow(i/64,1.15),a=th0+turn*Math.pow(r/R,fi?1:.5);pts.push(cx+Math.cos(a)*r,cy+Math.sin(a)*r);tt.push(ts(r));cc.push(Math.min(.84,.06+.72*Math.pow(r/R,1.8)+(fi?.04:0)));}
    frPathT(S,pts,tt,{cf:i=>cc[i],wf:i=>o.w*wk*(.35+.65*Math.min(1,i/26)),lum:fi?.8:1,hot:.3,sway:0});}});
  // the rim of the head
  frLoop(S,cx,cy,R*1.01,R*1.01,0,t0+dur*.92,.5*S.k,{w0:o.w*2.2,c0:.8,c1:.8,lum:1,d0:R,hot:.6},96);}
-function frPetals(S,cx,cy,R,n,len,t0,o){for(const back of [1,0])for(let i=0;i<n;i++){const a=(i+(back?.5:0))/n*FR_TAU+(o.rot||0),L=len*(back?.92:1)*(.92+.16*Math.sin(i*2.7+cx)),bw=R*FR_TAU/n*(back?.6:1);
+function frPetals(S,cx,cy,R,n,len,t0,o){for(const back of [1,0])for(let i=0;i<n;i++){const a=(i+(back?.5:0))/n*FRF_TAU+(o.rot||0),L=len*(back?.92:1)*(.92+.16*Math.sin(i*2.7+cx)),bw=R*FRF_TAU/n*(back?.6:1);
   if(frOut(cx+Math.cos(a)*(R+L*.4),cy+Math.sin(a)*(R+L*.4),L))continue;
   // a petal starts under the head (its hidden part is not drawn), widest where it comes out, pointed and a little bent at the tip
   const ax=frCurve(cx+Math.cos(a)*R*.8,cy+Math.sin(a)*R*.8,a,L+R*.2,18,u=>.7*u*u/L);
@@ -124,7 +124,7 @@ function frPetals(S,cx,cy,R,n,len,t0,o){for(const back of [1,0])for(let i=0;i<n;
   for(const p of frClipOut(frOutline(ax,shape,22),cx,cy,R*1.012))frGrow(S,p,tp,dp*.5,{w0:o.w*1.5,c0:.3,c1:.95,lum,d0:R,hot:.5});
   for(const p of frClipOut(frOutline(ax,u=>shape(u)*.6,18),cx,cy,R*1.03))frGrow(S,p,tp+.2*S.k,dp*.4,{w0:o.w*.85,c0:.2,c1:.5,lum:lum*.85,d0:R,hot:0});}}
 export const FR_GOLD_A=Math.PI*(3-Math.sqrt(5));
-export const FR_GIRASOL={id:'girasol',name:'Gira-sol',what:'les espirals del gira-sol i els seus pètals',
+export const FR_GIRASOL={id:'girasol',name:'Gira-sol',what:'creixen les espirals del gira-sol i els seus pètals',
  pal:['#fff4c4','#ffcc1a','#ff8c1a','#ff2f62','#e43ce8'],pal2:['#fff4c4','#ffd84a','#ffa21a','#ff4f7a','#c84cff'],
  look:{bloom:.3,glow:2.1,halo:.12,core:.6,spread:.55,exp:.85},wind:.002,
  acts:[(S,t0)=>{const k=S.k;
@@ -162,7 +162,7 @@ function frBoltPath(S,pts,lv,sc,t0,d0){const k=S.k,dur=[.8,.75,.6,.45][lv]*k,col
  if(lv>=2){const x=pts[n*2-2],y=pts[n*2-1],a=Math.atan2(y-pts[n*2-3],x-pts[n*2-4]);
   for(const sd of [-1,1]){const l=(lv===2?14:8)*sc*(.7+.6*R()),b=a+sd*(.35+.3*R());frLine(S,x,y,x+Math.cos(b)*l,y+Math.sin(b)*l,t0+dur,.2*k,{w0:FR_BOLT_W[3]*sc*.9,c0:1,lum:.95,d0:d0+400,hot:.3},40);}}}
 function frBolt(S,b,lv,t0,d0,sc){frBoltPath(S,b.P,lv,sc,t0,d0);(b.kids||[]).forEach((c,i)=>frBolt(S,c,lv+1,t0+[.75,.7,.6][lv]*S.k+i*.05*S.k,d0+40,sc));}
-export const FR_LLAMPS={id:'llamps',name:'Llamps',what:'els llamps, branca a branca',
+export const FR_LLAMPS={id:'llamps',name:'Llamps',what:'baixen els llamps, branca a branca',
  pal:['#ffffff','#e2c4ff','#b05cff','#6a62ff','#3ee8ff'],pal2:['#ffffff','#c8d8ff','#7a7cff','#8a5cff','#5af0ff'],
  look:{bloom:.45,glow:2.4,halo:.2,core:.55,spread:.6},wind:0,pulseV:.8,
  acts:[(S,t0)=>{FR_BOLTS.forEach((b,i)=>{const T=t0+(i?.25:0)*S.k;frBolt(S,b,0,T,0,i?.5:1);frEvent(S,'tronc',b.P[0]/941,T);});
@@ -174,7 +174,7 @@ export const FR_LLAMPS={id:'llamps',name:'Llamps',what:'els llamps, branca a bra
 // the daughters adding up to the section of the mother. Growth: the trunk; the three great boughs; then each order of branches, all
 // at once; then the blossoms at the tips. Concept 05: a broad, symmetrical tree, an amber trunk of three strands spreading at the foot,
 // green boughs curling up into a crown, and pink five-petalled flowers at the tips.
-function frFlower(S,x,y,R,t0,o){const pts=[];for(let i=0;i<=60;i++){const th=i/60*FR_TAU+(o.rot||0),r=R*(.42+.58*Math.pow(Math.abs(Math.cos(2.5*th)),.75));pts.push(x+Math.cos(th)*r,y+Math.sin(th)*r);}
+function frFlower(S,x,y,R,t0,o){const pts=[];for(let i=0;i<=60;i++){const th=i/60*FRF_TAU+(o.rot||0),r=R*(.42+.58*Math.pow(Math.abs(Math.cos(2.5*th)),.75));pts.push(x+Math.cos(th)*r,y+Math.sin(th)*r);}
  frGrow(S,pts,t0,.45*S.k,{w0:o.w,c0:1,lum:1,d0:o.d,hot:.3,sway:o.sway,seed:o.seed});if(R>7)frLoop(S,x,y,R*.16,R*.16,0,t0+.2*S.k,.25*S.k,{w0:o.w*.8,c0:.95,lum:.8,d0:o.d,hot:0},10);}
 const FR_TREE_T=[0,.75,1.4,1.95,2.45,2.85,3.2,3.5];
 // a branch: it leaves its mother at an angle and bends back towards the direction of its mother (the arms of a lyre); at its end it
@@ -186,7 +186,7 @@ function frTwig(S,x,y,a,len,lv,t0,d0,turn,R){const k=S.k,c=frCurve(x,y,a,len,14,
  if(lv>=6||len<18){frFlower(S,e.x,e.y,5.5+3.5*R(),tf,{w:1.25,d:d0+len,sway:.4,seed:x*.01,rot:R()*6});return;}
  if(lv===4&&R()<.22){frFlower(S,e.x,e.y,22+10*R(),tf,{w:2.2,d:d0+len,sway:.4,seed:x*.01,rot:R()*6});return;}
  const sp=.5;for(const sd of [-1,1])frTwig(S,e.x,e.y,e.a+sd*sp*(.9+.2*R()),len*(.68+.06*R()),lv+1,t0,d0+len,sd*.45,R);}
-export const FR_ARBRE={id:'arbre',name:'Arbre',what:'l’arbre, branca a branca, i les flors',
+export const FR_ARBRE={id:'arbre',name:'Arbre',what:'creix l’arbre, branca a branca, i floreix',
  pal:['#ffa214','#ffd21a','#c4f01e','#3fe02a','#ffa8e0'],pal2:['#ff8a14','#ffc81a','#a8f01e','#2fd86a','#ffb8c8'],
  look:{bloom:.4,glow:2.3,halo:.16,core:.45,spread:.6,exp:.8},wind:.01,
  acts:[(S,t0)=>{const k=S.k,R0=S.rnd;

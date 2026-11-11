@@ -20,7 +20,7 @@ u0025	Has gaitezen jolasten
 u0026	Prestatu etengailuak
 u0028	Gaueko paperezko larre bat, lobelo, bitxilore eta ekilore ireki batek argiztatua
 u0029	Formak, argia eta musika
-u0030	Sakatze bakoitzak konposizio berri bat dakar bere musikarekin: paperezko loreak, kolore-euria, materiaren laborategi bat, ereduak, beirateak, suak, dantzan dabiltzan marrazkiak eta paper marmoleatua.
+u0030	Sakatze bakoitzak konposizio berri bat dakar bere musikarekin: paperezko loreak, kolore-euria, materiaren laborategi bat, naturako fraktalak, ereduak, beirateak, suak, dantzan dabiltzan marrazkiak eta paper marmoleatua.
 u0031	Bidaiak eta murgilketak
 u0032	Hogei eszena, bat sakatze bakoitzeko: itsasoa, oihana, sabana, denbora eta urdineko erraldoiak.
 u0033	Urratsez urratseko istorioak
@@ -1931,3 +1931,37 @@ u2107	Luzea (17 s)
 u2108	Nahasteak
 u2109	Noizean behin pieza bat lehenik leku okerrean erortzen da (kapela oinetan, zapatak buruan) eta gero bere lekura doa.
 u2110	Quim aitona
+u2111	Fraktalak naturan
+u2112	Naturako hogei forma, beren barnean errepikatzen direnak, kolorezko argi-lerroz eginak beltzaren gainean: iratzeak, elur-malutak, ekiloreak, tximistak, zuhaitzak, ibaiak, koralak, neuronak… Sakatze bakoitzak bat hazten du, bere musikarekin.
+u2113	20 forma · bat sakatze bakoitzean
+u2114	Sakatze bakoitzak naturako forma oso bat hazten du kolorezko argi-lerroekin, eta argi-uhin batek zeharkatzen du. Hurrengo sakatzeak sustrairantz biltzen du eta beste bat hazten du: hogei daude, eta gero berriro hasten dira beste kolore batzuekin.
+u2115	Forma bat hazten ari den bitartean, sakatzeek ez dute ezer egiten.
+u2116	Forma bat hazten ari den bitartean saka dezakezu: hurrengoa dator.
+u2117	Ordenagailu honek ezin ditu jarduera honen formak erakutsi: WebGL 2 behar da. Musika bai, entzuten da.
+u2118	Pantaila beltza da eta lehen sakatzearen zain dago. Sakatze bakoitzak naturako forma bat hazten du.
+u2119	Forma bakoitzaren hazkundea
+u2120	Azkarra
+u2121	Motela
+u2122	Zenbat eta motelago, orduan eta hobeto ikusten da formaren maila bakoitza aurrekotik nola ateratzen den. Forma bakoitzaren musikak berdin irauten du.
+u2123	Lehen forma
+u2124	Fraktalak beti beltzaren gainean ikusten dira: ez dute dekoratu ahulduarik, ez dekoraturik gabeko modurik, ez oinarri-kolorerik.
+u2125	iratzearen hostoak hazten dira, pinnulaz pinnula
+u2126	elur-malutak hazten dira, besoz beso
+u2127	ekilorearen espiralak eta haren petaloak hazten dira
+u2128	tximistak jaisten dira, adarrez adar
+u2129	zuhaitza hazten da, adarrez adar, eta loratu egiten da
+u2130	ibaia eta haren ibaiadarrak hazten dira, bata bestearen atzetik
+u2131	koralaren adarrak hazten dira, lodienetatik puntetaraino
+u2132	kono espiralak hazten dira, eta konoen konoak
+u2133	neuronen dendritak hazten dira, zelulatik puntetaraino
+u2134	uhartearen sestra-kurbak marrazten dira, gailurretik kostaraino
+u2135	hostoaren zainak hazten dira, handienetatik finenetaraino
+u2136	izotz-orratzak hazten dira, handienetatik finenetaraino
+u2137	maskor espirala hazten da, ganberaz ganbera
+u2138	onddoaren kordoiak, hifak eta haien puntak hazten dira
+u2139	lokatzaren arrakalak irekitzen dira, lehenengoetatik finenetaraino
+u2140	pauma-lumak hazten dira, ardatzarekin, bizarrekin eta bizartxoekin
+u2141	mendien bizkarrak altxatzen dira, kontrahormekin eta adar txikiekin
+u2142	sustrai nagusiak, alboetakoak eta finenak hazten dira
+u2143	maskorraren sarea eta triangeluen barruko triangeluak marrazten dira
+u2144	kapitulua, mokoak, lumatxak eta haien bizarrak hazten dira

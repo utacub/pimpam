@@ -115,3 +115,5 @@ p114	These settings only appear inside this activity. They are saved on this dev
 p115	{x} menu scanning
 p116	{n} items
 p117	{n} item
+p118	{x}, form {n} of {n2}: {y}.
+p119	{x}, form {n} of {n2}, complete. The next press brings another.

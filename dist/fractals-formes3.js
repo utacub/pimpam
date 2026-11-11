@@ -1,8 +1,8 @@
-// Fractals a la natura (CE46, 0.73) · stimuli 11–15: nervis d'una fulla, gel a la finestra, nautilus, micel·li, fang esquerdat. As in
+// Fractals a la natura (CE46, 0.74) · stimuli 11–15: nervis d'una fulla, gel a la finestra, nautilus, micel·li, fang esquerdat. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
-import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOut,frLine,frTurn,frRoom,frTree,frInPoly,frVoronoi,frTraced,frDrawTraced,FR_TAU} from './fractals-formes.js';
+import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOut,frLine,frTurn,frRoom,frTree,frInPoly,frVoronoi,frTraced,frDrawTraced,FRF_TAU} from './fractals-formes.js';
 import {FR_TR_MICELI,FR_TR_FANG} from './fractals-traces.js';
-import {frRandom,frNoise,frIso,frChains} from './fractals-motor.js';
+import {frRandom,frfNoise,frIso,frChains} from './fractals-motor.js';
 
 // ── 11 · Nervis d'una fulla ───────────────────────────────────────────────────────────────────────────────────────────────
 // The veins of a leaf are a hierarchy: the midrib, the secondary veins that leave it and loop along the margin, the tertiary veins
@@ -21,7 +21,7 @@ const FR_LEAVES=[
   up:[70,250,76,180,120,105,210,52,320,32,420,32,490,34],lo:[70,250,130,276,230,284,330,248,410,170,460,90,490,34],n:7,w:.45},
  {mid:[1130,925,1162,903,1212,860,1300,790,1400,730,1500,680,1580,640,1655,600],blade:.13,
   up:[1205,860,1228,760,1300,682,1400,630,1500,610,1600,604,1655,600],lo:[1205,860,1300,886,1420,880,1520,820,1600,720,1640,650,1655,600],n:7,w:.45}];
-export const FR_FULLA={id:'fulla',name:'Nervis d’una fulla',what:'els nervis de la fulla, dels grans als més fins',
+export const FR_FULLA={id:'fulla',name:'Nervis d’una fulla',what:'creixen els nervis de la fulla, dels grans als més fins',
  pal:['#18ff30','#8cff10','#ffe010','#ff9000','#ff5000'],pal2:['#10ff90','#60ff30','#ffcc10','#ff7a10','#ff3a40'],
  look:{bloom:.2,glow:2,halo:.08,core:.08,spread:.45,minW:.85},wind:.003,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd,G=frRoom(8);
@@ -58,7 +58,7 @@ export const FR_FULLA={id:'fulla',name:'Nervis d’una fulla',what:'els nervis d
    for(const w of V.walls){const mx=(w[0]+w[2])/2,my=(w[1]+w[3])/2;if(!inside(w[0],w[1])||!inside(w[2],w[3])||G.who(mx,my)>=1000)continue;const l=Math.hypot(w[2]-w[0],w[3]-w[1]);if(l<2)continue;
     const nx=-(w[3]-w[1])/l,ny=(w[2]-w[0])/l,bend=(R()-.5)*l*.25,p=[w[0],w[1],mx+nx*bend,my+ny*bend,w[2],w[3]];
     const u=U(mx,my),tw=T+(2.1+.5*u+.3*R())*k;frPathT(S,p,[tw,tw+.12*k,tw+.25*k],{w0:.95,cf:()=>Math.min(1,.12+.88*u),lum:.34,hot:0,sway:.3});}
-   for(let i=0;i<V.pts.length;i+=2)if(R()<.35){const x=V.pts[i],y=V.pts[i+1];if(G.who(x,y)>=1000)continue;const a=R()*FR_TAU,l=(5+6*R())*Math.sqrt(W),u=U(x,y),tw=T+(2.5+.5*u)*k;
+   for(let i=0;i<V.pts.length;i+=2)if(R()<.35){const x=V.pts[i],y=V.pts[i+1];if(G.who(x,y)>=1000)continue;const a=R()*FRF_TAU,l=(5+6*R())*Math.sqrt(W),u=U(x,y),tw=T+(2.5+.5*u)*k;
     frLine(S,x+Math.cos(a)*l,y+Math.sin(a)*l,x,y,tw,.2*k,{w0:.95,c0:Math.min(1,.12+.88*u),lum:.3,hot:0},40);}
    frEvent(S,'tronc',b0x/941,T);frEvent(S,'branca',(b0x+tx)/2/941,T+.6*k);frEvent(S,'fulla',tx/941,T+1.3*k);frEvent(S,'fulla',(b0x+tx)/2/941,T+2.2*k);});}]};
 
@@ -89,7 +89,7 @@ function frIce(S,G,x,y,a,len,w,lv,T,d,R,id,curl=0){const k=S.k,D=Math.PI/180,ste
   side=-side;for(const sd of (R()<[.35,.5,.5][lv]?[-1,1]:[side])){const l=len*ratio*env*(lv?.7+.6*R():(R()<.18?1.5:.55+.8*R()));if(l<[0,20,4,2.5][lv+1])continue;
    frIce(S,G,px,py,pa+sd*([50,42,42][lv]+(R()-.5)*[26,18,12][lv])*D,l,w*[.6,.65,.7][lv],lv+1,Math.max(T+dur*u+.04*k,T+[.7,.5,.36][lv]*k),d+s,R,id*4+(sd>0?1:2),-sd*[.3,.18,.05][lv]*(R()*1.6-.3));}
   s+=sp*(.75+.5*R());}}
-export const FR_GEL={id:'gel',name:'Gel a la finestra',what:'les agulles de gel, de les grans a les més fines',
+export const FR_GEL={id:'gel',name:'Gel a la finestra',what:'creixen les agulles de gel, de les grans a les més fines',
  pal:['#0a62d0','#1a94ee','#78d0ff','#d6f2ff','#ffffff'],pal2:['#2a4ad8','#3a84f0','#8ac0ff','#e2e8ff','#ffffff'],
  look:{bloom:.22,glow:2,halo:.1,core:.5,spread:.5,minW:.8},wind:0,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd,G=frRoom(8),D=Math.PI/180;
@@ -112,12 +112,12 @@ function frShell(S,cx,cy,Rm,ang,T,R){const k=S.k,b=.2,a=1.6,th1=Math.log(Rm/a)/b
  const pts=[],ts=[],rs=[];for(let th=th0;th<=th1+1e-6;th+=Math.min(.12,4/Math.max(1,a*Math.exp(b*th)))){const q=P(th);pts.push(q[0],q[1]);ts.push(tAt(th));rs.push(q[2]);}
  const sc=Math.pow(720/Rm,.35);frPathT(S,pts,ts,{wf:i=>1.5+rs[i]*.0135*sc,cf:i=>.92*Math.pow(rs[i]/Rm,.6),lum:1,hot:.8,d0:0});
  // the walls of the chambers: from the turn before to this one, curved back like a cup (its hollow towards the mouth)
- const per=13,dth=FR_TAU/per;for(let th=th0+FR_TAU+dth*.5;th<th1-dth*.35;th+=dth*(.92+.16*R())){
-  const A=P(th-FR_TAU),B=P(th),L=Math.hypot(B[0]-A[0],B[1]-A[1]),f=rot-th,tx=Math.sin(f),ty=-Math.cos(f);// tx, ty: towards the older chambers
+ const per=13,dth=FRF_TAU/per;for(let th=th0+FRF_TAU+dth*.5;th<th1-dth*.35;th+=dth*(.92+.16*R())){
+  const A=P(th-FRF_TAU),B=P(th),L=Math.hypot(B[0]-A[0],B[1]-A[1]),f=rot-th,tx=Math.sin(f),ty=-Math.cos(f);// tx, ty: towards the older chambers
   const c1=[A[0]+(B[0]-A[0])*.25+tx*L*.55,A[1]+(B[1]-A[1])*.25+ty*L*.55],c2=[A[0]+(B[0]-A[0])*.8+tx*L*.42,A[1]+(B[1]-A[1])*.8+ty*L*.42],sp=[];
   for(let j=0;j<=18;j++){const t=j/18,s=1-t;sp.push(s*s*s*B[0]+3*s*s*t*c2[0]+3*s*t*t*c1[0]+t*t*t*A[0],s*s*s*B[1]+3*s*s*t*c2[1]+3*s*t*t*c1[1]+t*t*t*A[1]);}
   const t0=tAt(th)+.04*k,r=B[2];frGrow(S,sp,t0,(.22+.25*Math.min(1,r/400))*k,{w0:1.3+r*.0105*sc,w1:1.3+A[2]*.012*sc,c0:Math.pow(r/Rm,.6)*.82,c1:Math.pow(A[2]/Rm,.6)*.82,lum:.95,hot:.6,d0:r});}}
-export const FR_NAUTILUS={id:'nautilus',name:'Nautilus',what:'la closca en espiral, cambra a cambra',
+export const FR_NAUTILUS={id:'nautilus',name:'Nautilus',what:'creix la closca en espiral, cambra a cambra',
  pal:['#fff6dc','#ffe08a','#ffb030','#ff8c1a','#ff701a'],pal2:['#fff0e8','#ffd0a0','#ffa060','#ff7848','#ff5a3a'],
  look:{bloom:.3,glow:2.2,halo:.16,core:.18,spread:.42,gsat:1.8,sat:1.25},wind:0,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd;
@@ -132,7 +132,7 @@ export const FR_NAUTILUS={id:'nautilus',name:'Nautilus',what:'la closca en espir
 // 1993; Boddy, 1999; Ritz & Crawford, 1990). Growth: the cords come in from the four corners and meet in the middle, then the hyphae
 // leave them, then their forks and their fine tips, order by order, and where two fronts meet on a loop they fuse. Concept 14: a
 // network across the whole screen, the cords yellow-green, the hyphae cyan, the finest tips dim teal; traced from the picture.
-export const FR_MICELI={id:'miceli',name:'Micel·li',what:'els cordons del fong, les hifes i les seves puntes',
+export const FR_MICELI={id:'miceli',name:'Micel·li',what:'creixen els cordons del fong, les hifes i les seves puntes',
  pal:['#78ff20','#30ff40','#00ffb0','#00f0ff','#0090a8'],pal2:['#e0ff40','#90ff60','#40ffe0','#40b8ff','#4a66d8'],
  look:{bloom:.16,glow:1.7,halo:.35,core:1.1,tubeW:4.5,tubeP:4,spread:.22,minW:.7,gsat:1.5,sat:1.1,white:3,exp:1.25},wind:.002,
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_MICELI),t0,{wk:.9,wpow:.9,wmin:.6,fork:[7,.36,1,.6,.8],lumw:[.55,.6,1.8],lum:1,hot:.7,sway:.15});
@@ -147,7 +147,7 @@ export const FR_MICELI={id:'miceli',name:'Micel·li',what:'els cordons del fong,
 // pieces towards hexagons (Goehring, Conroy, Akhter, Clegg & Routh, 2010). Growth: the first, wide cracks open from a few places and
 // run across the whole ground; then the second ones run between them; then the third ones and the finest hairlines, each order in
 // its turn. Concept 15: a dark ground cut by glowing gold cracks, the first ones wide and bright, the finest dim orange; traced.
-export const FR_FANG={id:'fang',name:'Fang esquerdat',what:'les esquerdes del fang, de les primeres a les més fines',
+export const FR_FANG={id:'fang',name:'Fang esquerdat',what:'s’obren les esquerdes del fang, de les primeres a les més fines',
  pal:['#ffe060','#ffc63c','#ffa41e','#f08a10','#b06008'],pal2:['#fff0a0','#ffc060','#ff9a40','#e86a28','#a03c14'],
  look:{bloom:.22,glow:1.8,halo:.22,core:.5,tubeW:7,tubeP:2.5,spread:.3,minW:.6,gsat:1.5,sat:1.15,white:3,exp:1.2},wind:0,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd,P=frTraced(FR_TR_FANG),G=frRoom(4);

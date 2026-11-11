@@ -1,3 +1,33 @@
+# Pim Pam 0.74 · Fractals a la natura (CE46)
+
+Base: 0.73 (b05a293). Respon als missatges d’en Marc de l’11 de novembre de 2026: «una nova activitat basada en estímuls de línies de colors sobre fons negre… Fractals a la natura… 20 estímuls diferents per una activitat de causa efecte» (15:59), «Cada pulsació mostrarà l'escena completa, 20 estímuls, 20 pulsacions i després es torna a començar» (16:13), «esforça't en obtenir un resultat idèntic al del concept art… que el procés d'aparició… faci evident la seva naturalesa fractal» (16:56), la fitxa d’informació sense referències (17:18 i 17:26) i «Quan hagis acabat l'activitat… la pots publicar directament» (17:27).
+
+## Què canvia
+
+- **Activitat nova a «Formes, llum i música»**, després del «Laboratori de matèria», amb l’id `fractals` i el codi CE46. Vint formes de la natura que es repeteixen dins seu, dibuixades amb línies de llum de colors sobre negre, en aquest ordre: falgueres, flocs de neu, gira-sol, llamps, arbre, riu i afluents, corall, romanesco, neurones, illa i costa, nervis d’una fulla, gel a la finestra, nautilus, micel·li, fang esquerdat, ploma de paó, serralades, arrels, petxina de triangles i dent de lleó.
+- **Cada pulsació fa créixer una forma sencera**, nivell a nivell (el tronc, després les branques, després les branquetes…), perquè es vegi que cada part repeteix la forma del conjunt; quan és completa, ones de llum la recorren de l’arrel a les puntes. La pulsació següent la recull cap a l’arrel mentre creix la nova. Després de la vintena tornen a començar amb la segona paleta i unes altres llavors. Mentre una forma creix, les pulsacions no fan res (amb «Espera que acabi cada efecte»); en repòs, amb «Senyal de torn», el temps de la forma s’alenteix fins al 15 % i s’enfosqueix una mica.
+- **Imatge.** Cada estímul s’ha fet a partir del seu concept art (ChatGPT, vint imatges de 1672 × 941) i s’hi ha comparat de costat. Tretze formes surten d’una regla de creixement publicada (la fil·lotaxi de Vogel del gira-sol, el model de Honda de l’arbre, la ramificació dielèctrica dels llamps, la venació de Runions, l’espiral logarítmica del nautilus…); les altres set (micel·li, fang, ploma de paó, serralades, arrels, petxina i dent de lleó) segueixen la xarxa resseguida del seu concept art (`tools/fractals-traca.py`), que creix ordre a ordre de l’arrel a les puntes. Motor propi de línies de llum en WebGL2 (càpsules instanciades, mescla MAX, resplendor de sis nivells); sempre sobre negre, sense opcions de decorat. Sense WebGL2 la pantalla queda negra, l’ajuda ho diu i la música sona igualment.
+- **Música.** Cada forma té la seva tonalitat, el seu mode, el seu compàs i instruments reals pinçats o percudits (arpa, guitarra, kalimba, vibràfon, glockenspiel, violoncel en pizzicato…), amb les frases del Laboratori de matèria. Els esdeveniments del creixement (una fronda nova, un braç del floc, una branca) afegeixen una nota de l’acord.
+- **So del lloc i accents.** Cada forma té el so del seu lloc (sis segons sota el creixement: el bosc de falgueres, la neu que cau, una tempesta llunyana, el riu, l’escull de corall, la mar dins d’una petxina…) i un accent propi a les branques i les puntes noves (no més a prop que el seu interval). 40 sons generats amb ElevenLabs l’11 de novembre (1,7 MB), triats entre 111 variacions per mesura. **Drets d’ús no verificats**, i **no s’han escoltat**. Mescla igualada per mesura (`tools/fractals-audio.mjs`, volum 40 %): música entre −46 i −40 LUFS, lloc entre −57 i −49 LUFS (uns 10 LU per sota), accents amb un màxim momentani entre −50 i −45 LUFS.
+- **«Informació» (ⓘ):** una fitxa per a cada forma, amb la seva imatge i d’una a tres frases planeres, sense referències, que expliquen per què és fractal (autosemblança, la regla de creixement, la dimensió fractal quan se sap). Als sis idiomes.
+- **Opcions de l’activitat** («Aquesta activitat»): creixement de cada forma (ràpid, normal o lent; la música dura igual) i primera forma.
+- **Textos nous** (nom, descripció, ajuda, estat per al lector de pantalla, opcions) traduïts als cinc idiomes; la descripció de la carpeta «Formes, llum i música» esmenta els fractals.
+- 45 activitats: 34 de causa-efecte (dues són pel·lícules) i 11 d’encercament.
+
+## Proves
+
+- `tests/fractals.test.mjs` (9): l’activitat i els vint estímuls, els ajustos i la validació, l’arc de les vint formes i la segona volta, el bloqueig i la pulsació lliure, l’espera al 15 %, els esdeveniments del creixement de cada forma (notes i accents), la música i els sons (instruments que existeixen, 40 sons al disc i als crèdits, menys de 2 MB), les connexions de l’app i els diccionaris, i el dibuix fora del navegador. `tests/info.test.mjs`: les vint fitxes amb els noms de l’activitat.
+- Actualitzades: recomptes del catàleg, carpeta «Formes, llum i música», `LOAD_HEAVY`, fons negre, bancs estrictes del sintetitzador.
+- Totes passen menys les 3 que ja fallaven a la 0.62 (mides de fitxers de so de la masia, dels instruments i dels Detectius).
+- Comprovat a Chromium (SwiftShader): l’app servida per http i el fitxer únic, a 960 × 540 i a 1280 × 720 amb densitat 2: carpeta, fitxa, panell ⓘ amb 20 fitxes, opcions, tres formes amb pulsacions reals, notes i sons que s’engeguen, textos en anglès; cap error a la consola. Al fitxer únic, dos noms de nivell superior xocaven amb El far (`FR_TAU`, `frNoise`): ara són `FRF_TAU` i `frfNoise`.
+
+## No verificat
+
+- Els sons no s’han escoltat; els drets d’ús d’ElevenLabs no s’han verificat.
+- No s’ha vist en una targeta gràfica real (només amb SwiftShader); l’auditoria de flaixos la fa en Marc.
+- Compromisos coneguts respecte del concept art: a la petxina la filera de baix és més esclarissada, les barbetes de la ploma de paó són més gruixudes i els plomalls de la dent de lleó brillen menys.
+- Les traduccions noves les ha fet Claude, sense revisió nativa.
+
 # Pim Pam 0.73 · El vestidor fantàstic, fet de nou (EN06)
 
 Base: 0.72 (93cc0de). Respon al missatge d’en Marc de l’11 de novembre de 2026 («D’acord, ja pots construir l’activitat, i quan l’acabis la pots publicar directament»), després d’aprovar els vuit lots d’imatges (mètode v2: dibuixos sencers de ChatGPT, una sola figura deformada amb una malla i les peces editades al seu lloc).

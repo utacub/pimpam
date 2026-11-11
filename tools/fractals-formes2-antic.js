@@ -1,8 +1,8 @@
 // Fractals a la natura (CE46, 0.73) · stimuli 5–12: lightning, a river basin, coral, romanesco, neurons, an island, leaf veins, frost.
 // Each one is the result of its rule of growth, run when its press comes (a few hundredths of a second); its lines then grow in the
 // order in which the model made them.
-import {frSeg,frNoise,frIso,frChains} from './fractals-motor.js';
-import {frPath,frLoop,frEvent,FR_TAU,FR_GOLD} from './fractals-formes.js';
+import {frSeg,frfNoise,frIso,frChains} from './fractals-motor.js';
+import {frPath,frLoop,frEvent,FRF_TAU,FR_GOLD} from './fractals-formes.js';
 
 // ── A tree of nodes (each with its parent) drawn as lines ──────────────────────────────────────────────────────────────
 // nodes: [{x, y, p (parent index, −1 at a root), o (order of growth 0–1), c (place in the palette)}]. The width of each branch follows
@@ -54,7 +54,7 @@ export const FR_LLAMPS={id:'llamps',name:'Llamps',what:'llamps que es ramifiquen
 // 1997). Drawn from the sea upstream, as the valleys are cut by the water that runs back into the land.
 export const FR_RIU={id:'riu',name:'Riu i afluents',what:'els afluents d’un riu',
  pal:['#0a2d6b','#1565c0','#00b0d8','#4be0c0','#e0fff8'],pal2:['#2b1060','#5e35b1','#1e88e5','#26c6da','#e0f7ff'],look:{bloom:.6,glow:3,minW:.8},wind:0,pulseV:.5,
- acts:[(S,t)=>{const nx=200,ny=Math.round(200/S.AR),h=1/(ny-1),N=frNoise(S.seed),z=new Float32Array(nx*ny),mouth=.5+(S.rnd()-.5)*.3;
+ acts:[(S,t)=>{const nx=200,ny=Math.round(200/S.AR),h=1/(ny-1),N=frfNoise(S.seed),z=new Float32Array(nx*ny),mouth=.5+(S.rnd()-.5)*.3;
   for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const x=i/(nx-1),y=j/(ny-1);z[j*nx+i]=1.25*(1-y)+.32*N(x*4,y*4,6)+.25*Math.abs(x-mouth)*(1-y*.6);}
   const to=new Int32Array(nx*ny).fill(-1),acc=new Float32Array(nx*ny).fill(1),ord=[...z.keys()].sort((a,b)=>z[b]-z[a]);
   for(const k of ord){const i=k%nx,j=(k/nx)|0;if(j===ny-1)continue;let best=-1,bs=0;for(const [di,dj] of [[1,0],[-1,0],[0,1],[1,1],[-1,1],[0,-1],[1,-1],[-1,-1]]){const a=i+di,b=j+dj;if(a<0||a>=nx||b<0||b>=ny)continue;const q=b*nx+a,sl=(z[k]-z[q])/Math.hypot(di,dj);if(sl>bs){bs=sl;best=q;}}
@@ -93,10 +93,10 @@ export const FR_CORALL={id:'corall',name:'Corall',what:'les branques d’un cora
 // ── 8 · Romanesco ────────────────────────────────────────────────────────────────────────────────────────────────────────
 // Romanesco broccoli: buds on Fibonacci spirals, each bud a small cone of buds on Fibonacci spirals, and so on (Azpeitia et al., 2021).
 // Three levels, each drawn as the spiral lines (parastichies) that join neighbouring buds and the spiral outline of the smallest ones.
-function frCone(S,cx,cy,R,N,lv,t0,dur,c0){const rot=S.rnd()*FR_TAU,pos=i=>{const r=R*Math.sqrt((i+.5)/N),a=i*FR_GOLD+rot;return [cx+Math.cos(a)*r,cy+Math.sin(a)*r,r];};
+function frCone(S,cx,cy,R,N,lv,t0,dur,c0){const rot=S.rnd()*FRF_TAU,pos=i=>{const r=R*Math.sqrt((i+.5)/N),a=i*FR_GOLD+rot;return [cx+Math.cos(a)*r,cy+Math.sin(a)*r,r];};
  const fam=lv===0?[13,21]:lv===1?[8,13]:[5,8],w=[.0024,.0013,.0008][lv];
  fam.forEach((st,f)=>{for(let i=0;i+st<N;i++){const [x0,y0,r0]=pos(i),[x1,y1,r1]=pos(i+st);frSeg(S.st,x0,y0,x1,y1,t0+dur*Math.sqrt(i/N)+f*.2,.25,w,w,c0+.15*f+.2*r0/R,.75+.2*(1-r0/R),r0,r1,{pal:S.lap%2,hot:.3});}});
- if(lv>=2){for(let i=0;i<N;i++){const [x,y,r]=pos(i),br=R/Math.sqrt(N)*.55*(.5+r/R);const pts=[];for(let k=0;k<=14;k++){const a=k/14*FR_TAU*1.25,rr=br*(1-k/18);pts.push(x+Math.cos(a+i)*rr,y+Math.sin(a+i)*rr);}
+ if(lv>=2){for(let i=0;i<N;i++){const [x,y,r]=pos(i),br=R/Math.sqrt(N)*.55*(.5+r/R);const pts=[];for(let k=0;k<=14;k++){const a=k/14*FRF_TAU*1.25,rr=br*(1-k/18);pts.push(x+Math.cos(a+i)*rr,y+Math.sin(a+i)*rr);}
    frPath(S,pts,t0+dur*Math.sqrt(i/N)+.3,br*8,{w0:.0009,c0:c0+.45,lum:.9,d0:r,hot:0,pal:S.lap%2});}return;}
  const nb=lv===0?34:21;for(let i=0;i<N;i+=Math.max(1,Math.floor(N/nb))){const [x,y,r]=pos(i);const br=R*.62/Math.sqrt(nb)*(.55+.6*r/R);frCone(S,x,y,br,lv===0?55:34,lv+1,t0+dur*Math.sqrt(i/N)*.9+.4,dur*.6,c0+.2);}}
 export const FR_ROMANESCO={id:'romanesco',name:'Romanesco',what:'espirals dins d’espirals',
@@ -111,7 +111,7 @@ export const FR_ROMANESCO={id:'romanesco',name:'Romanesco',what:'espirals dins d
 // costs least, where the cost is the length of the wire plus bf times the path from that point back to the cell body. That single rule
 // gives the branching of real dendrites. Each neuron has its own field (a pyramidal cell has a long apical dendrite).
 function frNeuron(S,cx,cy,R,n,bf,kind){const pts=[{x:cx,y:cy,p:-1,o:0,pl:0}],cand=[];
- for(let k=0;k<n;k++){let x,y;if(kind==='pyr'&&S.rnd()<.45){const u=S.rnd();x=cx+(S.rnd()-.5)*R*.5*(.3+u);y=cy-R*1.6*u-R*.1;}else{const a=S.rnd()*FR_TAU,r=R*Math.sqrt(S.rnd());x=cx+Math.cos(a)*r*1.1;y=cy+Math.sin(a)*r*(kind==='pyr'?.6:.9)+(kind==='pyr'?R*.25:0);}cand.push({x,y});}
+ for(let k=0;k<n;k++){let x,y;if(kind==='pyr'&&S.rnd()<.45){const u=S.rnd();x=cx+(S.rnd()-.5)*R*.5*(.3+u);y=cy-R*1.6*u-R*.1;}else{const a=S.rnd()*FRF_TAU,r=R*Math.sqrt(S.rnd());x=cx+Math.cos(a)*r*1.1;y=cy+Math.sin(a)*r*(kind==='pyr'?.6:.9)+(kind==='pyr'?R*.25:0);}cand.push({x,y});}
  const best=cand.map(c=>({c,cost:Math.hypot(c.x-cx,c.y-cy)*(1+bf),p:0}));let order=0;
  while(best.length){let bi=0;for(let i=1;i<best.length;i++)if(best[i].cost<best[bi].cost)bi=i;const b=best.splice(bi,1)[0],P=pts[b.p],l=Math.hypot(b.c.x-P.x,b.c.y-P.y);
   const ni=pts.length;pts.push({x:b.c.x,y:b.c.y,p:b.p,o:++order/n,pl:P.pl+l});
@@ -130,7 +130,7 @@ export const FR_NEURONES={id:'neurones',name:'Neurones',what:'les branques de le
 // every scale) and its level lines are drawn from the sea up to the peaks, as on a map. Every bay has smaller bays along it.
 export const FR_COSTA={id:'costa',name:'Illa i costa',what:'les corbes de nivell d’una illa',
  pal:['#1a3a8f','#00a6a6','#7ed957','#ffd23f','#ff7aa8'],pal2:['#30106b','#8e24aa','#ff7043','#ffca28','#fffde7'],look:{bloom:.45,glow:2.6,halo:.15,minW:.8},wind:0,pulseV:.35,
- acts:[(S,t)=>{const nx=260,ny=Math.round(260/S.AR),h=1/(ny-1),N=frNoise(S.seed),f=new Float32Array(nx*ny),ox=.5+(S.rnd()-.5)*.2,oy=.5+(S.rnd()-.5)*.1;
+ acts:[(S,t)=>{const nx=260,ny=Math.round(260/S.AR),h=1/(ny-1),N=frfNoise(S.seed),f=new Float32Array(nx*ny),ox=.5+(S.rnd()-.5)*.2,oy=.5+(S.rnd()-.5)*.1;
   for(let j=0;j<ny;j++)for(let i=0;i<nx;i++){const x=i*h,y=j*h,dx=(x-S.AR*ox)/(S.AR*.5),dy=(y-oy)/.5,r=Math.hypot(dx*.78,dy*.92);f[j*nx+i]=.62*N(x*2.2,y*2.2,7,2,.55)+.55-.95*r*r+.1*N(x*7,y*7,3);}
   const L=14;for(let l=0;l<L;l++){const lv=-.05+l*.06,chains=frChains(frIso(f,nx,ny,lv,h,0,0),h*.01);const c=l/(L-1),t0=t+l*.27;
    for(const ch of chains){if(ch.length<8)continue;frPath(S,ch,t0,.5,{w0:l===2?.0024:.0012,c0:c,lum:l===2?1.25:.85,d0:l*.08,hot:.3,pal:S.lap%2});}

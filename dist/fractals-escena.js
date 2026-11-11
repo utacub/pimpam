@@ -1,4 +1,4 @@
-// Fractals a la natura (CE46, 0.73) · the picture: the form of the moment drawn by the engine of light lines (fractals-motor.js) and
+// Fractals a la natura (CE46, 0.74) · the picture: the form of the moment drawn by the engine of light lines (fractals-motor.js) and
 // copied into the canvas of the app. Always on black: the settings of the decor and the base do not apply (as in Pluja de colors and
 // the Laboratori de matèria), and without WebGL2 the screen stays black and the help says why (the music still plays). The size of the
 // picture adapts to the speed of the computer (glAdapt, as in the other WebGL activities).

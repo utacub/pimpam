@@ -27,7 +27,7 @@ u0026	Preparar els commutadors
 u0027	l’encercament del menú
 u0028	Un prat de paper de nit, il·luminat per una rosella, una margarida i un gira-sol oberts
 u0029	Formes, llum i música
-u0030	Cada pulsació porta una composició nova amb la seva música: flors de paper, pluja de colors, un laboratori de matèria, patrons, vitralls, focs, dibuixos que ballen i paper marbrejat.
+u0030	Cada pulsació porta una composició nova amb la seva música: flors de paper, pluja de colors, un laboratori de matèria, fractals de la natura, patrons, vitralls, focs, dibuixos que ballen i paper marbrejat.
 u0031	Viatges i immersions
 u0032	Vint escenes per pulsació: el mar, la selva, la sabana, el temps i els gegants del blau.
 u0033	Històries pas a pas
@@ -2108,3 +2108,37 @@ u2107	Llarg (17 s)
 u2108	Despistes
 u2109	De tant en tant una peça cau primer al lloc equivocat (el barret als peus, les sabates al cap) i després va al seu lloc.
 u2110	Avi Quim
+u2111	Fractals a la natura
+u2112	Vint formes de la natura que es repeteixen dins seu, fetes de línies de llum de colors sobre negre: falgueres, flocs de neu, gira-sols, llamps, arbres, rius, corals, neurones… Cada pulsació en fa créixer una, amb la seva música.
+u2113	20 formes · una a cada pulsació
+u2114	Cada pulsació fa créixer sencera una forma de la natura amb línies de llum de colors, i una ona de llum la recorre. La pulsació següent la recull cap a l’arrel i en fa créixer una altra: n’hi ha vint, i després tornen a començar amb uns altres colors.
+u2115	Mentre una forma creix, les pulsacions no fan res.
+u2116	Pots prémer mentre una forma creix: ve la següent.
+u2117	Aquest ordinador no pot mostrar les formes d’aquesta activitat: cal WebGL 2. La música sí que sona.
+u2118	La pantalla és negra i espera la primera pulsació. Cada pulsació fa créixer una forma de la natura.
+u2119	Creixement de cada forma
+u2120	Ràpid
+u2121	Lent
+u2122	Com més lent, millor es veu com cada nivell de la forma surt de l’anterior. La música de cada forma dura igual.
+u2123	Primera forma
+u2124	Els fractals es veuen sempre sobre negre: no tenen decorat atenuat ni sense decorat, ni color de base.
+u2125	creixen les frondes de falguera, pínnula a pínnula
+u2126	creixen els flocs de neu, braç a braç
+u2127	creixen les espirals del gira-sol i els seus pètals
+u2128	baixen els llamps, branca a branca
+u2129	creix l’arbre, branca a branca, i floreix
+u2130	creixen el riu i els seus afluents, de l’un a l’altre
+u2131	creixen les branques del corall, de les més gruixudes a les puntes
+u2132	creixen els cons en espiral, i els cons dels cons
+u2133	creixen les dendrites de les neurones, de la cèl·lula a les puntes
+u2134	es dibuixen les corbes de nivell de l’illa, del cim a la costa
+u2135	creixen els nervis de la fulla, dels grans als més fins
+u2136	creixen les agulles de gel, de les grans a les més fines
+u2137	creix la closca en espiral, cambra a cambra
+u2138	creixen els cordons del fong, les hifes i les seves puntes
+u2139	s’obren les esquerdes del fang, de les primeres a les més fines
+u2140	creixen les plomes del paó, amb l’eix, les barbes i les barbetes
+u2141	s’aixequen les carenes de les muntanyes, els contraforts i els petits esperons
+u2142	creixen les arrels principals, les laterals i les més fines
+u2143	es dibuixen la xarxa de la closca i els triangles dins de triangles
+u2144	creixen el capítol, els becs, els plomalls i les seves barbes

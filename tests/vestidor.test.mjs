@@ -96,5 +96,5 @@ test('the wiring: the folder, the settings, the loading, the sound, the build, t
  assert.match(app,/game\.vsMade\|\|\(game\.vsMade=\{\}\)\)\[state\.round\]=picks/);
  assert.match(build,/'vestidor-dades\.js','vestidor\.js','vestidor-gags\.js','vestidor-motor\.js','vestidor-art\.js','vestidor-so\.js'/);assert.match(build,/const VS_IMAGES=null;/);
  assert.match(input,/vsSteps:'4',vsDespistes:true,vsFirst:'rita',vsNumber:'normal'/);assert.throws(()=>validateProfile({...defaults,vsSteps:'5'}));assert.throws(()=>validateProfile({...defaults,vsFirst:'nil'}));
- assert.ok(fs.existsSync(new URL('../production/info/cards/vestidor.jpg',import.meta.url)));assert.match(read('../production/info/make_info.py'),/'bubbles','vestidor'\]/);
+ assert.ok(fs.existsSync(new URL('../production/info/cards/vestidor.jpg',import.meta.url)));assert.match(read('../production/info/make_info.py'),/'bubbles','vestidor'[,\]]/);
  const ca=read('../i18n/ui-ca.tsv');for(const l of ['es','eu','gl','en','fr']){const tr=read(`../i18n/ui-${l}.tsv`);for(const text of ['Peces per artista','Despistes','Botes-lunars','Què es posa al cap?']){const id=ca.split('\n').find(x=>x.endsWith('\t'+text)).split('\t')[0];assert.ok(tr.includes(id+'\t'),`${l} ${text}`);}}});

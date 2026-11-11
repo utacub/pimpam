@@ -1,4 +1,4 @@
-// Fractals a la natura (CE46, 0.73) · stimuli 16–20: ploma de paó, serralades, arrels, petxina de triangles, dent de lleó. As in
+// Fractals a la natura (CE46, 0.74) · stimuli 16–20: ploma de paó, serralades, arrels, petxina de triangles, dent de lleó. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
 import {frEvent,frTraced,frDrawTraced,frGrow,frSpline} from './fractals-formes.js';
 import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS,FR_TR_PETXINA,FR_TR_DENT} from './fractals-traces.js';
@@ -14,7 +14,7 @@ import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS,FR_TR_PETXINA,FR_TR_DENT} from './fra
 // then the barbules; each fine barbule leaves its barb along it and turns away (as the skeleton of the picture cannot show).
 // the bases of the seven shafts on the bottom edge (x), for the sound of each feather
 const FR_FEATHERS=[747,675,852,548,1000,416,1255];
-export const FR_PAO={id:'pao',name:'Ploma de paó',what:'les plomes del paó, l’eix, les barbes i les barbetes',
+export const FR_PAO={id:'pao',name:'Ploma de paó',what:'creixen les plomes del paó, amb l’eix, les barbes i les barbetes',
  pal:['#a050ff','#3c64ff','#18eeff','#30ffa8','#ffd23c'],pal2:['#ff50d8','#8a5cff','#30c8ff','#50ff90','#ffb030'],
  look:{bloom:.14,glow:1.1,halo:.16,core:.8,tubeW:1.2,tubeP:1.5,spread:.3,minW:.4,gsat:1.5,sat:1.1,white:1.9,exp:1.7},wind:.003,
  acts:[(S,t0)=>{const k=S.k,P=frTraced(FR_TR_PAO),lv=[.9,2,.15];
@@ -30,7 +30,7 @@ export const FR_PAO={id:'pao',name:'Ploma de paó',what:'les plomes del paó, l�
 // magenta to pink and gold near by. The network is traced from the concept (FR_TR_SERRA): it grows from each summit, the farthest
 // first, along its crest down both sides; then the spurs leave the crests, and the smaller spurs leave them.
 const FR_SERRA_X=[170,607,1244,463,1186,922,123,1593];
-export const FR_SERRA={id:'serra',name:'Serralades',what:'les carenes de les muntanyes, els contraforts i els petits esperons',
+export const FR_SERRA={id:'serra',name:'Serralades',what:'s’aixequen les carenes de les muntanyes, els contraforts i els petits esperons',
  pal:['#5a9cff','#9a72ff','#e048e8','#ff5aa0','#ffd030'],pal2:['#50d0ff','#7a7cff','#c858ff','#ff5878','#ffb428'],
  look:{bloom:.18,glow:1.3,halo:.2,core:.9,tubeW:3,tubeP:2,spread:.3,minW:.6,gsat:1.5,sat:1.1,white:1.7,exp:1.3},wind:0,
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_SERRA),t0,{wk:.8,wpow:1,wmin:.6,lumw:[.7,.8,2.5],tipx:[10,.5,.2],taper:.4,lumv:[.8,1.2,.25],lum:1,hot:.5,sway:0});
@@ -45,7 +45,7 @@ export const FR_SERRA={id:'serra',name:'Serralades',what:'les carenes de les mun
 // The network is traced from the concept (FR_TR_ARRELS): the main roots grow down first, the laterals leave them as they pass, and
 // the finest rootlets last.
 const FR_ARRELS_X=[257,464,843,1221,1450];
-export const FR_ARRELS={id:'arrels',name:'Arrels',what:'les arrels principals, les laterals i les arrels més fines',
+export const FR_ARRELS={id:'arrels',name:'Arrels',what:'creixen les arrels principals, les laterals i les més fines',
  pal:['#ff40c8','#ff5cac','#ff8070','#ffa448','#ffd450'],pal2:['#e070ff','#ff70d8','#ff7a68','#ff9c40','#ffe468'],
  look:{bloom:.18,glow:1.2,halo:.18,core:.75,tubeW:1.3,tubeP:3,spread:.3,minW:.45,gsat:1.5,sat:1.1,white:2.5,exp:1.3},wind:.002,
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_ARRELS),t0,{wk:.7,wpow:1,wmin:1,lumw:[.9,.8,2.5],tipx:[6,.4,.3],taper:.4,fork:[10,.2,1,.6,.95],lumv:[.6,1,.5],lum:1,hot:.5,sway:.1});
@@ -60,7 +60,7 @@ export const FR_ARRELS={id:'arrels',name:'Arrels',what:'les arrels principals, l
 // cream lines, each cell holding nested triangles, orange outside and tan within. The lattice and the rings are traced from the
 // concept (tools/fractals-petxina.py: FR_TR_PETXINA): the lattice grows from the apex (the oldest part of the shell) towards the
 // lip, and in each cell, once the lattice has closed round it, its triangles appear from the outside in.
-export const FR_PETXINA={id:'petxina',name:'Petxina de triangles',what:'la xarxa de la closca i els triangles dins de triangles',
+export const FR_PETXINA={id:'petxina',name:'Petxina de triangles',what:'es dibuixen la xarxa de la closca i els triangles dins de triangles',
  pal:['#f06a00','#d8b488','#ff8c14','#ffbc50','#fff8cc'],pal2:['#f03a50','#e8b0b8','#ff5878','#ffa8a0','#fff4ee'],
  look:{bloom:.26,glow:1.7,halo:.32,core:.6,tubeW:7,tubeP:2,spread:.3,minW:.6,gsat:1.25,sat:1.05,white:2.4,exp:1.2},wind:0,
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_PETXINA),t0,{wk:.9,wpow:1,wmin:1.2,lum:1,hot:.6,sway:0,under:[0,2.6,.14,-.45,.95]});
@@ -96,7 +96,7 @@ function frDentLum(P){if(FR_DENT_P)return FR_DENT_P;FR_DENT_P=P.map(p=>{const n=
 function frDentHubT(P){if(FR_DENT_HT)return FR_DENT_HT;FR_DENT_HT=FR_DENT_HUBS.map(([x,y])=>{let t=1e9;
  for(const p of P)for(let i=0;i<p.w.length;i++){const dx=p.pts[i*2]-x,dy=p.pts[i*2+1]-y;if(dx*dx+dy*dy<144&&p.ts[i]<t)t=p.ts[i];}return t<1e9?t:2;});return FR_DENT_HT;}
 const FR_DENT_SEEDS=[[1080,1.9],[1395,2],[1315,2.2],[1188,2.3],[1578,2.4],[940,2.5],[1015,2.6],[1597,2.7]];
-export const FR_DENT={id:'dent',name:'Dent de lleó',what:'el capítol, els becs, els plomalls i les seves barbes',
+export const FR_DENT={id:'dent',name:'Dent de lleó',what:'creixen el capítol, els becs, els plomalls i les seves barbes',
  pal:['#e0aa48','#f2c668','#f6deaa','#eceff6','#ffffff'],pal2:['#e8b050','#f8cc70','#f8e2b4','#eef2f8','#ffffff'],
  look:{bloom:.22,glow:1.6,halo:.28,core:.8,tubeW:2,tubeP:2,spread:.3,minW:.4,gsat:1.3,sat:1,white:2,exp:1.45},wind:.003,
  acts:[(S,t0)=>{const k=S.k;
