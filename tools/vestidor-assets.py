@@ -140,7 +140,7 @@ def anchors():
     return out
 PECA_SIDE = 640
 def peces(d):
-    """The garments alone for the cards (lot 9, 0.74.3): PECA-<code>_*.png, each one garment (or one pair of shoes) drawn whole on a
+    """The garments alone for the cards (lot 9, 0.75.1): PECA-<code>_*.png, each one garment (or one pair of shoes) drawn whole on a
     transparent or white 1024 x 1024 canvas. Specks and faint haze are dropped; the picture is scaled so its longest side is PECA_SIDE."""
     for p in sorted(Path(d).rglob('PECA-*.png')):
         code = p.name.split('_')[0].split('-', 1)[1]

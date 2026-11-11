@@ -290,3 +290,7 @@
 .nav .lang-menu .lang-item{display:flex;align-items:center;gap:14px;width:100%;padding:8px 10px;border-radius:12px;font-size:16px;font-weight:550;text-align:left;color:var(--ink);min-height:48px}.lang-item:hover,.lang-item:focus-visible{background:var(--paper)}
 .lang-code{display:inline-flex;align-items:center;justify-content:center;width:40px;height:30px;border-radius:9px;background:var(--blue);color:var(--primary);font-size:12px;font-weight:800;letter-spacing:.04em;flex-shrink:0}.lang-name{flex:1}.lang-item.on .lang-code{background:var(--primary);color:#fff}.lang-item.on .lang-name{color:var(--primary);font-weight:650}.lang-item .icon{color:var(--primary);stroke-width:2.2}
 .nav .lang-menu button.lang-item:nth-child(n){display:flex}@media(max-width:650px){.lang-menu{right:auto;left:0}}
+/* 0.75 · portada: il·lustracions de les activitats que es fonen l'una en l'altra */
+.hero-art .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.5s ease-in-out;animation:hero-drift 26s ease-in-out infinite alternate;pointer-events:none;user-select:none}.hero-art .hero-slide:nth-of-type(even){animation-direction:alternate-reverse}.hero-art .hero-slide.on{opacity:1}
+@keyframes hero-drift{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.08) translate(-1.2%,-.8%)}}
+@media(prefers-reduced-motion:reduce){.hero-art .hero-slide{animation:none;transform:none}.hero-art .hero-slide{transition:opacity 2.5s ease-in-out!important}}

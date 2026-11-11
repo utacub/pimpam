@@ -1,6 +1,6 @@
 # Pim Pam · 36 activitats · 0.36.3
 
-## 0.74.3 · El vestidor: les cartes amb la peça sola
+## 0.75.1 · El vestidor: les cartes amb la peça sola
 
 - Imatges `peca-<codi>` (11 a 63) de `tools/vestidor-assets.py LOT9 --peces`: cada peça del lot 9 (transparent o sobre blanc) sense taques ni boira i amb el costat llarg a 640 px; afegeix les caixes a `dist/vestidor-dades.js` i conserva les altres i `VS_PARROT`. Són a `VS_COMMON`.
 - `vsCardNames` (`dist/vestidor-motor.js`) dona la imatge de la carta: `peca-<codi>` si n’hi ha, l’objecte sol, o les capes de l’artista com abans. `vsFlyCard` (`dist/vestidor-art.js`) fa volar la imatge de la carta i la fon amb les capes que encaixen entre el 55 % i el 95 % del vol, amb la mida igualada per l’arrel de l’àrea (`vsSpan`).

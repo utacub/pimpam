@@ -108,7 +108,7 @@ export function vsSticker(names,px){const boxes=names.map(n=>VS_BOX[n]).filter(B
 export function vsPieceNames(who,slot,id){if(slot==='objecte')return ['obj-'+(['paraigua','tuba','globus','regadora','ventall','cinta'].indexOf(id)+1)];const code=vsCode(slot,id);
  if(code==='62')return [`${who}-62c`,`${who}-62`,`${who}-62k`];return [`${who}-${code}`];}
 // The picture of a card: the garment drawn alone and whole (lot 9, peca-<code>, the same for every artist) when there is one; the object
-// alone; else the layers lifted from the artist, which miss what the body hid (Marc, 0.74.3).
+// alone; else the layers lifted from the artist, which miss what the body hid (Marc, 0.75.1).
 export function vsCardNames(who,slot,id){if(slot!=='objecte'){const n='peca-'+vsCode(slot,id);if(VS_BOX[n])return [n];}return vsPieceNames(who,slot,id);}
 // ── the scale of the screen ───────────────────────────────────────────────────────────────────────────────────────────────────────
 export const vsDevice=c=>{try{return escScale(c)||1;}catch{return 1;}};
