@@ -1,3 +1,17 @@
+# Pim Pam 0.71 · Pim Pam en sis idiomes
+
+Base: 0.70 (commit c89de88, publicada). Respon als missatges d’en Marc de l’11 de novembre de 2026 («Vull fer que Pim Pam sigui multilingüe… mateixos idiomes i estil de desplegable que Keryx»; «Adapta els colors de la paleta als propis de Pim Pam»; «Quan ho tinguis fet ho pots publicar directament»).
+
+## Què canvia
+
+- **Desplegable d’idioma** a la capçalera de la portada, com el de Keryx: globus, codi de l’idioma i fletxa; la llista mostra una etiqueta amb el codi, el nom de l’idioma en la seva llengua i una marca a l’idioma actiu. Idiomes: català (per defecte), castellà, basc, gallec, anglès i francès. Colors de la paleta de Pim Pam (blau #2355d6, tinta #192e55). L’idioma triat es desa al navegador (`pimpam-lang`).
+- **Què es tradueix:** tota la interfície (configuració, usuaris, registre, activitats personalitzades, missatges), els noms i les descripcions de les activitats i de les carpetes, els textos d’estat de cada activitat i els panells d’informació (ⓘ). El registre de canvis («Sobre aquesta versió») es queda en català, amb una nota a la resta d’idiomes. Els termes de castells (pinya, enxaneta, aleta…) es mantenen en català.
+- **Com funciona:** l’app continua escrivint en català. `dist/i18n.js` vigila la pàgina i tradueix cada text i cada `aria-label`, `title`, `alt` i `placeholder` a mesura que apareixen, amb els diccionaris `dist/i18n/<idioma>.json`. Els textos fets de peces («Pas 3 de 5.», «Desa Flor de paper als preferits», «A, B i C») es tradueixen amb 117 patrons. Res dins de `translate="no"` (noms d’usuaris, la llista d’idiomes) no es toca. El fitxer únic porta els diccionaris a dins.
+- **Encercament:** continua sense cap paraula escrita. La locució de les opcions fa servir una veu de l’idioma triat si l’equip en té.
+- **Fonts de les traduccions:** `i18n/ui-ca.tsv`, `i18n/info-ca.tsv` i `i18n/pat-ca.tsv` (textos catalans amb identificador) i els fitxers de cada idioma; `node tools/i18n-build.mjs` fa els JSON i avisa dels textos que falten. Glossari de termes fixos a `i18n/GLOSSARI.md` (commutador → conmutador / switch / contacteur / conmutador / etengailua; encercament → barrido / scanning / défilement / varrido / ekorketa).
+- **Proves:** `tests/i18n.test.mjs` comprova que els cinc diccionaris tenen els mateixos textos i patrons, que els patrons no inventen peces, que no hi ha lletres ciríl·liques colades, i exemples de traducció (textos sencers, patrons, nom i descripció, llistes).
+- **No verificat:** les traduccions les ha fet Claude i no les ha revisat cap persona nativa; el basc i el gallec són els que més ho necessiten. Un text nou que s’afegeixi a l’app sortirà en català fins que s’afegeixi als fitxers d’`i18n/`.
+
 # Pim Pam 0.70 · «Laboratori de matèria»: nom nou, «Informació», més color a l’aigua i finals curts
 
 Base: 0.69 (commit d6d7a87, publicada). Respon als missatges d’en Marc del 10 de novembre de 2026 entre les 22:07 i les 22:19 (hora de Catalunya).

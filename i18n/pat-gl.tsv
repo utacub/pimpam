@@ -1,0 +1,117 @@
+p001	Xoga: {x}. Usuarios deste dispositivo
+p002	{n} actividades de causa-efecto · {n2} de varrido
+p003	Abre o cartafol {x}: {n} actividades
+p004	{n} actividades
+p005	{n} actividade
+p006	Información de {x}
+p007	Garda {x} nos favoritos
+p008	{x}, versión WebGL 2: debuxada en directo, con máis requisitos de hardware
+p009	Versión {x} ·
+p010	Versión {x}
+p011	{n} conmutador
+p012	{n} conmutadores
+p013	{n} segundos
+p014	{n} pulsacións
+p015	{n} opcións
+p016	{n} voltas
+p017	Escolliches {x}.
+p018	Efecto en curso. Paso {n}.
+p019	Patrón {n} de {n2}: {x}.
+p020	Composición {n} de {n2}.
+p021	Paso {n} de {n2}.
+p022	Secuencia {n} de {n2}.
+p023	Rematou a secuencia {n}. Preme para ver a seguinte.
+p024	{n} de {n2} pezas.
+p025	{n} de {n2} pasos.
+p026	{x} · día {n} · {y}
+p027	{x} do día {n} ({y}): {z}.
+p028	Ábrese a flor: {x}. {y}.
+p029	Un botón espera: {x}.
+p030	{x}: o xardín enteiro acéndese e soa a súa música.
+p031	{x}. Os botóns esperan.
+p032	Ábrese unha flor: {x}. Flor {n} de {n2}.
+p033	O papel lévase a estampa da folla {x} e cólgase no tendal.
+p034	O punzón e o peite debuxan a folla {x}.
+p035	{x}, {y}: o baño espera a folla {z}.
+p036	{x}: todo sae polas beiras e a pantalla volve ser negra.
+p037	{x}: a pantalla é negra e espera a primeira pulsación. Virán {y}.
+p038	{x}: {y} entran por unha beira.
+p039	{x}: {y} enchen toda a pantalla, con toda a música.
+p040	{x}: a pantalla está chea. A pulsación seguinte faino saír todo.
+p041	{x}: espera a pulsación seguinte. Pulsación {n} de {n2}.
+p042	{x}: {y} medran. Pulsación {n} de {n2}.
+p043	{x}: caen pingas de cores, e cada pinga soa cando toca o chan.
+p044	{x}: cae unha pinga de cor, e soa cando toca o chan.
+p045	{x}: a cor acaba de encher toda a pantalla.
+p046	{x}: o chan é negro e espera a primeira pinga. Cores: {y}.
+p047	{x}: a cor espállase polo chan. Pulsación {n} de {n2}.
+p048	{x} na primavera
+p049	{x} no verán
+p050	{x} no outono
+p051	{x} no inverno
+p052	Agora vén {x}.
+p053	Cada pulsación fai entrar e medrar unha materia, coa súa música. Na pulsación {n} enche a pantalla, e na {n2} vaise ata que todo volve ser negro. Despois vén a materia seguinte: {x}.
+p054	Espazo ocupado neste navegador: {x} · dispoñible: {y}
+p055	As escenas de {x}
+p056	Os axustes gárdanse no usuario «{x}», neste dispositivo. Podes exportalos para levalos a outro equipo.
+p057	Este axuste é compartido con {x}: se o cambiades aquí, tamén cambia alí.
+p058	Estes axustes só aparecen dentro desta actividade. Gárdanse no usuario «{x}».
+p059	Agora xoga {x}.
+p060	Os conmutadores, o varrido, a imaxe e o son, os axustes de cada actividade e os favoritos de {x}. Se non, comeza cos axustes iniciais.
+p061	Usuario exportado ({x} MB).
+p062	{n} usuarios exportados ({x} MB).
+p063	Usuario exportado, con {n} actividade personalizada ({x} MB).
+p064	Usuario exportado, con {n} actividades personalizadas ({x} MB).
+p065	{n} usuarios exportados, con {n2} actividades personalizadas ({x} MB).
+p066	{n} usuarios exportados, con {n2} actividade personalizada ({x} MB).
+p067	Actividade exportada ({x}).
+p068	{n} actividades exportadas ({x}).
+p069	Non se puido exportar: {x}
+p070	Non se puido importar «{x}»: {y}
+p071	Importando {x}…
+p072	Queredes borrar o usuario «{x}»? Bórranse deste dispositivo os seus axustes e o rexistro, e non se pode desfacer. Se o queredes conservar, exportádeo antes.
+p073	Queredes borrar o usuario «{x}»? Bórranse deste dispositivo os seus axustes, o rexistro e a súa actividade personalizada, e non se pode desfacer. Se o queredes conservar, exportádeo antes.
+p074	Queredes borrar o usuario «{x}»? Bórranse deste dispositivo os seus axustes, o rexistro e as súas {n} actividades personalizadas, e non se pode desfacer. Se o queredes conservar, exportádeo antes.
+p075	Borrouse «{x}».
+p076	Rexistro de {x}
+p077	Amosar máis ({n} máis)
+p078	Queredes borrar todo o rexistro de «{x}»? Non se pode desfacer. Se o queredes conservar, exportádeo antes.
+p079	{n} anacos: {n2} pulsacións para velo enteiro.
+p080	As fotos de {x}
+p081	Queredes borrar «{x}»? Bórrase deste dispositivo e non se pode desfacer. Se a queredes conservar, exportádea antes.
+p082	«{x}» non é unha foto nin un vídeo que se poida usar.
+p083	«{x}» non é un ficheiro de son que se poida usar.
+p084	«{x}» é demasiado grande ({y}; como máximo {z}).
+p085	Este navegador non pode abrir a imaxe «{x}». Probádea en JPG ou PNG.
+p086	Este navegador non pode reproducir o vídeo «{x}». Probádeo en MP4 (H.264) ou WebM.
+p087	Este navegador non pode reproducir o son «{x}». Probádeo en MP3.
+p088	Hai que engadir como mínimo {n} fotos ou vídeos.
+p089	{n} actividade personalizada · {n2} sesións
+p090	{n} actividades personalizadas · {n2} sesións
+p091	{n} actividades personalizadas · {n2} sesión
+p092	{n} actividade personalizada · {n2} sesión
+p093	última: {x}
+p094	día {n}
+p095	{x}: folla {y}, paso {n} de {n2}.
+p096	Preme para cambiar
+p097	O queimador arde e o globo sobe.
+p098	O globo voa entre as nubes.
+p099	O globo baixa amodo.
+p100	O globo baixa a aterrar no prado.
+p101	Hai actividades de causa-efecto, nas que cada pulsación fai pasar algo; actividades de varrido, nas que as opcións se iluminan unha tras outra e unha pulsación escolle a que está marcada; e {n} pequenas películas, que avanzan unha secuencia en cada pulsación. As actividades agrúpanse en cartafoles, e en «Actividades personalizadas» pódense facer novas con fotos, vídeos e sons propios.
+p102	{n} patróns
+p103	{n} vidreiras
+p104	{n} formas
+p105	{n} espectáculos
+p106	{n} debuxos
+p107	{n} xoguetes
+p108	{n} cousas de cociña
+p109	{n} composicións
+p110	{n} momentos ao día
+p111	{x} o son
+p112	Conmutador {n}
+p113	Os axustes gárdanse neste dispositivo (convidado). Podes exportalos para levalos a outro equipo.
+p114	Estes axustes só aparecen dentro desta actividade. Gárdanse neste dispositivo (convidado).
+p115	{x} o varrido do menú
+p116	{n} elementos
+p117	{n} elemento

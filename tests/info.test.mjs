@@ -31,7 +31,7 @@ test('the Laboratori de matèria has one card for each matter, and says that its
   const {BB_STIMS}=await import('../dist/bombolles.js');
   assert.deepEqual(SCENE_INFO.bubbles.map(s=>s.t),BB_STIMS.map(x=>x.name));
   const src=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
-  assert.match(src,/\$\{it\.bombolles\?'No són dibuixos sinó simulacions/);
+  assert.match(src,/\$\{t\(it\.bombolles\?'No són dibuixos sinó simulacions/);
 });
 test('the scene titles follow the activity names',()=>{
   const names={jelly:FONS_NAMES,jungle:SELVA_NAMES,savanna:SABANA_NAMES,well:POU_NAMES,giants:GG_NAMES};

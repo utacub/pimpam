@@ -1,0 +1,117 @@
+p001	Jolasten: {x}. Gailu honetako erabiltzaileak
+p002	Kausa-efektuko {n} jarduera · {n2} ekorketakoak
+p003	Ireki {x} karpeta: {n} jarduera
+p004	{n} jarduera
+p005	{n} jarduera
+p006	{x}: informazioa
+p007	Gorde {x} gogokoetan
+p008	{x}, WebGL 2 bertsioa: zuzenean marraztua, hardware-eskakizun handiagoekin
+p009	{x} bertsioa ·
+p010	{x} bertsioa
+p011	{n} etengailu
+p012	{n} etengailu
+p013	{n} segundo
+p014	{n} sakatze
+p015	{n} aukera
+p016	{n} itzuli
+p017	{x} aukeratu duzu.
+p018	Efektua martxan. {n}. urratsa.
+p019	{n}/{n2} eredua: {x}.
+p020	{n}/{n2} konposizioa.
+p021	{n}/{n2} urratsa.
+p022	{n}/{n2} sekuentzia.
+p023	{n}. sekuentzia amaitu da. Sakatu hurrengoa ikusteko.
+p024	{n}/{n2} pieza.
+p025	{n}/{n2} urrats.
+p026	{x} · {n}. eguna · {y}
+p027	{n}. eguneko {x} ({y}): {z}.
+p028	Lorea irekitzen da: {x}. {y}.
+p029	Kimu bat zain dago: {x}.
+p030	{x}: lorategi osoa pizten da eta bere musika entzuten da.
+p031	{x}. Kimuak zain daude.
+p032	Lore bat irekitzen da: {x}. {n}/{n2} lorea.
+p033	Paperak {x} orriaren estanpa hartzen du eta arropa-esekigailuan zintzilikatzen da.
+p034	Puntzoiak eta orraziak {x} orria marrazten dute.
+p035	{x}, {y}: bainua {z} orriaren zain dago.
+p036	{x}: dena ertzetatik ateratzen da eta pantaila beltz geratzen da berriro.
+p037	{x}: pantaila beltza da eta lehen sakatzearen zain dago. Gero etorriko dira: {y}.
+p038	{x}: {y} ertz batetik sartzen dira.
+p039	{x}: {y} pantaila osoa betetzen dute, musika osoarekin.
+p040	{x}: pantaila beteta dago. Hurrengo sakatzeak dena ateratzen du.
+p041	{x}: hurrengo sakatzearen zain. {n}/{n2} sakatzea.
+p042	{x}: {y} hazten dira. {n}/{n2} sakatzea.
+p043	{x}: koloretako tantak erortzen dira, eta tanta bakoitzak lurra ukitzean jotzen du.
+p044	{x}: kolorezko tanta bat erortzen da, eta lurra ukitzean jotzen du.
+p045	{x}: koloreak pantaila osoa bete berri du.
+p046	{x}: lurra beltza da eta lehen tantaren zain dago. Koloreak: {y}.
+p047	{x}: kolorea lurrean zehar zabaltzen da. {n}/{n2} sakatzea.
+p048	{x} udaberrian
+p049	{x} udan
+p050	{x} udazkenean
+p051	{x} neguan
+p052	Orain dator: {x}.
+p053	Sakatze bakoitzak materia bat sartu eta hazarazten du, bere musikarekin. {n}. sakatzean pantaila betetzen du, eta {n2}.ean joan egiten da dena berriro beltz geratu arte. Gero hurrengo materia dator: {x}.
+p054	Nabigatzaile honetan okupatutako lekua: {x} · erabilgarri: {y}
+p055	{x}: eszenak
+p056	Ezarpenak «{x}» erabiltzailean gordetzen dira, gailu honetan. Esporta ditzakezu beste ordenagailu batera eramateko.
+p057	Ezarpen hau {x} jarduerekin partekatzen da: hemen aldatzen baduzue, han ere aldatzen da.
+p058	Ezarpen hauek jarduera honen barruan bakarrik agertzen dira. «{x}» erabiltzailean gordetzen dira.
+p059	Orain {x} ari da jolasten.
+p060	Etengailuak, ekorketa, irudia eta soinua, jarduera bakoitzaren ezarpenak eta {x}(r)en gogokoak. Bestela, hasierako ezarpenekin hasten da.
+p061	Erabiltzailea esportatuta ({x} MB).
+p062	{n} erabiltzaile esportatuta ({x} MB).
+p063	Erabiltzailea esportatuta, jarduera pertsonalizatu {n}ekin ({x} MB).
+p064	Erabiltzailea esportatuta, {n} jarduera pertsonalizaturekin ({x} MB).
+p065	{n} erabiltzaile esportatuta, {n2} jarduera pertsonalizaturekin ({x} MB).
+p066	{n} erabiltzaile esportatuta, jarduera pertsonalizatu {n2}ekin ({x} MB).
+p067	Jarduera esportatuta ({x}).
+p068	{n} jarduera esportatuta ({x}).
+p069	Ezin izan da esportatu: {x}
+p070	Ezin izan da «{x}» inportatu: {y}
+p071	{x} inportatzen…
+p072	«{x}» erabiltzailea ezabatu nahi duzue? Bere ezarpenak eta erregistroa gailu honetatik ezabatzen dira, eta ezin da desegin. Gorde nahi baduzue, esporta ezazue lehenago.
+p073	«{x}» erabiltzailea ezabatu nahi duzue? Bere ezarpenak, erregistroa eta jarduera pertsonalizatua gailu honetatik ezabatzen dira, eta ezin da desegin. Gorde nahi baduzue, esporta ezazue lehenago.
+p074	«{x}» erabiltzailea ezabatu nahi duzue? Bere ezarpenak, erregistroa eta {n} jarduera pertsonalizatuak gailu honetatik ezabatzen dira, eta ezin da desegin. Gorde nahi baduzue, esporta ezazue lehenago.
+p075	«{x}» ezabatu da.
+p076	{x}: erregistroa
+p077	Erakutsi gehiago ({n} gehiago)
+p078	«{x}»(r)en erregistro osoa ezabatu nahi duzue? Ezin da desegin. Gorde nahi baduzue, esporta ezazue lehenago.
+p079	{n} zati: {n2} sakatze osorik ikusteko.
+p080	{x}(r)en argazkiak
+p081	«{x}» ezabatu nahi duzue? Gailu honetatik ezabatzen da eta ezin da desegin. Gorde nahi baduzue, esporta ezazue lehenago.
+p082	«{x}» ez da erabil daitekeen argazki edo bideo bat.
+p083	«{x}» ez da erabil daitekeen soinu-fitxategi bat.
+p084	«{x}» handiegia da ({y}; gehienez {z}).
+p085	Nabigatzaile honek ezin du «{x}» irudia ireki. Probatu JPG edo PNG formatuan.
+p086	Nabigatzaile honek ezin du «{x}» bideoa erreproduzitu. Probatu MP4 (H.264) edo WebM formatuan.
+p087	Nabigatzaile honek ezin du «{x}» soinua erreproduzitu. Probatu MP3 formatuan.
+p088	Gutxienez {n} argazki edo bideo gehitu behar dira.
+p089	Jarduera pertsonalizatu {n} · {n2} saio
+p090	{n} jarduera pertsonalizatu · {n2} saio
+p091	{n} jarduera pertsonalizatu · saio {n2}
+p092	Jarduera pertsonalizatu {n} · saio {n2}
+p093	azkena: {x}
+p094	{n}. eguna
+p095	{x}: {y} orria, {n}/{n2} urratsa.
+p096	Sakatu aldatzeko
+p097	Erregailua piztuta dago eta globoa igotzen da.
+p098	Globoa hodeien artean dabil.
+p099	Globoa poliki jaisten da.
+p100	Globoa belardian lurreratzera jaisten da.
+p101	Kausa-efektuko jarduerak daude, sakatze bakoitzak zerbait gertarazten duenak; ekorketa-jarduerak, aukerak bata bestearen atzetik argiztatzen direnak eta sakatze batek markatutakoa aukeratzen duenak; eta {n} film labur, sakatze bakoitzean sekuentzia bat aurrera egiten dutenak. Jarduerak karpetetan biltzen dira, eta «Jarduera pertsonalizatuak» atalean berriak egin daitezke argazki, bideo eta soinu propioekin.
+p102	{n} eredu
+p103	{n} beirate
+p104	{n} forma
+p105	{n} ikuskizun
+p106	{n} marrazki
+p107	{n} jostailu
+p108	{n} sukaldeko gauza
+p109	{n} konposizio
+p110	{n} une egunean
+p111	{x} soinua
+p112	{n}. etengailua
+p113	Ezarpenak gailu honetan gordetzen dira (gonbidatua). Esporta ditzakezu beste ordenagailu batera eramateko.
+p114	Ezarpen hauek jarduera honen barruan bakarrik agertzen dira. Gailu honetan gordetzen dira (gonbidatua).
+p115	{x} menuaren ekorketa
+p116	{n} elementu
+p117	{n} elementu

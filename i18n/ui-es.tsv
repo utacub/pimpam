@@ -1,0 +1,1900 @@
+u0001	No se han podido guardar los ajustes en este navegador.
+u0002	Espacio
+u0003	Intro
+u0006	Teclado / adaptador USB o Bluetooth
+u0007	Botones de ratón / adaptador
+u0008	Mando / adaptador Gamepad
+u0009	UTAC · Pim Pam, inicio
+u0012	Versión
+u0013	Información
+u0014	Configuración
+u0015	Principal
+u0016	Información sobre Pim Pam
+u0018	Usuarios
+u0020	Sobre esta versión
+u0021	Jugar, descubrir, decidir
+u0022	Un pequeño gesto.
+u0023	Un gran efecto.
+u0024	Cada pulsación abre una posibilidad. Explora, crea y elige con juegos que se adaptan a tu ritmo.
+u0025	Empecemos a jugar
+u0026	Preparar los conmutadores
+u0028	Un prado de papel de noche, iluminado por una amapola, una margarita y un girasol abiertos
+u0029	Formas, luz y música
+u0030	Cada pulsación trae una composición nueva con su música: flores de papel, lluvia de colores, un laboratorio de materia, patrones, vidrieras, fuegos, dibujos que bailan y papel marmolado.
+u0031	Viajes e inmersiones
+u0032	Veinte escenas por pulsación: el mar, la selva, la sabana, el tiempo y los gigantes del azul.
+u0033	Historias paso a paso
+u0034	Cada pulsación añade un paso hasta un final: castells, orquestas, cielos, el mago y el camarero.
+u0035	Pequeñas películas
+u0036	Películas cortas en secuencias: cada pulsación muestra una y, cuando termina, la imagen se detiene y se oscurece hasta la pulsación siguiente.
+u0037	Pulsar en el momento
+u0038	Esperar y pulsar cuando toca: la luz del faro, la puerta donde llaman y las tres bombillas de la feria.
+u0039	Mantener pulsado
+u0040	Pasa mientras se mantiene pulsado el conmutador y termina al soltarlo.
+u0041	Barrido: elegir y crear
+u0042	Escenas donde todas las elecciones son buenas: pintar, cocinar, inventar, viajar y la masía.
+u0043	Barrido: relacionar
+u0044	Por revisar
+u0045	Las primeras actividades, hechas con ChatGPT al principio. Se guardan aparte para revisarlas.
+u0046	Actividades personalizadas
+u0047	Fotos, vídeos y música de cada niño o niña con las mecánicas de Pim Pam. Se crean y se guardan aquí, con el usuario que juega, solo en este dispositivo.
+u0048	Otras
+u0049	Actividades nuevas que todavía no tienen carpeta.
+u0050	Favoritos
+u0051	Las actividades guardadas con el corazón.
+u0052	Elige una actividad
+u0053	Las actividades están agrupadas en carpetas según cómo se juega. Abre una carpeta para verlas.
+u0054	Todas las carpetas
+u0055	＋ Crea una actividad
+u0056	Exportarlas todas
+u0057	Importar
+u0058	Crea una actividad
+u0059	Fotos, vídeos y música
+u0060	Crea una actividad personalizada
+u0061	Borrar
+u0062	Exportar
+u0063	Editar
+u0064	Todavía no hay ninguna actividad personalizada en este dispositivo. Cread una con fotos, vídeos y música, o importadla de un archivo exportado desde otro equipo.
+u0066	Volver a todas las carpetas
+u0068	Más requisitos de hardware
+u0069	A tu ritmo
+u0070	No hay prisa.
+u0071	Hay posibilidades.
+u0072	Ajusta el tiempo, la manera de pulsar y lo que se ve. Cada descubrimiento tiene su momento.
+u0073	Adapta la experiencia
+u0074	Todavía no hay juegos favoritos. Guárdalos con el corazón de cada tarjeta.
+u0075	Información de las escenas
+u0076	Los juegos
+u0077	Pausar
+u0078	Pausa
+u0079	el sonido
+u0080	Sonido
+u0081	Pantalla completa
+u0082	Salir a los juegos
+u0083	Se está preparando la actividad
+u0084	Avanza
+u0085	Elige
+u0086	Hagamos una pausa.
+u0087	Cuando quieras continuar, pulsa el conmutador o el botón.
+u0088	Continuar
+u0089	Volver a los juegos
+u0090	Este ordenador no puede mostrar los colores de esta actividad: hace falta WebGL 2. Las notas sí suenan.
+u0091	Este ordenador no puede mostrar las materias de esta actividad: hace falta WebGL 2. La música sí suena.
+u0092	Cada pulsación es un paso de la hoja: llueve color sobre el agua, se peina y, en el último paso, el papel se lleva la estampa.
+u0093	Una pulsación encaja una pieza del robot.
+u0094	Una pulsación hace crecer la flor.
+u0095	Pulsa para que la rana sople. Vuelve a pulsar para soltar la burbuja.
+u0096	Día
+u0097	Noche
+u0098	Una pulsación, un cambio
+u0099	20 estímulos · una pulsación, un patrón
+u0100	momentos al día · cada día diferente
+u0101	Juego en pausa.
+u0102	Podemos volver a intentarlo. La pista se conserva.
+u0104	El final de la atracción: todos lo celebran.
+u0105	Sale el lanzamiento.
+u0106	La tercera bombilla está encendida: ¡ahora!
+u0107	Se encienden las bombillas.
+u0108	Esperamos las bombillas.
+u0109	El último visitante sale y todos bailan en la calle.
+u0110	Se abre la puerta y sale un visitante.
+u0111	Llaman a la puerta.
+u0112	Esperamos a que llamen a la puerta.
+u0113	Preparado para una nueva pulsación.
+u0114	Una barca vuelve a puerto con los faroles encendidos.
+u0115	El agua brilla donde toca la luz.
+u0116	Sopla el viento.
+u0117	El viento se calma.
+u0118	Se hace de día.
+u0119	Llega la noche.
+u0123	una opción
+u0124	Presión detectada
+u0125	Liberación detectada
+u0126	Activación aceptada
+u0127	Pulsación demasiado breve
+u0128	Repetición ignorada
+u0129	Rebote ignorado
+u0130	Entrada bloqueada
+u0131	Esta entrada solo emite clics: desactiva el tiempo mínimo de presión
+u0132	Configuración de Pim Pam
+u0134	Cerrar
+u0135	Una experiencia a medida
+u0137	Cerrar la configuración
+u0138	Apartados
+u0139	Hecho
+u0140	Primer viaje en El viaje en globo
+u0141	Al azar
+u0142	El valle
+u0143	La costa
+u0144	La alta montaña
+u0145	El delta
+u0146	Las islas
+u0147	Estación del primer viaje
+u0148	Primavera
+u0149	Verano
+u0150	Otoño
+u0151	Invierno
+u0152	Después de cada aterrizaje cambian la ruta y la estación: en veinte viajes salen todas las combinaciones.
+u0153	Duración del día
+u0154	Corta: unos cuatro minutos
+u0155	Normal: unos seis minutos
+u0156	Larga: unos ocho minutos
+u0157	Si el globo vuela alto, el viento sopla más fuerte y el día pasa más deprisa.
+u0158	Rojo
+u0159	Rosado
+u0160	Granate
+u0161	Magenta
+u0162	Malva
+u0163	Morado
+u0164	Azul cielo
+u0165	Azul
+u0166	Azul marino
+u0167	Turquesa
+u0168	Verde
+u0169	Verde lima
+u0170	Amarillo
+u0171	Naranja
+u0172	Marrón
+u0173	Gris
+u0174	Color de la camisa en Hagamos castells
+u0175	Color de la camisa
+u0176	Movimiento de cámara en Gigantes del azul
+u0177	Con «Movimiento reducido», cada escena se ve quieta, en mitad del gesto del animal.
+u0179	El número de visitas es el de «Pasos de las construcciones e historias», en la pestaña «La experiencia».
+u0180	La plaza se muestra con colores planos y menos detalle.
+u0181	La estación se muestra con colores planos y cada puerta muestra un símbolo en lugar del paisaje.
+u0182	El templete se muestra con colores planos y menos detalle.
+u0183	La fábrica se muestra con colores planos y menos detalle.
+u0184	Los paisajes de papel conservan los colores y los bordes, pero sin las pinceladas.
+u0185	El paisaje se muestra con menos detalle.
+u0186	Fondo sencillo
+u0187	Hay menos detalle que mirar y el ordenador trabaja menos.
+u0188	Mientras se mantiene pulsado · termina al soltarlo
+u0189	Una pulsación empieza · la siguiente termina
+u0190	Efecto completo por pulsación
+u0191	Mientras pulso · termina al soltar
+u0192	Una pulsación inicia · la siguiente detiene
+u0193	Cómo responde al conmutador
+u0194	Las veinte escenas se reproducen en vídeo (1080p), con su música. Cada escena tiene su duración, siempre la misma: «Duración de los efectos» no se aplica. Esta actividad se ve siempre con el decorado completo.
+u0195	Momentos del día
+u0196	Ingredientes
+u0197	El niño o la niña los elige (tantas opciones como «Opciones de contenido»)
+u0198	Un ingrediente sorpresa en cada turno
+u0199	Con un ingrediente sorpresa, la primera pulsación pone un ingrediente mágico, la segunda una galleta de animal y la tercera, sobre el cucharón, hace que Glupòcrates la pruebe.
+u0200	Pista visual en el marco
+u0201	Pista visual en el medallón
+u0202	Muestra dentro del marco grande de arriba el instrumento que se busca. Si se desactiva, el marco solo muestra ondas y una nota.
+u0203	Muestra dentro del medallón de arriba el paisaje de donde viene el sonido. Si se desactiva, el medallón solo muestra ondas.
+u0205	Quién juega
+u0206	¿Cómo quieres hacer el barrido?
+u0207	Duración de los efectos
+u0208	Pasos de las construcciones e historias
+u0209	Hagamos castells hace siempre 7, un piso por pulsación: pinya con los baixos, segons, terços, quarts, dosos, aixecador y enxaneta.
+u0210	Los ajustes propios de una actividad (por ejemplo, la luz de El faro, el color de la camisa de Hagamos castells o el modo de Encajes de madera) están en el menú de configuración de dentro de cada actividad: abrid la actividad y pulsad ⚙. Se guardan igualmente en el usuario que juega.
+u0211	En el barrido, el marco se detiene durante la respuesta del juego. No hay tiempo límite para completar una actividad.
+u0212	Restablecer los ajustes iniciales
+u0213	Entrada del dispositivo
+u0214	Teclado · USB o Bluetooth que emulan teclas
+u0215	Ratón · adaptador que emula botones
+u0216	Gamepad · mando o adaptador compatible
+u0217	Los botones táctiles en pantalla siguen disponibles. Selecciona una sola vía del dispositivo para evitar entradas duplicadas.
+u0218	Tecla asignada
+u0219	Botón del mando (0–31)
+u0220	Botón del ratón
+u0221	· Pulsa para cambiar
+u0222	Botón Gamepad
+u0223	Prueba los conmutadores aquí
+u0224	Ninguna entrada de prueba hará avanzar el juego. Suelta el conmutador entre pulsaciones.
+u0225	Prueba táctil · 1
+u0226	Prueba táctil · 2
+u0227	El fondo
+u0228	El laboratorio de materia se ve siempre sobre negro: no tiene decorado atenuado ni sin decorado, ni color de base.
+u0229	La Lluvia de colores se ve siempre igual: el suelo negro, con sus luces. No tiene decorado atenuado ni sin decorado, ni color de base.
+u0230	Los viajes y las inmersiones se ven siempre con el decorado completo: no tienen decorado atenuado ni sin decorado.
+u0231	Decorado completo
+u0232	Decorado atenuado
+u0233	Sin decorado
+u0234	Visibilidad del decorado ·
+u0235	Negro
+u0236	Blanco
+u0237	Escucha una muestra
+u0238	Perfil exportado.
+u0239	El archivo es demasiado grande o no es válido.
+u0240	No es un perfil compatible de Pim Pam.
+u0241	Perfil importado. Comprueba los conmutadores en este equipo.
+u0242	Rosa
+u0243	Resaltado del foco
+u0244	Marco del foco
+u0245	El marco que se va dibujando muestra el tiempo que queda en cada opción en el barrido automático. El marco entero se ve completo desde el principio. Con dos conmutadores el marco siempre es entero. Sin marco, el foco se marca solo con la capa de color.
+u0246	Capa de color
+u0247	Color del resaltado
+u0248	Muestra
+u0249	Barrido y tipo de actividad
+u0250	Opciones de contenido
+u0251	Algunas categorías tienen tres alternativas. El jardín conserva cuatro parcelas.
+u0252	Inicio del barrido
+u0253	Automático al entrar
+u0254	Primera pulsación para empezar
+u0255	Sentido del recorrido
+u0256	Adelante
+u0257	Atrás
+u0258	Regreso después de una elección diferente
+u0259	Primera opción
+u0260	Opción que se había elegido
+u0261	Tiempo extra en la primera opción (ms)
+u0262	Vueltas antes de esperar una pulsación
+u0263	Sin límite
+u0264	Muestra de sonido en el foco (tableros a pantalla completa)
+u0265	El sonido de cada opción
+u0266	Un clic de madera suave
+u0267	Ningún sonido
+u0268	Cuando una opción de un tablero a pantalla completa tiene el foco (una puerta, un instrumento, un paisaje, un color o una música de los fuegos), suena una muestra breve de su sonido (de 1 a 1,4 s), que se corta cuando el foco avanza. Con la locución activada, la voz la sustituye.
+u0269	Espera después de la locución (ms)
+u0270	Pim Pam · Desarrollo 0.71
+u0271	Estas notas de versión solo están en catalán.
+u0272	44 actividades: 33 de causa-efecto y 11 de barrido, y la carpeta «Actividades personalizadas».
+u0274	Actividad personalizada
+u0276	Usuarios de este dispositivo
+u0280	¿Quién juega?
+u0281	Sin hacer nada, se juega como invitado. Un usuario solo tiene un nombre, sin contraseña, y guarda en este dispositivo sus ajustes, los favoritos, sus actividades personalizadas y el registro de lo que juega.
+u0282	Usuario nuevo
+u0283	Nombre
+u0284	Crearlo y entrar
+u0285	Empieza con los ajustes de quien juega ahora
+u0287	En este dispositivo
+u0288	Al abrir Pim Pam, entra como el último usuario
+u0289	Si no, Pim Pam se abre siempre como invitado.
+u0290	Importar usuarios
+u0291	Exportarlos todos
+u0292	Por ejemplo: Martina
+u0293	Escribid el nombre del nuevo usuario.
+u0294	Preparando la exportación…
+u0295	actividad personalizada
+u0296	actividades personalizadas
+u0301	No hay suficiente espacio en el dispositivo.
+u0303	El archivo no tenía ningún usuario.
+u0308	Nuevo nombre del usuario:
+u0309	Registro de actividad
+u0311	sesión
+u0312	pulsación
+u0315	Todavía no hay nada en el registro. Cada actividad que se abre con este usuario añade una línea al salir de ella.
+u0316	Exportarlo (CSV)
+u0317	Borrar el registro
+u0321	No se ha podido cargar el idioma.
+u0326	Pulsa la nueva tecla… · Esc para cancelar
+u0327	Ajustes iniciales restablecidos.
+u0332	Mando desconectado. Vuelve a conectarlo antes de continuar.
+u0340	Aplicación
+u0343	Primeras versiones de algunas actividades
+u0346	Sonidos y voces generados
+u0347	ElevenLabs (efectos de sonido y voces)
+u0349	Instrumentos grabados
+u0352	Arroyo (naturaleza)
+u0353	«Brook sound», de TwoWings
+u0354	Wikimedia Commons · CC BY 3.0 · fragmento convertido en bucle, en mono y con el volumen ajustado
+u0355	Toque de castells
+u0357	Gráficos 3D de «El taller de vehículos»
+u0360	Qué es Pim Pam
+u0361	Pim Pam es una colección de actividades para jugar con uno o dos conmutadores. Está pensado para aprender a usar conmutadores: cada pulsación tiene una respuesta clara, visual y sonora, y dentro de las actividades no hay ningún texto que leer.
+u0362	pequeñas películas, que avanzan una secuencia en cada pulsación. Las actividades se agrupan en carpetas, y en «Actividades personalizadas» se pueden hacer otras nuevas con fotos, vídeos y sonidos propios.
+u0363	Los conmutadores pueden llegar como teclas, como botones del ratón o de un mando de juego, y también se puede tocar la pantalla. En «Configuración» se ajustan el modo de uno o dos conmutadores, el tiempo y el aspecto del barrido, el sonido, el decorado y la señal que indica cuándo se puede volver a pulsar. Los ajustes se pueden guardar para cada usuario.
+u0364	Pim Pam funciona dentro del navegador y se puede usar gratuitamente en línea. Los sonidos y las imágenes están en la propia aplicación: no se piden datos personales y lo que se guarda queda en este dispositivo.
+u0365	Origen e instituciones
+u0366	Pim Pam se ha creado desde la Unitat de Tècniques Augmentatives de Comunicació (UTAC), utilizando herramientas de inteligencia artificial.
+u0367	La UTAC es un equipo de la Universidad de Barcelona y de la Fundació Bosch i Gimpera. Concreta su actividad a partir de dos servicios de la Generalitat de Catalunya: UTAC Educació, del Departamento de Educación y Formación Profesional, y UTAC Sírius, del Departamento de Derechos Sociales e Inclusión.
+u0368	Cerrar la información
+u0369	Herramientas y recursos
+u0370	Créditos y licencias
+u0371	La mayor parte de los efectos de sonido, de los ambientes de naturaleza y de los animales, y algunos instrumentos (kalimba, udu, vibráfono, tambor y guitarra), se han generado con ElevenLabs. No son grabaciones reales: se han recortado, igualado de volumen y, algunos, convertido en bucles. Los dibujos, las animaciones y la música de las actividades se generan con el código de la aplicación, y los vídeos de los viajes son grabaciones de esas mismas escenas. Los vídeos de las pequeñas películas se han generado con Seedance 2.5, de ByteDance. Las imágenes y los sonidos de las actividades que empezaron con ChatGPT son los de los archivos que entregó esa herramienta.
+u0373	Novedades de esta versión
+u0374	Fondo marino de cristal
+u0375	Un descenso por el mar, de la superficie al fondo del abismo, entre criaturas de cristal, seda y luz. En cada pulsación la cámara viaja hasta las criaturas siguientes: una flota de velas azules, medusas luna, un banco de plata, cinturones de Venus, salpas, ángeles de mar, un sifonóforo, el calamar vampiro, pirosomas, esponjas de cristal, pulpos dumbo… Cada escena tiene su movimiento, sus colores y su música de instrumentos acústicos reales. Cuando termina, la escena se detiene y se oscurece hasta la pulsación siguiente. Después de la vigésima escena, la cámara vuelve a subir hasta la superficie.
+u0376	Selva de luz
+u0377	Un descenso por la selva tropical americana, del cielo del alba al lecho del río de noche. En cada pulsación la cámara viaja hasta los animales siguientes: guacamayos, tucanes, colibríes, un perezoso, mariposas morfo, tamarinos, la rana de ojos rojos, ranas punta de flecha, hormigas cortadoras, setas que brillan, luciérnagas, capibaras, la victoria amazónica, el delfín rosado, rayas y el arapaima. Cada escena tiene su movimiento, su luz y su música de instrumentos acústicos reales con sonidos de la selva. Cuando termina, la escena se detiene y se oscurece hasta la pulsación siguiente. Después de la vigésima escena, la cámara vuelve a subir hasta el cielo.
+u0378	Sabana de papel
+u0379	Un día en la sabana de África oriental, hecho de papel recortado como un diorama: del alba en el Kilimanjaro a la noche estrellada. En cada pulsación la cámara viaja hasta los animales siguientes: flamencos, grullas coronadas, jirafas, elefantes, cebras, impalas, facóqueros, ñus que cruzan el río, hipopótamos, martines pescadores, rinocerontes, un termitero por dentro, mangostas, tejedores, guepardos, leones al atardecer, el baobab con murciélagos, el escarabajo pelotero y el cerdo hormiguero. Cada escena tiene su movimiento, su hora del día y su música propia de kalimba, tambor de mano y sonajero, con los sonidos de la sabana. Cuando termina, la escena se detiene y se oscurece hasta la pulsación siguiente. Después de la vigésima escena, la cámara vuelve a subir hasta el cielo estrellado, a punto de otra alba.
+u0380	Gigantes del azul
+u0381	Una travesía por los océanos del mundo, del Ártico al océano Austral. En cada pulsación la cámara viaja por el agua hasta un gran animal marino que entra nadando, hace su gesto más espectacular y se va: los narvales en el hielo, las belugas, la ballena de Groenlandia que rompe el hielo, el tiburón peregrino, las yubartas y su red de burbujas, un banco de atunes, los cachalotes que duermen de pie, el rorcual común, el pez luna, los delfines en la proa de un velero, el salto de la yubarta, los tiburones martillo, el pez remo, los delfines acróbatas, el tiburón ballena, las mantas, el dugongo, la ballena franca con su cría, las orcas y la ballena azul. Cada escena tiene su luz, sus sonidos y su música de instrumentos acústicos. Cuando termina, la escena se detiene y se oscurece hasta la pulsación siguiente. Después de la vigésima escena, la cámara sube con la ballena azul hasta la superficie, a la puesta de sol.
+u0382	El pozo del tiempo
+u0383	Un viaje por el tiempo a través de las capas de roca: de la Edad de Hielo a los primeros dinosaurios. En cada pulsación la cámara baja por la roca hasta un fósil que se despierta y se viste de vida: mamuts, esmilodontes, el rinoceronte lanudo y el ciervo gigante, el megaterio, tiranosaurios, triceratops, el anquilosaurio, el abditosaurio del Pirineo, el velociraptor, el citipati en el nido, parasaurolophus, el pteranodon y el plesiosaurio, el espinosaurio, el yutyrannus, iguanodontes, el arqueóptérix, el estegosaurio, el braquiosaurio y el diplodocus, los ictiosaurios y el eoraptor. Cada escena es una pequeña historia con su luz, sus sonidos y su música de instrumentos acústicos. Cuando termina, la escena se detiene y se oscurece hasta la pulsación siguiente. Después de la vigésima escena, la cámara vuelve a subir hasta el jardín de hoy, donde canta un petirrojo.
+u0384	Día tras día
+u0385	Cada pulsación hace avanzar el día en un pueblo de papel: alba, mañana, mediodía, tarde, puesta de sol, anochecer, noche y madrugada. En cada momento pasa una cosa diferente, y cada día es diferente del anterior.
+u0386	El cielo de las constelaciones
+u0387	Un cielo de noche sobre un paisaje. Cada pulsación enciende una estrella grande, la une con un hilo de luz a la anterior y hace pasar algo en el paisaje. En la última, las estrellas dibujan una figura que se llena de color, cruza el cielo y se deshace en estrellas fugaces.
+u0388	La orquesta que despierta
+u0389	Hagamos castells
+u0390	Fiesta de globos
+u0391	Una plaza de fiesta mayor cosida con fieltro. Cada pulsación hace subir un globo hasta el cielo, y cada globo canta una nota de la canción de la ronda. En la última, cuando el cielo está lleno, todos los globos se elevan juntos mientras suena la canción entera. Los globos no estallan nunca. Cada ronda cambia la plaza, la hora, los colores y la forma de los globos y la canción.
+u0392	El faro
+u0393	Un mar de noche grabado en madera. La luz del faro barre el agua poco a poco. Si se pulsa cuando la luz toca una barca, la barca enciende los faroles y el faro la guía hasta el puerto, donde la recibe una pequeña banda. Si se pulsa en otro momento, el agua brilla y la luz continúa. Cada tres barcas cambia la noche. En los ajustes se elige la velocidad de la luz, cuánto tiempo hay para acertar y cuántas barcas hay.
+u0394	El viento del bosque
+u0395	El mago desastroso
+u0396	Un teatrillo pintado y un mago de dibujos animados. Cada pulsación es un truco que sale mal de una manera diferente: el pañuelo que no se acaba nunca, la flor que salpica, la varita que se anuda, el sombrero de plumas, la baraja que salta y el mantel. Lo que cae se queda en el escenario. En la última, el mago entra en el armario mágico, sale de un sombrero gigante, todo el desorden desaparece y hace una reverencia. Cada ronda cambia el orden de los trucos y los colores del teatro.
+u0397	¡Toc, toc! ¿Quién es?
+u0398	Una casa en una calle de cómic. Al cabo de un rato alguien llama a la puerta: la puerta tiembla y se ve luz por debajo. Cuando pulsas, la puerta se abre y sale un visitante que hace algo divertido: el gigante que casi no cabe, el cabezudo atascado, la banda que no se acaba nunca, el muñeco de nieve, el astronauta, el cocinero y la bailarina. Si pulsas antes de que llamen, no pasa nada. En la última visita, todos bailan en la calle. En los ajustes se elige cuánto tiempo se espera antes de que llamen y si el visitante se va cuando nadie abre.
+u0399	La feria de hojalata
+u0400	Una feria de juguetes de hojalata estampada. Encima del puesto hay tres bombillas grandes que se encienden de una en una con tres notas que suben: cuando se enciende la tercera, es el momento de pulsar. Entonces sale el lanzamiento: la jugadora de bolos catalanes, el hombre bala del cañón, el cohete de cuerda, el forzudo que hace sonar la campana o la carrera de caballitos, y cada lanzamiento acaba con una sorpresa diferente y una medalla colgada en el puesto. Si se pulsa antes de tiempo no pasa nada. Después de 3, 5 o 7 lanzamientos llega el final de la atracción y el puesto gira hacia la siguiente. Cinco atracciones con cuatro luces del día: veinte rondas.
+u0401	El camarero equilibrista
+u0402	Un libro ilustrado de los años sesenta pintado con gouache. Un camarero sostiene una bandeja con una sola mano. En cada pulsación se abre la puerta de la cocina y sale volando algo que cae encima de la pila: platos, una taza, un pastel, una tetera, una sandía o una bandeja de fruta. La pila se balancea cada vez más y el camarero hace equilibrios cada vez más grandes. En la última llega una gelatina, el camarero está muy orgulloso de ella y un pequeño contratiempo (un estornudo, una piel de plátano o el hipo) lo hace caer todo a cámara lenta: no se rompe nada, cada cosa cae en un lugar seguro y la gelatina le queda en la cabeza. Cada ronda cambia el orden, el personaje, el lugar y el contratiempo.
+u0403	03 · Paso a paso
+u0404	02 · Transformar
+u0405	04 · En el momento
+u0406	2, 4 u 8 momentos · cada día diferente
+u0407	3, 5 o 7 pasos
+u0408	20 composiciones · en secuencia
+u0409	7 pulsaciones · un piso cada vez
+u0410	20 escenas · de la superficie al abismo
+u0411	20 escenas · de las copas al lecho del río
+u0412	20 escenas · del alba a la noche
+u0413	20 escenas · del Ártico al océano Austral
+u0414	20 escenas · de la Edad de Hielo a los primeros dinosaurios
+u0415	3, 5 o 7 pasos · 20 rondas diferentes
+u0416	Pulsa cuando la luz toca la barca · 20 noches
+u0417	Espera a que llamen y pulsa · 7 visitantes
+u0418	Espera la tercera bombilla y pulsa · 5 atracciones
+u0419	3, 5 o 7 pasos · 20 funciones diferentes
+u0420	Mantén pulsado · 8 lugares a lo largo del año
+u0421	Caleidoscopio
+u0422	Patrones de luz y color sobre negro que nacen del centro, se transforman y se desvanecen.
+u0423	Vidrieras
+u0424	Vidrieras de colores que se encienden pieza a pieza con la luz que atraviesa el cristal, y música de danza antigua.
+u0425	Naturaleza
+u0426	Formas de la naturaleza hechas de papel recortado que se colocan pieza a pieza, con música de instrumentos acústicos reales y sonidos de naturaleza.
+u0427	Piromusical
+u0428	Castillos de fuegos de colores que se abren al ritmo de una banda de música de fiesta, con estallidos suaves.
+u0429	Dibujos que bailan
+u0430	En cada pulsación aparece un dibujo grande de una sola línea gruesa sobre negro: un tranvía, un tambor, una bailarina, un tren, una tuba… Se dibuja solo, baila sobre sí mismo con su música de instrumentos acústicos reales y se detiene. Los ajustes permiten elegir el color de la línea, una velocidad lenta y que el dibujo no se desplace.
+u0431	Juguetes que bailan
+u0432	En cada pulsación aparece un juguete grande de una sola línea gruesa sobre negro: una caja sorpresa, una pelota, un caballito, un robot, una peonza, un títere, un yoyó… Se dibuja solo, baila sobre sí mismo con su música de instrumentos acústicos reales y se detiene. Tiene los mismos ajustes que Dibujos que bailan: el color de la línea, una velocidad lenta y que el juguete no se desplace.
+u0433	La cocina que baila
+u0434	En cada pulsación aparece una cosa de la cocina grande de una sola línea gruesa sobre negro: una tetera, una tostadora, un flan, unas palomitas, una hamburguesa, un pizzero, una castañera… Se dibuja sola, baila sobre sí misma con su música de instrumentos acústicos reales y se detiene. Tiene los mismos ajustes que Dibujos que bailan: el color de la línea, una velocidad lenta y que el dibujo no se desplace.
+u0435	cosas de cocina
+u0436	¿Adónde vamos?
+u0437	Elige una puerta de la estación: el mar, el bosque, la nieve o el espacio. El tren viaja hasta un descubrimiento.
+u0438	El vestidor fantástico
+u0439	Combina sombrero, ropa y accesorio sobre el mismo personaje.
+u0440	El taller de vehículos
+u0441	Monta un vehículo de juguete en tres dimensiones: carrocería, ruedas y accesorio. Cuando está listo, baja la rampa y da una vuelta por la habitación.
+u0442	Detectives de sonidos
+u0443	Escucha la pista y encuentra qué instrumento del templete la ha tocado. Hasta veinte instrumentos reales grabados.
+u0444	Encajes de madera
+u0445	¿De dónde viene este sonido?
+u0446	Escucha un sonido de la naturaleza y encuentra el paisaje de donde viene.
+u0447	Mi espectáculo de luz
+u0448	Elige el color, la forma y la música de los fuegos y mira el espectáculo dibujado con tiza.
+u0449	La cazuela de Glupócrates
+u0450	Elige un ingrediente mágico y una galleta de animal para la sopa de Glupócrates, y mira en qué criatura de la mitología griega se convierte cuando la prueba. La misma receta da siempre la misma criatura.
+u0451	Una fábrica de juguetes con una máquina y un robot ayudante. Elige una cosa (una tetera, un reloj o una tostadora) y después qué le añadimos (un muelle, unos patines o un paraguas): la máquina se lo traga, tiembla y sale un invento imposible que hace su gracia. Nueve inventos diferentes.
+u0452	Pinta el mundo
+u0453	06 · Grupos
+u0454	Modelo y selección
+u0455	Explorar grupos
+u0456	Todas las elecciones son buenas
+u0457	Mar
+u0458	Nieve
+u0459	Sombrero
+u0460	Gorra
+u0461	Corona
+u0462	Capa
+u0463	Chaleco
+u0464	Pañuelo
+u0465	Gafas
+u0466	Lazo
+u0467	Mochila
+u0468	Empieza
+u0469	Escucha
+u0470	Pulsa para empezar el barrido.
+u0471	Puedes repetirlo, cambiarlo o empezar otra ronda.
+u0472	¿Qué pintamos?
+u0473	¿Quién nos hará reír?
+u0474	¿Qué sombrero quieres?
+u0475	¿Cómo lo vestimos?
+u0476	¿Qué accesorio le ponemos?
+u0477	¿Qué carrocería le ponemos?
+u0478	¿Qué ruedas le ponemos?
+u0479	¿De qué color lo pintamos?
+u0480	¿Qué le ponemos?
+u0481	Escucha la pista y encuentra el instrumento.
+u0482	¿Qué pieza pones?
+u0483	¿Qué pieza va aquí?
+u0484	¿De qué color serán los fuegos?
+u0485	¿Qué forma tendrán?
+u0486	¿Qué música le ponemos?
+u0487	¿Qué magia le ponemos?
+u0488	¿Qué animal le ponemos?
+u0489	¡Que Glupócrates pruebe la sopa!
+u0490	Elige a tu ritmo.
+u0491	Un bocado en Barcelona
+u0492	10 secuencias · una por pulsación
+u0493	Comunicar en todas partes siempre
+u0494	11 secuencias · una por pulsación
+u0495	Mi perfil
+u0496	El perfil no es válido.
+u0497	Valor no válido:
+u0498	Opción no válida:
+u0499	Asignación no válida:
+u0500	Tecla no admitida.
+u0501	Cada conmutador necesita una asignación diferente.
+u0502	Nombre no válido.
+u0503	Usuario
+u0504	Invitado
+u0506	Barrido
+u0507	Causa-efecto
+u0508	El archivo no tiene ningún usuario válido.
+u0509	No hay ningún usuario para exportar.
+u0510	Este archivo es una exportación de actividades personalizadas: importadlo desde la carpeta «Actividades personalizadas».
+u0511	El archivo no tiene ningún usuario.
+u0512	Álbum de sorpresas
+u0513	Cada pulsación, una foto o un vídeo
+u0514	Cada pulsación trae la foto o el vídeo siguiente, con una entrada diferente y su música o su sonido.
+u0515	Descubre paso a paso
+u0516	Las piezas de papel se apartan
+u0517	¿Quién se esconde?
+u0518	Esperar y pulsar cuando llaman
+u0519	Detrás del telón hay alguien. Cuando llaman y el telón se mueve, una pulsación lo abre y aparece la foto o el vídeo.
+u0520	Vídeo poco a poco
+u0521	El vídeo avanza en cada pulsación
+u0522	Cada pulsación hace avanzar el vídeo un trozo. En cada pausa el vídeo se detiene y la pantalla se oscurece hasta la pulsación siguiente. Las pausas llegan cada pocos segundos o en los momentos que marquéis.
+u0523	Elige y mira
+u0524	Barrido: elegir una foto
+u0525	Barrido con 2, 3 o 4 fotos o vídeos en la pantalla. Lo que se elige se abre a pantalla completa y suena.
+u0526	04 · Elegir
+u0527	Escucha y encuentra
+u0528	Barrido: ¿de dónde viene el sonido?
+u0529	Suena un sonido (una voz, una canción, un ruido) y hay que encontrar la foto o el vídeo que le corresponde. Cada elemento necesita su sonido.
+u0530	05 · Relacionar
+u0532	Para
+u0533	1 o 2 conmutadores
+u0534	Hay que elegir una mecánica.
+u0535	Hay que añadir como mínimo una foto o un vídeo.
+u0536	Hay que añadir como mínimo
+u0537	fotos o vídeos.
+u0538	En «Escucha y encuentra» cada foto necesita su sonido (un vídeo puede usar su propio sonido).
+u0539	Falta el archivo de la música de la actividad (o elegid otra opción de música).
+u0540	En «Vídeo poco a poco» solo puede haber vídeos: quitad las fotos o elegid otra mecánica.
+u0541	El vídeo avanza.
+u0542	Se ha acabado el vídeo. Pulsa para volver a empezar.
+u0543	Pulsa para empezar el vídeo.
+u0544	El vídeo espera la pulsación siguiente.
+u0545	Llaman detrás del telón.
+u0546	Se abre el telón.
+u0547	Esperamos a que llamen.
+u0548	Ya se ve entero.
+u0549	Paso
+u0550	Elemento
+u0551	No se han podido cargar los vídeos de esta película. Abrid Pim Pam desde la web, o poned la carpeta «videos» al lado del archivo.
+u0552	Secuencia
+u0553	Pulsa para empezar la película.
+u0554	Cargando la película…
+u0555	Se ha acabado la película. Pulsa para volver a empezar.
+u0556	Cargando la secuencia siguiente…
+u0557	Se ha acabado la secuencia
+u0558	Pulsa para continuar.
+u0559	Cada pulsación muestra una secuencia de la película. Cuando termina, la imagen se detiene y se oscurece hasta la pulsación siguiente.
+u0560	Cada pulsación hace avanzar el vídeo hasta la pausa siguiente.
+u0561	Espera a que llamen detrás del telón y pulsa para abrirlo.
+u0562	Cada pulsación aparta unas cuantas piezas de papel.
+u0563	Pulsa para ver la foto o el vídeo siguiente.
+u0564	Pausas (minutos:segundos, separadas por comas)
+u0565	Vídeo
+u0566	Foto
+u0567	Aquí solo pueden ir vídeos.
+u0568	Quitar el sonido
+u0569	♪ Añadir un sonido
+u0570	Subir
+u0571	Bajar
+u0572	Quitarlo
+u0573	Las fotos, los vídeos y la música se guardan solo en este dispositivo. Para llevar la actividad a otro equipo, exportadla.
+u0574	Nombre de la actividad
+u0575	Para quién es (opcional)
+u0576	Cómo se juega
+u0577	Cerrar sin guardar
+u0578	Por ejemplo: Mi familia
+u0579	Nombre del niño o la niña
+u0580	Mecánica
+u0581	Fotos y vídeos
+u0582	de 40
+u0583	Cancelar
+u0584	Guardar
+u0585	Las pausas
+u0586	Dónde se detiene el vídeo
+u0587	Escribid los momentos en cada vídeo, o abridlo y pulsad «Pausa en este momento» donde queráis que se detenga. Al final de cada vídeo siempre se detiene.
+u0588	1 min
+u0589	Oscurecimiento en cada pausa
+u0590	Cómo se muestran
+u0591	Encaje del vídeo
+u0592	Música de la actividad
+u0593	Cambiar la canción
+u0594	Elegir la canción
+u0595	Solo sonarán los sonidos propios de cada elemento y el sonido de los vídeos.
+u0596	Las fotos sin sonido propio suenan con arpa, marimba, kalimba y violonchelos de Pim Pam.
+u0597	Encaje de las fotos
+u0598	Orden
+u0599	Duración máxima de los vídeos
+u0600	Una foto se ve el tiempo de «Duración del efecto» de la configuración, o todo lo que dura su sonido. El número de pasos de «Descubre paso a paso» está en la configuración, y el tiempo de espera de «¿Quién se esconde?», en el menú de configuración de dentro de la actividad.
+u0602	Sin ninguna pausa marcada, se ve entero de una pulsación.
+u0603	Preparando
+u0604	Como máximo puede haber 40 fotos o vídeos.
+u0605	No hay suficiente espacio en el dispositivo para guardar este archivo.
+u0607	Mi actividad
+u0608	Actividad creada. Se guarda solo en este dispositivo.
+u0609	Cambios guardados.
+u0610	No se ha podido guardar:
+u0613	Actividad borrada.
+u0614	Todavía no hay ninguna actividad para exportar.
+u0615	Importando…
+u0616	Estas actividades ya estaban.
+u0617	El archivo no tenía actividades.
+u0618	No hay suficiente espacio en el dispositivo para importarlas.
+u0619	No se ha podido importar:
+u0622	Haced correr el vídeo hasta el momento de la pausa y volved a pulsar.
+u0623	La base de datos está abierta en otra pestaña.
+u0624	No se ha podido guardar: quizá no hay suficiente espacio.
+u0629	No se ha podido preparar la imagen.
+u0643	La exportación pasa de 3,9 GB: exportad las actividades una por una.
+u0644	El archivo no es una exportación de Pim Pam.
+u0645	El archivo está dañado.
+u0646	Este .zip está comprimido: solo se pueden importar los archivos exportados desde Pim Pam.
+u0661	No es una exportación compatible de Pim Pam.
+u0662	Este archivo es una exportación de usuarios: importadlo desde «Usuarios», arriba del menú.
+u0663	Falta un archivo dentro de la exportación.
+u0664	Actividad
+u0666	neón y argón
+u0667	xenón
+u0669	01 · Descubrir
+u0670	Laboratorio de materia
+u0671	Ocho materias simuladas con las leyes de la física aparecen sobre negro, crecen hasta llenar la pantalla y se van: pompas de jabón, plasma, agua, humo, una lámpara de lava, ferrofluido, aceite y agua y una nebulosa, cada una con su música.
+u0672	8 materias · una música para cada una
+u0673	Pompas de jabón
+u0674	pompas iridiscentes
+u0675	Plasma
+u0676	descargas eléctricas entre puntos de luz
+u0677	Esferas de agua
+u0678	bolas de agua con tinta de colores
+u0679	Anillos de humo
+u0680	anillos de humo de colores
+u0681	Lámpara de lava
+u0682	burbujas de cera de colores
+u0683	Ferrofluido
+u0684	púas de un líquido magnético
+u0685	Aceite y agua
+u0686	dedos de agua de colores dentro del aceite
+u0687	Nebulosa
+u0688	burbujas de gas encendido alrededor de estrellas nuevas
+u0696	Mientras la materia sale, las pulsaciones no hacen nada.
+u0698	Pluma
+u0699	Ajo
+u0700	Pan
+u0701	Caballo
+u0702	León
+u0703	Pájaro
+u0704	Serpiente
+u0705	Perro
+u0706	Toro
+u0707	Pegaso
+u0708	El grifo
+u0709	El fénix
+u0710	El dragón de las manzanas de oro
+u0711	Cerbero
+u0712	La hidra
+u0713	La quimera
+u0714	El minotauro
+u0715	El centauro
+u0716	Medusa
+u0717	La sirena
+u0718	Cucharón
+u0720	La nariz de payasa
+u0721	La lupa traviesa
+u0722	El bigote estornudador
+u0723	La pompa de chicle
+u0724	Un ataque de hipo
+u0725	El sombrero que se cae
+u0726	La gran traca de colores
+u0727	Montemos el robot
+u0728	Pieza a pieza
+u0729	Un robot con muchas ganas de ponerse de pie.
+u0730	Construir
+u0731	La fábrica de los disparates
+u0732	Tú eliges qué pasa
+u0733	Mezcla dos ideas e inventa una cosa imposible.
+u0734	Elegir
+u0735	La flor musical
+u0736	Un jardín con mucho ritmo
+u0737	Haz crecer a Flora. ¡El abejorro quiere entrar en el concierto!
+u0738	Crecer y escuchar
+u0739	La rana burbujera
+u0740	¡Pulsa, sopla… y suelta!
+u0741	Siete travesuras con pompas gigantes de colores.
+u0742	Mantener y soltar
+u0743	Una tetera
+u0744	Un reloj
+u0745	Una tostadora
+u0746	Un muelle
+u0747	Unos patines
+u0748	Un paraguas
+u0749	El dúo del abejorro
+u0750	El estornudo musical
+u0751	La nota traviesa
+u0752	Hagamos una pausa. Pulsa para continuar.
+u0753	¡Ahora sí… ya tenemos robot!
+u0754	¡Una pieza más!
+u0755	¿Lo volvemos a montar?
+u0756	Pulsa para añadir una pieza.
+u0757	Una última reverencia… ¡y volvemos a ser semilla!
+u0758	Flora crece un poco más…
+u0759	Pulsa para el siguiente concierto.
+u0760	Pulsa para ayudarla a crecer.
+u0761	¡Fin del concierto! Pulsa para hacer crecer una nueva Flora.
+u0762	Pulsa y despierta la semilla.
+u0763	La pompa crece… ¡suelta para hacerla volar!
+u0764	Eh… ¡todavía quedaba una!
+u0765	¡Fin de la función! Pulsa y vuelve a soplar.
+u0766	Mantén pulsado para soplar. Suelta para jugar.
+u0767	¡Adentro!
+u0768	¡Mira lo que has inventado!
+u0769	Y ahora, ¿qué le añadimos?
+u0770	¿Qué ponemos en la máquina?
+u0774	No se ha podido cargar
+u0775	Las piezas de un robot esparcidas por una habitación de juguetes. Cada pulsación encaja una pieza (las botas, las piernas, el cuerpo, los brazos y la cabeza). En la última el robot se pone de pie, tropieza y lo celebra. En la ronda siguiente se vuelve a montar.
+u0776	3, 5 o 7 piezas
+u0777	Una semilla en una maceta, en un jardín mediterráneo. Cada pulsación hace crecer a Flora un poco más. Cuando se abre del todo, canta un concierto y un abejorro quiere participar: un dúo, un estornudo musical o una nota traviesa. Después de tres conciertos, la flor vuelve a ser semilla.
+u0778	3, 5 o 7 pasos · 3 conciertos
+u0779	7 travesuras · mantener y soltar
+u0780	El robot ya está montado.
+u0781	Una pieza más.
+u0782	piezas.
+u0783	La flor crece.
+u0784	pasos.
+u0785	La pompa crece.
+u0786	Sopla una pompa.
+u0787	Tetera
+u0788	Reloj
+u0789	Tostadora
+u0790	Muelle
+u0791	Patines
+u0792	Paraguas
+u0793	Gotas de pintura
+u0794	Llueve color sobre una cubeta de agua y se hace papel marmolado: veinte hojas de cinco talleres, con música de instrumentos reales.
+u0795	20 hojas marmoladas · 5 talleres
+u0796	El papel se lleva el estampado de la hoja
+u0797	y se cuelga en el tendedero.
+u0798	Llueven gotas de color sobre el agua.
+u0799	Llueven gotas de otro color.
+u0800	Gotas de otro color caen dentro de las primeras y hacen anillos.
+u0801	Más anillos, de otro color.
+u0802	Una lluvia fina salpica todo el baño.
+u0803	Otra lluvia fina.
+u0804	El punzón y el peine dibujan la hoja
+u0805	Un segundo gesto acaba el dibujo.
+u0806	El punzón dibuja una flor.
+u0807	Alba
+u0808	Mañana
+u0809	Mediodía
+u0810	Tarde
+u0811	Puesta de sol
+u0812	Anochecer
+u0813	Madrugada
+u0814	la niebla se levanta del río
+u0815	un globo aerostático despega
+u0816	nubes rosadas sobre las colinas
+u0817	la escarcha brilla en los tejados
+u0818	ropa tendida de colores
+u0819	banderines de fiesta en la calle
+u0820	empieza a llover
+u0821	empieza a nevar
+u0822	los árboles florecen
+u0823	puestos de mercado en el prado
+u0824	la lluvia para y sale el arcoíris
+u0825	un muñeco de nieve en la plaza
+u0826	cometas de papel al viento
+u0827	el pasacalles con banderas y cintas
+u0828	las hojas vuelan por todas partes
+u0829	el río se hiela
+u0830	las flores se cierran
+u0831	se encienden las guirnaldas
+u0832	el cielo se enciende de rojo
+u0833	la nieve se vuelve rosa
+u0834	luciérnagas en el prado
+u0835	concierto de banda en la plaza
+u0836	los charcos reflejan las farolas
+u0837	luces de colores en las ventanas
+u0838	una estrella fugaz
+u0839	un pequeño castillo de fuegos
+u0840	la luna sale entre nubes
+u0841	las estrellas brillan sobre la nieve
+u0842	el rocío cubre el prado
+u0843	se apagan las últimas bombillas
+u0844	niebla baja en el río
+u0845	vuelve a nevar, muy flojito
+u0846	una bandada de pájaros cruza el cielo
+u0847	pasa una avioneta con una cinta de colores
+u0848	mariposas en el prado
+u0849	pompas de jabón sobre el pueblo
+u0850	nubes doradas en la puesta de sol
+u0851	se encienden farolillos de colores en la calle
+u0852	una lluvia de estrellas
+u0853	sale una luna llena muy grande
+u0854	el horno del pueblo se enciende
+u0855	bolas de nieve vuelan por el prado
+u0856	trineos de colores bajan por la colina
+u0857	barcos de papel en el estanque
+u0858	los caracoles salen después de la lluvia
+u0859	sale el sol y se apagan las farolas
+u0860	se abren las ventanas y sale humo de las chimeneas
+u0861	el campanario toca mediodía
+u0862	pasa el tren por el viaducto
+u0863	el sol se pone y los pájaros vuelven
+u0864	se encienden las ventanas y sale la primera estrella
+u0865	la luna cruza el cielo
+u0866	se apagan las ventanas y amanece
+u0867	· día
+u0868	del día
+u0870	El puerto
+u0871	El circo
+u0872	La ciudad
+u0873	El bosque
+u0874	El espacio
+u0875	Atardecer
+u0876	La entrada
+u0877	El número de las luces
+u0878	Lluvia de confeti
+u0879	Gran final
+u0880	Mercado de la mañana
+u0881	Lluvia
+u0882	Fiesta mayor
+u0883	La Luna
+u0884	Los planetas
+u0885	Lluvia de estrellas
+u0886	Salida de la Tierra
+u0887	Barca
+u0888	Gaviota
+u0889	Pescadora
+u0890	Pulpo
+u0891	Cangrejo
+u0892	Equilibrista
+u0893	Malabarista
+u0894	Payasa
+u0895	Acróbata
+u0896	Tranvía
+u0897	Bombera
+u0898	Panadero
+u0899	Gato
+u0900	Niña
+u0901	Ardilla
+u0902	Búho
+u0903	Ciervo
+u0904	Erizo
+u0905	Zorro
+u0906	Cohete
+u0907	Astronauta
+u0908	Planeta
+u0909	Extraterrestre
+u0910	Cometa
+u0911	El prado
+u0912	mañana de verano
+u0913	El estanque
+u0914	El jardín de noche
+u0915	El invernadero
+u0916	lluvia cálida
+u0917	Amapola
+u0919	Nenúfar blanco
+u0921	Dedalera
+u0923	Orquídea
+u0925	Margarita
+u0927	Girasol
+u0929	Aciano
+u0931	Loto
+u0933	Lirio amarillo
+u0935	Cala
+u0937	Ciclamen
+u0939	Violeta
+u0941	Peonía
+u0943	Flor de luna
+u0945	Azucena
+u0947	Camelia
+u0949	Jazmín
+u0951	Hibisco
+u0953	Pasiflora
+u0955	Ave del paraíso
+u0957	Flor de papel
+u0958	Flores reales de papel que se abren sobre el negro y tiñen el entorno de sus colores, con música y sonidos de naturaleza.
+u0959	20 flores reales · 5 jardines
+u0960	Se abre la flor:
+u0961	Un capullo espera:
+u0962	El jardín se pliega y llega otro.
+u0963	Se abre
+u0964	La flota de velas azules
+u0965	Medusa luna
+u0966	El banco de plata
+u0967	Cinturones de Venus
+u0968	Cadenas de salpas
+u0969	Ángeles de mar
+u0970	Medusa huevo frito
+u0971	Ctenóforos irisados
+u0972	Calamar de cristal
+u0973	Pulpo de cristal
+u0974	El sifonóforo
+u0975	El palacio del larváceo
+u0976	El velo de seda
+u0977	Atolla, la sirena azul
+u0978	Calamar vampiro
+u0979	Pirosomas
+u0980	Peces linterna
+u0981	Jardín de esponjas de cristal
+u0982	Plumas de mar y lirios
+u0983	Pulpos dumbo
+u0984	Los narvales
+u0985	Las belugas
+u0986	La ballena de Groenlandia
+u0987	El tiburón peregrino
+u0988	Las yubartas y la red de burbujas
+u0989	Los atunes rojos
+u0990	Los cachalotes
+u0991	El rorcual común
+u0992	El pez luna
+u0993	Los delfines y el velero
+u0994	El salto de la yubarta
+u0995	Los tiburones martillo
+u0996	El pez remo
+u0997	Los delfines acróbatas
+u0998	El tiburón ballena
+u0999	Las mantas
+u1000	El dugongo
+u1001	La ballena franca y su cría
+u1002	Las orcas
+u1003	La ballena azul
+u1005	Oro
+u1006	Palmera
+u1007	Flor
+u1008	Espiral
+u1009	Cascada
+u1010	Arpa
+u1011	Banda
+u1012	Marimba
+u1013	Cuerdas
+u1026	Mandala que respira
+u1027	ocho coronas de pétalos que se abren desde el centro, giran en sentidos opuestos y respiran
+u1028	Girasol de puntos
+u1029	puntos colocados con el ángulo de oro que crecen en espiral hacia fuera, con olas de luz
+u1030	Caleidoscopio de cristal
+u1031	fragmentos translúcidos reflejados en simetría de seis que se desplazan poco a poco entre los espejos
+u1032	Hilo de luz
+u1033	figuras de Lissajous de luz recorridas por tres impulsos que cambian de forma en cada acontecimiento
+u1034	Metabolas
+u1035	gotas luminosas que brotan de una masa central, se estiran, se separan y se vuelven a unir
+u1036	Rosa matemática
+u1037	tres curvas de rosa de 3, 5 y 7 pétalos que se dibujan pétalo a pétalo
+u1038	Constelación de hilos
+u1039	hilos de luz entre puntos de un círculo que se transforman en cardioide, nefroide y figuras de más puntas
+u1040	Corriente de aurora
+u1041	cintas de luz que giran alrededor del centro y ondulan como una aurora
+u1042	Espirógrafo
+u1043	tres curvas de espirógrafo que se dibujan con cinco plumas a la vez y entran una detrás de otra
+u1044	Copo cristalino
+u1045	un cristal hexagonal que crece rama a rama
+u1046	Galaxia
+u1047	brazos espirales de estrellas alrededor de un núcleo cálido, con estrellas que se encienden suavemente
+u1048	Mosaico de abeja
+u1049	celdas hexagonales que se encienden en dos oleadas desde el centro
+u1050	Cinta infinita
+u1051	tres cintas en forma de ocho, torcidas como una banda de Möbius
+u1052	Flor de círculos
+u1053	círculos que aparecen uno a uno y se entrelazan hasta formar una flor geométrica
+u1054	Ondas que se encuentran
+u1055	Árbol de luz
+u1056	ramas de luz que crecen nivel a nivel y florecen en dos oleadas
+u1057	Túnel suave
+u1058	polígonos suaves que nacen en el centro y se alejan girando, nunca más de cinco a la vez
+u1059	Lluvia de confeti radial
+u1060	estallidos de confeti que salen del centro, se detienen y forman anillos
+u1061	Medusa de seda
+u1062	una forma radial de seda que se contrae suavemente mientras los filamentos ondean
+u1063	Supernova tranquila
+u1064	tres estallidos suaves que dejan anillos de todos los colores alrededor de una luz estable
+u1066	Barcelona
+u1067	el taller de encuadernación
+u1068	Turco
+u1069	Piedras grandes y pequeñas y, entre ellas, vetas finas de otro color: el patrón europeo más antiguo.
+u1070	Español
+u1071	Piedras de dos colores atravesadas por ondas finas en diagonal.
+u1072	Peinado
+u1073	Franjas verticales que el punzón hace ir y venir y un peine fino peina.
+u1074	Cola de pavo real
+u1075	Un damero de dos colores peinado que acaba en plumas de pavo real.
+u1076	Estambul
+u1077	el taller de ebru
+u1078	Piedras con borde
+u1079	Piedras de tres colores con borde oscuro y un trazo libre del punzón en forma de ese.
+u1080	Ida y vuelta
+u1081	Filas de gotas en diagonal que el punzón atraviesa arriba y abajo.
+u1082	Cadena de corazones
+u1083	Una hilera de dianas de colores: un solo trazo del punzón las convierte en corazones.
+u1084	Tulipán
+u1085	Un marco de piedras alrededor y un tulipán grande dibujado en medio.
+u1086	Kioto
+u1087	el taller de suminagashi
+u1088	Anillos
+u1089	Anillos de tinta y de agua alrededor de pocos centros, movidos por un abanico.
+u1090	Abanico
+u1091	Tres centros de anillos de dos colores que un soplo de viento ondula como una tela.
+u1092	Ondulación
+u1093	Centros en diagonal y el punzón que pasa poco a poco haciendo ondas.
+u1094	Rueda
+u1095	Un solo centro grande con anillos de tres colores, y el punzón que le da vueltas, cada vez en sentido contrario.
+u1096	París
+u1097	el taller de la claraboya
+u1098	Caracol francés
+u1099	Filas encabalgadas de gotas de tres colores, un peine fino y, encima, pequeños caracoles alineados.
+u1100	Ramo
+u1101	Filas onduladas de gotas, un peinado fino y un peine ancho que hace ramos.
+u1102	Estrella
+u1103	Una diana enorme de colores y el punzón que traza rayos del centro hacia fuera y de fuera hacia el centro.
+u1104	Una corona de gotas alrededor del centro y una rosa grande dibujada con el punzón.
+u1105	Núremberg
+u1106	el taller del impresor
+u1107	Holandés antiguo
+u1108	Filas de gotas de colores alternos, el punzón que va y viene, un peine y otro de través.
+u1109	Zigzag
+u1110	Franjas de cuatro colores que el punzón, de un lado a otro, convierte en zigzags.
+u1111	Gotas en espiral desde el centro y el punzón que les da vueltas hasta que todo gira.
+u1112	Remolino
+u1113	Dos dianas de colores y tres remolinos que se las llevan.
+u1120	La abuela Pepa
+u1121	El abuelo Tomàs
+u1122	Nina
+u1123	Pol
+u1124	La cabra Nata
+u1125	Verano en la masía
+u1126	las semillas llegan siguiendo el ángulo de oro y dos coronas de pétalos se abren alrededor
+u1127	Espiral de nautilo
+u1128	las cámaras de una espiral de oro se colocan una detrás de otra, del centro hacia fuera
+u1129	Copo de nieve
+u1130	un copo de nieve de papel se abre brazo a brazo y se le ponen las ramas y los cristales
+u1131	Helecho
+u1132	Diente de león
+u1133	una esfera de semillas se abre desde el centro y algunas semillas echan a volar
+u1134	Panal
+u1135	las celdas de cera aparecen anillo a anillo y se llenan de miel y de polen de colores
+u1136	Romanesco
+u1137	flores en forma de cono crecen en espirales de Fibonacci que se iluminan por familias
+u1138	Rodajas de cítricos
+u1139	rodajas de naranja, limón, lima y pomelo se colocan y giran poco a poco
+u1140	Nervios de una hoja
+u1141	una hoja grande se coloca y los nervios crecen desde el peciolo hasta la punta
+u1142	Árbol en flor
+u1143	un árbol crece rama a rama, dividiéndose en dos, y florece en cada punta
+u1144	Gotas en el estanque
+u1145	Dunas al atardecer
+u1146	franjas de cielo, un sol que se levanta y olas de dunas de papel rasgado
+u1147	Rama de almendro
+u1148	las flores se abren una detrás de otra a lo largo de una rama y algunos pétalos caen
+u1149	Dalia
+u1150	coronas de pétalos puntiagudos se abren de fuera hacia dentro, cada una de un color
+u1151	Cactus en flor
+u1152	trece costillas, hileras de areolas y una corona de flores en el centro
+u1153	Burbujas de espuma
+u1154	pompas de jabón se agrupan en una espuma, con bordes irisados
+u1155	Geoda de cristales
+u1156	franjas de ágata se cierran hacia el hueco y en él crecen cristales
+u1157	Anillos de un tronco
+u1158	los anillos de crecimiento aparecen del corazón hacia fuera, cada año de un color
+u1159	Ola
+u1160	una gran ola se levanta y se enrolla en tres franjas de azul, con espuma en la cresta
+u1161	Jardín mandala
+u1162	coronas de hojas, pétalos, semillas y flores se colocan del centro hacia fuera
+u1165	Manta de zafiro
+u1166	Pulpo de ópalo
+u1167	Caballito de ámbar
+u1168	Tortuga de esmeralda
+u1169	Dragón de mar
+u1170	Nautilo de nácar
+u1171	Calamar de rubí
+u1172	Estrella de coral
+u1173	Sepia de amatista
+u1174	Pez linterna
+u1175	Ballena de cristal
+u1176	Pez mariposa
+u1177	Nudibranquio de seda
+u1178	Anémona de perlas
+u1179	Estrella de plumas
+u1180	Ctenóforo irisado
+u1181	Ángel de mar
+u1182	Gamba de cristal
+u1183	La corriente de plata
+u1184	Arroyo
+u1185	Playa
+u1186	Bosque
+u1187	Prado
+u1188	Estanque
+u1189	Jardín
+u1190	Cumbre
+u1191	Fondo
+u1192	Cueva
+u1193	plaza
+u1194	jardín
+u1195	Filamentos vivos
+u1196	cinco abanicos que se separan y vuelven al centro
+u1197	Espiral de nácar
+u1198	una doble espiral que se desenrolla
+u1199	Nudo de seda
+u1200	lazos entrelazados que se deforman suavemente
+u1201	Órbitas de cristal
+u1202	anillos inclinados con perlas orbitales
+u1203	Olas de marea
+u1204	bandas horizontales que se abren en olas
+u1205	Rosetón de tinta
+u1206	una corola geométrica de siete lóbulos
+u1207	Cristales hexagonales
+u1208	una red de celdas que se expande desde el centro
+u1209	Abanico de seda
+u1210	un abanico asimétrico que se abre y se pliega
+u1211	Dos remolinos
+u1212	dos vórtices que se acercan y se alejan
+u1213	Cintas trenzadas
+u1214	tres cintas que se cruzan como una trenza
+u1215	Estrella de nieve
+u1216	seis brazos ramificados que crecen por etapas
+u1217	Nautilo de luz
+u1218	cámaras curvas que despliegan una concha
+u1219	Telar circular
+u1220	un volumen anular tejido con hilos que giran
+u1221	Mandala angular
+u1222	capas de triángulos y cuadrados que se abren en contrapunto
+u1223	Mar de rombos
+u1224	una malla ondulada de rombos que respira
+u1225	Anillos de agua
+u1226	círculos que nacen sucesivamente y se funden
+u1227	Alas de tinta
+u1228	dos abanicos bilaterales que baten suavemente
+u1229	Árbol de coral
+u1230	ramas geométricas que crecen desde abajo
+u1231	Cometas de seda
+u1232	cuatro estelas que recorren un camino cuadrilobulado
+u1233	Caleidoscopio
+u1234	seis sectores de motivos triangulares que se despliegan
+u1235	Loto de pliegues
+u1236	Margarita de abanico
+u1237	Rosa en espiral
+u1238	Dalia estrellada
+u1239	Iris de tres alas
+u1240	Orquídea de seda
+u1241	Amapola de papel
+u1242	Girasol de pliegues
+u1243	Magnolia de porcelana
+u1244	Nenúfar de cristal
+u1245	Camelia de volantes
+u1246	Crisantemo de cintas
+u1247	Hibisco de cinco pliegues
+u1248	Campanillas de papel
+u1249	Tulipán desplegable
+u1250	Estrella de cinco pétalos
+u1251	Pasiflora de hilos
+u1252	Anémona de terciopelo
+u1253	Zinnia de mosaicos
+u1254	Esfera de semillas
+u1255	el cielo
+u1256	las montañas
+u1257	el río
+u1258	el bosque
+u1259	el pueblo
+u1260	los campos
+u1261	el faro
+u1262	el mar
+u1263	los pinos
+u1264	la playa
+u1265	las cumbres
+u1266	el torrente
+u1267	los abetos
+u1268	los prados
+u1269	La ciudad junto al mar
+u1270	las colinas
+u1271	el puerto
+u1272	el parque
+u1273	los tejados
+u1274	el paseo
+u1275	El lago y los volcanes
+u1276	los volcanes
+u1277	el lago
+u1278	el hayedo
+u1279	Danza de primavera
+u1280	Tarde de verano
+u1281	Vals de otoño
+u1282	Nieve de invierno
+u1283	Palmeras de luz
+u1284	palmeras de luz se abren en abanico y caen, las minas responden desde el suelo y un gran sauce cierra el espectáculo
+u1285	Peonías de colores
+u1286	peonías redondas de todos los colores se abren de izquierda a derecha, y al final una peonía doble con un anillo
+u1287	Crisantemos
+u1288	crisantemos de colas largas con estrellas que cambian de color mientras caen
+u1289	Sauces de colores
+u1290	sauces de todos los colores con colas de oro cuelgan del cielo, y coronas que chisporrotean
+u1291	Planetas y anillos
+u1292	anillos de todas las inclinaciones, planetas con su anillo y dos anillos cruzados
+u1293	Corazones y estrellas
+u1294	fuegos que dibujan corazones, estrellas, flores y tréboles en el cielo
+u1295	Cascada de luz
+u1296	una cortina de luz que cae se abre desde el centro, con peonías y anillos encima y una cortina de oro debajo
+u1297	Ruedas de fuego
+u1298	ruedas de fuego giran poco a poco sobre el pueblo y lanzan chispas de tres colores
+u1299	Fuentes que bailan
+u1300	siete fuentes se encienden del centro hacia fuera y suben y bajan como agua que baila
+u1301	Velas romanas
+u1302	cuatro velas romanas disparan bolas de colores en abanico que acaban en pequeños estallidos de estrellas
+u1303	Crucetas
+u1304	crucetas que parten las estrellas en cuatro, y dos cometas que cruzan el cielo
+u1305	Arcoíris
+u1306	Pececillos de luz
+u1307	sobre un lago, fuegos con estrellas que nadan como pececillos y se reflejan en el agua
+u1308	Dalias
+u1309	dalias de estrellas grandes que cambian de color, con pistilos y purpurina
+u1310	Ramo de flores
+u1311	cometas verdes suben como tallos y se abren en flores hasta que el cielo es un ramo
+u1312	Lluvia de estrellas
+u1313	brocados y coronas hacen caer sobre el pueblo una lluvia lenta de estrellas que chisporrotean
+u1314	Espirales
+u1315	fuegos con estrellas que salen por brazos curvados y giran poco a poco, sobre una rueda
+u1316	Minas y cometas
+u1317	conos de estrellas salen del suelo y cometas cruzan el cielo y se abren en estrellas
+u1318	Reflejos en el lago
+u1319	peonías, sauces y anillos sobre un lago que los refleja
+u1320	todo a la vez, cada vez más: fuentes, palmeras, anillos, crucetas, crisantemos, brocados, estrellas y una gran corona de oro
+u1321	Lluvia de colores
+u1322	Gotas de colores que caen sobre un suelo negro y líquido: cada gota es una nota, y el color se esparce y se mezcla hasta que llena la pantalla.
+u1323	10 escenas · una nota en cada gota
+u1324	El color se diluye hasta que el suelo vuelve a ser negro.
+u1325	Cada pulsación hace caer gotas de colores sobre el suelo negro, y cada gota suena cuando toca el suelo. Cuando la pantalla está llena, el color se diluye y empieza una escena nueva, con otra melodía.
+u1327	Primera luz
+u1328	magenta, naranja, cian y amarillo, los colores del primer dibujo
+u1329	Mar adentro
+u1330	azules y turquesas de mar profundo, con espuma blanca
+u1331	Jardín de noche
+u1332	violetas, verdes oscuros y el amarillo pálido de la luna
+u1333	Fuego lento
+u1334	naranjas, ámbares, dorados y rosas de brasa
+u1335	Lluvia de verano
+u1336	verdes de hoja, azul de cielo y amarillo de limón
+u1337	Aurora
+u1338	verdes de aurora, turquesas, violetas y magentas
+u1339	Caramelo
+u1340	colores de caramelo: rosa, menta, limón, lila y melocotón
+u1341	Tormenta suave
+u1342	azules eléctricos, platas y violetas de tormenta, con un rayo amarillo pálido
+u1343	Frutas
+u1344	fresa, uva, naranja, arándano, limón y kiwi
+u1345	Polvo de estrellas
+u1346	oro, plata, azul de noche y violeta, con chispas blancas
+u1347	Los mamuts lanudos
+u1348	Los esmilodontes
+u1349	El rinoceronte lanudo y el ciervo gigante
+u1350	El megaterio y el gliptodonte
+u1351	Los tiranosaurios
+u1352	Los triceratops
+u1353	El anquilosaurio
+u1354	El abditosaurio del Pirineo
+u1355	El velociraptor
+u1356	El citipati y el nido
+u1357	Los parasaurolophus
+u1358	El pteranodon y el plesiosaurio
+u1359	El espinosaurio
+u1360	El yutyrannus y el sinosauropteryx
+u1361	Los iguanodontes
+u1362	El arqueópterix
+u1363	El estegosaurio
+u1364	El braquiosaurio y el diplodocus
+u1365	Los ictiosaurios
+u1366	El eoraptor
+u1367	El Kilimanjaro al alba
+u1368	Los flamencos
+u1369	Las grullas coronadas
+u1370	Las jirafas de la acacia
+u1371	Los elefantes en la charca
+u1372	Las cebras
+u1373	Los impalas
+u1374	Los facóqueros
+u1375	El río de los ñus
+u1376	Los hipopótamos
+u1377	Los martines pescadores
+u1378	Los rinocerontes y los picabueyes
+u1379	El termitero por dentro
+u1380	Las mangostas y los cálaos
+u1381	Los tejedores
+u1382	Los guepardos
+u1383	Los leones en la puesta de sol
+u1384	El baobab
+u1385	Los escarabajos peloteros
+u1386	El cerdo hormiguero
+u1396	El río entre la niebla
+u1397	Los guacamayos
+u1398	Los tucanes
+u1399	Colibríes en las heliconias
+u1400	El perezoso
+u1401	Morfos y mariposas de cristal
+u1402	Tamarinos emperador
+u1403	La rana de ojos rojos
+u1404	La telaraña de rocío
+u1405	Ranas de cristal
+u1406	Ranas punta de flecha
+u1407	Hormigas cortadoras
+u1408	Setas que brillan
+u1409	Luciérnagas
+u1410	Capibaras
+u1411	Victoria amazónica
+u1412	Tetras neón
+u1413	El delfín rosado
+u1414	Las rayas
+u1415	El arapaima
+u1416	El violín
+u1417	Violín
+u1418	El arpa
+u1419	La flauta
+u1420	Flauta
+u1421	La trompeta
+u1422	Trompeta
+u1423	La marimba
+u1424	El glockenspiel
+u1425	Glockenspiel
+u1426	El timbal
+u1427	Timbal
+u1428	El triángulo
+u1429	Triángulo
+u1430	El piano
+u1431	Piano
+u1432	La guitarra
+u1433	Guitarra
+u1434	El violonchelo
+u1435	Violonchelo
+u1436	El clarinete
+u1437	Clarinete
+u1438	El trombón
+u1439	Trombón
+u1440	La pandereta
+u1441	Pandereta
+u1442	El contrabajo
+u1443	Contrabajo
+u1444	El oboe
+u1445	Oboe
+u1446	El fagot
+u1447	Fagot
+u1448	La trompa
+u1449	Trompa
+u1450	La tuba
+u1451	Tuba
+u1452	El gong
+u1453	Gong
+u1457	La habitación
+u1458	La sala
+u1459	El patio
+u1460	El pasillo
+u1461	El baño
+u1462	Coche
+u1463	Autobús
+u1464	Furgoneta
+u1465	Bólido
+u1466	Tacos
+u1467	Finas
+u1468	Madera
+u1469	Maleta
+u1470	Remolque
+u1471	Bandera
+u1472	Camioneta
+u1473	Escarabajo
+u1474	Anchas
+u1475	Radios
+u1476	Tapacubos
+u1477	Sirena
+u1478	Escalera
+u1479	Globo
+u1480	Bomberos
+u1481	Ambulancia
+u1482	Plataforma
+u1483	Jeep
+u1484	Policía
+u1485	Furgón
+u1486	Gemelas
+u1487	Orugas
+u1488	Balones
+u1489	Hierro
+u1490	Grúa
+u1491	Cañón
+u1492	Campana
+u1493	Manguera
+u1494	Coral
+u1495	Lila
+u1496	Volquete
+u1497	Excavadora
+u1498	Buldócer
+u1499	Apisonadora
+u1500	Carretilla
+u1501	Tractor
+u1502	Rodillos
+u1503	Grandes
+u1504	Macizas
+u1505	Gigantes
+u1506	Pala
+u1507	Caja
+u1508	Tambor
+u1509	Conos
+u1510	Locomotora
+u1511	Vagón
+u1512	Mercancías
+u1513	Maniobras
+u1514	Cola
+u1515	Pestaña
+u1516	Bielas
+u1517	Vagoneta
+u1518	Faldones
+u1519	Chimenea
+u1520	Silbato
+u1521	Farol
+u1522	Troncos
+u1523	Hidroavión
+u1524	Submarino
+u1525	Helicóptero
+u1526	Avioneta
+u1527	Barco
+u1528	Flotadores
+u1529	Palas
+u1530	Salvavidas
+u1531	Boyas
+u1532	Hélice
+u1533	Periscopio
+u1534	Ancla
+u1535	Burbujas
+u1536	Coche familiar
+u1537	Furgoneta de reparto
+u1538	Coche de carreras
+u1539	Ruedas de tacos
+u1540	Ruedas finas de carreras
+u1541	Ruedas de madera
+u1542	Baca con maleta
+u1543	Remolque de bloques
+u1544	Banderín
+u1545	Camioneta de caja abierta
+u1546	Coche escarabajo
+u1547	Ruedas anchas de goma
+u1548	Ruedas de radios
+u1549	Ruedas con tapacubos
+u1550	Luz giratoria
+u1551	Escalera de bomberos
+u1552	Globo atado
+u1553	Camión de bomberos
+u1554	Camión plataforma
+u1555	Todoterreno de rescate
+u1556	Coche de policía
+u1557	Furgón de rescate
+u1558	Ruedas gemelas de camión
+u1559	Ruedas de globo
+u1560	Ruedas de hierro
+u1561	Brazo de grúa
+u1562	Cañón de agua
+u1563	Manguera enrollada
+u1564	Camión volquete
+u1565	Buldócer con pala frontal
+u1566	Carretilla elevadora
+u1567	Rodillos de apisonadora
+u1568	Ruedas grandes traseras
+u1569	Ruedas macizas
+u1570	Ruedas gigantes de tacos
+u1571	Brazo con pala
+u1572	Caja basculante
+u1573	Tambor de hormigonera
+u1574	Conos de señalización
+u1575	Locomotora de vapor
+u1576	Vagón de pasajeros
+u1577	Vagón de mercancías
+u1578	Máquina de maniobras
+u1579	Furgón de cola
+u1580	Ruedas de tren con pestaña
+u1581	Ruedas con bielas
+u1582	Ruedas de vagoneta
+u1583	Ruedas con faldones de tranvía
+u1584	Chimenea de vapor
+u1585	Silbato de vapor
+u1586	Farol de tren
+u1587	Carga de troncos
+u1588	Barca de pesca
+u1589	Barco de ruedas
+u1590	Ruedas de palas
+u1591	Máquina de pompas
+u1592	Almendros en flor
+u1593	Prado de dientes de león
+u1594	Azotea con ropa tendida
+u1595	Campo de trigo con amapolas
+u1596	Playa con cometas
+u1597	Viña en la vendimia
+u1598	Hayedo
+u1599	Bosque nevado
+u1600	El viaje en globo
+u1601	20 viajes · mantener pulsado
+u1602	El alba
+u1603	La mañana
+u1604	El mediodía
+u1605	La tarde
+u1606	La puesta de sol
+u1607	El anochecer
+u1608	La noche
+u1609	La madrugada
+u1610	El globo baja a aterrizar en el prado.
+u1611	Han aterrizado. Los esperaban con farolillos.
+u1612	Empieza un nuevo viaje.
+u1617	Rosetón gótico
+u1618	Sol del Palau
+u1619	un sol dorado de cristal entre anillos de gotas azules, con ondas de luz que salen del centro
+u1620	Mosaico de colores
+u1621	una cuadrícula de cristales irregulares que cambian de color en oleadas diagonales
+u1622	Composición
+u1623	líneas de plomo que crecen y dividen la vidriera en campos de rojo, amarillo y azul
+u1624	Estrella de ocho puntas
+u1625	un rosetón de estrella de ocho puntas con colores que circulan por los anillos
+u1626	Flores de Tiffany
+u1627	tres flores de cristal opalescente que se abren una detrás de otra sobre un prado de cristal claro
+u1628	Abanico de sol
+u1629	un sol que se abre como un abanico y se enciende franja a franja
+u1630	Tres lancetas
+u1631	tres ventanas góticas de rombos donde la luz sube, coronadas por un medallón que gira
+u1632	Trencadís
+u1633	trozos de cristal que llegan de todas partes y forman una espiral de color
+u1634	Columnas de luz
+u1635	dos ventanas altas de celdas de cristal con colores que fluyen de fríos a cálidos
+u1636	Medallones
+u1637	nueve medallones redondos que aparecen en espiral y giran suavemente
+u1638	Culos de botella
+u1639	cristales redondos dentro de una colmena de cristal de colores, atravesados por oleadas de luz
+u1640	un arco de colores que se pinta franja a franja sobre un cielo con un sol que se levanta
+u1641	Hojas de luz
+u1642	tres paneles donde crecen hojas grandes de cristal de colores que se balancean
+u1643	Rosa de los vientos
+u1644	una rosa de los vientos de dieciséis puntas que crecen del centro y gira poco a poco
+u1645	Entrelazado
+u1646	un nudo y un anillo de cintas de cristal que pasan una por encima y por debajo de la otra
+u1647	Luz proyectada
+u1648	una ventana que se enciende y proyecta sus colores en el suelo
+u1649	Paisaje de cristal
+u1650	colinas, un río y un prado de cristal que aparecen mientras sale el sol
+u1651	Olas de cristal
+u1652	Gran rosetón de fiesta
+u1653	un rosetón de dieciséis pétalos que se construye capa a capa y acaba con una oleada de luz
+u1654	Un pequeño Pim. Un gran Pam. · UTAC
+u1655	Barrido automático
+u1656	Barrido paso a paso
+u1657	Detén
+u1658	Activa
+u1659	Carpeta aparte
+u1660	En el dispositivo
+u1661	Carpeta
+u1662	Crea la primera actividad
+u1663	Quita
+u1664	Desactiva
+u1665	Cada gesto cuenta
+u1666	1 conmutador · automático
+u1667	2 conmutadores · paso a paso
+u1668	Conmutador
+u1669	Avanza
+u1670	Elige
+u1671	¡Pim!
+u1672	Conmutador 1
+u1673	Conmutador para avanzar
+u1674	Conmutador para elegir
+u1675	Espera a que acabe cada elemento antes de volver a pulsar.
+u1676	Puedes volver a pulsar para pasar al siguiente.
+u1677	Espera a que acabe cada paso antes de volver a pulsar.
+u1678	Puedes volver a pulsar antes de que acabe un paso: el siguiente empieza enseguida.
+u1679	Cada pulsación abre una flor nueva.
+u1680	Espera a que la flor se abra del todo antes de volver a pulsar.
+u1681	Puedes volver a pulsar mientras se abre: la flor acaba de abrirse de golpe.
+u1682	Pulsa para que el quemador se encienda y el globo suba. Vuelve a pulsar para que se apague.
+u1683	Mantén pulsado: el quemador se enciende y el globo sube. Suelta y baja poco a poco.
+u1684	Espera a que acabe el efecto antes de volver a pulsar.
+u1685	Puedes volver a pulsar para empezar el siguiente efecto.
+u1686	Pulsa para elegir la opción que tiene el marco.
+u1687	Conmutador 1: elige. Conmutador 2: avanza.
+u1688	Conmutador 1: avanza. Conmutador 2: elige.
+u1689	Pulsa para que sople el viento. Vuelve a pulsar para que se calme.
+u1690	Mantén pulsado: cuanto más rato, más fuerte sopla el viento.
+u1691	Una pulsación hace avanzar un paso.
+u1692	Pulsa para cambiar entre día y noche.
+u1693	Mantén el conmutador pulsado para continuar.
+u1694	Pulsa para iniciar. Vuelve a pulsar para detener.
+u1695	Pulsa para descubrir un nuevo efecto.
+u1696	Pulsa y despliega la flor.
+u1697	Pulsa para dar un hachazo.
+u1698	Aceptado
+u1699	Pulsado
+u1700	En reposo
+u1701	Detectado
+u1702	No son dibujos sino simulaciones: el movimiento sale de las leyes de la física, pero el tamaño, la velocidad y los colores se han elegido para que se vean bien.
+u1703	Son dibujos: algunos colores y gestos son una interpretación artística.
+u1704	en este dispositivo (invitado)
+u1705	Esta actividad
+u1706	La experiencia
+u1707	Conmutadores
+u1708	Imagen y sonido
+u1709	Gotas de cada pulsación
+u1710	Una gota: una nota
+u1711	Una frase corta: de cuatro a seis gotas
+u1712	Una frase larga: la frase y su eco, más agudo
+u1713	Cada gota es una nota, y ninguna nota suena sin su gota.
+u1714	Pulsaciones para llenar la pantalla
+u1715	Seis
+u1716	Diez
+u1717	Dieciséis
+u1718	Después de la última, el color acaba de llenar la pantalla, se diluye hasta el negro y empieza una escena nueva.
+u1719	Vista
+u1720	En perspectiva: el suelo se aleja
+u1721	Desde arriba: el suelo plano, entero
+u1722	Movimiento del líquido
+u1723	Quieto: el color solo se mueve cuando cae una gota
+u1724	Lento: una corriente muy suave
+u1725	Vivo: más remolinos
+u1726	Primera escena
+u1727	Pulsaciones de cada materia
+u1728	Cuatro
+u1729	Ocho
+u1730	Doce
+u1731	Las primeras hacen entrar la materia por un borde, las del medio la hacen crecer, la penúltima llena la pantalla y la última la hace salir. Después viene la materia siguiente.
+u1732	Primera materia
+u1733	Pasos de cada hoja
+u1734	Tres: lluvia, gesto y estampa
+u1735	Cinco: lluvia, segundo color, lluvia fina, gesto y estampa
+u1736	Siete: los cinco, un segundo gesto y una flor
+u1737	El último paso siempre es la estampa: el papel se lleva el dibujo y se cuelga en el tendedero.
+u1738	Gestos
+u1739	Solo gotas: anillos y lluvias de colores, sin peines
+u1740	Gotas y peines: el punzón y el peine dibujan el patrón de la hoja
+u1741	Completo, con flores: también una flor hecha con el punzón
+u1742	Tamaño de las gotas
+u1743	Grandes: pocas gotas que llenan el baño
+u1744	Medianas
+u1745	Pequeñas: muchas gotas
+u1746	Cada gota toca el agua sobre una nota de la música.
+u1747	Colores
+u1748	Los colores de cada taller
+u1749	Primer taller
+u1750	Barcelona: el taller de encuadernación
+u1751	Estambul: el taller de ebru
+u1752	Kioto: el taller de suminagashi
+u1753	París: el taller de la claraboya
+u1754	Núremberg: el taller del impresor
+u1755	Tendedero
+u1756	Las hojas acabadas se cuelgan arriba de la pantalla durante la sesión.
+u1757	Cómo se abren las flores
+u1758	Jardín que crece: las flores se quedan abiertas y en la quinta pulsación se enciende todo el jardín
+u1759	Una flor cada vez: una flor grande en cada pulsación, y la anterior se pliega
+u1760	Flores de cada jardín
+u1761	Cuatro (cinco pulsaciones por jardín)
+u1762	Tres (cuatro pulsaciones)
+u1763	Dos (tres pulsaciones)
+u1764	Solo en el jardín que crece. Todo el jardín se enciende en la pulsación que viene después de la última flor.
+u1765	Duración de la apertura
+u1766	Corta: 6 segundos
+u1767	Media: 9 segundos
+u1768	Larga: 13 segundos
+u1769	El capullo se despierta, los pétalos se abren y la luz se esparce. Con «Espera a que acabe cada efecto», las pulsaciones de ese rato no hacen nada.
+u1770	Primer jardín
+u1771	El prado: amapola, margarita, girasol, aciano
+u1772	El estanque: nenúfar, loto, lirio amarillo, cala
+u1773	El bosque: dedalera, ciclamen, violeta, peonía
+u1774	El jardín de noche: dondiego de noche, azucena, camelia, jazmín
+u1775	El invernadero: orquídea, hibisco, pasiflora, ave del paraíso
+u1776	Color en el entorno
+u1777	Suave
+u1778	Medio
+u1779	Intenso
+u1780	Cuánta luz de color esparce cada flor abierta sobre el fondo. Sin decorado, la luz solo rodea la flor.
+u1781	Pequeños visitantes
+u1782	Una abeja, una mariposa, una rana… llegan cuando la flor está abierta. Son pequeños y se mueven despacio.
+u1783	Sonidos de la naturaleza
+u1784	El prado, el estanque, el bosque, la noche y la lluvia del invernadero suenan bajo la música.
+u1785	Modo
+u1786	Encaja: un hueco marcado, solo entra su pieza
+u1787	Libre: ningún hueco marcado, cada pieza va a su hueco
+u1788	Encaja es emparejar con una muestra: el hueco iluminado. Libre no tiene elecciones malas, para quien aún aprende el barrido.
+u1789	Pista en el hueco
+u1790	Imagen: el dibujo de la figura, suave, dentro del hueco
+u1791	Silueta: solo la forma del hueco
+u1792	Parecido de las piezas
+u1793	Diferentes: piezas de formas distintas de la que va
+u1794	Parecidas: piezas de forma parecida (dos figuras de pie, dos anchas…)
+u1795	Ayuda después de
+u1796	Nunca
+u1797	2 piezas que no van
+u1798	3 piezas que no van
+u1799	La pieza que va se balancea suavemente en la bandeja hasta que se coloca.
+u1800	Ritmo
+u1801	Normal
+u1802	Calmado: todo un 28 % más despacio (el vuelo, las historias, la fiesta y la música)
+u1803	Luz en el hueco marcado
+u1804	El hueco de la ronda se ilumina con una luz cálida que respira despacio. Sin la luz, el hueco se distingue solo por la pista.
+u1805	Elecciones por vehículo
+u1806	2: la carrocería y las ruedas
+u1807	3: la carrocería, las ruedas y el accesorio
+u1808	4: y el color
+u1809	Piezas en la bandeja
+u1810	Dos
+u1811	Tres
+u1812	Esta actividad tiene su propio número de piezas y no sigue «Opciones de contenido».
+u1813	Primer rincón
+u1814	Quién elige
+u1815	El alumno, con el barrido
+u1816	Sorpresa: cada pulsación pone una pieza al azar
+u1817	Sorpresa es para quien aún no hace barrido: el vehículo se monta igualmente y sale a pasear.
+u1818	Arrancar
+u1819	Con una pulsación (si no llega, sale solo al cabo de 8 s)
+u1820	Automático: sale solo cuando está montado
+u1821	Duración del recorrido
+u1822	Corto (8 s)
+u1823	Medio (14 s)
+u1824	Largo (20 s)
+u1825	Cámara
+u1826	Dinámica: tres planos desde la habitación que siguen el vehículo
+u1827	Tranquila: un solo plano de toda la habitación
+u1828	Calidad del dibujo
+u1829	Automática
+u1830	Alta
+u1831	Media
+u1832	Automática empieza alta y baja si el aparato va justo.
+u1833	Garaje
+u1834	Al acabar el recorrido, el vehículo aparca en el garaje. Sin garaje, vuelve al taller enseguida.
+u1835	Un color diferente en cada ronda
+u1836	Completo: travellings, zooms y seguimiento de los animales
+u1837	Suave: la cámara se mueve menos y más despacio
+u1838	Velocidad de la luz
+u1839	Lenta: 16 segundos para ir y volver
+u1840	Media: 11 segundos
+u1841	Rápida: 7 segundos
+u1842	Tiempo para acertar
+u1843	Largo: 3 segundos
+u1844	Medio: 1,8 segundos
+u1845	Corto: 1 segundo
+u1846	Barcas en el mar
+u1847	Una barca
+u1848	Dos barcas
+u1849	Tres barcas
+u1850	La barca se ilumina suavemente durante el tiempo en que se puede acertar. La dificultad nunca cambia sola.
+u1851	Espera antes de que llamen
+u1852	Corta: de 2 a 4 segundos
+u1853	Media: de 4 a 7 segundos
+u1854	Larga: de 7 a 10 segundos
+u1855	Cuando nadie abre
+u1856	El visitante espera hasta que pulses
+u1857	Se va al cabo de 10 segundos
+u1858	Se va al cabo de 6 segundos
+u1859	Se va al cabo de 3 segundos
+u1860	Si se va, vuelve a llamar al cabo de un rato. Pulsar antes de que llamen no hace nada.
+u1861	las actividades personalizadas «¿Quién se esconde?»
+u1862	Instrumentos que pueden salir
+u1863	8: arpa, violín, flauta, trompeta, marimba, glockenspiel, timbal y triángulo
+u1864	14: también piano, guitarra, violonchelo, clarinete, trombón y pandereta
+u1865	20: también contrabajo, oboe, fagot, trompa, tuba y gong
+u1866	Cada instrumento es el que se busca una vez antes de que otro vuelva a serlo. Cuántos hay en el escenario lo dice «Opciones de contenido».
+u1867	Los demás instrumentos del escenario
+u1868	De otra familia (más fácil)
+u1869	También de la misma familia (más difícil)
+u1870	Familias: cuerda, viento madera, viento metal, láminas y teclado, percusión.
+u1871	Ritmo de las bombillas
+u1872	Lento: 1,6 segundos por bombilla
+u1873	Normal: 1,1 segundos
+u1874	Rápido: 0,8 segundos
+u1875	Calma antes de las bombillas
+u1876	Corta: de 1,5 a 2,5 segundos
+u1877	Variable: de 1,5 a 4 segundos
+u1878	Larga: de 3 a 6 segundos
+u1879	Cada vez dura un rato diferente, para que pulsar siguiendo un ritmo no funcione.
+u1880	Si se pulsa antes de la tercera bombilla
+u1881	No pasa nada
+u1882	Las bombillas se apagan y la cuenta vuelve a empezar
+u1883	Sale igualmente, pero despacio
+u1884	Cuando no se pulsa después de la tercera
+u1885	La figura espera hasta que pulses
+u1886	Las bombillas se apagan al cabo de 10 segundos
+u1887	Al cabo de 6 segundos
+u1888	Al cabo de 3 segundos
+u1889	Si se apagan, la cuenta vuelve a empezar al cabo de un rato.
+u1890	Primera atracción
+u1891	Los bolos
+u1892	El cañón de la bala humana
+u1893	El cohete de cuerda
+u1894	La fuerza
+u1895	La carrera de caballitos
+u1896	El número de lanzamientos antes del final es el de «Pasos de las construcciones e historias», en la pestaña «La experiencia». La dificultad nunca cambia sola.
+u1897	Color de la línea
+u1898	Los colores de cada dibujo
+u1899	Blanco (oscuro sobre la base blanca)
+u1900	Velocidad
+u1901	Lenta: el baile y la música, un 30 % más despacio
+u1902	Se aplica a partir de la pulsación siguiente.
+u1903	Sin desplazamiento
+u1904	El dibujo se queda quieto en su sitio y solo se mueven sus partes: las ruedas, los brazos, las baquetas, las tapas.
+u1905	Contraste alto
+u1906	Un solo color sobre negro y una forma grande y sencilla en el centro (anillos, pétalos, un polígono, una estrella o puntos), con la misma música. El fondo es siempre negro y liso.
+u1907	Color del contraste alto
+u1908	Ocho: del alba a la madrugada
+u1909	Cuatro: alba, mediodía, puesta y noche
+u1910	Dos: mediodía y noche
+u1911	este dispositivo (invitado)
+u1912	Usuarios…
+u1913	Como invitado, los ajustes se guardan en este dispositivo, sin registro.
+u1914	Los ajustes, los favoritos, las actividades personalizadas y el registro se guardan en este usuario, en este dispositivo.
+u1915	1 conmutador
+u1916	2 conmutadores
+u1917	Con un conmutador, el marco recorre las opciones automáticamente. Pulsa para elegir la opción resaltada.
+u1918	Con dos conmutadores, el primero hace avanzar el marco y el segundo selecciona. El marco espera tu gesto.
+u1919	Intercambia las funciones de los conmutadores
+u1920	En modo de dos conmutadores: el primero elige y el segundo avanza.
+u1921	Tiempo por opción ·
+u1922	Espera a que acabe cada efecto
+u1923	En causa-efecto, ignora las pulsaciones durante la animación, sin guardarlas para después.
+u1924	Escena detenida y oscurecida cuando toca pulsar
+u1925	En Día tras día, La orquesta que despierta, El cielo de las constelaciones, Hagamos castells, Fiesta de globos, El viento del bosque, Montemos el robot, La flor musical, Flor de papel y La rana burbujera, cuando acaba cada paso (o cuando el viento se ha calmado) la escena se detiene y se oscurece hasta la pulsación siguiente. En ¿Adónde vamos?, Detectives de sonidos y La fábrica de disparates, la escena se oscurece mientras el barrido espera una pulsación para empezar. Ayuda a ver cuándo toca volver a pulsar.
+u1926	Izquierdo
+u1927	Central
+u1928	Derecho
+u1929	Auxiliar 1
+u1930	Auxiliar 2
+u1931	Presión mínima (ms)
+u1932	0: activación inmediata. Solo para entradas con presión y liberación.
+u1933	Tiempo entre pulsaciones (ms)
+u1934	Cuenta desde la liberación. 0: sin filtro de rebote.
+u1935	· En reposo
+u1936	Pulsa un botón del mando para activar su detección.
+u1937	Esperando una entrada…
+u1938	Teclado · USB o Bluetooth que emulan teclas
+u1939	Ratón · adaptador que emula botones
+u1940	Gamepad · mando o adaptador compatible
+u1941	El fondo, a tu gusto
+u1942	Durante una actividad, el fondo se guarda para esa actividad. Los efectos mantienen siempre su visibilidad.
+u1943	Presentación del decorado
+u1944	Color de base
+u1945	Densidad de los efectos esparcidos ·
+u1946	Movimiento reducido
+u1947	Conserva las transformaciones principales y reduce giros, saltos y desplazamientos. Al activarlo también se detiene la animación de la portada.
+u1948	Sonidos del juego
+u1949	Motivos armónicos coordinados con los efectos y las escenas. Sin música en reposo.
+u1950	Volumen ·
+u1951	Se va dibujando
+u1952	Entero, salta de opción en opción
+u1953	Sin marco
+u1954	Sin capa
+u1955	Entera
+u1956	Crece de izquierda a derecha
+u1957	Opacidad de la capa ·
+u1958	Grosor del resaltado ·
+u1959	Resaltado con relieve
+u1960	Añade una sombra bajo el marco y una luz a lo largo del trazo, para que destaque todavía más.
+u1961	Pista del conmutador
+u1962	Si el barrido da una vuelta entera sin ninguna pulsación, o espera una pulsación para empezar, abajo en el centro parpadea suavemente el dibujo de un conmutador (con dos conmutadores, hay dos). Tocarlo es como pulsar el conmutador. Durante las actividades de barrido no hay ninguna palabra escrita.
+u1963	Locución de las opciones
+u1964	Utiliza una voz del idioma elegido instalada y disponible en el navegador. Si no hay ninguna, se conservan las etiquetas, los dibujos y los sonidos.
+u1965	Automático al entrar
+u1966	Primera pulsación para empezar
+u1967	Adelante
+u1968	Atrás
+u1969	Primera opción
+u1970	Opción que se había elegido
+u1971	El sonido de cada opción
+u1972	Un clic de madera suave
+u1973	Ningún sonido
+u1974	Juega ahora
+u1975	Entra
+u1976	Registro
+u1977	Cambia el nombre
+u1978	Borra
+u1979	Por actividad
+u1980	Veces
+u1981	Tiempo
+u1982	Pulsaciones
+u1983	Última vez
+u1984	Día a día
+u1985	Borra el registro
+u1986	Espera a que acabe cada frase de música antes de volver a pulsar.
+u1987	Puedes volver a pulsar antes de que acabe la música.
+u1988	Se ve entero de una pulsación (es más corto que el intervalo).
+u1989	＋ Pausa en este momento
+u1990	▶ Marca las pausas mirando el vídeo
+u1991	Pausas (minutos:segundos, separadas por comas)
+u1992	· sin sonido propio
+u1993	Quita el sonido
+u1994	♪ Añade un sonido
+u1995	Actividad nueva
+u1996	Edita la actividad
+u1997	Todavía no hay ninguna foto ni ningún vídeo.
+u1998	Vídeos MP4 (H.264) o WebM, con su sonido. Si hay más de uno, cuando se acaba uno, la pulsación siguiente empieza el siguiente.
+u1999	Borra la actividad
+u2000	＋ Añade
+u2001	Guarda
+u2002	Cada pocos segundos
+u2003	En los momentos que marquéis
+u2004	Cada cuánto se detiene
+u2005	Fuerte
+u2006	Entero
+u2007	Llena la pantalla
+u2008	Instrumentos de Pim Pam
+u2009	Una canción propia
+u2010	Sin música
+u2011	La canción suena mientras se ve cada foto y continúa donde se había quedado en la pulsación siguiente.
+u2012	En orden
+u2013	3 min
+u2014	Se ha importado 1 actividad
+u2015	Espera a que caigan todas las gotas antes de volver a pulsar.
+u2016	Puedes volver a pulsar antes de que caigan todas las gotas: las que aún no han salido no caen.
+u2017	Fecha
+u2018	Hora
+u2019	Código
+u2020	Tipo
+u2021	Duración (s)
+u2022	Elecciones
+u2023	Escuchar un modelo y encontrar de dónde viene el sonido; mirar un hueco y encontrar la pieza que encaja en él.
+u2024	Cada pulsación abre una flor del jardín; cuando todas están abiertas, la siguiente enciende todo el jardín.
+u2025	El viento siempre lo empuja hacia delante; cuando se acaba el día, aterriza y empieza otro viaje.
+u2026	Mantén pulsado para que la rana sople; suelta para que la burbuja vuele.
+u2027	Cada elección pasa a la ronda siguiente; para salir, usa los botones de arriba.
+u2028	Alto contraste: amarillo, azul cielo, blanco y rosa sobre fondo oscuro; negro, azul, magenta y verde sobre fondo claro
+u2029	Cada cuatro vehículos el taller pasa al rincón siguiente de la casa; aquí se elige por dónde empieza.
+u2030	Los colores son los de las camisas de las collas castelleras. La primera muestra, la rueda de colores, hace que cada ronda lleve una camisa diferente, como hasta ahora; cualquier otra muestra viste a toda la colla de ese color en todas las rondas. La gente de la piña que viene de otras collas conserva sus colores. Sin decorado sobre la base negra, los colores más oscuros destacan menos.
+u2031	El viento sopla mientras se mantiene pulsado; con la segunda opción, sopla hasta la pulsación siguiente.
+u2032	La rana sopla mientras se mantiene pulsado y la burbuja vuela al soltar; con la segunda opción, una pulsación empieza a soplar y la siguiente suelta la burbuja.
+u2033	El quemador se enciende mientras se mantiene pulsado; con la segunda opción, una pulsación lo enciende y la siguiente lo apaga.
+u2034	Los adaptadores que emulan Espacio/Intro o clics se configuran desde su controlador. USB y Bluetooth describen la conexión, no garantizan compatibilidad. Gamepad pendiente de validación con hardware físico; no hay conexión directa WebHID/WebUSB en esta versión.
+u2035	Vale para todas las actividades que tienen decorado. Sin decorado, las figuras y los efectos quedan sobre el color de base, negro o blanco. Con el decorado atenuado, el fondo se ve más apagado, tanto como diga «Visibilidad del decorado». Las historias (Día tras día, El cielo de las constelaciones, La orquesta que despierta, Hagamos castells, Fiesta de globos y El viento del bosque), El faro, Piromusical, Montemos el robot, La flor musical, Flor de papel, La rana burbujera y las actividades de barrido (excepto Helados imposibles) empiezan con el decorado completo, como siempre; si lo cambias dentro de una actividad, se guarda para esa actividad. Caleidoscopio, Vidrieras y Naturaleza no tienen decorado, y los viajes, las inmersiones, la Lluvia de colores y Burbujas sin peso se ven siempre con el decorado completo.
+u2036	Una capa semitransparente del color del resaltado cubre todo el interior del marco. Puede ir sola o con el marco. La que crece de izquierda a derecha se llena con el tiempo de cada opción, sobre una capa pálida entera; con dos conmutadores siempre es entera.
+u2037	Las actividades de barrido se juegan con uno o dos conmutadores; las de causa-efecto, con uno. Todo funciona sin conexión, en un solo archivo.
+u2038	Por defecto. Los ajustes se guardan en el dispositivo; no guarda registro.
+u2039	Sin contraseña: cualquier persona que use este dispositivo puede entrar en cualquier usuario y ver su registro. Los datos no salen de este navegador si no los exportáis. Un usuario exportado lleva sus ajustes, el registro y sus actividades personalizadas con las fotos, los vídeos y la música; al importarlo en otro equipo, hay que comprobar los conmutadores.
+u2040	Cada línea es una vez que se ha abierto una actividad: cuándo, cuánto rato se ha jugado (sin contar las pausas ni la configuración) y cuántas pulsaciones se han aceptado; en el barrido, también cuántas elecciones se han hecho. Se guarda solo en este dispositivo.
+u2041	Un escenario de fiesta a oscuras, con sillas vacías. Cada pulsación despierta una sección de la orquesta, que se añade a la misma pieza con instrumentos grabados; en la última, tocan todos juntos. Cada ronda cambia la pieza, el lugar y el orden.
+u2042	Una plaza de trencadís en día de fiesta mayor. La primera pulsación forma la pinya con los baixos y cada una de las siguientes hace subir un piso: los segons, los terços, los quarts, los dosos, el aixecador y la enxaneta (siete pulsaciones); en la plaza pasa algo diferente en cada piso. En la última, la enxaneta hace la aleta, la plaza lo celebra y el castell se desmonta poco a poco. Suena un toque de castells de verdad, de gralles y timbal, grabado en una diada: cada pulsación hace sonar el trozo siguiente, y la aleta llega con el final de las gralles y los aplausos. Cada ronda cambia el castell, la plaza, la hora y el color de la colla (o la colla lleva siempre el color de camisa elegido en la configuración).
+u2043	Un paisaje pintado a pinceladas. Mientras mantienes pulsado el conmutador sopla el viento, y cuanto más rato, más fuerte: los árboles se doblan, la hierba hace olas y vuelan pétalos, hojas o ropa tendida. Al soltarlo, el viento se calma. Hay ocho lugares a lo largo del año; después de un buen rato de viento, el paisaje cambia.
+u2044	Berta, una rana junto a un estanque. Mientras mantienes pulsado el conmutador sopla una burbuja, y cuanto más rato, más grande; al soltarlo, la burbuja vuela y hace una travesura: la nariz de payasa, la lupa traviesa, el bigote que estornuda, la burbuja de chicle, un ataque de hipo, el sombrero que cae y, para acabar, la gran traca de colores, con una nota en cada burbuja que estalla.
+u2045	dos fuentes que emiten anillos de color suaves; donde se cruzan, se enciende una luz cálida
+u2046	tres brotes enrollados se desenrollan y abren las hojas; a sus pies esperan brotes nuevos
+u2047	gotas que caen entre nenúfares dibujan anillos en el agua; al final se abre una flor
+u2048	Una pequeña película en diez secuencias. Cada pulsación muestra una; cuando se acaba, la imagen se detiene y se oscurece hasta la pulsación siguiente.
+u2049	Una pequeña película en once secuencias. Cada pulsación muestra una; cuando se acaba, la imagen se detiene y se oscurece hasta la pulsación siguiente.
+u2050	El vídeo se detiene y la pantalla se oscurece poco a poco hasta la pulsación siguiente; al pulsar, se aclara y el vídeo continúa. El sonido del vídeo se apaga suavemente justo antes de cada pausa.
+u2051	La foto o el vídeo se esconde bajo trozos de papel de colores. Cada pulsación aparta unos cuantos; en la última aparece entero con su sonido.
+u2052	siete peonías lentas, una de cada color del arcoíris, dibujan un arco; al final se abren siete anillos uno dentro del otro
+u2053	Un rompecabezas de madera pintada que llena toda la pantalla: cinco mundos (el puerto, el circo, la ciudad, el bosque y el espacio), cada uno con cuatro luces, veinte tableros. Un hueco se ilumina y en la bandeja están las piezas: la que va entra volando con un «clac» y cobra vida como un juguete articulado; la que no va lo intenta, choca con el borde y vuelve a la bandeja. Con las cuatro figuras colocadas, la fiesta del tablero, y el siguiente entra deslizándose. Cada pieza colocada añade una voz a la música del mundo.
+u2054	Un paisaje dibujado con tinta llena toda la pantalla: el cielo, las montañas, el río, el bosque, el pueblo, los campos. Cada zona que eliges se llena de acuarela y cobra vida con su instrumento y su sonido; cuando la página está llena, la fiesta de la estación y se pasa la hoja. Cinco paisajes y cuatro estaciones: veinte páginas.
+u2055	Una masía de piedra en verano, pintada como en una película de animación: la abuela Pepa en la ventana de la cocina, el abuelo Tomàs dormido pescando en la balsa, Nina en el huerto, Pol en el tendedero y la cabra Nata bajo la higuera. Cada personaje que eliges vive su pequeña historia divertida (una tortilla que se pega al techo, una carpa en el sombrero, una zanahoria gigante, una sábana que vuela, una lluvia de higos) y el día avanza de la mañana al atardecer; con los cinco, la cena al fresco.
+u2056	Wikimedia Commons · CC BY-SA 4.0 · siete fragmentos de la banda sonora, editados; se distribuyen con la misma licencia
+u2057	Mila y su perro Bru vuelan en globo de alba a alba. Mientras mantienes pulsado el conmutador el quemador se enciende y el globo sube hasta las nubes; al soltarlo, baja poco a poco hasta rozar los árboles. El viento lo empuja siempre hacia delante: una masía, un puerto, un faro, un telecabina, flamencos, delfines… Cinco rutas y cuatro estaciones, veinte viajes, cada uno un día entero que acaba con un aterrizaje al alba.
+u2058	un rosetón de doce pétalos que se enciende anillo a anillo; los anillos giran despacio en sentidos opuestos
+u2059	olas azules y turquesas bajo un sol de verano; el plomo se mueve con el agua
+u2060	Cielo
+u2061	Montañas
+u2062	Río
+u2063	Pueblo
+u2064	Campos
+u2065	Faro
+u2066	Pinos
+u2067	Cumbres
+u2068	Torrente
+u2069	Abetos
+u2070	Prados
+u2071	Colinas
+u2072	Puerto
+u2073	Parque
+u2074	Tejados
+u2075	Paseo
+u2076	Volcanes
+u2077	Lago

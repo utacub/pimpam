@@ -1,0 +1,117 @@
+p001	Joue : {x}. Utilisateurs de cet appareil
+p002	{n} activités de cause à effet · {n2} de défilement
+p003	Ouvre le dossier {x} : {n} activités
+p004	{n} activités
+p005	{n} activité
+p006	Informations sur {x}
+p007	Ajoute {x} aux favoris
+p008	{x}, version WebGL 2 : dessinée en direct, demande un matériel plus puissant
+p009	Version {x} ·
+p010	Version {x}
+p011	{n} contacteur
+p012	{n} contacteurs
+p013	{n} secondes
+p014	{n} appuis
+p015	{n} options
+p016	{n} tours
+p017	Tu as choisi {x}.
+p018	Effet en cours. Étape {n}.
+p019	Motif {n} sur {n2} : {x}.
+p020	Composition {n} sur {n2}.
+p021	Étape {n} sur {n2}.
+p022	Séquence {n} sur {n2}.
+p023	La séquence {n} est terminée. Appuie pour voir la suivante.
+p024	{n} pièces sur {n2}.
+p025	{n} étapes sur {n2}.
+p026	{x} · jour {n} · {y}
+p027	{x} du jour {n} ({y}) : {z}.
+p028	La fleur s’ouvre : {x}. {y}.
+p029	Un bouton attend : {x}.
+p030	{x} : tout le jardin s’illumine et sa musique résonne.
+p031	{x}. Les boutons attendent.
+p032	Une fleur s’ouvre : {x}. Fleur {n} sur {n2}.
+p033	Le papier emporte l’empreinte de la feuille {x} et sèche sur le fil.
+p034	Le poinçon et le peigne dessinent la feuille {x}.
+p035	{x}, {y} : le bain attend la feuille {z}.
+p036	{x} : tout sort par les bords et l’écran redevient noir.
+p037	{x} : l’écran est noir et attend le premier appui. Ensuite viendront {y}.
+p038	{x} : {y} entrent par un bord.
+p039	{x} : {y} remplissent tout l’écran, avec toute la musique.
+p040	{x} : l’écran est plein. L’appui suivant fait tout sortir.
+p041	{x} : attend l’appui suivant. Appui {n} sur {n2}.
+p042	{x} : {y} grandissent. Appui {n} sur {n2}.
+p043	{x} : des gouttes de couleur tombent, et chaque goutte sonne en touchant le sol.
+p044	{x} : une goutte de couleur tombe, et sonne en touchant le sol.
+p045	{x} : la couleur vient de remplir tout l’écran.
+p046	{x} : le sol est noir et attend la première goutte. Couleurs : {y}.
+p047	{x} : la couleur se répand sur le sol. Appui {n} sur {n2}.
+p048	{x} au printemps
+p049	{x} en été
+p050	{x} en automne
+p051	{x} en hiver
+p052	Ensuite : {x}.
+p053	Chaque appui fait entrer et grandir une matière, avec sa musique. Au {n}e appui, elle remplit l’écran, et au {n2}e elle s’en va jusqu’à ce que tout redevienne noir. Ensuite vient la matière suivante : {x}.
+p054	Espace occupé dans ce navigateur : {x} · disponible : {y}
+p055	Les scènes de {x}
+p056	Les réglages sont enregistrés pour l’utilisateur « {x} », sur cet appareil. Tu peux les exporter pour les emporter sur un autre ordinateur.
+p057	Ce réglage est partagé avec {x} : si vous le changez ici, il change aussi là-bas.
+p058	Ces réglages n’apparaissent que dans cette activité. Ils sont enregistrés pour l’utilisateur « {x} ».
+p059	C’est au tour de {x}.
+p060	Les contacteurs, le défilement, l’image et le son, les réglages de chaque activité et les favoris de {x}. Sinon, on commence avec les réglages initiaux.
+p061	Utilisateur exporté ({x} Mo).
+p062	{n} utilisateurs exportés ({x} Mo).
+p063	Utilisateur exporté, avec {n} activité personnalisée ({x} Mo).
+p064	Utilisateur exporté, avec {n} activités personnalisées ({x} Mo).
+p065	{n} utilisateurs exportés, avec {n2} activités personnalisées ({x} Mo).
+p066	{n} utilisateurs exportés, avec {n2} activité personnalisée ({x} Mo).
+p067	Activité exportée ({x}).
+p068	{n} activités exportées ({x}).
+p069	Impossible d’exporter : {x}
+p070	Impossible d’importer « {x} » : {y}
+p071	Importation de {x}…
+p072	Supprimer l’utilisateur « {x} » ? Ses réglages et son journal sont supprimés de cet appareil, et c’est irréversible. Pour le conserver, exportez-le d’abord.
+p073	Supprimer l’utilisateur « {x} » ? Ses réglages, son journal et son activité personnalisée sont supprimés de cet appareil, et c’est irréversible. Pour le conserver, exportez-le d’abord.
+p074	Supprimer l’utilisateur « {x} » ? Ses réglages, son journal et ses {n} activités personnalisées sont supprimés de cet appareil, et c’est irréversible. Pour le conserver, exportez-le d’abord.
+p075	« {x} » a été supprimé.
+p076	Journal de {x}
+p077	En afficher plus ({n} de plus)
+p078	Supprimer tout le journal de « {x} » ? C’est irréversible. Pour le conserver, exportez-le d’abord.
+p079	{n} morceaux : {n2} appuis pour le voir en entier.
+p080	Les photos de {x}
+p081	Supprimer « {x} » ? Elle est supprimée de cet appareil et c’est irréversible. Pour la conserver, exportez-la d’abord.
+p082	« {x} » n’est pas une photo ni une vidéo utilisable.
+p083	« {x} » n’est pas un fichier son utilisable.
+p084	« {x} » est trop volumineux ({y} ; au maximum {z}).
+p085	Ce navigateur ne peut pas ouvrir l’image « {x} ». Essayez-la en JPG ou PNG.
+p086	Ce navigateur ne peut pas lire la vidéo « {x} ». Essayez-la en MP4 (H.264) ou WebM.
+p087	Ce navigateur ne peut pas lire le son « {x} ». Essayez-le en MP3.
+p088	Il faut ajouter au moins {n} photos ou vidéos.
+p089	{n} activité personnalisée · {n2} séances
+p090	{n} activités personnalisées · {n2} séances
+p091	{n} activités personnalisées · {n2} séance
+p092	{n} activité personnalisée · {n2} séance
+p093	dernière : {x}
+p094	jour {n}
+p095	{x} : feuille {y}, étape {n} sur {n2}.
+p096	Appuie pour changer
+p097	Le brûleur chauffe et le ballon monte.
+p098	Le ballon vole parmi les nuages.
+p099	Le ballon descend tout doucement.
+p100	Le ballon descend se poser dans le pré.
+p101	Il y a des activités de cause à effet, où chaque appui fait arriver quelque chose ; des activités de défilement, où les options s’allument l’une après l’autre et un appui choisit celle qui est marquée ; et {n} petits films, qui avancent d’une séquence à chaque appui. Les activités sont rangées dans des dossiers, et dans « Activités personnalisées » on peut en créer de nouvelles avec ses propres photos, vidéos et sons.
+p102	{n} motifs
+p103	{n} vitraux
+p104	{n} formes
+p105	{n} spectacles
+p106	{n} dessins
+p107	{n} jouets
+p108	{n} objets de cuisine
+p109	{n} compositions
+p110	{n} moments par jour
+p111	{x} le son
+p112	Contacteur {n}
+p113	Les réglages sont enregistrés sur cet appareil (invité). Tu peux les exporter pour les emporter sur un autre ordinateur.
+p114	Ces réglages n’apparaissent que dans cette activité. Ils sont enregistrés sur cet appareil (invité).
+p115	{x} le défilement du menu
+p116	{n} éléments
+p117	{n} élément

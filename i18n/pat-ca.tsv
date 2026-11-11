@@ -1,0 +1,118 @@
+# Patterns: {n}, {n2} are numbers; {x}, {y}, {z} are pieces translated in turn.
+p001	Juga: {x}. Usuaris d’aquest dispositiu
+p002	{n} activitats de causa-efecte · {n2} d’encercament
+p003	Obre la carpeta {x}: {n} activitats
+p004	{n} activitats
+p005	{n} activitat
+p006	Informació de {x}
+p007	Desa {x} als preferits
+p008	{x}, versió WebGL 2: dibuixada en directe, amb més requisits de maquinari
+p009	Versió {x} ·
+p010	Versió {x}
+p011	{n} commutador
+p012	{n} commutadors
+p013	{n} segons
+p014	{n} pulsacions
+p015	{n} opcions
+p016	{n} voltes
+p017	Has triat {x}.
+p018	Efecte en curs. Pas {n}.
+p019	Patró {n} de {n2}: {x}.
+p020	Composició {n} de {n2}.
+p021	Pas {n} de {n2}.
+p022	Seqüència {n} de {n2}.
+p023	S’ha acabat la seqüència {n}. Prem per veure la següent.
+p024	{n} de {n2} peces.
+p025	{n} de {n2} passos.
+p026	{x} · dia {n} · {y}
+p027	{x} del dia {n} ({y}): {z}.
+p028	S’obre la flor: {x}. {y}.
+p029	Una poncella espera: {x}.
+p030	{x}: el jardí sencer s’encén i sona la seva música.
+p031	{x}. Les poncelles esperen.
+p032	S’obre {x}. Flor {n} de {n2} de {y}.
+p033	El paper s’endú l’estampa del full {x} i es penja a l’estenedor.
+p034	El punxó i la pinta dibuixen el full {x}.
+p035	{x}, {y}: el bany espera el full {z}.
+p036	{x}: tot surt per les vores i la pantalla torna a ser negra.
+p037	{x}: la pantalla és negra i espera la primera pulsació. Vindran {y}.
+p038	{x}: {y} entren per una vora.
+p039	{x}: {y} omplen tota la pantalla, amb tota la música.
+p040	{x}: la pantalla és plena. La pulsació següent ho fa sortir tot.
+p041	{x}: espera la pulsació següent. Pulsació {n} de {n2}.
+p042	{x}: {y} creixen. Pulsació {n} de {n2}.
+p043	{x}: cauen gotes de colors, i cada gota sona quan toca el terra.
+p044	{x}: cau una gota de color, i sona quan toca el terra.
+p045	{x}: el color acaba d’omplir tota la pantalla.
+p046	{x}: el terra és negre i espera la primera gota. Colors: {y}.
+p047	{x}: el color s’escampa pel terra. Pulsació {n} de {n2}.
+p048	{x} a la primavera
+p049	{x} a l’estiu
+p050	{x} a la tardor
+p051	{x} a l’hivern
+p052	Ara ve {x}.
+p053	Cada pulsació fa entrar i créixer una matèria, amb la seva música. A la pulsació {n} omple la pantalla, i a la {n2} se’n va fins que tot torna a ser negre. Després ve la matèria següent: {x}.
+p054	Espai ocupat en aquest navegador: {x} · disponible: {y}
+p055	Les escenes de {x}
+p056	Els ajustos es desen a l’usuari «{x}», en aquest dispositiu. Pots exportar-los per portar-los a un altre equip.
+p057	Aquest ajust és compartit amb {x}: si el canvieu aquí, també hi canvia.
+p058	Aquests ajustos només surten dins d’aquesta activitat. Es desen a l’usuari «{x}».
+p059	Ara juga {x}.
+p060	Els commutadors, l’encercament, la imatge i el so, els ajustos de cada activitat i els preferits de {x}. Si no, comença amb els ajustos inicials.
+p061	Usuari exportat ({x} MB).
+p062	{n} usuaris exportats ({x} MB).
+p063	Usuari exportat, amb {n} activitat personalitzada ({x} MB).
+p064	Usuari exportat, amb {n} activitats personalitzades ({x} MB).
+p065	{n} usuaris exportats, amb {n2} activitats personalitzades ({x} MB).
+p066	{n} usuaris exportats, amb {n2} activitat personalitzada ({x} MB).
+p067	Activitat exportada ({x}).
+p068	{n} activitats exportades ({x}).
+p069	No s’ha pogut exportar: {x}
+p070	No s’ha pogut importar «{x}»: {y}
+p071	Important {x}…
+p072	Voleu esborrar l’usuari «{x}»? S’esborren d’aquest dispositiu els seus ajustos, el registre, i no es pot desfer. Si el voleu conservar, exporteu-lo abans.
+p073	Voleu esborrar l’usuari «{x}»? S’esborren d’aquest dispositiu els seus ajustos, el registre i la seva activitat personalitzada, i no es pot desfer. Si el voleu conservar, exporteu-lo abans.
+p074	Voleu esborrar l’usuari «{x}»? S’esborren d’aquest dispositiu els seus ajustos, el registre i les seves {n} activitats personalitzades, i no es pot desfer. Si el voleu conservar, exporteu-lo abans.
+p075	S’ha esborrat «{x}».
+p076	Registre de {x}
+p077	Mostra’n més ({n} més)
+p078	Voleu esborrar tot el registre de «{x}»? No es pot desfer. Si el voleu conservar, exporteu-lo abans.
+p079	{n} trossos: {n2} pulsacions per veure’l sencer.
+p080	Les fotos de {x}
+p081	Voleu esborrar «{x}»? S’esborra d’aquest dispositiu i no es pot desfer. Si la voleu conservar, exporteu-la abans.
+p082	«{x}» no és una foto ni un vídeo que es pugui fer servir.
+p083	«{x}» no és un fitxer de so que es pugui fer servir.
+p084	«{x}» és massa gran ({y}; com a màxim {z}).
+p085	Aquest navegador no pot obrir la imatge «{x}». Proveu-la en JPG o PNG.
+p086	Aquest navegador no pot reproduir el vídeo «{x}». Proveu-lo en MP4 (H.264) o WebM.
+p087	Aquest navegador no pot reproduir el so «{x}». Proveu-lo en MP3.
+p088	Cal afegir com a mínim {n} fotos o vídeos.
+p089	{n} activitat personalitzada · {n2} sessions
+p090	{n} activitats personalitzades · {n2} sessions
+p091	{n} activitats personalitzades · {n2} sessió
+p092	{n} activitat personalitzada · {n2} sessió
+p093	última: {x}
+p094	dia {n}
+p095	{x}: full {y}, pas {n} de {n2}.
+p096	Prem per canviar
+p097	El cremador crema i el globus puja.
+p098	El globus vola entre els núvols.
+p099	El globus baixa a poc a poc.
+p100	El globus baixa a aterrar al prat.
+p101	Hi ha activitats de causa-efecte, en què cada pulsació fa passar alguna cosa; activitats d’encercament, en què les opcions s’il·luminen una rere l’altra i una pulsació tria la que està marcada; i {n} petites pel·lícules, que avancen una seqüència a cada pulsació. Les activitats s’agrupen en carpetes, i a «Activitats personalitzades» se’n poden fer de noves amb fotos, vídeos i sons propis.
+p102	{n} patrons
+p103	{n} vitralls
+p104	{n} formes
+p105	{n} espectacles
+p106	{n} dibuixos
+p107	{n} joguines
+p108	{n} coses de cuina
+p109	{n} composicions
+p110	{n} moments al dia
+p111	{x} el so
+p112	Commutador {n}
+p113	Els ajustos es desen en aquest dispositiu (convidat). Pots exportar-los per portar-los a un altre equip.
+p114	Aquests ajustos només surten dins d’aquesta activitat. Es desen a aquest dispositiu (convidat).
+p115	{x} l’encercament del menú
+p116	{n} elements
+p117	{n} element

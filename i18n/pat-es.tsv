@@ -1,0 +1,117 @@
+p001	Juega: {x}. Usuarios de este dispositivo
+p002	{n} actividades de causa-efecto · {n2} de barrido
+p003	Abre la carpeta {x}: {n} actividades
+p004	{n} actividades
+p005	{n} actividad
+p006	Información de {x}
+p007	Guarda {x} en favoritos
+p008	{x}, versión WebGL 2: dibujada en directo, con más requisitos de hardware
+p009	Versión {x} ·
+p010	Versión {x}
+p011	{n} conmutador
+p012	{n} conmutadores
+p013	{n} segundos
+p014	{n} pulsaciones
+p015	{n} opciones
+p016	{n} vueltas
+p017	Has elegido {x}.
+p018	Efecto en curso. Paso {n}.
+p019	Patrón {n} de {n2}: {x}.
+p020	Composición {n} de {n2}.
+p021	Paso {n} de {n2}.
+p022	Secuencia {n} de {n2}.
+p023	Ha terminado la secuencia {n}. Pulsa para ver la siguiente.
+p024	{n} de {n2} piezas.
+p025	{n} de {n2} pasos.
+p026	{x} · día {n} · {y}
+p027	{x} del día {n} ({y}): {z}.
+p028	Se abre la flor: {x}. {y}.
+p029	Un capullo espera: {x}.
+p030	{x}: todo el jardín se enciende y suena su música.
+p031	{x}. Los capullos esperan.
+p032	Se abre una flor: {x}. Flor {n} de {n2}.
+p033	El papel se lleva la estampa de la hoja {x} y se cuelga en el tendedero.
+p034	El punzón y el peine dibujan la hoja {x}.
+p035	{x}, {y}: el baño espera la hoja {z}.
+p036	{x}: todo sale por los bordes y la pantalla vuelve a ser negra.
+p037	{x}: la pantalla es negra y espera la primera pulsación. Vendrán {y}.
+p038	{x}: {y} entran por un borde.
+p039	{x}: {y} llenan toda la pantalla, con toda la música.
+p040	{x}: la pantalla está llena. La siguiente pulsación lo hace salir todo.
+p041	{x}: espera la siguiente pulsación. Pulsación {n} de {n2}.
+p042	{x}: {y} crecen. Pulsación {n} de {n2}.
+p043	{x}: caen gotas de colores, y cada gota suena cuando toca el suelo.
+p044	{x}: cae una gota de color, y suena cuando toca el suelo.
+p045	{x}: el color acaba de llenar toda la pantalla.
+p046	{x}: el suelo es negro y espera la primera gota. Colores: {y}.
+p047	{x}: el color se esparce por el suelo. Pulsación {n} de {n2}.
+p048	{x} en primavera
+p049	{x} en verano
+p050	{x} en otoño
+p051	{x} en invierno
+p052	Ahora viene {x}.
+p053	Cada pulsación hace entrar y crecer una materia, con su música. En la pulsación {n} llena la pantalla, y en la {n2} se va hasta que todo vuelve a ser negro. Después viene la materia siguiente: {x}.
+p054	Espacio ocupado en este navegador: {x} · disponible: {y}
+p055	Las escenas de {x}
+p056	Los ajustes se guardan en el usuario «{x}», en este dispositivo. Puedes exportarlos para llevarlos a otro equipo.
+p057	Este ajuste es compartido con {x}: si lo cambiáis aquí, también cambia allí.
+p058	Estos ajustes solo aparecen dentro de esta actividad. Se guardan en el usuario «{x}».
+p059	Ahora juega {x}.
+p060	Los conmutadores, el barrido, la imagen y el sonido, los ajustes de cada actividad y los favoritos de {x}. Si no, empieza con los ajustes iniciales.
+p061	Usuario exportado ({x} MB).
+p062	{n} usuarios exportados ({x} MB).
+p063	Usuario exportado, con {n} actividad personalizada ({x} MB).
+p064	Usuario exportado, con {n} actividades personalizadas ({x} MB).
+p065	{n} usuarios exportados, con {n2} actividades personalizadas ({x} MB).
+p066	{n} usuarios exportados, con {n2} actividad personalizada ({x} MB).
+p067	Actividad exportada ({x}).
+p068	{n} actividades exportadas ({x}).
+p069	No se ha podido exportar: {x}
+p070	No se ha podido importar «{x}»: {y}
+p071	Importando {x}…
+p072	¿Queréis borrar el usuario «{x}»? Se borran de este dispositivo sus ajustes y el registro, y no se puede deshacer. Si lo queréis conservar, exportadlo antes.
+p073	¿Queréis borrar el usuario «{x}»? Se borran de este dispositivo sus ajustes, el registro y su actividad personalizada, y no se puede deshacer. Si lo queréis conservar, exportadlo antes.
+p074	¿Queréis borrar el usuario «{x}»? Se borran de este dispositivo sus ajustes, el registro y sus {n} actividades personalizadas, y no se puede deshacer. Si lo queréis conservar, exportadlo antes.
+p075	Se ha borrado «{x}».
+p076	Registro de {x}
+p077	Mostrar más ({n} más)
+p078	¿Queréis borrar todo el registro de «{x}»? No se puede deshacer. Si lo queréis conservar, exportadlo antes.
+p079	{n} trozos: {n2} pulsaciones para verlo entero.
+p080	Las fotos de {x}
+p081	¿Queréis borrar «{x}»? Se borra de este dispositivo y no se puede deshacer. Si la queréis conservar, exportadla antes.
+p082	«{x}» no es una foto ni un vídeo que se pueda usar.
+p083	«{x}» no es un archivo de sonido que se pueda usar.
+p084	«{x}» es demasiado grande ({y}; como máximo {z}).
+p085	Este navegador no puede abrir la imagen «{x}». Probadla en JPG o PNG.
+p086	Este navegador no puede reproducir el vídeo «{x}». Probadlo en MP4 (H.264) o WebM.
+p087	Este navegador no puede reproducir el sonido «{x}». Probadlo en MP3.
+p088	Hay que añadir como mínimo {n} fotos o vídeos.
+p089	{n} actividad personalizada · {n2} sesiones
+p090	{n} actividades personalizadas · {n2} sesiones
+p091	{n} actividades personalizadas · {n2} sesión
+p092	{n} actividad personalizada · {n2} sesión
+p093	última: {x}
+p094	día {n}
+p095	{x}: hoja {y}, paso {n} de {n2}.
+p096	Pulsa para cambiar
+p097	El quemador arde y el globo sube.
+p098	El globo vuela entre las nubes.
+p099	El globo baja poco a poco.
+p100	El globo baja a aterrizar en el prado.
+p101	Hay actividades de causa-efecto, en las que cada pulsación hace pasar algo; actividades de barrido, en las que las opciones se iluminan una tras otra y una pulsación elige la que está marcada; y {n} pequeñas películas, que avanzan una secuencia en cada pulsación. Las actividades se agrupan en carpetas, y en «Actividades personalizadas» se pueden hacer nuevas con fotos, vídeos y sonidos propios.
+p102	{n} patrones
+p103	{n} vidrieras
+p104	{n} formas
+p105	{n} espectáculos
+p106	{n} dibujos
+p107	{n} juguetes
+p108	{n} cosas de cocina
+p109	{n} composiciones
+p110	{n} momentos al día
+p111	{x} el sonido
+p112	Conmutador {n}
+p113	Los ajustes se guardan en este dispositivo (invitado). Puedes exportarlos para llevarlos a otro equipo.
+p114	Estos ajustes solo aparecen dentro de esta actividad. Se guardan en este dispositivo (invitado).
+p115	{x} el barrido del menú
+p116	{n} elementos
+p117	{n} elemento

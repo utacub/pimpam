@@ -286,3 +286,9 @@
 .sobre-novetats{font:inherit;color:var(--primary);background:none;border:0;padding:0;min-height:0;text-decoration:underline;cursor:pointer}
 @media (max-width:650px){.nav button.sobre-button:nth-child(n){display:flex}}
 @media (max-width:620px){.sobre-eines li{grid-template-columns:1fr}.sobre-eines .use{grid-row:auto}}
+/* 0.71 · Idiomes: the language menu of the header (globe + code, list with code badges, native names and a check) */
+.lang{position:relative}.nav .lang-button{gap:8px;font-weight:750;letter-spacing:.02em;background:#fff}.lang-button .lang-chev{width:16px;height:16px;transform:rotate(180deg);transition:transform .15s}.lang.open .lang-button{background:var(--blue);border-color:var(--primary)}.lang.open .lang-chev{transform:none}
+.lang-menu{position:absolute;right:0;top:calc(100% + 8px);z-index:40;min-width:236px;padding:8px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 40px -18px #192e5566;display:flex;flex-direction:column;gap:2px}.lang-menu[hidden]{display:none}
+.nav .lang-menu .lang-item{display:flex;align-items:center;gap:14px;width:100%;padding:8px 10px;border-radius:12px;font-size:16px;font-weight:550;text-align:left;color:var(--ink);min-height:48px}.lang-item:hover,.lang-item:focus-visible{background:var(--paper)}
+.lang-code{display:inline-flex;align-items:center;justify-content:center;width:40px;height:30px;border-radius:9px;background:var(--blue);color:var(--primary);font-size:12px;font-weight:800;letter-spacing:.04em;flex-shrink:0}.lang-name{flex:1}.lang-item.on .lang-code{background:var(--primary);color:#fff}.lang-item.on .lang-name{color:var(--primary);font-weight:650}.lang-item .icon{color:var(--primary);stroke-width:2.2}
+.nav .lang-menu button.lang-item:nth-child(n){display:flex}@media(max-width:650px){.lang-menu{right:auto;left:0}}

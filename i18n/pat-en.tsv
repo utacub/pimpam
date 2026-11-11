@@ -1,0 +1,117 @@
+p001	Playing: {x}. Users of this device
+p002	{n} cause-and-effect activities · {n2} scanning
+p003	Open the folder {x}: {n} activities
+p004	{n} activities
+p005	{n} activity
+p006	About {x}
+p007	Add {x} to favourites
+p008	{x}, WebGL 2 version: drawn live, needs more powerful hardware
+p009	Version {x} ·
+p010	Version {x}
+p011	{n} switch
+p012	{n} switches
+p013	{n} seconds
+p014	{n} presses
+p015	{n} options
+p016	{n} rounds
+p017	You chose {x}.
+p018	Effect playing. Step {n}.
+p019	Pattern {n} of {n2}: {x}.
+p020	Composition {n} of {n2}.
+p021	Step {n} of {n2}.
+p022	Sequence {n} of {n2}.
+p023	Sequence {n} has ended. Press to see the next one.
+p024	{n} of {n2} parts.
+p025	{n} of {n2} steps.
+p026	{x} · day {n} · {y}
+p027	{x} of day {n} ({y}): {z}.
+p028	The flower opens: {x}. {y}.
+p029	A bud is waiting: {x}.
+p030	{x}: the whole garden lights up and its music plays.
+p031	{x}. The buds are waiting.
+p032	A flower opens: {x}. Flower {n} of {n2}.
+p033	The paper takes up the print of the {x} sheet and is hung on the line.
+p034	The stylus and the comb draw the {x} sheet.
+p035	{x}, {y}: the bath is waiting for the {z} sheet.
+p036	{x}: everything leaves by the edges and the screen goes black again.
+p037	{x}: the screen is black and waits for the first press. Coming next: {y}.
+p038	{x}: {y} come in from one edge.
+p039	{x}: {y} fill the whole screen, with all the music.
+p040	{x}: the screen is full. The next press sends everything out.
+p041	{x}: waiting for the next press. Press {n} of {n2}.
+p042	{x}: {y} grow. Press {n} of {n2}.
+p043	{x}: coloured drops fall, and each drop sounds when it hits the floor.
+p044	{x}: a coloured drop falls, and sounds when it hits the floor.
+p045	{x}: the colour has just filled the whole screen.
+p046	{x}: the floor is black and waits for the first drop. Colours: {y}.
+p047	{x}: the colour spreads over the floor. Press {n} of {n2}.
+p048	{x} in spring
+p049	{x} in summer
+p050	{x} in autumn
+p051	{x} in winter
+p052	Next: {x}.
+p053	Each press brings in a matter and makes it grow, with its music. At press {n} it fills the screen, and at press {n2} it leaves until everything is black again. Then comes the next matter: {x}.
+p054	Space used in this browser: {x} · available: {y}
+p055	The scenes of {x}
+p056	The settings are saved to the user «{x}», on this device. You can export them to take them to another computer.
+p057	This setting is shared with {x}: if you change it here, it changes there too.
+p058	These settings only appear inside this activity. They are saved to the user «{x}».
+p059	Now playing: {x}.
+p060	The switches, scanning, picture and sound, the settings of each activity and the favourites of {x}. If not, it starts with the default settings.
+p061	User exported ({x} MB).
+p062	{n} users exported ({x} MB).
+p063	User exported, with {n} custom activity ({x} MB).
+p064	User exported, with {n} custom activities ({x} MB).
+p065	{n} users exported, with {n2} custom activities ({x} MB).
+p066	{n} users exported, with {n2} custom activity ({x} MB).
+p067	Activity exported ({x}).
+p068	{n} activities exported ({x}).
+p069	Could not export: {x}
+p070	Could not import «{x}»: {y}
+p071	Importing {x}…
+p072	Delete the user «{x}»? Their settings and log are deleted from this device, and this cannot be undone. If you want to keep it, export it first.
+p073	Delete the user «{x}»? Their settings, log and custom activity are deleted from this device, and this cannot be undone. If you want to keep it, export it first.
+p074	Delete the user «{x}»? Their settings, log and {n} custom activities are deleted from this device, and this cannot be undone. If you want to keep it, export it first.
+p075	«{x}» has been deleted.
+p076	Log of {x}
+p077	Show more ({n} more)
+p078	Delete the whole log of «{x}»? This cannot be undone. If you want to keep it, export it first.
+p079	{n} parts: {n2} presses to see it all.
+p080	{x}’s photos
+p081	Delete «{x}»? It is deleted from this device and this cannot be undone. If you want to keep it, export it first.
+p082	«{x}» is not a photo or video that can be used.
+p083	«{x}» is not a sound file that can be used.
+p084	«{x}» is too large ({y}; at most {z}).
+p085	This browser cannot open the image «{x}». Try it as JPG or PNG.
+p086	This browser cannot play the video «{x}». Try it as MP4 (H.264) or WebM.
+p087	This browser cannot play the sound «{x}». Try it as MP3.
+p088	Add at least {n} photos or videos.
+p089	{n} custom activity · {n2} sessions
+p090	{n} custom activities · {n2} sessions
+p091	{n} custom activities · {n2} session
+p092	{n} custom activity · {n2} session
+p093	last: {x}
+p094	day {n}
+p095	{x}: {y} sheet, step {n} of {n2}.
+p096	Press to change
+p097	The burner fires and the balloon rises.
+p098	The balloon flies among the clouds.
+p099	The balloon comes down slowly.
+p100	The balloon comes down to land in the meadow.
+p101	There are cause-and-effect activities, where each press makes something happen; scanning activities, where the options light up one after another and a press chooses the highlighted one; and {n} short films, which move on one sequence at each press. The activities are grouped into folders, and in «Personal activities» you can make new ones with your own photos, videos and sounds.
+p102	{n} patterns
+p103	{n} stained-glass windows
+p104	{n} shapes
+p105	{n} shows
+p106	{n} drawings
+p107	{n} toys
+p108	{n} kitchen things
+p109	{n} compositions
+p110	{n} moments a day
+p111	{x} the sound
+p112	Switch {n}
+p113	The settings are saved on this device (guest). You can export them to take them to another computer.
+p114	These settings only appear inside this activity. They are saved on this device (guest).
+p115	{x} menu scanning
+p116	{n} items
+p117	{n} item
