@@ -6,6 +6,10 @@
 - **Forma que flueix** (`flow: true` a l’estímul, `S.flow`): `frGoBack` fa `S.back = {…, born, drain: true}` i torna a posar els esdeveniments en l’ordre del creixement. Al shader, `uBack` és ara un `vec4` (inici, `from` o `born`, velocitat, buidar); amb `w = 1` les línies queden crescudes i cadascuna es buida del primer cap a l’últim (`h = clamp((born + b − t0)/dur)`), en l’ordre en què han nascut.
 - **Text de la marxa enrere** per estímul: `M.back` (si no n’hi ha, «la forma es desfà al revés de com ha crescut»).
 
+## 0.75.2 · El vestidor: el barret de cuiner de la Pipa
+
+- `fill_inside` (`tools/vestidor-assets.py`, a `pipa()` per al codi 5): una peça blanca sobre el dibuix blanc de la Pipa queda sense interior en separar-la; els forats tancats de 200 px o més (i la vora semitransparent que els envolta) prenen els colors de la imatge editada. Aplicat a `dist/assets/vestidor/pipa-5.webp`.
+
 ## 0.75.1 · El vestidor: les cartes amb la peça sola
 
 - Imatges `peca-<codi>` (11 a 63) de `tools/vestidor-assets.py LOT9 --peces`: cada peça del lot 9 (transparent o sobre blanc) sense taques ni boira i amb el costat llarg a 640 px; afegeix les caixes a `dist/vestidor-dades.js` i conserva les altres i `VS_PARROT`. Són a `VS_COMMON`.

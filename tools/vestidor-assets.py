@@ -74,10 +74,23 @@ def artists():
             if code != '62c' and e.exists():
                 m = mask_img(e)
                 if m is not None: save(f'{who}-{code}-e', m, lossless=True, pad=0, k=K)
+def fill_inside(layer, edit, min_px=200):
+    """A white garment over Pipa's white master lifts with no inside (the chef's hat, PIPA-5, 0.75.2): the holes enclosed by its outline
+    take the colours of the edit picture."""
+    a = np.asarray(layer.convert('RGBA')).copy(); o = np.asarray(Image.open(edit).convert('RGB'))
+    op = a[..., 3] > 40; hole = ndimage.binary_fill_holes(op) & ~op
+    lab, n = ndimage.label(hole)
+    if not n: return layer
+    keep = np.isin(lab, 1 + np.where(ndimage.sum(hole, lab, range(1, n + 1)) >= min_px)[0])
+    m = keep | (ndimage.binary_dilation(keep, iterations=2) & (a[..., 3] < 250) & ndimage.binary_fill_holes(op | keep))
+    a[m, :3] = o[m]; a[m, 3] = 255
+    return Image.fromarray(a, 'RGBA')
 def pipa():
     save('pipa-r', base(SRC / 'lot8/PIPA_MASTER.png'), k=K)
     for code, n in layers('PIPA').items():
-        save(f'pipa-{code}', Image.open(CAPES / (n + '.png')), k=K)
+        im = Image.open(CAPES / (n + '.png'))
+        if code == '5': im = fill_inside(im, SRC / 'lot2r/zip/2_pipa/PIPA-5_pastisser.png')
+        save(f'pipa-{code}', im, k=K)
         e = CAPES / (n + '_esborra.png')
         if e.exists():
             m = mask_img(e)

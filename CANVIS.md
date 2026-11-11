@@ -17,6 +17,13 @@ Base: 0.75.2 (81d77a9; la 0.75.2 és el barret de cuiner de la Pipa d’«El ves
 
 - No s’ha vist en una targeta gràfica real (només amb SwiftShader); l’auditoria de flaixos la fa en Marc.
 
+# Pim Pam 0.75.2 · El vestidor: el barret de cuiner de la Pipa, ple
+
+Base: 0.75.1 (181dc7d). Respon al comentari d’en Marc de l’11 de novembre de 2026 («El barret de cuiner del gos t’ha quedat transparent per dins»).
+
+- El barret de cuiner de la Pipa ja no és transparent per dins. El blanc del barret és gairebé igual que el fons blanc del dibuix original de la Pipa, i en separar el barret com a capa, l’interior es perdia. Ara els forats tancats per la línia del barret prenen els colors del dibuix de ChatGPT (`fill_inside` a `tools/vestidor-assets.py`).
+- He revisat totes les altres capes del vestidor que tenen forats tancats dins del contorn: són els cascos de vidre, la bobina de la tuba i l’ansa de la regadora (volguts), i uns forats petits que queden tapats pel cos de l’artista. No n’hi ha cap altre que es vegi.
+
 # Pim Pam 0.75.1 · El vestidor: les cartes amb la peça sola i sencera
 
 Base: 0.75 (ca0d7c0). Respon al comentari d’en Marc de l’11 de novembre de 2026 («quan es trien les peces de roba es vegin malament… potser necessites imatges dels objectes sols per posar-les a l’encercament, i després un cop es tria, canviar a la imatge que encaixa bé»).
