@@ -2111,15 +2111,15 @@ u2110	Avi Quim
 u2111	Fractals a la natura
 u2112	Vint formes de la natura que es repeteixen dins seu, fetes de línies de llum de colors sobre negre: falgueres, flocs de neu, gira-sols, llamps, arbres, rius, corals, neurones… Cada pulsació en fa créixer una, amb la seva música.
 u2113	20 formes · una a cada pulsació
-u2114	Cada pulsació fa créixer sencera una forma de la natura amb línies de llum de colors, i una ona de llum la recorre. La pulsació següent la recull cap a l’arrel i en fa créixer una altra: n’hi ha vint, i després tornen a començar amb uns altres colors.
-u2115	Mentre una forma creix, les pulsacions no fan res.
+u2114	Cada pulsació fa créixer sencera una forma de la natura amb línies de llum de colors, i una ona de llum la recorre. Després la forma es desfà al revés de com ha crescut, fins que la pantalla torna a ser negra. N’hi ha vint, i després tornen a començar amb uns altres colors.
+u2115	Mentre una forma creix i es desfà, les pulsacions no fan res.
 u2116	Pots prémer mentre una forma creix: ve la següent.
 u2117	Aquest ordinador no pot mostrar les formes d’aquesta activitat: cal WebGL 2. La música sí que sona.
 u2118	La pantalla és negra i espera la primera pulsació. Cada pulsació fa créixer una forma de la natura.
 u2119	Creixement de cada forma
 u2120	Ràpid
 u2121	Lent
-u2122	Com més lent, millor es veu com cada nivell de la forma surt de l’anterior. La música de cada forma dura igual.
+u2122	Com més lent, millor es veu com cada nivell de la forma surt de l’anterior.
 u2123	Primera forma
 u2124	Els fractals es veuen sempre sobre negre: no tenen decorat atenuat ni sense decorat, ni color de base.
 u2125	creixen les frondes de falguera, pínnula a pínnula

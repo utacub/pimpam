@@ -117,4 +117,6 @@ p115	{x} l’encercament del menú
 p116	{n} elements
 p117	{n} element
 p118	{x}, forma {n} de {n2}: {y}.
-p119	{x}, forma {n} de {n2}, completa. La pulsació següent en porta una altra.
+p119	{x}, forma {n} de {n2}, acabada. La pantalla és negra i la pulsació següent en porta una altra.
+p120	{x}, forma {n} de {n2}, completa: una ona de llum la recorre.
+p121	{x}, forma {n} de {n2}: la forma es desfà al revés de com ha crescut.

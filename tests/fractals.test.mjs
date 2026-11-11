@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {FR_CAUSE,FR_STIMS,FR_IDS,FR_MUSIC,FR_GROW,FR_RUN,FR_AMB,FR_ACC,frStart,frPress,frTick,frBlocked,frRate,frStatus,frProgress,frHelp,frNumber,frEvents,frStim} from '../dist/fractals.js';
+import {FR_CAUSE,FR_STIMS,FR_IDS,FR_MUSIC,FR_GROW,FR_SPAN,FR_RUN,FR_HOLD,FR_BACK,FR_BLACK,FR_AMB,FR_ACC,frGrowK,frStart,frPress,frTick,frBlocked,frRate,frStatus,frProgress,frHelp,frNumber,frEvents,frStim} from '../dist/fractals.js';
 import {SAMPLE_BANK} from '../dist/sampler.js';
 import {SYNTH_INSTRUMENTS} from '../dist/synth.js';
 import {defaults,validateProfile} from '../dist/input.js';
 
 // Fractals a la natura (CE46, 0.74): twenty fractal forms of nature drawn with lines of coloured light on black; each press grows one
-// whole form, level by level, with its music, the sound of its place and the accents of its growth.
+// whole form, level by level, with its music, the sound of its place and the accents of its growth; then (0.74.2) the growth plays
+// backwards until the screen is black again, and the next form starts on black.
 const read=f=>fs.readFileSync(new URL(f,import.meta.url),'utf8');
 const S={...defaults,lock:true,waitCue:true,sound:true};
 const run=(g,s,secs)=>{for(let t=0;t<secs;t+=1/30)frTick(g,s,1/30);};
@@ -28,23 +29,45 @@ test('the settings: the first form (any of the twenty) and the growth (fast, nor
  assert.ok(FR_GROW.rapid<FR_GROW.normal&&FR_GROW.normal<FR_GROW.lent);
 });
 
-test('the arc: a press grows one whole form; presses do nothing while it grows; after twenty the first comes back in its second lap',()=>{
+test('the arc: a press grows one whole form, a wave runs through it, it comes undone backwards to black; presses do nothing meanwhile; after twenty the first comes back in its second lap',()=>{
  const g={};frStart(g,S);const F=g.fractals;assert.equal(F.phase,'rest');assert.equal(F.S,null);
  assert.match(frStatus(g,S),/La pantalla és negra/);assert.equal((frProgress(g,S).match(/class="done"/g)||[]).length,0);
- for(let k=0;k<20;k++){
+ for(let k=0;k<20;k++){const M=FR_STIMS[k],head=`${M.name}, forma ${k+1} de 20`;
   assert.ok(frPress(g,S),`press ${k+1}`);assert.equal(frStim(F).id,FR_IDS[k]);assert.equal(frNumber(F),k+1);assert.equal(F.phase,'run');
-  assert.ok(F.end-F.at>=FR_RUN,'the shortest run');assert.ok(F.S.full-F.S.t<=12.5,`${FR_IDS[k]}: the form is whole within 12 s`);
-  assert.ok(frBlocked(g,S));assert.equal(frPress(g,S),false,'no press while it grows');
-  assert.equal(frStatus(g,S),`${FR_STIMS[k].name}, forma ${k+1} de 20: ${FR_STIMS[k].what}.`);
-  run(g,S,F.end-F.t+.1);assert.equal(F.phase,'rest');assert.match(frStatus(g,S),/, completa\. La pulsació següent en porta una altra\.$/);
+  assert.ok(F.end-F.at>=FR_RUN,'the shortest run');assert.ok(F.S.full-F.S.t<=12.5,`${M.id}: the form is whole within 12 s`);
+  assert.ok(F.at<F.fullAt&&F.fullAt+FR_HOLD<=F.backAt+1e-9&&F.backAt<F.end,M.id);
+  assert.ok(F.backDur>=FR_BACK[0]&&F.backDur<=FR_BACK[1],`${M.id}: ${F.backDur}`);assert.ok(Math.abs(F.end-F.backAt-F.backDur-FR_BLACK)<1e-9,M.id);
+  assert.ok(frBlocked(g,S));assert.equal(frPress(g,S),false,'no press while it grows');assert.equal(frStatus(g,S),`${head}: ${M.what}.`);
+  run(g,S,F.fullAt-F.t+.05);assert.equal(F.phase,'full');assert.ok(frBlocked(g,S));assert.equal(frPress(g,S),false,'no press while the wave runs');
+  assert.equal(frStatus(g,S),`${head}, completa: una ona de llum la recorre.`);
+  run(g,S,F.backAt-F.t+.05);assert.equal(F.phase,'back');assert.ok(F.S.back,'the way back');assert.ok(frBlocked(g,S));assert.equal(frPress(g,S),false,'no press on the way back');
+  assert.equal(frStatus(g,S),`${head}: la forma es desfà al revés de com ha crescut.`);
+  run(g,S,F.end-F.t+.1);assert.equal(F.phase,'rest');assert.ok(!frBlocked(g,S));
+  assert.equal(frStatus(g,S),`${head}, acabada. La pantalla és negra i la pulsació següent en porta una altra.`);
   assert.equal((frProgress(g,S).match(/class="done"/g)||[]).length,k+1);}
- assert.equal(F.lap,0);frPress(g,S);assert.equal(F.lap,1);assert.equal(frStim(F).id,FR_IDS[0]);assert.equal(frNumber(F),1);
+ assert.equal(F.lap,0);frPress(g,S);assert.equal(F.lap,1);assert.equal(frStim(F).id,FR_IDS[0]);assert.equal(frNumber(F),1);assert.equal(F.old,null,'the form before is already gone');
+});
+
+test('the slower growth (0.74.2): every form takes about two seconds more than in 0.74 (one, two and a half with «Ràpid» and «Lent»)',()=>{
+ for(const [grow,plus] of [['rapid',1],['normal',2],['lent',3.5]])for(const id of FR_IDS){const s={...S,frFirst:id,frGrow:grow},g={};frStart(g,s);frPress(g,s);const F=g.fractals;
+  assert.ok(Math.abs(frGrowK(s,id)*FR_SPAN[id]-FR_SPAN[id]-plus)<1e-9,id);const took=F.fullAt-F.at;
+  assert.ok(took>=FR_SPAN[id]+plus-.02&&took<=FR_SPAN[id]+plus+.5,`${grow} ${id}: ${took.toFixed(2)} s for ${FR_SPAN[id]}+${plus}`);}
+});
+
+test('the way back: the growth plays backwards (its events reversed, softer, without accents), a falling phrase, the place fades, then black',()=>{
+ for(const id of FR_IDS){const s={...S,frFirst:id},g={};frStart(g,s);const F=g.fractals;frPress(g,s);F.cues.length=0;
+  run(g,s,F.backAt-F.t-.02);for(;F.t<F.backAt+.1;){frTick(g,s,1/30);frEvents(F,()=>{},()=>{});}assert.equal(F.phase,'back');assert.ok(F.cues.includes('back'),id);
+  const B=F.S.back;assert.ok(B.v>0&&B.end>B.at&&B.from>0,id);const phrase=F.notes.filter(n=>n.at>=F.backAt);assert.ok(phrase.length>=3,`${id}: ${phrase.length} notes of the phrase`);
+  assert.ok(Math.max(...phrase.map(n=>n.at))<=F.end+1.5,`${id}: the phrase ends with the form`);
+  const notes=[],accents=[];while(F.phase==='back'){frTick(g,s,1/30);frEvents(F,e=>notes.push(e),f=>accents.push(f));}
+  assert.ok(notes.length>=1,`${id}: the reversed growth sounds`);assert.equal(accents.length,0,`${id}: no accents on the way back`);
+  for(const e of notes)assert.ok(e.vel>0&&e.vel<=.21,id);assert.ok(F.cues.includes('black'),id);}
 });
 
 test('the first form can be any; «Espera que acabi cada efecte» off lets a press bring the next form at once',()=>{
  const g={},s={...S,frFirst:'nautilus',lock:false};frStart(g,s);const F=g.fractals;frPress(g,s);assert.equal(frStim(F).id,'nautilus');assert.equal(frNumber(F),1);
  run(g,s,1);assert.ok(!frBlocked(g,s));assert.ok(frPress(g,s));assert.equal(frStim(F).id,'miceli');assert.ok(F.old,'the form before goes out');
- assert.match(frHelp(S),/Mentre una forma creix, les pulsacions no fan res/);assert.match(frHelp(s),/Pots prémer mentre una forma creix/);
+ assert.match(frHelp(S),/Mentre una forma creix i es desfà, les pulsacions no fan res/);assert.match(frHelp(S),/es desfà al revés de com ha crescut, fins que la pantalla torna a ser negra/);assert.match(frHelp(s),/Pots prémer mentre una forma creix/);
 });
 
 test('the wait: once a form is whole its time slows down to a drift (15 %), never to a stop; without «Senyal de torn» it keeps its pace',()=>{
@@ -91,10 +114,10 @@ test('in the app: the folder «Formes, llum i música» after the Laboratori de 
  let at=build.indexOf("'bombolles-escena.js'");assert.ok(at>0);for(const f of order){const i=build.indexOf(`'${f}'`);assert.ok(i>at,f);at=i;}assert.ok(at<build.indexOf("'art.js'"));
  // every text of the activity has its translation in the five other languages
  const texts=[FR_CAUSE.name,FR_CAUSE.desc,FR_CAUSE.tag,'Creixement de cada forma','Primera forma','Ràpid','Lent','La pantalla és negra i espera la primera pulsació. Cada pulsació fa créixer una forma de la natura.',
-  'Mentre una forma creix, les pulsacions no fan res.','Pots prémer mentre una forma creix: ve la següent.',...FR_STIMS.map(x=>x.name),...FR_STIMS.map(x=>x.what)];
+  'Mentre una forma creix i es desfà, les pulsacions no fan res.','Com més lent, millor es veu com cada nivell de la forma surt de l’anterior.','Pots prémer mentre una forma creix: ve la següent.',...FR_STIMS.map(x=>x.name),...FR_STIMS.map(x=>x.what)];
  const help=frHelp(S).match(/<strong>(.*?)<\/strong>/)[1];texts.push(help);
  for(const l of ['es','eu','gl','en','fr']){const d=JSON.parse(read(`../dist/i18n/${l}.json`));for(const x of texts)assert.ok(d.s[x],`${l}: ${x}`);
-  for(const p of ['{x}, forma {n} de {n2}: {y}.','{x}, forma {n} de {n2}, completa. La pulsació següent en porta una altra.'])assert.ok(d.p.some(([ca])=>ca===p),`${l}: ${p}`);}
+  for(const p of ['{x}, forma {n} de {n2}: {y}.','{x}, forma {n} de {n2}, completa: una ona de llum la recorre.','{x}, forma {n} de {n2}: la forma es desfà al revés de com ha crescut.','{x}, forma {n} de {n2}, acabada. La pantalla és negra i la pulsació següent en porta una altra.'])assert.ok(d.p.some(([ca])=>ca===p),`${l}: ${p}`);}
 });
 
 test('the drawing outside the browser: black, and nothing to wait for',async()=>{

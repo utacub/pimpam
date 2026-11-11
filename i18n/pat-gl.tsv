@@ -116,4 +116,6 @@ p115	{x} o varrido do menú
 p116	{n} elementos
 p117	{n} elemento
 p118	{x}, forma {n} de {n2}: {y}.
-p119	{x}, forma {n} de {n2}, completa. A pulsación seguinte trae outra.
+p119	{x}, forma {n} de {n2}, rematada. A pantalla está negra e a pulsación seguinte trae outra.
+p120	{x}, forma {n} de {n2}, completa: unha onda de luz percórrea.
+p121	{x}, forma {n} de {n2}: a forma desfaise ao revés de como medrou.

@@ -116,4 +116,6 @@ p115	{x} menu scanning
 p116	{n} items
 p117	{n} item
 p118	{x}, form {n} of {n2}: {y}.
-p119	{x}, form {n} of {n2}, complete. The next press brings another.
+p119	{x}, form {n} of {n2}, finished. The screen is black and the next press brings another.
+p120	{x}, form {n} of {n2}, complete: a wave of light runs through it.
+p121	{x}, form {n} of {n2}: the form comes undone in the reverse order of its growth.

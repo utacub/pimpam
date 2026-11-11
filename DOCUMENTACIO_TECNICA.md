@@ -1,5 +1,12 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.74.2 · Fractals a la natura: marxa enrere i creixement més lent
+
+- **Fases.** `F.phase`: `run` (creix) → `full` (sencera, a `F.fullAt`) → `back` (a `F.backAt`, com a mínim `FR_HOLD` = 3,2 s després) → `rest` (a `F.end` = `backAt + backDur + FR_BLACK`, amb `FR_BLACK` = 0,35 s de negre). `frBusy(F)` és cert a `run`, `full` i `back`; `frBlocked` i `frRate` el fan servir.
+- **Creixement.** `FR_SPAN` és el temps que cada forma tardava a ser sencera a la 0.74 (mesurat); `frGrowK(s,id)` = (`FR_SPAN` + `FR_GROW`[ràpid 1, normal 2, lent 3,5]) / `FR_SPAN`, de manera que cada forma creix aquests segons de més. `frGrowForm` fixa el moment de forma sencera (`S.full`) a partir de `FR_SPAN`, també per a les formes vives.
+- **Marxa enrere.** `frStepForm` desa a `S.evLog` els esdeveniments del creixement. `frGoBack(S,dur)` posa `S.back = {at, from, v, end}` amb `v = (from − born) / dur`, buida les formes vives i torna a posar a la cua els esdeveniments desats, al revés i marcats `rev`. `backDur` = `grown / FR_BACKV` (1,4) dins `FR_BACK` = [3,6, 6,5] s. Al shader (`uBack` = vec3: inici, temps de partida, velocitat), quan `uT > uBack.x` el temps de creixement es torna `tg = from − (uT − at)·v` i la deriva fa servir el mateix temps enrere; les puntes brillen un 40 % menys. `frDraw` no dibuixa res quan la forma és a `rest` i ha acabat la marxa enrere.
+- **So.** A la fase `back`, `bbPhrase(U,'surt',…)` amb la unitat `max(U.unit, backDur/(U.M+0,5))`; els esdeveniments `rev` sonen amb els tons de l’acord a l’inrevés, ×0,7, separats 0,3 s com a mínim i sense accents. `frAudio`: el lloc torna (×0,8) amb la indicació `back` i `bus.hush(1,4)` amb `black`.
+
 ## 0.74 · Fractals a la natura (CE46)
 
 - **Mòduls.** `dist/fractals.js` (model: els vint estímuls en ordre, l’arc d’una pulsació, l’espera, l’estat per al lector de pantalla, la música i el so), `dist/fractals-motor.js` (motor de línies de llum: WebGL2, imatge en mitja precisió amb `EXT_color_buffer_float`, càpsules instanciades, mescla MAX, resplendor de sis nivells, dos búfers per al relleu entre formes), `dist/fractals-shaders.js`, `dist/fractals-formes.js` (eines comunes: camins que creixen, espirals, arbres, xarxes resseguides `frTraced`), `dist/fractals-formes1.js`…`fractals-formes4.js` (els estímuls 1–5, 6–10, 11–15 i 16–20), `dist/fractals-traces.js` (les xarxes resseguides dels concept arts, en base64, 0,58 MB) i `dist/fractals-escena.js` (còpia al llenç de l’app, `glAdapt` amb la clau `fractals`, càrrega `frLoad`, `frPrewarm` des del menú).

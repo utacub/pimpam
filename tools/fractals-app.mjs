@@ -1,4 +1,4 @@
-// Fractals a la natura (CE46, 0.74) in the app: the folder and the card, its «Informació» panel, the tab of its settings, a few forms
+// Fractals a la natura (CE46, 0.74; 0.74.2 with the way back to black) in the app: the folder and the card, its «Informació» panel, the tab of its settings, a few forms
 // grown with real presses, the notes the app plays (window.__pimpamSoundLog), the recordings started, the words for the screen reader in
 // Catalan and in English, the errors of the page, and stills.
 // Usage: node tools/fractals-app.mjs <built.html | http://…/> <outdir> [width] [height] [dpr] [presses]
@@ -33,8 +33,10 @@ await shot('03_ajustos');if(process.env.FR_FIRST){await page.selectOption('#frFi
 await page.keyboard.press('Escape');await page.waitForTimeout(300);await page.evaluate(()=>document.querySelector('dialog[open]')?.close());await page.waitForTimeout(300);
 if(/paused/.test(await phase())){await press();await page.waitForTimeout(800);}
 console.log('start',await phase(),'|',await status());await shot('04_inici');
-for(let k=1;k<=N;k++){await until(/rest/);await press();await page.waitForTimeout(1800);await shot(`05_pulsacio_${k}_creix`);console.log('press',k,await phase(),'|',await status());
- await until(/rest/);await page.waitForTimeout(400);await shot(`05_pulsacio_${k}_sencera`);console.log('       ',await phase(),'|',await status());}
+for(let k=1;k<=N;k++){await until(/rest/);await press();await page.waitForTimeout(1800);await shot(`05_pulsacio_${k}_1_creix`);console.log('press',k,await phase(),'|',await status());
+ console.log('       ',await until(/full/),'|',await status());await shot(`05_pulsacio_${k}_2_sencera`);
+ console.log('       ',await until(/back/),'|',await status());await page.waitForTimeout(1200);await shot(`05_pulsacio_${k}_3_es_desfa`);
+ await until(/rest/);await page.waitForTimeout(400);await shot(`05_pulsacio_${k}_4_negre`);console.log('       ',await phase(),'|',await status());}
 const log=await page.evaluate(()=>window.__pimpamSoundLog.filter(x=>x.op==='play').map(x=>x.event?.inst));const by={};for(const i of log)by[i]=(by[i]||0)+1;
 console.log('notes',log.length,JSON.stringify(by));console.log('recordings started',await page.evaluate(()=>window.__frRec));
 // the words in English (the language menu of the home page)
@@ -46,6 +48,7 @@ console.log('card en:',await page.evaluate(()=>document.querySelector('[data-car
 await page.evaluate(()=>document.querySelector('[data-start="fractals"]')?.click());
 {const t0=Date.now();while(Date.now()-t0<120000&&await page.evaluate(()=>!!document.querySelector('.load-cover')))await page.waitForTimeout(150);await page.waitForTimeout(600);}
 console.log('en start |',await status());await press();await page.waitForTimeout(1500);console.log('en press |',await status());
+console.log('en',await until(/full/),'|',await status());console.log('en',await until(/back/),'|',await status());console.log('en',await until(/rest/),'|',await status());
 console.log('en help |',await page.evaluate(()=>document.querySelector('#game-help')?.innerText.replace(/\s+/g,' ').slice(0,400)));
 await page.evaluate(()=>document.querySelector('[data-home]')?.click());await page.waitForTimeout(500);
 await page.evaluate(()=>document.querySelector('[data-lang-toggle]')?.click());await page.waitForTimeout(200);await page.evaluate(()=>document.querySelector('[data-lang="ca"]')?.click());await page.waitForTimeout(500);

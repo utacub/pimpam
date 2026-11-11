@@ -116,4 +116,6 @@ p115	{x} el barrido del menú
 p116	{n} elementos
 p117	{n} elemento
 p118	{x}, forma {n} de {n2}: {y}.
-p119	{x}, forma {n} de {n2}, completa. La pulsación siguiente trae otra.
+p119	{x}, forma {n} de {n2}, terminada. La pantalla está negra y la pulsación siguiente trae otra.
+p120	{x}, forma {n} de {n2}, completa: una onda de luz la recorre.
+p121	{x}, forma {n} de {n2}: la forma se deshace al revés de como ha crecido.

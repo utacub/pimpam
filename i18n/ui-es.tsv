@@ -1934,15 +1934,15 @@ u2110	Abuelo Quim
 u2111	Fractales en la naturaleza
 u2112	Veinte formas de la naturaleza que se repiten dentro de sí mismas, hechas de líneas de luz de colores sobre negro: helechos, copos de nieve, girasoles, rayos, árboles, ríos, corales, neuronas… Cada pulsación hace crecer una, con su música.
 u2113	20 formas · una en cada pulsación
-u2114	Cada pulsación hace crecer entera una forma de la naturaleza con líneas de luz de colores, y una onda de luz la recorre. La pulsación siguiente la recoge hacia la raíz y hace crecer otra: hay veinte, y después vuelven a empezar con otros colores.
-u2115	Mientras una forma crece, las pulsaciones no hacen nada.
+u2114	Cada pulsación hace crecer entera una forma de la naturaleza con líneas de luz de colores, y una onda de luz la recorre. Después la forma se deshace al revés de como ha crecido, hasta que la pantalla vuelve a quedar negra. Hay veinte, y después vuelven a empezar con otros colores.
+u2115	Mientras una forma crece y se deshace, las pulsaciones no hacen nada.
 u2116	Puedes pulsar mientras una forma crece: llega la siguiente.
 u2117	Este ordenador no puede mostrar las formas de esta actividad: hace falta WebGL 2. La música sí suena.
 u2118	La pantalla está negra y espera la primera pulsación. Cada pulsación hace crecer una forma de la naturaleza.
 u2119	Crecimiento de cada forma
 u2120	Rápido
 u2121	Lento
-u2122	Cuanto más lento, mejor se ve cómo cada nivel de la forma sale del anterior. La música de cada forma dura lo mismo.
+u2122	Cuanto más lento, mejor se ve cómo cada nivel de la forma sale del anterior.
 u2123	Primera forma
 u2124	Los fractales se ven siempre sobre negro: no tienen decorado atenuado ni sin decorado, ni color de base.
 u2125	crecen las frondas del helecho, pínnula a pínnula

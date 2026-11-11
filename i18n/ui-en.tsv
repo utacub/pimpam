@@ -1934,15 +1934,15 @@ u2110	Grandpa Quim
 u2111	Fractals in nature
 u2112	Twenty forms of nature that repeat within themselves, made of lines of coloured light on black: ferns, snowflakes, sunflowers, lightning, trees, rivers, corals, neurons… Each press grows one, with its own music.
 u2113	20 forms · one at each press
-u2114	Each press grows a whole form of nature in lines of coloured light, and a wave of light runs through it. The next press gathers it back to the root and grows another: there are twenty, and then they start again in other colours.
-u2115	While a form is growing, presses do nothing.
+u2114	Each press grows a whole form of nature in lines of coloured light, and a wave of light runs through it. Then the form comes undone in the reverse order of its growth, until the screen is black again. There are twenty, and then they start again in other colours.
+u2115	While a form grows and comes undone, presses do nothing.
 u2116	You can press while a form is growing: the next one comes.
 u2117	This computer cannot show the forms of this activity: WebGL 2 is needed. The music still plays.
 u2118	The screen is black and waits for the first press. Each press grows a form of nature.
 u2119	Growth of each form
 u2120	Fast
 u2121	Slow
-u2122	The slower it is, the better you can see how each level of the form comes out of the one before. The music of each form lasts the same.
+u2122	The slower it is, the better you can see how each level of the form comes out of the one before.
 u2123	First form
 u2124	The fractals are always shown on black: they have no dimmed scenery, no scenery-off mode and no base colour.
 u2125	the fern fronds grow, pinnule by pinnule

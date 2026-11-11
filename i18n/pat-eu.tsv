@@ -116,4 +116,6 @@ p115	{x} menuaren ekorketa
 p116	{n} elementu
 p117	{n} elementu
 p118	{x}, {n}/{n2} forma: {y}.
-p119	{x}, {n}/{n2} forma, osatuta. Hurrengo sakatzeak beste bat dakar.
+p119	{x}, {n}/{n2} forma, amaituta. Pantaila beltza da eta hurrengo sakatzeak beste bat dakar.
+p120	{x}, {n}/{n2} forma, osatuta: argi-uhin batek zeharkatzen du.
+p121	{x}, {n}/{n2} forma: forma desegin egiten da, hazi den alderantzizko ordenan.

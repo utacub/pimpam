@@ -1,3 +1,26 @@
+# Pim Pam 0.74.2 · Fractals a la natura: marxa enrere i creixement més lent
+
+Base: 0.74.1 (a208ded; la 0.74.1 és el retoc del teló d’«El vestidor fantàstic», més avall). Respon al missatge d’en Marc de l’11 de novembre de 2026 (21:10): «Seria més bonica si allargues cada estímuls per fer marxa enrere en la crescuda de l'estímul fins que la pantalla torni a quedar en negre, i així el següent estímul comença sobre la pantalla negra. El creixement fractal també hauria de ser més lent, durar un parell de segons més, perquè es pugui apreciar millor.»
+
+## Què canvia
+
+- **Creixement més lent.** Cada forma tarda uns dos segons més a ser sencera que a la 0.74, sigui quina sigui la seva durada (abans el gel tardava 2,3 s i la dent de lleó 6,8 s; ara 4,3 s i 8,8 s). Amb «Ràpid» és un segon més que a la 0.74, i amb «Lent», tres segons i mig més.
+- **Marxa enrere fins al negre.** Una pulsació fa: la forma creix nivell a nivell; quan és sencera, una ona de llum la recorre (3,2 s com a mínim); després la forma es desfà exactament al revés de com ha crescut (les puntes primer, l’arrel l’última), en 3,6 a 6,5 s segons el que ha tardat a créixer, fins que la pantalla és negra. La pulsació següent comença sobre negre: la forma anterior ja no surt mentre creix la nova.
+- **So de la marxa enrere.** Una frase de música que baixa i acaba a la tònica, amb els mateixos instruments, una mica més suau que la del creixement; els esdeveniments del creixement sonen al revés, més fluixos i sense accents; el so del lloc torna una mica més baix i s’esvaeix en 1,4 s quan la pantalla és negra.
+- **Una pulsació sencera** dura ara entre 12 i 19 s (normal). Amb «Espera que acabi cada efecte», les pulsacions no fan res fins al negre; sense, una pulsació porta la forma següent en qualsevol moment.
+- **Textos.** L’ajuda, l’estat per al lector de pantalla (creix, completa, es desfà, acabada) i la nota de l’opció de creixement, als sis idiomes.
+
+## Proves
+
+- `tests/fractals.test.mjs` (11): l’arc ara comprova les quatre fases (creix, completa, es desfà, negre) i els textos de cadascuna a les vint formes; nou: el creixement més lent (+1, +2 i +3,5 s a les tres velocitats, a les vint formes) i la marxa enrere (la frase que baixa, els esdeveniments al revés, sense accents, i el final a negre).
+- `tools/fractals-audio.mjs` ara renderitza 24 s i mesura també la música de la marxa enrere: entre −49,9 i −45,0 LUFS, una mica per sota de tota la música de la pulsació (entre −46,8 i −42,0).
+- Imatges fixes de la marxa enrere de falgueres, flocs, arbre, nautilus i dent de lleó: la forma recula fins al negre.
+
+## No verificat
+
+- No s’ha vist en una targeta gràfica real (només amb SwiftShader); l’auditoria de flaixos la fa en Marc.
+- Els sons d’ElevenLabs continuen sense escoltar.
+
 # Pim Pam 0.74 · Fractals a la natura (CE46)
 
 Base: 0.73 (b05a293). Respon als missatges d’en Marc de l’11 de novembre de 2026: «una nova activitat basada en estímuls de línies de colors sobre fons negre… Fractals a la natura… 20 estímuls diferents per una activitat de causa efecte» (15:59), «Cada pulsació mostrarà l'escena completa, 20 estímuls, 20 pulsacions i després es torna a començar» (16:13), «esforça't en obtenir un resultat idèntic al del concept art… que el procés d'aparició… faci evident la seva naturalesa fractal» (16:56), la fitxa d’informació sense referències (17:18 i 17:26) i «Quan hagis acabat l'activitat… la pots publicar directament» (17:27).

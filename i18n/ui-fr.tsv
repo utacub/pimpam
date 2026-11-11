@@ -1934,15 +1934,15 @@ u2110	Papi Quim
 u2111	Fractales dans la nature
 u2112	Vingt formes de la nature qui se répètent à l’intérieur d’elles-mêmes, faites de lignes de lumière colorée sur fond noir : fougères, flocons de neige, tournesols, éclairs, arbres, fleuves, coraux, neurones… Chaque appui en fait pousser une, avec sa musique.
 u2113	20 formes · une à chaque appui
-u2114	Chaque appui fait pousser une forme entière de la nature en lignes de lumière colorée, et une onde de lumière la parcourt. L’appui suivant la ramène vers la racine et en fait pousser une autre : il y en a vingt, puis elles recommencent avec d’autres couleurs.
-u2115	Pendant qu’une forme pousse, les appuis ne font rien.
+u2114	Chaque appui fait pousser une forme entière de la nature en lignes de lumière colorée, et une onde de lumière la parcourt. Puis la forme se défait dans l’ordre inverse de sa croissance, jusqu’à ce que l’écran redevienne noir. Il y en a vingt, puis elles recommencent avec d’autres couleurs.
+u2115	Pendant qu’une forme pousse et se défait, les appuis ne font rien.
 u2116	Tu peux appuyer pendant qu’une forme pousse : la suivante arrive.
 u2117	Cet ordinateur ne peut pas afficher les formes de cette activité : il faut WebGL 2. La musique, elle, se fait entendre.
 u2118	L’écran est noir et attend le premier appui. Chaque appui fait pousser une forme de la nature.
 u2119	Croissance de chaque forme
 u2120	Rapide
 u2121	Lente
-u2122	Plus c’est lent, mieux on voit comment chaque niveau de la forme naît du précédent. La musique de chaque forme dure autant.
+u2122	Plus c’est lent, mieux on voit comment chaque niveau de la forme naît du précédent.
 u2123	Première forme
 u2124	Les fractales s’affichent toujours sur fond noir : elles n’ont ni décor atténué, ni mode sans décor, ni couleur de base.
 u2125	les frondes de la fougère poussent, pinnule après pinnule
