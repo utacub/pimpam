@@ -147,7 +147,8 @@ export function vsFinalScore(s,round,stage,picks,id){const R=vsRoundOf(round,s),
   [3,2,1,0].forEach((k,i)=>{const r=round-k;if(r<0)return;out.push(vsV(vsRoundOf(r,s).artist,i%2?'Tada':'Iupi',g0+.3+i*.38,.5));});
   out.push(...vsBand(picks,g0+.5,gb,4,.9,{full:true}),...vsStinger(picks,g0+.5+gb*VS_BAR,.9),vsX('ovacio',TL.groupEnd-1.1,.42));}
  // the curtain, and the next artist
- out.push(vsX('teloner',TL.groupEnd,.38),vsX('passosMitjons',TL.close+.1,.28));
+ // a few steps back upstage (vestidor-art.js VS_RETREAT), then the curtain
+ out.push(...vsGaitSounds(nb.feet,TL.groupEnd-.3,TL.groupEnd+.9).filter(e=>e.variant!=='rellisca').map(e=>({...e,vel:e.vel*.8})),vsX('teloner',TL.groupEnd+.45,.38),vsX('passosMitjons',TL.close+.1,.28));
  return out.filter(e=>e.t<TL.end-.05).sort((a,b)=>a.t-b.t);}
 // From seconds to the fractions of the effect that app.js plays (at and length over its duration).
 export const vsPattern=(events,D)=>events.filter(e=>e.t<D-.02).map(e=>({inst:e.inst,midi:e.midi,at:Math.max(0,e.t)/D,length:Math.max(.01,Math.min(e.len,D-e.t))/D,vel:e.vel,...(e.variant?{variant:e.variant}:{}),...(e.strum?{strum:e.strum}:{})}));

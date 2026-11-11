@@ -101,14 +101,19 @@ function vsDressingRoom(c,G,o){const d=o.decor;c.fillStyle=d.base;c.fillRect(0,0
  if(!o.noPipa)vsPipa(c,o.pP||{},o.pS||vsState(),G.pipa.x,G.pipa.y,G.kCam*VS_REL.pipa);
  return o.T;}
 // ── the stage ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-function vsSpot(c,G,light,x,k=1){const dark={tarda:.1,vespre:.24,nit:.38}[light]??.2;if(!(k>0))return;const g=c.createRadialGradient(x,G.stageY-G.h*.22,G.h*.12,x,G.stageY-G.h*.22,G.h*.75);g.addColorStop(0,'rgba(10,6,20,0)');g.addColorStop(1,`rgba(10,6,20,${(dark*k).toFixed(3)})`);c.save();c.fillStyle=g;c.fillRect(0,0,G.w,G.h);
+// The house lights: dark round the spot (the curtain gets the same, so that it does not look lit on its own), and a warm pool on the floor.
+function vsSpotDark(c,G,light,x,k=1){const dark={tarda:.1,vespre:.24,nit:.38}[light]??.2;if(!(k>0))return;const g=c.createRadialGradient(x,G.stageY-G.h*.22,G.h*.12,x,G.stageY-G.h*.22,G.h*.75);g.addColorStop(0,'rgba(10,6,20,0)');g.addColorStop(1,`rgba(10,6,20,${(dark*k).toFixed(3)})`);c.save();c.fillStyle=g;c.fillRect(0,0,G.w,G.h);c.restore();}
+function vsSpot(c,G,light,x,k=1){if(!(k>0))return;vsSpotDark(c,G,light,x,k);c.save();
  const f=c.createRadialGradient(x,G.stageY,4,x,G.stageY,G.kb*230);f.addColorStop(0,`rgba(255,240,190,${(.28*k).toFixed(3)})`);f.addColorStop(1,'rgba(255,240,190,0)');c.fillStyle=f;c.beginPath();c.ellipse(x,G.stageY,G.kb*260,G.kb*48,0,0,VS_TAU2);c.fill();c.restore();}
 function vsStageBack(c,G,o){const d=o.decor;c.fillStyle=d.base;c.fillRect(0,0,G.w,G.h);if(d.fade<=0)return;
  if(!vsDrawPic(c,'esc-1',G.ox,G.oy,G.kb,1)){c.fillStyle='#bfe3f2';c.fillRect(0,0,G.w,G.h);}vsDrawPic(c,'fons-'+(o.backdrop+1),G.ox,G.oy,G.kb,1);escVeil(c,d,0,0,G.w,G.h);vsSpot(c,G,o.light,o.spotX??G.bx(768),d.fade);
  if(o.rainbow>0){const b=VS_BOX['obj-7'],im=vsPic('obj-7');if(b&&im){c.save();c.beginPath();c.rect(G.bx(b[0]),0,b[2]*G.kb*o.rainbow,G.h);c.clip();c.globalAlpha*=.92;c.drawImage(im,G.bx(b[0]),G.by(b[1]),b[2]*G.kb,b[3]*G.kb);c.restore();}}}
-// The curtain (ESC-2) closing from both sides, and the audience in front (ESC-3), their hands up when they clap (ESC-4).
+// The curtain (ESC-2) closing from both sides, and the audience in front (ESC-3), their hands up when they clap (ESC-4). The curtain is
+// clipped below the top beam (ESC-2 redrew the beam 1-2 px off) and gets the same veil and house lights as the stage behind it.
+const VS_CURTAIN_TOP=188;
 function vsStageFront(c,G,o){const d=o.decor;if(d.fade<=0)return;c.save();c.globalAlpha*=d.fade;
- if(o.curtain>0){const im=vsPic('esc-2');if(im){const L=112,Rr=1424,half=(Rr-L)/2*vsClamp(o.curtain);c.save();c.beginPath();c.rect(G.bx(L),0,half*G.kb,G.by(842));c.rect(G.bx(Rr-half),0,half*G.kb,G.by(842));c.clip();c.drawImage(im,G.ox,G.oy,1536*G.kb,1024*G.kb);c.restore();}}
+ if(o.curtain>0){const im=vsPic('esc-2');if(im){const L=112,Rr=1424,half=(Rr-L)/2*vsClamp(o.curtain);const y0=G.by(VS_CURTAIN_TOP),hh=G.by(842)-y0;c.save();c.beginPath();c.rect(G.bx(L),y0,half*G.kb,hh);c.rect(G.bx(Rr-half),y0,half*G.kb,hh);c.clip();c.drawImage(im,G.ox,G.oy,1536*G.kb,1024*G.kb);
+   escVeil(c,d,0,0,G.w,G.h);vsSpotDark(c,G,o.light,o.spotX??G.bx(768),d.fade);c.restore();}}
  if(o.hands>0)vsDrawPic(c,'mans',G.ox,G.oy+(1-vsEase(o.hands))*90*G.kb,G.kb,vsClamp(o.hands*2));
  vsDrawPic(c,'public',G.ox,G.oy,G.kb,1);c.restore();}
 // ── the cards of the choice ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -188,6 +193,10 @@ export function vsResult(c,w,h,state,game,s,view,time){const G=vsGeom(w,h,false)
  if(t>=VS_FLY&&t<VS_FLY+.9){const [px,py]=X.slip&&t<X.land?vsPiecePlace(who,slot,id,X.slip):vsPiecePlace(who,slot,id),[ax,ay]=vsAt(who,T0,px,py);vsDrawFx(c,{k:'sparkle',t:t-VS_FLY},{x:ax,y:ay},3*k);}
  if(X.slip&&t>=X.land&&t<X.land+.9){const [ax,ay]=vsAt(who,T0,...vsPiecePlace(who,slot,id));vsDrawFx(c,{k:'sparkle',t:t-X.land},{x:ax,y:ay},3*k);}}
 // ── the show: the wall goes up, the number, the bow, the curtain, the way back ─────────────────────────────────────────────────
+// The step back before the curtain: from a to b seconds round the end of the bow, the figures scale down by k round their feet line
+// (board y feet) and go dy board px up the stage, so that their feet end above the bottom of the curtain (board y 842); the curtain
+// starts closing at curtain s.
+const VS_RETREAT={a:-.35,b:.8,k:.24,dy:105,feet:905,curtain:.5};
 function vsPipaFollow(nb,t,S){if(nb.feet)vsGait(nb.feet,Math.max(0,t-.25),.55,S);S.face=(t%2.2)<1.2?1:0;return S;}
 function vsShow(c,G,state,s,view,t,TL,id){const round=state.round|0,R=vsRoundOf(round,s),who=R.artist,P=vsPicks(state,s,id),nb=vsNumber(P),backdrop=vsBackdrop(P),d=view.decor,clock=view.clock||0,kS=G.kStage*VS_REL[who],kP=G.kStage*VS_REL.pipa;
  const cx=G.bx(700),stageBack=o=>vsStageBack(c,G,{decor:d,backdrop,light:R.light,...o});
@@ -207,13 +216,17 @@ function vsShow(c,G,state,s,view,t,TL,id){const round=state.round|0,R=vsRoundOf(
  const bowEnd=TL.groupEnd;if(t<TL.close){const tb=t-TL.numEnd,inGroup=TL.group&&t>=TL.groupStart;stageBack({spotX:cx});
   const S=vsState();S.pose=1;S.face=(tb%2.6)<.14?VS_FACE.parpelleig:VS_FACE.riu;S.lift=26*Math.abs(Math.sin(tb*3.2))*Math.exp(-tb*.8);
   const pS=vsState();pS.face=1;pS.lift=50*Math.abs(Math.sin(tb*4))*Math.exp(-tb*.5);
+  // before the curtain closes everybody steps back upstage, smaller, so that the curtain passes in front of them (Marc, 0.73.1)
+  const back=vsEase(vsPh(t,bowEnd+VS_RETREAT.a,bowEnd+VS_RETREAT.b)),bob=back>0&&back<1?Math.abs(Math.sin(back*Math.PI*3)):0;S.lift+=16*bob;pS.lift+=22*bob;
+  const fig=(ox,f)=>{if(!(back>0)){f();return;}const oy=G.by(VS_RETREAT.feet),sc=1-VS_RETREAT.k*back;c.save();c.translate(ox,oy-G.kb*VS_RETREAT.dy*back);c.scale(sc,sc);c.translate(-ox,-oy);f();c.restore();};
   if(inGroup){const tg=t-TL.groupStart,made=view.made||{},line=[];for(let k=3;k>=1;k--){const r=round-k;if(r<0)continue;const Rr=vsRoundOf(r,s);line.push({who:Rr.artist,P:made[r]||vsDefaultPicks(r,s)});}line.push({who,P});
-   const xs=[380,610,860,1110].slice(4-line.length),inU=vsOut(vsClamp(tg/1.2));line.forEach((a,i)=>{const from=i<line.length/2?-280:1820,x=G.bx(from+(xs[i]-from)*(a.who===who?1:inU)),Sa=vsState();Sa.pose=1;Sa.face=(tg+i*.7)%2.4<.14?VS_FACE.parpelleig:VS_FACE.riu;Sa.lift=20*Math.abs(Math.sin(tg*3+i));if(a.who===who&&inU<1)Sa.dx=0;vsArtist(c,a.who,a.P,Sa,x,G.stageY,G.kStage*VS_REL[a.who],{W:G.w,H:G.h});});
-   vsPipa(c,P,pS,G.bx(1235),G.pipaStageY+G.kb*14,kP);if(tg<VS_BOW+2)vsDrawFx(c,{k:'confetti',t:tg},{x0:0,y0:0,w:G.w,h:G.h},G.kb*.8);}
-  else{vsArtist(c,who,P,S,cx,G.stageY,kS,{W:G.w,H:G.h});vsPipa(c,P,pS,cx+G.kb*270,G.pipaStageY,kP);if(nb.full)vsDrawFx(c,{k:'confetti',t:tb+2},{x0:0,y0:0,w:G.w,h:G.h},G.kb*.8);}
-  vsStageFront(c,G,{decor:d,hands:vsClamp(tb/.6)*(1-vsPh(t,bowEnd-.4,bowEnd+.3)),curtain:vsEase(vsPh(t,bowEnd,TL.close-.1))});return;}
+   const xs=[380,610,860,1110].slice(4-line.length),inU=vsOut(vsClamp(tg/1.2));
+   fig(G.bx(760),()=>{line.forEach((a,i)=>{const from=i<line.length/2?-280:1820,x=G.bx(from+(xs[i]-from)*(a.who===who?1:inU)),Sa=vsState();Sa.pose=1;Sa.face=(tg+i*.7)%2.4<.14?VS_FACE.parpelleig:VS_FACE.riu;Sa.lift=20*Math.abs(Math.sin(tg*3+i))+16*bob;if(a.who===who&&inU<1)Sa.dx=0;vsArtist(c,a.who,a.P,Sa,x,G.stageY,G.kStage*VS_REL[a.who],{W:G.w,H:G.h});});
+    vsPipa(c,P,pS,G.bx(1235),G.pipaStageY+G.kb*14,kP);});if(tg<VS_BOW+2)vsDrawFx(c,{k:'confetti',t:tg},{x0:0,y0:0,w:G.w,h:G.h},G.kb*.8);}
+  else{fig(cx+G.kb*90,()=>{vsArtist(c,who,P,S,cx,G.stageY,kS,{W:G.w,H:G.h});vsPipa(c,P,pS,cx+G.kb*270,G.pipaStageY,kP);});if(nb.full)vsDrawFx(c,{k:'confetti',t:tb+2},{x0:0,y0:0,w:G.w,h:G.h},G.kb*.8);}
+  vsStageFront(c,G,{decor:d,light:R.light,spotX:cx,hands:vsClamp(tb/.6)*(1-vsPh(t,bowEnd-.4,bowEnd+.3)),curtain:vsEase(vsPh(t,bowEnd+VS_RETREAT.curtain,TL.close-.1))});return;}
  // the curtain closes, and the dressing room comes down with the next artist
- stageBack({spotX:cx});vsStageFront(c,G,{decor:d,curtain:1});
+ stageBack({spotX:cx});vsStageFront(c,G,{decor:d,light:R.light,spotX:cx,curtain:1});
  if(t>=TL.close){const u=vsEase(vsPh(t,TL.close,TL.end-.15)),nx=vsRoundOf(round+1,s).artist,S=vsState();S.face=u>.7?VS_FACE.riu:0;S.lift=0;c.save();c.translate(0,-G.h*1.02*(1-u));vsDressingRoom(c,G,{who:nx,P:{},S,pP:{},pS:vsPipaIdle(vsState(),clock),decor:d,light:vsRoundOf(round+1,s).light,open:0,t:clock});c.restore();}}
 // The outfit of an earlier show when the session did not see it (the group bow after starting late): the first piece of each round.
 function vsDefaultPicks(round,s){const out={};vsSlots(s).forEach((slot,k)=>{const fam=slot==='objecte'?VS_OBJECTS:VS_COSTUMES;out[slot]=fam[(round*2+k*3)%fam.length];});return out;}

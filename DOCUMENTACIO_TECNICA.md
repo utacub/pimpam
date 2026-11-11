@@ -1,5 +1,10 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.74.1 · El vestidor: el pas enrere abans del teló
+
+- `VS_RETREAT` a `dist/vestidor-art.js`: de 0,35 s abans fins a 0,8 s després del final de la salutació, les figures s’escalen (k .24) al voltant de la seva línia de peus (y 905 del tauler) i pugen 105 px, de manera que els peus queden per sobre de la vora del teló (y 842); el teló comença a tancar-se a +0,5 s. `VS_BOW` 3 s, `VS_CLOSE` 1,9 s.
+- El teló (ESC-2) es retalla des de `VS_CURTAIN_TOP` (y 188, sota la biga) i rep `escVeil` i `vsSpotDark`, la mateixa foscor de sala que `vsSpot` aplica a l’escenari.
+
 ## 0.74 · Fractals a la natura (CE46)
 
 - **Mòduls.** `dist/fractals.js` (model: els vint estímuls en ordre, l’arc d’una pulsació, l’espera, l’estat per al lector de pantalla, la música i el so), `dist/fractals-motor.js` (motor de línies de llum: WebGL2, imatge en mitja precisió amb `EXT_color_buffer_float`, càpsules instanciades, mescla MAX, resplendor de sis nivells, dos búfers per al relleu entre formes), `dist/fractals-shaders.js`, `dist/fractals-formes.js` (eines comunes: camins que creixen, espirals, arbres, xarxes resseguides `frTraced`), `dist/fractals-formes1.js`…`fractals-formes4.js` (els estímuls 1–5, 6–10, 11–15 i 16–20), `dist/fractals-traces.js` (les xarxes resseguides dels concept arts, en base64, 0,58 MB) i `dist/fractals-escena.js` (còpia al llenç de l’app, `glAdapt` amb la clau `fractals`, càrrega `frLoad`, `frPrewarm` des del menú).
