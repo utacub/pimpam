@@ -1,5 +1,9 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.75.2 · El vestidor: el barret de cuiner de la Pipa
+
+- `fill_inside` (`tools/vestidor-assets.py`, a `pipa()` per al codi 5): una peça blanca sobre el dibuix blanc de la Pipa queda sense interior en separar-la; els forats tancats de 200 px o més (i la vora semitransparent que els envolta) prenen els colors de la imatge editada. Aplicat a `dist/assets/vestidor/pipa-5.webp`.
+
 ## 0.75.1 · El vestidor: les cartes amb la peça sola
 
 - Imatges `peca-<codi>` (11 a 63) de `tools/vestidor-assets.py LOT9 --peces`: cada peça del lot 9 (transparent o sobre blanc) sense taques ni boira i amb el costat llarg a 640 px; afegeix les caixes a `dist/vestidor-dades.js` i conserva les altres i `VS_PARROT`. Són a `VS_COMMON`.
