@@ -75,3 +75,58 @@ export const FR_CORALL={id:'corall',name:'Corall',what:'les branques del corall,
   frTree(S,G,seeds,{ratio:.75,sp:.52,wr:.7,minLen:9,depth:6,up:lv=>[.7,.3,.15,.08,0,0,0][lv],lyre:.7,bend:.3,tipFork:.55,tries:[0,.14,-.14,.28,-.28],pad:lv=>[16,11,7,5,4,3.5,3][lv],C:lv=>C[lv],t0,T:lv=>1.1+lv*.3,dur:lv=>.38,hot:.6,sway:.35,lum:lv=>1.1+lv*.05});
   frEvent(S,'tronc',.4,t0);frEvent(S,'tronc',.7,t0+.1*k);frEvent(S,'branca',.9,t0+.6*k);
   for(let i=0;i<5;i++)frEvent(S,'fulla',.3+i*.3,t0+(1.2+i*.5)*k);}]};
+
+// ── 8 · Romanesco ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+// The romanesco is a head of flower buds that never opened: every bud became a cone made of smaller cones, set on spirals, and so on
+// for four or five orders (Kieffer, Fraser & Gaucher, 1998, on the cauliflower; Azpeitia et al., 2021, found how a meristem that keeps
+// failing to flower makes it). The cones of each order stand on spirals at the golden angle, as the florets of a sunflower, but each
+// one is as big as its distance from the centre: so the head looks the same at every size (a logarithmic, self-similar packing).
+// Growth: the great cones from the centre outwards, the outline and its rings; then the cones on the cones; then the cones on those.
+// Concept 08: seen from above, a spiral of pointed cones in lime and chartreuse light, each one drawn as an outline with rings that
+// close in towards its point (a cone seen in perspective), and smaller cones of the same kind round the edges of each.
+// a cone: the circle of its base (cx, cy, r), its axis a (towards its point), its half angle al
+function frConeOf(cx,cy,r,a,al){const sa=Math.sin(al),d0=r/sa,ux=Math.cos(a),uy=Math.sin(a);return {cx,cy,r,a,al,d0,ux,uy,tx:cx+ux*d0,ty:cy+uy*d0,ta:Math.tan(al)};}
+// is (x, y) inside the cone (with a margin m)?
+function frConeIn(c,x,y,m=0){const dx=x-c.cx,dy=y-c.cy;if(dx*dx+dy*dy<(c.r-m)*(c.r-m))return true;
+ const vx=x-c.tx,vy=y-c.ty,al=-(vx*c.ux+vy*c.uy);if(al<=0||al>c.d0)return false;return Math.abs(vx*c.uy-vy*c.ux)<al*c.ta-m;}
+// a polyline drawn where nothing in front of it hides it: its points keep the moments of the whole line, so it grows as one
+function frDrawSeen(S,pts,t0,dur,o,hid){const n=pts.length/2,L=[0];for(let i=1;i<n;i++)L.push(L[i-1]+Math.hypot(pts[i*2]-pts[i*2-2],pts[i*2+1]-pts[i*2-1]));const tot=L[n-1]||1;
+ let run=[],ts=[],ds=0;const flush=()=>{if(run.length>=4)frPathT(S,run,ts,{...o,d0:(o.d0||0)+ds});run=[];ts=[];};
+ for(let i=0;i<n;i++){const x=pts[i*2],y=pts[i*2+1];if(hid(x,y)||frOut(x,y,0)){flush();continue;}if(!run.length)ds=L[i];run.push(x,y);ts.push(t0+dur*L[i]/tot);}flush();}
+// the points of an arc of the circle (cx, cy, r) from the angle a0 to a1
+const frArc=(cx,cy,r,a0,a1)=>{const n=Math.max(3,Math.ceil(Math.abs(a1-a0)*r/5)),p=[];for(let i=0;i<=n;i++){const a=a0+(a1-a0)*i/n;p.push(cx+Math.cos(a)*r,cy+Math.sin(a)*r);}return p;};
+// one cone drawn: the two halves of its outline from its point round to the far side of its base, then its rings from the base in
+function frConeDraw(S,c,T,dur,o,hid){const k=S.k,ph=Math.PI/2-c.al,half=Math.PI/2+c.al;
+ for(const sd of [1,-1]){const p=[c.tx,c.ty];const g=c.a+sd*ph,q=frArc(c.cx,c.cy,c.r,g,g+sd*half);p.push(...q);
+  frDrawSeen(S,p,T,dur,{w0:o.w*.8,w1:o.w,c0:o.c,c1:o.c-.06,lum:o.lum,d0:o.d,hot:o.hot,sway:0},hid);}
+ const q=o.q||.74;let i=1;for(let d=c.d0*q;;d*=q,i++){const r=d*Math.sin(c.al);if(r<o.rMin)break;const cx=c.tx-c.ux*d,cy=c.ty-c.uy*d,T2=T+dur*.35+i*.07*k;
+  for(const sd of [1,-1]){const g=c.a+Math.PI,p=frArc(cx,cy,r,g,g-sd*half);frDrawSeen(S,p,T2,dur*.55,{w0:o.w*.85,w1:o.w*.6,c0:o.c+.06,c1:o.c,lum:o.lum*.95,d0:o.d+c.d0-d,hot:0,sway:0},hid);}}}
+export const FR_ROMANESCO={id:'romanesco',name:'Romanesco',what:'els cons en espiral, i els cons dels cons',
+ pal:['#1a5a00','#3cb80a','#7ed40e','#c8f51e','#f0ff78'],pal2:['#0a5a30','#22b85a','#5ed43a','#b0f540','#e8ffa0'],
+ look:{bloom:.24,glow:2,halo:.14,core:.22,spread:.5},wind:0,
+ acts:[(S,t0)=>{const k=S.k,R=S.rnd,CX=822,CY=432,AL=.56,B=.05,G=Math.PI*(3-Math.sqrt(5));
+  // the great cones: on a spiral at the golden angle, each as big as its distance from the centre; those nearer the centre are on top
+  const big=[];for(let n=0;n<200;n++){const r=26*Math.exp(B*n),th=n*G,x=CX+Math.cos(th)*r,y=CY+Math.sin(th)*r,L=.66*r+6;
+   if(x<-L*1.2||x>1672+L*1.2||y<-L*1.2||y>941+L*1.2){if(r>1300)break;continue;}
+   const a=th+.5,rb=L/(1/Math.sin(AL)+1);big.push({n,c:frConeOf(x-Math.cos(a)*L*.15,y-Math.sin(a)*L*.15,rb,a,AL),r,L});}
+  // the centre: the youngest buds, too small to tell apart, a whirl of spiral lines
+  for(let j=0;j<8;j++){const p=[];for(let i=0;i<=40;i++){const u=i/40,r=3+u*44,th=j*Math.PI/4+Math.log(r/3)*1.6;p.push(CX+Math.cos(th)*r,CY+Math.sin(th)*r);}
+   frGrow(S,p,t0,.45*k,{w0:1.2,w1:2.6,c0:.95,c1:.8,lum:.8,d0:0,hot:.4});}
+  // all the cones first (each with its place in depth: the nearer the centre, the nearer the eye; a cone on a cone is in front of
+  // its mother), then each one drawn where none in front of it hides it
+  const all=[],NB=big.length?big[big.length-1].n:1,T1=n=>t0+(.05+1.1*n/NB)*k;
+  for(const b of big){const w=Math.max(1.8,Math.min(6.5,b.L*.03));all.push({c:b.c,key:b.n,T:T1(b.n),dur:.5*k,o:{w,c:.74,lum:.82,d:b.r*.3,hot:.5,rMin:Math.max(1.8,b.L*.035),q:.68}});
+   if(b.L<50)continue;const c=b.c,m=Math.max(2,Math.min(4,Math.round(b.L/70)));
+   // the cones on this cone: round the far side of its base and up its flanks, leaning the way the spiral turns
+   for(let j=0;j<m;j++){const f=(j+.5+(R()-.5)*.4)/m,g=c.a+Math.PI/2-c.al+f*(Math.PI+2*c.al)*.96,px=c.cx+Math.cos(g)*c.r*.86,py=c.cy+Math.sin(g)*c.r*.86,L2=b.L*(.3+.08*Math.sin(f*Math.PI))*(.9+.2*R());
+    const rb=L2/(1/Math.sin(AL)+1),c2=frConeOf(px,py,rb,g+.85,AL),T2=t0+(1.35+.25*f+.25*b.n/NB)*k;
+    all.push({c:c2,key:b.n-.5+j*.01,T:T2,dur:.4*k,o:{w:Math.max(1.3,w*.6),c:.54,lum:.8,d:b.r*.3+b.L,hot:.4,rMin:1.8,q:.66}});
+    // and the cones on those
+    if(L2<48)continue;const m3=Math.max(2,Math.min(3,Math.round(L2/24)));
+    for(let h=0;h<m3;h++){const f3=(h+.5)/m3,g3=c2.a+Math.PI/2-c2.al+f3*(Math.PI+2*c2.al)*.9,L3=L2*.26*(.9+.2*R()),rb3=L3/(1/Math.sin(AL)+1);
+     all.push({c:frConeOf(c2.cx+Math.cos(g3)*c2.r*.9,c2.cy+Math.sin(g3)*c2.r*.9,rb3,g3+.95,AL),key:b.n-.75+j*.01+h*.001,T:T2+(.75+.2*f3)*k,dur:.32*k,o:{w:1.1,c:.42,lum:.85,d:b.r*.3+b.L+L2,hot:.3,rMin:1.6,q:.64}});}}}
+  const CS=60,grid=new Map(),key=(i,j)=>i*1000+j;
+  for(const e of all){const c=e.c,x=c.r+c.d0;for(let i=Math.floor((c.cx-x)/CS);i<=Math.floor((c.cx+x)/CS);i++)for(let j=Math.floor((c.cy-x)/CS);j<=Math.floor((c.cy+x)/CS);j++){const kk=key(i,j);let l=grid.get(kk);if(!l)grid.set(kk,l=[]);l.push(e);}}
+  for(const e of all){const K=e.key,hid=(x,y)=>{const l=grid.get(key(Math.floor(x/CS),Math.floor(y/CS)));if(!l)return false;for(const f of l)if(f.key<K&&frConeIn(f.c,x,y,1.5))return true;return false;};
+   frConeDraw(S,e.c,e.T,e.dur,e.o,hid);}
+  frEvent(S,'tronc',CX/941,t0);frEvent(S,'branca',.6,t0+.6*k);frEvent(S,'branca',1.2,t0+1.1*k);frEvent(S,'fulla',.5,t0+1.5*k);frEvent(S,'fulla',1.4,t0+2.2*k);frEvent(S,'fulla',.9,t0+2.8*k);}]};
