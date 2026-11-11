@@ -30,7 +30,7 @@ function ctx(){const calls=[],fills=[],gradient={addColorStop(){}};return new Pr
 
 test('EN07 is still El taller de vehicles, creative, recorded, in the folder of choosing and creating, heavy to load; the old drawing of it is gone and three.js travels inside the single file',()=>{
  const row=SCAN_ACTIVITIES.find(a=>a.id==='vehicles');assert.ok(row);assert.equal(row.code,'EN07');assert.equal(row.name,'El taller de vehicles');assert.equal(row.task,'creative');assert.equal(row.recorded,true);assert.match(row.desc,/tres dimensions/);
- assert.equal(SCAN_ACTIVITIES.length,11);assert.ok(TL_BOARDS.includes('vehicles'));
+ assert.equal(SCAN_ACTIVITIES.length,10);assert.ok(TL_BOARDS.includes('vehicles'));
  const app=read('../dist/app.js');assert.match(app,/ids:\[[^\]]*'masia','vehicles'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vehicles'/);assert.match(app,/APP_VERSION='0\.(5[4-9]|[6-9][0-9])/);
  for(const name of ['vhPressStart','vhRetime','vhSettings','vhAirUpdate','vhAirStop'])assert.match(app,new RegExp(`function ${name}\\(`),name);
  const art=read('../dist/scan-art.js');assert.doesNotMatch(art,/Svehicle|vehicle-body|vehicle-wheels|vehicle-top/);assert.match(art,/vhBoard\(c,w,h,state,game,s/);assert.match(art,/vhResult\(c,w,h,state,game,s/);

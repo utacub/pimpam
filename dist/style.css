@@ -162,8 +162,6 @@
 .folder-visual.n4{grid-template-rows:1fr 1fr}
 .folder-visual.n3{grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr}.folder-visual.n3 canvas:first-child{grid-row:1/3}
 .folder-card .card-bottom span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
-.folder-card.review{border-style:dashed;border-width:2px;border-color:#9aa3b2;background:#f6f7f9}
-.folder-card.review .folder-visual{filter:saturate(.55);opacity:.9}
 .folder-head{align-items:flex-end;gap:16px}.folder-head h2{color:var(--card-accent)}
 .folder-back{display:inline-flex;align-items:center;gap:8px;padding:8px 14px 8px 10px;margin-bottom:10px;border-radius:999px;background:#eef4ff;color:#2355d6;font-weight:700}
 .folder-back .icon,.back-mark .icon{transform:scaleX(-1)}

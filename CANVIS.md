@@ -1,3 +1,13 @@
+# Pim Pam 0.72 · Fora la carpeta «Per revisar»
+
+Base: 0.71.1 (59a7afb). Respon al missatge d’en Marc de l’11 de novembre de 2026 («Vull que ja eliminis la carpeta Per revisar, amb tot el què hi queda»).
+
+- La pàgina principal ja no té la carpeta «Per revisar».
+- S’elimina «El vestidor fantàstic» (EN06), l’última activitat que hi quedava: la fila del catàleg d’encercament, les seves tries (barret, roba, accessori), el dibuix del robot i les icones de les tries. El codi EN06 queda lliure i no es renumera.
+- Si mai hi ha una activitat sense carpeta, la carpeta automàtica «Altres» va just abans d’«Activitats personalitzades».
+- 43 activitats: 33 de causa-efecte (dues són pel·lícules) i 10 d’encercament. Text del registre de canvis actualitzat als sis idiomes.
+- Proves: 445 passen; les 3 que fallen són les mateixes que a la 0.71.1 (fitxers d’àudio que no són al repositori).
+
 # Pim Pam 0.71.1 · Un text que faltava
 
 Base: 0.71 (23008e7). Tradueix «cada dia diferent» (la línia d’estat de «Dia rere dia»), que el recorregut de l’app en anglès va trobar encara en català. La resta de textos que surten en català en aquest recorregut són noms propis (Pepa, Tomàs, Nina, Pol, Nata), termes de castells i els crèdits.
