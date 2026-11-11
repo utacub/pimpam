@@ -125,3 +125,48 @@ export function frDrawNet(S,net,t0,o={}){const {nodes:N,w,dist,streams,top}=net,
   const at=j=>s.ids[Math.min(m-1,Math.round(j/(n-1)*(m-1)))];
   frPathT(S,pts,ts,{wf:j=>wid(at(j)),cf:j=>o.C(lvl,j/(n-1)),lum:o.lum?o.lum(lvl):1,d0:dist[s.ids[0]],hot:o.hot??.7,sway:o.sway||0,seed:pts[0]*.01});}
  return top;}
+
+// ── Room to grow ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+// A grid over the frame of the concept (cells of cs units) that remembers which branch holds each place, so that a branch that
+// grows later turns aside from the ones already there (as real branches, roots and corals do: they grow where there is light, food
+// or soil left). Places outside the frame (with a margin) count as taken.
+export function frRoom(cs=9){const X0=-60,Y0=-60,GW=Math.ceil(1800/cs),GH=Math.ceil(1080/cs),o=new Int32Array(GW*GH).fill(-1);
+ const at=(x,y)=>{const i=Math.floor((x-X0)/cs),j=Math.floor((y-Y0)/cs);return i<0||j<0||i>=GW||j>=GH?-1:j*GW+i;};
+ return {cs,
+  // a polyline holds the places within r of it (r: a number, or a function of the fraction along the line)
+  mark(pts,r0,id){const m=pts.length/2-1;for(let i=0;i<pts.length-2;i+=2){const r=typeof r0==='function'?r0(i/2/Math.max(1,m)):r0,rr=Math.ceil(r/cs);const x0=pts[i],y0=pts[i+1],dx=pts[i+2]-x0,dy=pts[i+3]-y0,n=Math.max(1,Math.ceil(Math.hypot(dx,dy)/(cs*.5)));
+    for(let s=0;s<=n;s++){const x=x0+dx*s/n,y=y0+dy*s/n,ci=Math.floor((x-X0)/cs),cj=Math.floor((y-Y0)/cs);
+     for(let b=-rr;b<=rr;b++)for(let a=-rr;a<=rr;a++){const ii=ci+a,jj=cj+b;if(ii<0||jj<0||ii>=GW||jj>=GH)continue;const cx=X0+(ii+.5)*cs,cy=Y0+(jj+.5)*cs;if((cx-x)**2+(cy-y)**2<=r*r+cs*cs*.25)o[jj*GW+ii]=id;}}}},
+  // the owner of a place (−1 free, −2 out of the frame)
+  who(x,y,m=24){if(x<-m||y<-m||x>1672+m||y>941+m)return -2;const i=at(x,y);return i<0?-2:o[i];}};}
+// A tree that finds its room: every branch forks in two at its end, the daughters shorter by a ratio and spread by an angle, and each
+// one is laid where there is room: if its way is taken it turns aside (it tries other angles, nearest first); if there is no room
+// anywhere it stays shorter, or is not born. All the branches of one order grow together (o.T(lv)), so the same fork is seen
+// happening at every scale. The trees grow order by order all together (breadth first), so the big branches take their room first.
+// seeds [{x, y, a, len, w, d (distance from the root), t (the earliest moment), s0 (the length near the start not checked)}].
+// o: ratio, sp (the half angle of a fork), wr (the width ratio), minLen, depth, up (how much the branches bend upwards: 0–1), bend
+// (random curvature), pad(lv) (the room kept round a branch), C(lv) → [c0, c1], T(lv), dur(lv), lum, hot, sway, R (randomness).
+export function frTree(S,G,seeds,o){const R=o.R||S.rnd,k=S.k;let id=1e5;const tries=o.tries||[0,.22,-.22,.45,-.45,.7,-.7],out=[];
+ let q=seeds.map(s=>({par:-1,...s,lv:0,id:id++}));
+ for(let lv=0;lv<=o.depth&&q.length;lv++){const next=[];
+  for(let i=q.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[q[i],q[j]]=[q[j],q[i]];}
+  for(const b of q){const turn=(R()-.5)*2*(o.bend??.3),up=typeof o.up==='function'?o.up(lv):o.up??.25,s0=b.s0??Math.max(6,b.w*.8+o.pad(lv)+3);
+   // the curve of an angle: a bend at random and a pull upwards (towards −π/2), spread along the branch
+   // (the pull upwards bends the branch most near its start, as a lyre: it leaves its mother aside and then rises)
+   const curve=(a,len)=>{let d=((-Math.PI/2-a)%FR_TAU+3*Math.PI)%FR_TAU-Math.PI;const K=(turn+d*up)/Math.max(1,len),ly=o.lyre??0;return frCurve(b.x,b.y,a,len,Math.max(2,Math.round(len/7)),u=>K*(1+ly*(1-2*u)));};
+   const free=c=>{for(const q2 of c.nodes){if(q2.s<s0)continue;const w=G.who(q2.x,q2.y);if(w===-2||(w>=0&&w!==b.par&&w!==b.id&&w!==b.sib&&w!==b.gp))return q2.s;}return c.len;};
+   let best=null;for(const da of tries){const c=curve(b.a+da,b.len),f=free(c);if(!best||f>best.f+4)best={c,f,a:b.a+da};if(f>=b.len*.98)break;}
+   let len=best.f>=b.len*.98?b.len:best.f-o.pad(lv)-2;if(len<o.minLen*(lv?1:2))continue;
+   const c=len===b.len?best.c:curve(best.a,len);G.mark(c.pts,b.w*.5+o.pad(lv),b.id);
+   const T=Math.max(o.T(lv)*k+(o.t0||0),b.t??0),dur=o.dur(lv)*k,col=o.C(lv),e=c.nodes[c.nodes.length-1];
+   frGrow(S,c.pts,T,dur,{w0:b.w,w1:b.w*o.wr,c0:col[0],c1:col[1],lum:o.lum?.(lv)??1,d0:b.d,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01});
+   out.push({x:e.x,y:e.y,a:e.a,lv,len});
+   if(lv>=o.depth||len*o.ratio<o.minLen){
+    // the last fork, a small Y at every tip (too small to need room)
+    if(o.tipFork){const l=len*o.tipFork,T2=Math.max(o.T(lv+1)*k+(o.t0||0),T+dur*.9),c2=o.C(lv+1)||col;for(const sd of [-1,1]){const b2=e.a+sd*o.sp*(.8+.4*R());
+     frLine(S,e.x,e.y,e.x+Math.cos(b2)*l*(.8+.4*R()),e.y+Math.sin(b2)*l*(.8+.4*R()),T2,dur*.7,{w0:b.w*o.wr*.94,w1:b.w*o.wr*.7,c0:c2[1],lum:o.lum?.(lv+1)??1,d0:b.d+len,hot:o.hot??.7,sway:o.sway||0,seed:b.x*.01},40);}}
+    continue;}
+   const sd=R()<.5?-1:1,i0=id;id+=2;for(const s of [sd,-sd]){const big=s===sd;
+    next.push({x:e.x,y:e.y,a:e.a+s*o.sp*(.75+.5*R()),len:len*o.ratio*(big?1.04:.9)*(.88+.24*R()),w:b.w*o.wr*.94,d:b.d+len,t:T+dur*.92,id:big?i0:i0+1,sib:big?i0+1:i0,par:b.id,gp:b.par});}}
+  q=next;}
+ return out;}

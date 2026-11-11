@@ -40,12 +40,16 @@ void main(){float t0=aB.x,dur=max(aB.y,1e-3),g=clamp((uT-t0)/dur,0.,1.);
  vTip=(g<1.&&r<=0.)?aD.w*uFade:0.;vHot=mix(vCol,vec3(1.)*max(aC.y,.6)*1.6,.55);
  gl_Position=vec4(P.x/(uAR*uPx)*2.-1.,1.-P.y/uPx*2.,0.,1.);}`;
 export const FR_FS_LINE=`#version 300 es
-precision highp float;in vec2 vP;flat in vec2 vA,vB;flat in float vW,vR,vTip;flat in vec3 vCol,vHot;uniform float uHalo,uCore;out vec4 o;
+precision highp float;in vec2 vP;flat in vec2 vA,vB;flat in float vW,vR,vTip;flat in vec3 vCol,vHot;uniform float uHalo,uCore,uRim;out vec4 o;
 void main(){if(vW<=0.)discard;vec2 ab=vB-vA,ap=vP-vA;float h=clamp(dot(ap,ab)/max(dot(ab,ab),1e-6),0.,1.),d=length(ap-ab*h);
  float hw=vW*.5,core=1.-smoothstep(hw-.6,hw+.6,d),s=vR*.42,halo=exp(-d*d/(s*s))*uHalo;
  // a neon tube: wide lines have a paler, brighter core along their middle
  float tube=core*max(0.,1.-d*d/(hw*hw+1e-3))*clamp((vW-1.4)/5.,0.,1.);
  vec3 c=vCol*(core+halo)+mix(vCol,vec3(max(vCol.r,max(vCol.g,vCol.b))),.55)*tube*uCore;
+ // a glass tube (corals): the edges of a wide line shine brighter than its inside
+ // (measured across the line, not from its ends, so that the joints of a curve do not show)
+ if(uRim>0.){float dp=abs(dot(ap,vec2(-ab.y,ab.x)))/max(length(ab),1e-4),wk=clamp((vW-5.)/9.,0.,1.),rim=core*smoothstep(hw*.58,hw*.9,dp)*wk;
+  c=mix(c,mix(vCol,vec3(max(vCol.r,max(vCol.g,vCol.b))),.5)*1.2,rim*uRim);}
  if(vTip>0.){float q=length(vP-vB),tw=clamp(vW*1.6,2.2,9.);c+=vHot*vTip*(exp(-q*q/(tw*tw))*1.8+exp(-q*q/(tw*tw*5.))*.35);}
  if(max(c.r,max(c.g,c.b))<.002)discard;o=vec4(c,1.);}`;
 export const FR_FS_DOWN=`#version 300 es
