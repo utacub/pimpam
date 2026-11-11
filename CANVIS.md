@@ -1,3 +1,32 @@
+# Pim Pam 0.73 · El vestidor fantàstic, fet de nou (EN06)
+
+Base: 0.72 (93cc0de). Respon al missatge d’en Marc de l’11 de novembre de 2026 («D’acord, ja pots construir l’activitat, i quan l’acabis la pots publicar directament»), després d’aprovar els vuit lots d’imatges (mètode v2: dibuixos sencers de ChatGPT, una sola figura deformada amb una malla i les peces editades al seu lloc).
+
+## Què canvia
+
+- **Activitat nova a «Encercament: triar i crear»**, amb l’id `vestidor` i el codi EN06 (l’antiga `dress` no torna). Un camerino de teatre de varietats: l’armari, el mirall de bombetes, l’artista i el gosset Pipa. A cada pas l’armari treu dues, tres o quatre peces («Opcions de contingut») d’una de les sis disfresses (pirata, ballarina, bus, astronauta, pastisser, reialesa): primer el cap, després el cos, els peus i, amb quatre peces, un objecte màgic (paraigua, tuba, globus, regadora, ventall, cinta). Totes les tries són bones.
+- **Cada peça** vola de la carta fins a l’artista, s’hi posa amb el seu so i fa la seva gràcia (18 gràcies: el lloro que s’hi posa, la pirueta, el vestit que s’infla i fa surar, el gorro que creix i fa farina, la capa que l’enrotlla com un cargol…). La Pipa la copia en petit, el mirall fa una trapelleria (mostra una altra peça o treu la llengua) i l’artista s’hi mira. Amb «Despistes» (activat per defecte), una tria de cada tres cau primer al lloc equivocat (el barret als peus, la roba al cap) i després va al seu lloc; mai dues seguides ni l’objecte.
+- **L’espectacle.** Amb l’última peça la paret del camerino puja com un decorat, amb redoble, i l’artista surt a l’escenari amb el fons de la disfressa del cos (mar, jardí, fons marí, espai, pastisseria o castell). El número té tres parts: entra caminant com fan les sabates triades, es mou com el vestit i acaba amb la màgia de l’objecte; dotze parelles de peces tenen una sorpresa pròpia (el paraigua amb les aletes plana anadejant, el globus amb el vestit d’astronauta puja fins a dalt…). Després saluda amb confeti si la disfressa és completa, i cada quatre espectacles surten els quatre artistes junts. Tanca el teló i baixa el camerino amb l’artista següent.
+- **Quatre artistes** que es van alternant (la Rita, l’Hug, l’avi Quim i l’Ona) i tres llums (tarda, vespre, estrena de nit). Els noms no s’escriuen ni es diuen enlloc.
+- **La música creix amb el vestit.** Una petita banda de varietats en fa major, 2/4 a 112: cada disfressa té el seu instrument (tuba, glockenspiel, clarinet, arpa, fagot, trompeta) i el lloc de la peça decideix què toca (el cap la melodia, el cos els acords, els peus el baix; l’objecte un adorn cada dos compassos), sobre el piano i la pandereta. A l’espectacle toca tota la banda i acaba amb un acord final. Notes reals de Detectius de sons (VSCO-2 CE, CC0).
+- **Sons i veus.** 52 efectes (peces, gràcies, el públic, la Pipa, el lloro), dos ambients en bucle (el públic que xerra darrere la paret, el vaixell que cruix) i 69 exclamacions sense paraules dels quatre artistes, generats amb ElevenLabs l’11 de novembre. **Drets d’ús no verificats**, i **no s’han escoltat**: s’han triat i tallat per mesura. El volum de la mescla s’ha igualat per mesura (`tools/vestidor-audio.mjs`): els passos queden entre −31 i −29 LUFS i l’espectacle a −29, com Encaixos de fusta.
+- **Imatges:** dibuixos fets amb ChatGPT (vuit lots, 364 imatges retallades a WebP, 4,7 MB); viatgen dins del fitxer únic.
+- **Opcions de l’activitat** («Aquesta activitat»): peces per artista (3 o 4), primer artista, durada del número (curt 9 s, normal 13 s, llarg 17 s) i «Despistes». Textos nous traduïts als cinc idiomes.
+- 44 activitats: 33 de causa-efecte (dues són pel·lícules) i 11 d’encercament.
+
+## Proves
+
+- `tests/vestidor.test.mjs` (11): fila i paraules d’una sola paraula, rondes i artistes, opcions, despistes, temps (tot espectacle per sota de 36 s), número i parelles, flux d’encercament, so (cada nota en un banc que la té i dins del seu efecte), enregistraments i crèdits, dibuix amb coordenades finites, i connexions de l’app.
+- Actualitzades: recomptes del catàleg (activities, scanning, vehicles), `LOAD_HEAVY`, bancs estrictes del sintetitzador, límit de mida dels bucles de natura (6,5 MB).
+- Totes passen menys les 3 que ja fallaven a la 0.72 (fitxers d’àudio que no són al repositori).
+- Comprovat a Chromium: l’app (camerino, quatre tries, espectacle i artista següent) i el fitxer únic, sense errors a la consola.
+
+## No verificat
+
+- Els sons i les veus no s’han escoltat; els drets d’ús d’ElevenLabs no s’han verificat.
+- No s’ha provat en una pantalla tàctil ni en altres navegadors que Chromium.
+- Les traduccions noves les ha fet Claude, sense revisió nativa.
+
 # Pim Pam 0.72 · Fora la carpeta «Per revisar»
 
 Base: 0.71.1 (59a7afb). Respon al missatge d’en Marc de l’11 de novembre de 2026 («Vull que ja eliminis la carpeta Per revisar, amb tot el què hi queda»).

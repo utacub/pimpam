@@ -12,6 +12,7 @@ import {ptBoard,ptResult,ptLayout} from './pinta-art.js';
 import {maBoard,maResult,maLayout} from './masia-art.js';
 import {exBoard,exResult,exLayout} from './encaix-art.js';
 import {vhBoard,vhResult,vhLayout} from './vehicles-art.js';
+import {vsBoard,vsResult,vsLayout} from './vestidor-art.js';
 import {Cellipse,Cround,Cgrad,Cstroke,Cshape,Cwheel,Cscene,CshapeAt,Cmix} from './cause-art.js';
 import {drawPaperFlower} from './visual-patterns.js';
 import {escDecor,escDecorKey,escVeil} from './escenari.js';
@@ -38,7 +39,7 @@ function Sdecor(c,draw){if(S_DECOR.fade<=0)return;c.save();c.globalAlpha*=S_DECO
 // The scanning boards of 0.16 (On anem? and Detectius de sons): the scene fills the stage and the options are zones of it (tauler.js).
 // app.js keeps on game.board the focus, the light of each zone, the time left and what sounds; without it (the card of the home page,
 // the tests) the board is drawn at rest, fully lit.
-function Sboard(c,w,h,id,game,s,preview){const state=game.scanState||{id,stage:0,picks:[],round:0,status:'choose',pending:null,hint:true,armed:true},b=preview?{}:game.board||{},content=scanContent(state.status==='done'?{...state,status:'choose'}:state,s),zones=id==='pinta'?ptLayout(state,content,w,h):id==='masia'?maLayout(state,content,w,h):id==='encaix'?exLayout(state,content,w,h):id==='vehicles'?vhLayout(state,content,w,h):tlLayout(id,content.length,w,h);
+function Sboard(c,w,h,id,game,s,preview){const state=game.scanState||{id,stage:0,picks:[],round:0,status:'choose',pending:null,hint:true,armed:true},b=preview?{}:game.board||{},content=scanContent(state.status==='done'?{...state,status:'choose'}:state,s),zones=id==='pinta'?ptLayout(state,content,w,h):id==='masia'?maLayout(state,content,w,h):id==='encaix'?exLayout(state,content,w,h):id==='vehicles'?vhLayout(state,content,w,h):id==='vestidor'?vsLayout(state,content,w,h):tlLayout(id,content.length,w,h);
  const view={decor:escDecor({background:s.background,base:s.base,opacity:s.opacity,preview}),ring:scanRing(s),options:content,zones,lights:b.lights&&b.lights.length===zones.length?b.lights:zones.map(()=>b.focus===undefined?1:TL_DIM),focus:b.focus??-1,progress:b.progress??null,waiting:!preview&&!state.armed&&state.status!=='done'&&s.waitCue!==false,wait:preview?0:(b.wait??(!state.armed&&state.status!=='done'&&s.waitCue!==false?1:0)),clock:b.clock??0,cue:b.cue||0,sounding:b.sounding??-1,soundLevel:b.soundLevel||0,trip:game.boardTrip??state.round};
  const pending=state.pending,chosen=pending?Math.max(0,content.findIndex(x=>x.id===pending.option?.id)):-1;
  if(id==='destinations'){if(game.time!==null&&game.time!==undefined&&pending){etResult(c,w,h,state,game,s,{...view,chosen,place:pending.option?.value||'sea'},game.time);return true;}
@@ -56,6 +57,8 @@ function Sboard(c,w,h,id,game,s,preview){const state=game.scanState||{id,stage:0
  if(id==='encaix'){const picks=(state.picks||[]).map(p=>p?.value??p);if(game.time!==null&&game.time!==undefined&&pending){exResult(c,w,h,state,game,s,{...view,chosen,picks,pendingId:pending.option?.value,correct:!!pending.correct,final:!!pending.final},game.time);return true;}exBoard(c,w,h,state,game,s,{...view,picks,preview});return true;}
  // El taller de vehicles (0.53): the piece that clicks on the chassis; the last one, the wait for the press, the ride round the room and the garage.
  if(id==='vehicles'){const picks=(state.picks||[]).map(p=>p?.value??p);if(game.time!==null&&game.time!==undefined&&pending){vhResult(c,w,h,state,game,s,{...view,chosen,picks,pendingId:pending.option?.value,correct:true,final:!!pending.final},game.time);return true;}vhBoard(c,w,h,state,game,s,{...view,picks,preview});return true;}
+ // El vestidor fantàstic (rebuilt in 0.73): the piece flies onto the artist with its gag; the last one, the number on the stage.
+ if(id==='vestidor'){const picks=(state.picks||[]).map(p=>p?.value??p);if(game.time!==null&&game.time!==undefined&&pending){vsResult(c,w,h,state,game,s,{...view,chosen,picks,pendingId:pending.option?.value,final:!!pending.final,made:game.vsMade},game.time);return true;}vsBoard(c,w,h,state,game,s,{...view,picks,preview});return true;}
  // La cassola d’en Glups (0.24; 0.27): the plop of each ingredient, and at the end the tasting and the creature.
  if(id==='pot'){const picks=(state.picks||[]).map(p=>p?.value??p);if(game.time!==null&&game.time!==undefined&&pending){gpResult(c,w,h,state,game,s,{...view,chosen,picks:[...picks,pending.option?.value],final:!!pending.final},game.time);return true;}gpBoard(c,w,h,state,game,s,{...view,picks,preview});return true;}
  if(game.time!==null&&game.time!==undefined&&pending){tmResult(c,w,h,state,game,s,{...view,chosen,correct:!!pending.correct,picked:pending.option?.value},game.time);return true;}
