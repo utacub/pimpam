@@ -295,10 +295,10 @@ u0354	Wikimedia Commons · CC BY 3.0 · begizta bihurtutako zatia, mono eta bolu
 u0355	Castellen doinua
 u0357	«Ibilgailuen tailerra»ren 3D grafikoak
 u0360	Zer da Pim Pam
-u0361	Pim Pam etengailu batekin edo birekin jolasteko jarduera-bilduma bat da. Etengailuak erabiltzen ikasteko pentsatuta dago: sakatze bakoitzak erantzun argia du, ikusizkoa eta soinuzkoa, eta jardueren barruan ez dago irakurtzeko testurik.
+u0361	Pim Pam etengailu batekin edo birekin jolasteko jarduera-bilduma bat da. Etengailuak erabiltzen ikasteko pentsatuta dago: sakatze bakoitzak erantzun argia du, ikusizkoa eta soinuzkoa; «pim» txiki batek «pam» handi bat sortzen du.
 u0362	film txiki, sakatze bakoitzean sekuentzia bat aurrera egiten dutenak. Jarduerak karpetatan biltzen dira, eta «Jarduera pertsonalizatuak» atalean berriak egin daitezke norberaren argazki, bideo eta soinuekin.
 u0363	Etengailuak tekla gisa, saguaren edo joko-kontrolagailu baten botoi gisa irits daitezke, eta pantaila ere uki daiteke. «Ezarpenak» atalean doitzen dira etengailu bateko edo biko modua, ekorketaren denbora eta itxura, soinua, dekoratua eta berriro noiz saka daitekeen adierazten duen seinalea. Ezarpenak erabiltzaile bakoitzarentzat gorde daitezke.
-u0364	Pim Pam nabigatzailearen barruan dabil eta doan erabil daiteke sarean. Soinuak eta irudiak aplikazioan bertan daude: ez da datu pertsonalik eskatzen eta gordetzen dena gailu honetan geratzen da.
+u0364	Pim Pam nabigatzailearen barruan dabil eta doan erabil daiteke sarean. Aplikazio gisa ere instala daiteke hasierako orriko «Instalatu» botoiarekin: jarduera guztiak deskargatzen dira eta konexiorik gabe dabil. Soinuak eta irudiak aplikazioan bertan daude: ez da datu pertsonalik eskatzen eta gordetzen dena gailu honetan geratzen da.
 u0365	Jatorria eta erakundeak
 u0366	Pim Pam Komunikazio Teknika Areagotzaileen Unitatean (UTAC) sortu da, adimen artifizialeko tresnak erabiliz.
 u0367	UTAC Bartzelonako Unibertsitateko eta Bosch i Gimpera Fundazioko talde bat da. Bere jarduera Kataluniako Generalitateko bi zerbitzuren bidez gauzatzen du: UTAC Educació, Hezkuntza eta Lanbide Heziketa Sailekoa, eta UTAC Sírius, Gizarte Eskubide eta Inklusio Sailekoa.
@@ -1966,3 +1966,34 @@ u2142	sustrai nagusiak, alboetakoak eta finenak hazten dira
 u2143	maskorraren sarea eta triangeluen barruko triangeluak marrazten dira
 u2144	kapitulua, mokoak, lumatxak eta haien bizarrak hazten dira
 u2145	ura itsasoraino jaisten da eta sarea itzaltzen da
+u2146	Instalatu
+u2147	Instalatuta
+u2148	Deskargatzen…
+u2149	Instalatu Pim Pam gailu honetan
+u2150	Instalatu Pim Pam
+u2151	Hartzen duen lekua kalkulatzen…
+u2152	Jarduerak, soinuak eta bideoak deskargatzen ari dira. Utzi leiho hau irekita amaitu arte.
+u2153	Gelditzen bada, hurrengoan utzi zuen lekutik jarraituko du.
+u2154	Pim Pam gailu honetan instalatuta dago eta konexiorik gabe dabil.
+u2155	Jarduera guztiak gailu honetan daude jada eta konexiorik gabe dabiltza.
+u2156	Nabigatzaileak ez badu instalatzeko abisurik erakutsi: Chrome eta Edge-n, erabili helbide-barrako instalatzeko ikonoa; iPad eta iPhone-n, Safari › Partekatu › Gehitu hasierako pantailan.
+u2157	Hartzen duen lekua
+u2158	Ezabatu gailu honetako jarduerak
+u2159	Instalatu aplikazioa
+u2160	Ados
+u2161	Pim Pam aplikazio gisa instalatuko da gailu honetan, eta jarduera, soinu eta bideo guztiak deskargatuko dira konexiorik gabe ibil dadin.
+u2162	Instalatuta hartuko duen leku osoa
+u2163	Bideoak
+u2164	Soinuak eta musika
+u2165	Irudiak
+u2166	Programa eta testuak
+u2167	Ez dago leku libre nahikorik Pim Pam gailu honetan instalatzeko.
+u2168	Deskargak minutu batzuk iraun ditzake. Bertsio berriak berez eguneratuko dira eta aldatu dena bakarrik deskargatuko dute.
+u2169	Zati bat deskargatuta dago jada eta ez da berriro deskargatuko.
+u2170	Saiatu berriro
+u2171	Deskargatzen ari zen bitartean Pim Pam-en bertsio berri bat argitaratu da. Saiatu berriro: utzi zuen lekutik jarraituko du.
+u2172	Ez dago leku libre nahikorik gailu honetan instalazioa amaitzeko.
+u2173	Ezin izan da dena deskargatu. Saiatu berriro: utzi zuen lekutik jarraituko du.
+u2174	Konexioa galdu da. Saiatu berriro konexioa itzultzen denean: utzi zuen lekutik jarraituko du.
+u2175	Ezin izan da jakin zer deskargatu behar den. Saiatu berriro geroxeago.
+u2176	Interneteko konexioa behar da Pim Pam instalatzeko.

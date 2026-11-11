@@ -1,3 +1,27 @@
+# Pim Pam 0.76 · Instal·lar Pim Pam com una aplicació (PWA)
+
+Base: 0.75.3 (ecc6aa3). Respon a en Marc (11 de novembre de 2026, 23:05): «vull que Pim Pam tingui instal·lació PWA, i que hi hagi un botó a dalt a la dreta a la pàgina principal per iniciar-la, i que quan es premi aquest botó adverteixi de l’espai total que ocupa instal·lada», amb les icones del kit de marca complet que va enviar a les 23:24, i el canvi de text de «Informació» (23:23).
+
+## Què canvia
+
+- **Botó «Instal·la»**, l’últim de la capçalera de la pàgina principal (a dalt a la dreta). No forma part de l’encercament amb commutador. S’amaga quan el navegador no pot instal·lar (el fitxer únic, file://) i dins de l’aplicació instal·lada quan ja ho té tot.
+- **Avís d’espai abans d’instal·lar.** La finestra diu l’espai total que ocuparà Pim Pam instal·lat (ara 496 MB: vídeos 433, sons i música 32, imatges 17, programa i textos 14) i l’espai que el navegador pot fer servir en aquell dispositiu; si no n’hi ha prou, ho diu. La xifra és la suma real dels 1.527 fitxers que es descarreguen (MB com els compta Windows, 1.048.576 bytes). Comprovat a Chromium: després d’instal·lar, l’ús d’emmagatzematge del lloc és de 520.439.176 bytes, és a dir, 496 MB.
+- **Instal·lació.** En prémer «Instal·la (496 MB)», Chrome i Edge mostren el seu quadre d’instal·lació; si s’accepta, es descarreguen tots els fitxers amb una barra de progrés i es pot aturar i continuar més tard sense tornar a baixar el que ja hi és. Als navegadors sense quadre (Safari, Firefox) es descarrega igualment i s’explica com afegir-lo a la pantalla d’inici. Quan està instal·lat, la finestra ho diu i permet esborrar les activitats del dispositiu.
+- **Sense connexió.** `dist/sw.js` (service worker) serveix els fitxers descarregats, també els vídeos amb peticions parcials (206). Qui només visita el web no descarrega res de més: el service worker no intervé fins que s’ha instal·lat.
+- **Actualitzacions.** `tools/pwa-build.mjs` escriu `dist/pwa-fitxers.json` (camí, mida i hash de cada fitxer); el flux de GitHub Pages l’executa abans de publicar, de manera que la llista sempre coincideix amb el que es publica. L’aplicació instal·lada, en obrir-se amb connexió, baixa només els fitxers que han canviat i esborra els vells.
+- **Icones** del kit de marca complet (04_Icones_PWA): app_clara 192 i 512, maskable 512, apple-touch-icon, favicon.ico i SVG. Manifest `dist/manifest.webmanifest` (fons de la pantalla d’inici: blanc càlid del kit).
+- **Informació.** Primer paràgraf: «Pim Pam és un recull d’activitats per jugar amb un o dos commutadors. Està pensat per aprendre a fer servir commutadors: cada pulsació té una resposta clara, visual i sonora, un petit «pim» genera un gran «pam».» El paràgraf del navegador explica que es pot instal·lar.
+- **Textos** nous i canviats als sis idiomes (i18n/ui-*.tsv, pat-*.tsv).
+
+## Proves
+
+- `tests/pwa.test.mjs` (3): mides, llista de fitxers (mides reals, tots els mòduls d’app.js hi són), manifest, icones, service worker i flux de Pages. Suite completa: 476 + 3; fallen les 3 proves de mides d’enregistraments de sempre (masia, instruments, detectius).
+- Chromium (Playwright): Chrome declara l’aplicació instal·lable sense errors (`Page.getInstallabilityErrors` buit); descàrrega completa; sense connexió s’obre la portada, sonen els sons i els vídeos es reprodueixen (1920 px, peticions 206); una versió nova amb un fitxer canviat només baixa aquell fitxer.
+
+## No verificat
+
+- El quadre d’instal·lació real de Chrome a Windows (Playwright no el pot mostrar): l’ha de provar en Marc. Traduccions dels textos nous sense revisió de parlants nadius.
+
 # Pim Pam 0.75.3 · Fractals a la natura: el riu baixa de les fonts al mar
 
 Base: 0.75.2 (81d77a9; la 0.75.2 és el barret de cuiner de la Pipa d’«El vestidor fantàstic», més avall). Respon al comentari d’en Marc de l’11 de novembre de 2026 (22:45): «la única cosa que canviaria és la del rius, que per lògica hauria de començar en els afluent i acabar en el riu principal, ara ho fa al revés, és com si l'aigua pugés del riu cap als afluents».

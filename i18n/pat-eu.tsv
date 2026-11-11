@@ -119,3 +119,10 @@ p118	{x}, {n}/{n2} forma: {y}.
 p119	{x}, {n}/{n2} forma, amaituta. Pantaila beltza da eta hurrengo sakatzeak beste bat dakar.
 p120	{x}, {n}/{n2} forma, osatuta: argi-uhin batek zeharkatzen du.
 p121	{x}, {n}/{n2} forma: forma desegin egiten da, hazi den alderantzizko ordenan.
+p122	Instalatu ({n} MB)
+p123	Instalatu ({n} GB)
+p124	{n} MB / {n2} MB
+p125	{n} MB / {n2} GB
+p126	{n} GB / {n2} GB
+p127	Nabigatzaile honek gailu honetan erabil dezakeen lekua: {n} MB.
+p128	Nabigatzaile honek gailu honetan erabil dezakeen lekua: {n} GB.

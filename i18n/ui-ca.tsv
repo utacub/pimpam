@@ -358,10 +358,10 @@ u0357	Gràfics 3D d’«El taller de vehicles»
 u0358	three.js r187
 u0359	three.js authors · MIT
 u0360	Què és Pim Pam
-u0361	Pim Pam és un recull d’activitats en català per jugar amb un o dos commutadors. Està pensat per aprendre a fer servir commutadors: cada pulsació té una resposta clara, visual i sonora, i dins de les activitats no hi ha cap text per llegir.
+u0361	Pim Pam és un recull d’activitats per jugar amb un o dos commutadors. Està pensat per aprendre a fer servir commutadors: cada pulsació té una resposta clara, visual i sonora, un petit «pim» genera un gran «pam».
 u0362	petites pel·lícules, que avancen una seqüència a cada pulsació. Les activitats s’agrupen en carpetes, i a «Activitats personalitzades» se’n poden fer de noves amb fotos, vídeos i sons propis.
 u0363	Els commutadors poden arribar com a tecles, com a botons del ratolí o d’un comandament de joc, i també es pot tocar la pantalla. A «Configuració» s’ajusten el mode d’un o de dos commutadors, el temps i l’aspecte de l’encercament, el so, el decorat i el senyal que indica quan es pot tornar a prémer. Els ajustos es poden desar per a cada usuari.
-u0364	Pim Pam funciona dins del navegador i es pot fer servir gratuïtament en línia. Els sons i les imatges són a la mateixa aplicació: no es demanen dades personals i el que es desa queda en aquest dispositiu.
+u0364	Pim Pam funciona dins del navegador i es pot fer servir gratuïtament en línia. També es pot instal·lar com una aplicació amb el botó «Instal·la» de la pàgina principal: s’hi descarreguen totes les activitats i funciona sense connexió. Els sons i les imatges són a la mateixa aplicació: no es demanen dades personals i el que es desa queda en aquest dispositiu.
 u0365	Origen i institucions
 u0366	Pim Pam s’ha creat des de la Unitat de Tècniques Augmentatives de Comunicació (UTAC), fent servir eines d’intel·ligència artificial.
 u0367	La UTAC és un equip de la Universitat de Barcelona i de la Fundació Bosch i Gimpera. Concreta la seva activitat a partir de dos serveis de la Generalitat de Catalunya: UTAC Educació, del Departament d’Educació i Formació Professional, i UTAC Sírius, del Departament de Drets Socials i Inclusió.
@@ -2143,3 +2143,34 @@ u2142	creixen les arrels principals, les laterals i les més fines
 u2143	es dibuixen la xarxa de la closca i els triangles dins de triangles
 u2144	creixen el capítol, els becs, els plomalls i les seves barbes
 u2145	l’aigua baixa fins al mar i la xarxa s’apaga
+u2146	Instal·la
+u2147	Instal·lada
+u2148	Descarregant…
+u2149	Instal·la Pim Pam en aquest dispositiu
+u2150	Instal·la Pim Pam
+u2151	Calculant l’espai que ocupa…
+u2152	S’estan descarregant les activitats, els sons i els vídeos. Deixeu aquesta finestra oberta fins que acabi.
+u2153	Si s’atura, la propera vegada continuarà on s’ha quedat.
+u2154	Pim Pam està instal·lat en aquest dispositiu i funciona sense connexió.
+u2155	Totes les activitats ja són en aquest dispositiu i funcionen sense connexió.
+u2156	Si el navegador no ha mostrat cap avís d’instal·lació: a Chrome i Edge, feu servir la icona d’instal·lar de la barra d’adreces; a l’iPad i l’iPhone, Safari › Comparteix › Afegeix a la pantalla d’inici.
+u2157	Espai que ocupa
+u2158	Esborra les activitats d’aquest dispositiu
+u2159	Instal·la l’aplicació
+u2160	D’acord
+u2161	Pim Pam s’instal·larà en aquest dispositiu com una aplicació, i s’hi descarregaran totes les activitats, els sons i els vídeos perquè funcioni sense connexió.
+u2162	Espai total que ocuparà instal·lat
+u2163	Vídeos
+u2164	Sons i música
+u2165	Imatges
+u2166	Programa i textos
+u2167	No hi ha prou espai lliure per instal·lar Pim Pam en aquest dispositiu.
+u2168	La descàrrega pot trigar uns quants minuts. Les versions noves s’actualitzaran soles i només baixaran el que hagi canviat.
+u2169	Una part ja és descarregada i no es tornarà a baixar.
+u2170	Torna-ho a provar
+u2171	Mentre es descarregava s’ha publicat una versió nova de Pim Pam. Torneu-ho a provar: continuarà on s’havia quedat.
+u2172	No hi ha prou espai lliure en aquest dispositiu per acabar la instal·lació.
+u2173	No s’ha pogut descarregar tot. Torneu-ho a provar: continuarà on s’havia quedat.
+u2174	S’ha perdut la connexió. Torneu-ho a provar quan torni a haver-n’hi: continuarà on s’havia quedat.
+u2175	No s’ha pogut saber què cal descarregar. Torneu-ho a provar d’aquí a una estona.
+u2176	Cal connexió a internet per instal·lar Pim Pam.

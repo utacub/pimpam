@@ -1,0 +1,38 @@
+{
+ "id": "./",
+ "name": "UTAC · Pim Pam",
+ "short_name": "Pim Pam",
+ "description": "Un petit gest. Un gran efecte. Jocs de causa-efecte i encercament amb commutadors.",
+ "lang": "ca",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#FAF6EF",
+ "theme_color": "#f7fbff",
+ "icons": [
+  {
+   "src": "icones/icona-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icones/icona-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icones/icona-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  },
+  {
+   "src": "icones/icona.svg",
+   "sizes": "any",
+   "type": "image/svg+xml",
+   "purpose": "any"
+  }
+ ]
+}

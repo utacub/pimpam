@@ -295,10 +295,10 @@ u0354	Wikimedia Commons · CC BY 3.0 · extrait mis en boucle, en mono et au vol
 u0355	Air des castells
 u0357	Graphismes 3D de « L’atelier des véhicules »
 u0360	Ce qu’est Pim Pam
-u0361	Pim Pam est un recueil d’activités pour jouer avec un ou deux contacteurs. Il est conçu pour apprendre à utiliser des contacteurs : chaque appui a une réponse claire, visuelle et sonore, et dans les activités il n’y a aucun texte à lire.
+u0361	Pim Pam est un recueil d’activités pour jouer avec un ou deux contacteurs. Il est conçu pour apprendre à utiliser des contacteurs : chaque appui a une réponse claire, visuelle et sonore, un petit « pim » produit un grand « pam ».
 u0362	petits films, qui avancent d’une séquence à chaque appui. Les activités sont regroupées en dossiers, et dans « Activités personnalisées » on peut en créer de nouvelles avec ses propres photos, vidéos et sons.
 u0363	Les contacteurs peuvent arriver comme des touches, comme des boutons de souris ou de manette de jeu, et on peut aussi toucher l’écran. Dans « Réglages », on ajuste le mode à un ou deux contacteurs, le temps et l’aspect du défilement, le son, le décor et le signal qui indique quand on peut appuyer à nouveau. Les réglages peuvent être enregistrés pour chaque utilisateur.
-u0364	Pim Pam fonctionne dans le navigateur et s’utilise gratuitement en ligne. Les sons et les images sont dans l’application elle-même : aucune donnée personnelle n’est demandée et ce qui est enregistré reste sur cet appareil.
+u0364	Pim Pam fonctionne dans le navigateur et s’utilise gratuitement en ligne. Il peut aussi être installé comme une application avec le bouton « Installer » de la page d’accueil : toutes les activités sont téléchargées et il fonctionne sans connexion. Les sons et les images sont dans l’application elle-même : aucune donnée personnelle n’est demandée et ce qui est enregistré reste sur cet appareil.
 u0365	Origine et institutions
 u0366	Pim Pam a été créé à l’Unité de techniques augmentatives de communication (UTAC), à l’aide d’outils d’intelligence artificielle.
 u0367	L’UTAC est une équipe de l’Université de Barcelone et de la Fondation Bosch i Gimpera. Elle mène son activité à travers deux services de la Generalitat de Catalogne : UTAC Educació, du Département de l’Éducation et de la Formation professionnelle, et UTAC Sírius, du Département des Droits sociaux et de l’Inclusion.
@@ -1966,3 +1966,34 @@ u2142	les racines principales, les latérales et les plus fines poussent
 u2143	le réseau de la coquille et les triangles dans les triangles se dessinent
 u2144	le capitule, les becs, les aigrettes et leurs soies poussent
 u2145	l’eau descend jusqu’à la mer et le réseau s’éteint
+u2146	Installer
+u2147	Installée
+u2148	Téléchargement…
+u2149	Installer Pim Pam sur cet appareil
+u2150	Installer Pim Pam
+u2151	Calcul de l’espace occupé…
+u2152	Les activités, les sons et les vidéos sont en cours de téléchargement. Laissez cette fenêtre ouverte jusqu’à la fin.
+u2153	S’il s’arrête, la prochaine fois il reprendra là où il s’était arrêté.
+u2154	Pim Pam est installé sur cet appareil et fonctionne sans connexion.
+u2155	Toutes les activités sont déjà sur cet appareil et fonctionnent sans connexion.
+u2156	Si le navigateur n’a affiché aucune invitation à installer : dans Chrome et Edge, utilisez l’icône d’installation de la barre d’adresse ; sur iPad et iPhone, Safari › Partager › Sur l’écran d’accueil.
+u2157	Espace occupé
+u2158	Effacer les activités de cet appareil
+u2159	Installer l’application
+u2160	D’accord
+u2161	Pim Pam sera installé sur cet appareil comme une application, et toutes les activités, les sons et les vidéos y seront téléchargés pour qu’il fonctionne sans connexion.
+u2162	Espace total occupé une fois installé
+u2163	Vidéos
+u2164	Sons et musique
+u2165	Images
+u2166	Programme et textes
+u2167	Il n’y a pas assez d’espace libre pour installer Pim Pam sur cet appareil.
+u2168	Le téléchargement peut prendre quelques minutes. Les nouvelles versions se mettront à jour toutes seules et ne téléchargeront que ce qui a changé.
+u2169	Une partie est déjà téléchargée et ne sera pas retéléchargée.
+u2170	Réessayer
+u2171	Une nouvelle version de Pim Pam a été publiée pendant le téléchargement. Réessayez : il reprendra là où il s’était arrêté.
+u2172	Il n’y a pas assez d’espace libre sur cet appareil pour terminer l’installation.
+u2173	Tout n’a pas pu être téléchargé. Réessayez : il reprendra là où il s’était arrêté.
+u2174	La connexion a été perdue. Réessayez quand elle sera revenue : il reprendra là où il s’était arrêté.
+u2175	Impossible de savoir ce qu’il faut télécharger. Réessayez dans un moment.
+u2176	Une connexion internet est nécessaire pour installer Pim Pam.

@@ -24,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # 0.76: list of the files the installed app (PWA) keeps offline, with sizes and hashes, from this very dist/.
+      - run: node tools/pwa-build.mjs dist
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

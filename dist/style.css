@@ -294,3 +294,16 @@
 .hero-art .hero-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.5s ease-in-out;animation:hero-drift 26s ease-in-out infinite alternate;pointer-events:none;user-select:none}.hero-art .hero-slide:nth-of-type(even){animation-direction:alternate-reverse}.hero-art .hero-slide.on{opacity:1}
 @keyframes hero-drift{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.08) translate(-1.2%,-.8%)}}
 @media(prefers-reduced-motion:reduce){.hero-art .hero-slide{animation:none;transform:none}.hero-art .hero-slide{transition:opacity 2.5s ease-in-out!important}}
+/* 0.76 · Instal·la (PWA): button at the right end of the header, and its window */
+.nav .instal-button{background:var(--ink);color:#fff;border-color:var(--ink)}.nav .instal-button:hover{filter:brightness(1.12)}
+.pwa-no .instal-button,.pwa-app.pwa-complet .instal-button{display:none!important}
+.pwa-instal-lada:not(.pwa-app) .nav .instal-button{background:#fff;color:var(--ink);border-color:#c8d8ef}
+@media (max-width:650px){.nav button.instal-button:nth-child(n){display:flex}}
+.instal-dialog{width:min(620px,calc(100vw - 32px))}.instal-body p{font-size:15px;line-height:1.6;margin:0 0 14px}
+.instal-total{display:flex;justify-content:space-between;align-items:baseline;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:18px 0 10px}
+.instal-total span{font-size:15px;font-weight:650}.instal-total strong{font-size:32px;letter-spacing:-.03em;color:var(--ink)}
+.instal-parts{list-style:none;margin:0 0 16px;padding:0 20px;display:grid;gap:6px}.instal-parts li{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}.instal-parts strong{color:var(--ink);font-weight:650}
+.instal-barra{height:14px;border-radius:7px;background:#e3ecf8;overflow:hidden;margin:18px 0 8px}.instal-barra span{display:block;height:100%;background:var(--primary);transition:width .3s}
+.instal-xifres{display:flex;justify-content:space-between;font-size:14px;font-weight:650}
+.instal-error{color:#b3261e;font-weight:650}.instal-ok{font-weight:650}
+.instal-body .hint{font-size:12px}

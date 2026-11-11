@@ -119,3 +119,10 @@ p118	{x}, forme {n} sur {n2} : {y}.
 p119	{x}, forme {n} sur {n2}, terminée. L’écran est noir et l’appui suivant en apporte une autre.
 p120	{x}, forme {n} sur {n2}, complète : une onde de lumière la parcourt.
 p121	{x}, forme {n} sur {n2} : la forme se défait dans l’ordre inverse de sa croissance.
+p122	Installer ({n} Mo)
+p123	Installer ({n} Go)
+p124	{n} Mo sur {n2} Mo
+p125	{n} Mo sur {n2} Go
+p126	{n} Go sur {n2} Go
+p127	Espace que ce navigateur peut utiliser sur cet appareil : {n} Mo.
+p128	Espace que ce navigateur peut utiliser sur cet appareil : {n} Go.

@@ -295,10 +295,10 @@ u0354	Wikimedia Commons · CC BY 3.0 · fragmento convertido en bucle, en mono e
 u0355	Toque de castells
 u0357	Gráficos 3D de «O taller de vehículos»
 u0360	Que é Pim Pam
-u0361	Pim Pam é unha colección de actividades para xogar cun ou dous conmutadores. Está pensado para aprender a usar conmutadores: cada pulsación ten unha resposta clara, visual e sonora, e dentro das actividades non hai ningún texto que ler.
+u0361	Pim Pam é unha colección de actividades para xogar cun ou dous conmutadores. Está pensado para aprender a usar conmutadores: cada pulsación ten unha resposta clara, visual e sonora, un pequeno «pim» xera un gran «pam».
 u0362	pequenas películas, que avanzan unha secuencia en cada pulsación. As actividades agrúpanse en cartafoles, e en «Actividades personalizadas» pódense facer outras novas con fotos, vídeos e sons propios.
 u0363	Os conmutadores poden chegar como teclas, como botóns do rato ou dun mando de xogo, e tamén se pode tocar a pantalla. En «Configuración» axústanse o modo dun ou dous conmutadores, o tempo e o aspecto do varrido, o son, o decorado e o sinal que indica cando se pode volver premer. Os axustes pódense gardar para cada usuario.
-u0364	Pim Pam funciona dentro do navegador e pódese usar de balde en liña. Os sons e as imaxes están na propia aplicación: non se piden datos persoais e o que se garda queda neste dispositivo.
+u0364	Pim Pam funciona dentro do navegador e pódese usar de balde en liña. Tamén se pode instalar como unha aplicación co botón «Instalar» da páxina principal: descárganse todas as actividades e funciona sen conexión. Os sons e as imaxes están na propia aplicación: non se piden datos persoais e o que se garda queda neste dispositivo.
 u0365	Orixe e institucións
 u0366	Pim Pam creouse desde a Unitat de Tècniques Augmentatives de Comunicació (UTAC), empregando ferramentas de intelixencia artificial.
 u0367	A UTAC é un equipo da Universidade de Barcelona e da Fundació Bosch i Gimpera. Concreta a súa actividade a partir de dous servizos da Generalitat de Catalunya: UTAC Educació, do Departamento de Educación e Formación Profesional, e UTAC Sírius, do Departamento de Dereitos Sociais e Inclusión.
@@ -1966,3 +1966,34 @@ u2142	medran as raíces principais, as laterais e as máis finas
 u2143	debúxanse a rede da cuncha e os triángulos dentro de triángulos
 u2144	medran o capítulo, os bicos, os vilanos e as súas barbas
 u2145	a auga baixa ata o mar e a rede apágase
+u2146	Instalar
+u2147	Instalada
+u2148	Descargando…
+u2149	Instalar Pim Pam neste dispositivo
+u2150	Instalar Pim Pam
+u2151	Calculando o espazo que ocupa…
+u2152	Estanse a descargar as actividades, os sons e os vídeos. Deixade esta xanela aberta ata que remate.
+u2153	Se se detén, a próxima vez continuará onde quedou.
+u2154	Pim Pam está instalado neste dispositivo e funciona sen conexión.
+u2155	Todas as actividades xa están neste dispositivo e funcionan sen conexión.
+u2156	Se o navegador non amosou ningún aviso de instalación: en Chrome e Edge, usade a icona de instalar da barra de enderezos; no iPad e no iPhone, Safari › Compartir › Engadir á pantalla de inicio.
+u2157	Espazo que ocupa
+u2158	Borrar as actividades deste dispositivo
+u2159	Instalar a aplicación
+u2160	De acordo
+u2161	Pim Pam instalarase neste dispositivo como unha aplicación, e descargaranse nel todas as actividades, os sons e os vídeos para que funcione sen conexión.
+u2162	Espazo total que ocupará instalado
+u2163	Vídeos
+u2164	Sons e música
+u2165	Imaxes
+u2166	Programa e textos
+u2167	Non hai espazo libre abondo para instalar Pim Pam neste dispositivo.
+u2168	A descarga pode tardar uns minutos. As versións novas actualizaranse soas e só descargarán o que cambiase.
+u2169	Unha parte xa está descargada e non se volverá descargar.
+u2170	Tórnao intentar
+u2171	Mentres se descargaba publicouse unha versión nova de Pim Pam. Tornade intentalo: continuará onde quedara.
+u2172	Non hai espazo libre abondo neste dispositivo para rematar a instalación.
+u2173	Non se puido descargar todo. Tornade intentalo: continuará onde quedara.
+u2174	Perdeuse a conexión. Tornade intentalo cando volva habela: continuará onde quedara.
+u2175	Non se puido saber que hai que descargar. Tornade intentalo dentro dun anaco.
+u2176	Cómpre conexión a internet para instalar Pim Pam.

@@ -119,3 +119,10 @@ p118	{x}, form {n} of {n2}: {y}.
 p119	{x}, form {n} of {n2}, finished. The screen is black and the next press brings another.
 p120	{x}, form {n} of {n2}, complete: a wave of light runs through it.
 p121	{x}, form {n} of {n2}: the form comes undone in the reverse order of its growth.
+p122	Install ({n} MB)
+p123	Install ({n} GB)
+p124	{n} MB of {n2} MB
+p125	{n} MB of {n2} GB
+p126	{n} GB of {n2} GB
+p127	Space this browser can use on this device: {n} MB.
+p128	Space this browser can use on this device: {n} GB.

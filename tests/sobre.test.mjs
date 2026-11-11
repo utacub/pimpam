@@ -21,6 +21,6 @@ test('0.62 Informació: header button, not in the switch scanning lap, embedded 
   const btn=app.match(/<button[^>]*data-sobre [^>]*>/)[0];
   assert.doesNotMatch(btn,/data-settings/);
   assert.match(app,/scan\.next\(targets\.length\+1/);
-  assert.match(build,/'sobre\.js','i18n\.js','app\.js'\]/);
+  assert.match(build,/'sobre\.js','i18n\.js','pwa\.js','app\.js'\]/);
   assert.match(build,/assets'\/'marca'/);
 });

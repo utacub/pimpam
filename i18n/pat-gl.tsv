@@ -119,3 +119,10 @@ p118	{x}, forma {n} de {n2}: {y}.
 p119	{x}, forma {n} de {n2}, rematada. A pantalla está negra e a pulsación seguinte trae outra.
 p120	{x}, forma {n} de {n2}, completa: unha onda de luz percórrea.
 p121	{x}, forma {n} de {n2}: a forma desfaise ao revés de como medrou.
+p122	Instalar ({n} MB)
+p123	Instalar ({n} GB)
+p124	{n} MB de {n2} MB
+p125	{n} MB de {n2} GB
+p126	{n} GB de {n2} GB
+p127	Espazo que este navegador pode usar neste dispositivo: {n} MB.
+p128	Espazo que este navegador pode usar neste dispositivo: {n} GB.

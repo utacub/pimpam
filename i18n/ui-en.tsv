@@ -295,10 +295,10 @@ u0354	Wikimedia Commons · CC BY 3.0 · excerpt looped, made mono and with adjus
 u0355	Castell tune
 u0357	3D graphics of «The vehicle workshop»
 u0360	What Pim Pam is
-u0361	Pim Pam is a collection of activities to play with one or two switches. It is designed for learning to use switches: every press has a clear visual and sound response, and inside the activities there is no text to read.
+u0361	Pim Pam is a collection of activities to play with one or two switches. It is designed for learning to use switches: every press has a clear visual and sound response, a small “pim” makes a big “pam”.
 u0362	little films, which move on one sequence with each press. The activities are grouped in folders, and in «Personal activities» new ones can be made with your own photos, videos and sounds.
 u0363	Switches can come in as keys, as mouse buttons or game controller buttons, and the screen can also be touched. In «Settings» you can adjust one- or two-switch mode, the timing and look of the scanning, the sound, the scenery and the signal that shows when you can press again. Settings can be saved for each user.
-u0364	Pim Pam works inside the browser and can be used online for free. The sounds and pictures are inside the application itself: no personal data is asked for and whatever is saved stays on this device.
+u0364	Pim Pam works inside the browser and can be used online for free. It can also be installed as an app with the “Install” button on the home page: all the activities are downloaded and it works offline. The sounds and pictures are inside the application itself: no personal data is asked for and whatever is saved stays on this device.
 u0365	Origin and institutions
 u0366	Pim Pam was created at the Unit of Augmentative Communication Techniques (UTAC), using artificial intelligence tools.
 u0367	UTAC is a team of the University of Barcelona and the Bosch i Gimpera Foundation. It carries out its work through two services of the Government of Catalonia: UTAC Educació, of the Department of Education and Vocational Training, and UTAC Sírius, of the Department of Social Rights and Inclusion.
@@ -1966,3 +1966,34 @@ u2142	the main roots, the side roots and the finest ones grow
 u2143	the shell’s network and the triangles within triangles are drawn
 u2144	the seed head, the beaks, the pappi and their bristles grow
 u2145	the water runs down to the sea and the network goes dark
+u2146	Install
+u2147	Installed
+u2148	Downloading…
+u2149	Install Pim Pam on this device
+u2150	Install Pim Pam
+u2151	Working out how much space it takes…
+u2152	The activities, sounds and videos are downloading. Keep this window open until it finishes.
+u2153	If it stops, next time it will carry on where it left off.
+u2154	Pim Pam is installed on this device and works offline.
+u2155	All the activities are now on this device and work offline.
+u2156	If the browser has not shown an install prompt: in Chrome and Edge, use the install icon in the address bar; on iPad and iPhone, Safari › Share › Add to Home Screen.
+u2157	Space it takes
+u2158	Delete the activities from this device
+u2159	Install the app
+u2160	OK
+u2161	Pim Pam will be installed on this device as an app, and all the activities, sounds and videos will be downloaded so that it works offline.
+u2162	Total space it will take once installed
+u2163	Videos
+u2164	Sounds and music
+u2165	Images
+u2166	Program and texts
+u2167	There is not enough free space to install Pim Pam on this device.
+u2168	The download may take a few minutes. New versions will update by themselves and only download what has changed.
+u2169	Part of it is already downloaded and will not be downloaded again.
+u2170	Try again
+u2171	A new version of Pim Pam was published during the download. Try again: it will carry on where it left off.
+u2172	There is not enough free space on this device to finish the installation.
+u2173	Not everything could be downloaded. Try again: it will carry on where it left off.
+u2174	The connection was lost. Try again when it is back: it will carry on where it left off.
+u2175	Could not find out what needs downloading. Try again in a while.
+u2176	An internet connection is needed to install Pim Pam.
