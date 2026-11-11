@@ -60,3 +60,37 @@ export const FR_FULLA={id:'fulla',name:'Nervis d’una fulla',what:'els nervis d
    for(let i=0;i<V.pts.length;i+=2)if(R()<.35){const x=V.pts[i],y=V.pts[i+1];if(G.who(x,y)>=1000)continue;const a=R()*FR_TAU,l=(5+6*R())*Math.sqrt(W),u=U(x,y),tw=T+(2.5+.5*u)*k;
     frLine(S,x+Math.cos(a)*l,y+Math.sin(a)*l,x,y,tw,.2*k,{w0:.95,c0:Math.min(1,.12+.88*u),lum:.3,hot:0},40);}
    frEvent(S,'tronc',b0x/941,T);frEvent(S,'branca',(b0x+tx)/2/941,T+.6*k);frEvent(S,'fulla',tx/941,T+1.3*k);frEvent(S,'fulla',(b0x+tx)/2/941,T+2.2*k);});}]};
+
+// ── 12 · Gel a la finestra ────────────────────────────────────────────────────────────────────────────────────────────────
+// Frost on a window grows from the cold edges of the glass: water vapour freezes onto the tips of the ice needles, which stick out
+// furthest into the moist air, so the tips grow fastest and keep splitting (a diffusion-limited growth, as Witten & Sander, 1981,
+// described it). The ice lattice is hexagonal, so the side branches leave at about 60°, and every side branch grows its own side
+// branches at 60°, and so on: a feather of feathers. Growth: the great needles from the four corners; their side branches; the side
+// branches of those; and the finest barbs, all at once. Concept 12: frost ferns from the four corners towards the middle of the
+// glass, white needles in an ice-blue glow, the middle left clear.
+const FR_FROST=[[-10,-6,27,980,10],[-6,12,64,560,7],[30,-8,4,560,6],[1682,-6,153,820,10],[1690,30,116,420,6.5],[1300,-8,176,380,5.5],
+ [-10,951,-32,840,10],[-8,880,-64,470,7],[1682,951,-148,880,10],[1680,925,-111,640,8],[640,951,-150,260,5]];
+function frIce(S,G,x,y,a,len,w,lv,T,d,R,id,curl=0){const k=S.k,D=Math.PI/180,step=[9,6,4,3][lv],n=Math.max(2,Math.round(len/step)),pts=[x,y];let dir=a;
+ // the needle: nearly straight, its direction wandering a little about a (and turning slowly by curl over its length)
+ for(let i=1;i<=n;i++){const ai=a+curl*i/n;dir=ai+(dir-ai)*.8+(R()-.5)*[.09,.1,.12,.14][lv];pts.push(pts[i*2-2]+Math.cos(dir)*len/n,pts[i*2-1]+Math.sin(dir)*len/n);}
+ // a needle of the first orders stops where another needle already is
+ let m=n;if(lv<=1){for(let i=3;i<=n;i++){const o=G.who(pts[i*2],pts[i*2+1],60);if(o===-2||(o>=0&&o!==id&&o!==(id>>2))){m=i-1;break;}}if(m<2)return;}
+ const P=pts.slice(0,m*2+2),L=len*m/n,dur=[.95,.55,.38,.24][lv]*k*Math.min(1,.4+L/len*.6);
+ const ts=P.flatMap((v,i)=>i%2?[]:[T+dur*i/2/m]);
+ // the needles of the first orders: a white core in a blue glow (a wide dim blue line under a thin bright one); the fine ones white
+ if(lv<=1)for(const [f,l] of [[2.2,.38],[1,.9]])frPathT(S,P,ts,{wf:i=>([12,6][lv]*w/10+[3,2.4][lv])*f*(1-.6*i/m),cf:()=>.14,lum:[1.1,.85][lv]*l,d0:d,hot:0,sway:0});
+ frPathT(S,P,ts,{wf:i=>{const u=i/m;return [6,2.8,1,.8][lv]*w/10*(1-.55*u)+[1.6,1.2,.95,.85][lv];},cf:i=>[.96,.92,.7,.76][lv],lum:[1.3,1.1,.95,.78][lv],d0:d,hot:lv<2?.9:.3,sway:0});
+ if(lv<=1)G.mark(P,[10,5][lv],id);
+ if(lv>=3)return;
+ // the side branches: at about 60°, on alternate sides (and now and then on both), longest near the base, shorter towards the tip
+ const sp=[46,19,8.5][lv],start=[60,8,4][lv];let s=start+R()*sp*.5,side=R()<.5?-1:1;const ratio=[.34,.27,.3][lv];
+ while(s<L-sp*.5){const i=Math.min(m-1,Math.round(s/L*m)),px=P[i*2],py=P[i*2+1],pa=Math.atan2(P[i*2+3]-P[i*2+1],P[i*2+2]-P[i*2]),u=s/L,env=Math.pow(1-u,[.8,.55,.5][lv])*(lv?Math.min(1,.5+u*3):Math.min(1,.55+u*2));
+  side=-side;for(const sd of (R()<[.35,.5,.5][lv]?[-1,1]:[side])){const l=len*ratio*env*(lv?.7+.6*R():(R()<.18?1.5:.55+.8*R()));if(l<[0,20,4,2.5][lv+1])continue;
+   frIce(S,G,px,py,pa+sd*([50,42,42][lv]+(R()-.5)*[26,18,12][lv])*D,l,w*[.6,.65,.7][lv],lv+1,Math.max(T+dur*u+.04*k,T+[.7,.5,.36][lv]*k),d+s,R,id*4+(sd>0?1:2),-sd*[.3,.18,.05][lv]*(R()*1.6-.3));}
+  s+=sp*(.75+.5*R());}}
+export const FR_GEL={id:'gel',name:'Gel a la finestra',what:'les agulles de gel, de les grans a les més fines',
+ pal:['#0a62d0','#1a94ee','#78d0ff','#d6f2ff','#ffffff'],pal2:['#2a4ad8','#3a84f0','#8ac0ff','#e2e8ff','#ffffff'],
+ look:{bloom:.22,glow:2,halo:.1,core:.5,spread:.5,minW:.8},wind:0,
+ acts:[(S,t0)=>{const k=S.k,R=S.rnd,G=frRoom(8),D=Math.PI/180;
+  FR_FROST.forEach(([x,y,a,len,w],i)=>{const T=t0+(i%3)*.12*k;frIce(S,G,x,y,a*D,len*(.94+.1*R()),w,0,T,0,R,10+i*2);frEvent(S,'tronc',Math.max(0,Math.min(1672,x))/941,T);});
+  frEvent(S,'branca',.4,t0+.9*k);frEvent(S,'branca',1.4,t0+1.1*k);frEvent(S,'fulla',.8,t0+1.6*k);frEvent(S,'fulla',1.2,t0+2.1*k);}]};

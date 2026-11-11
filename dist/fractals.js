@@ -15,12 +15,12 @@ import {bbPhrase,bbMidi,bbFit} from './bombolles.js';
 import {frStore,frRandom,frGrownAt} from './fractals-motor.js';
 import {FR_FALGUERES,FR_FLOCS,FR_GIRASOL,FR_LLAMPS,FR_ARBRE} from './fractals-formes1.js';
 import {FR_RIU,FR_CORALL,FR_ROMANESCO,FR_NEURONES,FR_COSTA} from './fractals-formes2.js';
-import {FR_FULLA} from './fractals-formes3.js';
+import {FR_FULLA,FR_GEL} from './fractals-formes3.js';
 
 export const FR_CAUSE=Object.freeze({id:'fractals',code:'CE46',type:'ce',level:'01 · Descobrir',name:'Fractals a la natura',desc:'Vint formes de la natura que es repeteixen dins seu creixen amb línies de llum de colors sobre negre: falgueres, gira-sols, flocs de neu, arbres, llamps, rius, corals, neurones… cadascuna amb la seva música.',tag:'20 formes · una a cada pulsació',time:'Al teu ritme',fractals:true,recorded:true});
 
 // The twenty forms, in this order (alternating plants, water and stone, light and animals, so that two forms in a row never look alike).
-export const FR_STIMS=Object.freeze([FR_FALGUERES,FR_FLOCS,FR_GIRASOL,FR_LLAMPS,FR_ARBRE,FR_RIU,FR_CORALL,FR_ROMANESCO,FR_NEURONES,FR_COSTA,FR_FULLA]);
+export const FR_STIMS=Object.freeze([FR_FALGUERES,FR_FLOCS,FR_GIRASOL,FR_LLAMPS,FR_ARBRE,FR_RIU,FR_CORALL,FR_ROMANESCO,FR_NEURONES,FR_COSTA,FR_FULLA,FR_GEL]);
 export const FR_IDS=Object.freeze(FR_STIMS.map(x=>x.id));
 export const frStim=F=>FR_STIMS[((F.i%FR_STIMS.length)+FR_STIMS.length)%FR_STIMS.length];
 // How long a form takes to grow (setting «Creixement»): the acts begin over FR_SPREAD seconds, and the wave of light comes after them.
