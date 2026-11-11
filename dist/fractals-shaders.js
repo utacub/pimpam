@@ -60,10 +60,12 @@ precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform vec2 uTx;unifo
 void main(){vec3 c=texture(uS,vUv+uTx*vec2(-1.,-1.)).rgb+texture(uS,vUv+uTx*vec2(1.,-1.)).rgb+texture(uS,vUv+uTx*vec2(-1.,1.)).rgb+texture(uS,vUv+uTx*vec2(1.,1.)).rgb;
  o=vec4(texture(uB,vUv).rgb+c*.25*uMix,1.);}`;
 // to the screen: the lines and their glow, light pressed into the range of the screen with a gentle shoulder that keeps the colour
-// (a very bright line turns towards white, as light does), the darkness of the wait, sRGB, and a little noise against banding
+// (a very bright line turns towards white, as light does), the darkness of the wait, sRGB, and a little noise against banding; the
+// glow and the whole picture can be made more saturated (look.gsat, look.sat), as the glow of real coloured light is
 export const FR_FS_FINAL=`#version 300 es
-precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform float uBloom,uExp,uDim;out vec4 o;
-void main(){vec3 c=(texture(uS,vUv).rgb+texture(uB,vUv).rgb*uBloom)*uExp;c=max(c,vec3(0.));
+precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform float uBloom,uExp,uDim,uGSat,uSat;out vec4 o;
+void main(){vec3 g=texture(uB,vUv).rgb;g=max(mix(vec3(dot(g,vec3(.2126,.7152,.0722))),g,uGSat),vec3(0.));
+ vec3 c=(texture(uS,vUv).rgb+g*uBloom)*uExp;c=max(mix(vec3(dot(c,vec3(.2126,.7152,.0722))),c,uSat),vec3(0.));
  float m=max(c.r,max(c.g,c.b));vec3 t=c/(1.+m);float hot=clamp((m-1.2)/4.,0.,1.);t=mix(t,vec3(max(t.r,max(t.g,t.b))),hot*.5);
  t=pow(t*1.18,vec3(1./2.2))*uDim;float n=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
  o=vec4(t+(n-.5)/255.,1.);}`;

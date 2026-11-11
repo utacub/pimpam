@@ -94,3 +94,31 @@ export const FR_GEL={id:'gel',name:'Gel a la finestra',what:'les agulles de gel,
  acts:[(S,t0)=>{const k=S.k,R=S.rnd,G=frRoom(8),D=Math.PI/180;
   FR_FROST.forEach(([x,y,a,len,w],i)=>{const T=t0+(i%3)*.12*k;frIce(S,G,x,y,a*D,len*(.94+.1*R()),w,0,T,0,R,10+i*2);frEvent(S,'tronc',Math.max(0,Math.min(1672,x))/941,T);});
   frEvent(S,'branca',.4,t0+.9*k);frEvent(S,'branca',1.4,t0+1.1*k);frEvent(S,'fulla',.8,t0+1.6*k);frEvent(S,'fulla',1.2,t0+2.1*k);}]};
+
+// ── 13 · Nautilus ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+// The nautilus grows by adding to the mouth of its shell and closing behind itself a new wall (a septum), each chamber a copy of the
+// one before, larger by the same factor: the shell is a logarithmic spiral, r = a·e^(bθ), the one curve that keeps its shape when it
+// grows, so that any piece of it, enlarged, is the same as a bigger piece (Thompson, 1917, «On growth and form»; the nautilus grows
+// about three times wider at each turn). Self-similar, not branching: the same spiral at every scale. Growth: the wall of the shell,
+// turn by turn from the centre outwards, closing a wall behind each chamber as it passes; three shells, a big one and two smaller
+// copies. Concept 13: three nautilus shells cut in half, the spirals and the curved walls of the chambers, cream at the centre,
+// gold, amber and copper at the mouth.
+// [centre x, y, radius at the mouth, the screen angle of the mouth (degrees), time lag]
+const FR_SHELLS=[[745,510,720,144,0],[1466,676,405,144,.3],[1528,186,208,142,.55]];
+function frShell(S,cx,cy,Rm,ang,T,R){const k=S.k,b=.2,a=1.6,th1=Math.log(Rm/a)/b,th0=Math.log(2.5/a)/b,rot=ang*Math.PI/180+th1,D=1.7*k*Math.pow(Rm/720,.25);
+ const P=th=>{const r=a*Math.exp(b*th),f=rot-th;return [cx+Math.cos(f)*r,cy+Math.sin(f)*r,r];},tAt=th=>T+D*Math.pow((th-th0)/(th1-th0),1.35);
+ // the wall: one spiral from the centre to the mouth, thicker and redder as it widens
+ const pts=[],ts=[],rs=[];for(let th=th0;th<=th1+1e-6;th+=Math.min(.12,4/Math.max(1,a*Math.exp(b*th)))){const q=P(th);pts.push(q[0],q[1]);ts.push(tAt(th));rs.push(q[2]);}
+ const sc=Math.pow(720/Rm,.35);frPathT(S,pts,ts,{wf:i=>1.5+rs[i]*.0135*sc,cf:i=>.92*Math.pow(rs[i]/Rm,.6),lum:1,hot:.8,d0:0});
+ // the walls of the chambers: from the turn before to this one, curved back like a cup (its hollow towards the mouth)
+ const per=13,dth=FR_TAU/per;for(let th=th0+FR_TAU+dth*.5;th<th1-dth*.35;th+=dth*(.92+.16*R())){
+  const A=P(th-FR_TAU),B=P(th),L=Math.hypot(B[0]-A[0],B[1]-A[1]),f=rot-th,tx=Math.sin(f),ty=-Math.cos(f);// tx, ty: towards the older chambers
+  const c1=[A[0]+(B[0]-A[0])*.25+tx*L*.55,A[1]+(B[1]-A[1])*.25+ty*L*.55],c2=[A[0]+(B[0]-A[0])*.8+tx*L*.42,A[1]+(B[1]-A[1])*.8+ty*L*.42],sp=[];
+  for(let j=0;j<=18;j++){const t=j/18,s=1-t;sp.push(s*s*s*B[0]+3*s*s*t*c2[0]+3*s*t*t*c1[0]+t*t*t*A[0],s*s*s*B[1]+3*s*s*t*c2[1]+3*s*t*t*c1[1]+t*t*t*A[1]);}
+  const t0=tAt(th)+.04*k,r=B[2];frGrow(S,sp,t0,(.22+.25*Math.min(1,r/400))*k,{w0:1.3+r*.0105*sc,w1:1.3+A[2]*.012*sc,c0:Math.pow(r/Rm,.6)*.82,c1:Math.pow(A[2]/Rm,.6)*.82,lum:.95,hot:.6,d0:r});}}
+export const FR_NAUTILUS={id:'nautilus',name:'Nautilus',what:'la closca en espiral, cambra a cambra',
+ pal:['#fff6dc','#ffe08a','#ffb030','#ff8c1a','#ff701a'],pal2:['#fff0e8','#ffd0a0','#ffa060','#ff7848','#ff5a3a'],
+ look:{bloom:.3,glow:2.2,halo:.16,core:.18,spread:.42,gsat:1.8,sat:1.25},wind:0,
+ acts:[(S,t0)=>{const k=S.k,R=S.rnd;
+  for(const [x,y,Rm,ang,lag] of FR_SHELLS){frShell(S,x,y,Rm,ang,t0+lag*k,R);frEvent(S,'tronc',x/941,t0+lag*k);}
+  frEvent(S,'branca',.8,t0+.9*k);frEvent(S,'fulla',.6,t0+1.5*k);frEvent(S,'fulla',1.1,t0+2*k);}]};
