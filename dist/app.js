@@ -93,7 +93,7 @@ function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('sh
 const keyName=k=>({Space:'Espai',Enter:'Retorn',ArrowRight:'→',ArrowLeft:'←',ArrowUp:'↑',ArrowDown:'↓'}[k]||k.replace('Key','').replace('Digit',''));
 const sourceName=()=>({keyboard:'Teclat / adaptador USB o Bluetooth',pointer:'Botons de ratolí / adaptador',gamepad:'Comandament / adaptador Gamepad'}[settings.source]);
 // 0.50.5: the version, small, next to the Pim Pam logo on the home page (Marc, 7 November 2026)
-const APP_VERSION='0.71';
+const APP_VERSION='0.71.1';
 function brands(version=false){return `<a class="brands" href="#" data-home aria-label="UTAC · Pim Pam, inici"><img class="utac-logo" src="./assets/utac.png" alt="UTAC"><span class="brand-divider"></span><img class="pim-logo" src="./assets/pim-pam.png" alt="Pim Pam">${version?`<span class="app-version" aria-label="Versió ${APP_VERSION}">v${APP_VERSION}</span>`:''}</a>`}
 function header(){return `<header class="topbar">${brands(true)}<nav class="nav" aria-label="Principal">${userChip()}${langMenuHtml()}<button class="settings-button sobre-button" data-sobre aria-label="Informació sobre Pim Pam">${icon('info')}<span>Informació</span></button><button class="settings-button" data-settings aria-label="Configuració">${icon('settings')}<span>Configuració</span></button></nav></header>`}
 // 0.46: who is playing, at the top of the menu; it opens the users of this device.

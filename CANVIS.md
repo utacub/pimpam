@@ -1,3 +1,7 @@
+# Pim Pam 0.71.1 · Un text que faltava
+
+Base: 0.71 (23008e7). Tradueix «cada dia diferent» (la línia d’estat de «Dia rere dia»), que el recorregut de l’app en anglès va trobar encara en català. La resta de textos que surten en català en aquest recorregut són noms propis (Pepa, Tomàs, Nina, Pol, Nata), termes de castells i els crèdits.
+
 # Pim Pam 0.71 · Pim Pam en sis idiomes
 
 Base: 0.70 (commit c89de88, publicada). Respon als missatges d’en Marc de l’11 de novembre de 2026 («Vull fer que Pim Pam sigui multilingüe… mateixos idiomes i estil de desplegable que Keryx»; «Adapta els colors de la paleta als propis de Pim Pam»; «Quan ho tinguis fet ho pots publicar directament»).
