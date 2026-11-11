@@ -1,7 +1,7 @@
 // Fractals a la natura (CE46, 0.73) · stimuli 16–20: ploma de paó, serralades, arrels, petxina de triangles, dent de lleó. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
 import {frEvent,frTraced,frDrawTraced} from './fractals-formes.js';
-import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS} from './fractals-traces.js';
+import {FR_TR_PAO,FR_TR_SERRA,FR_TR_ARRELS,FR_TR_PETXINA} from './fractals-traces.js';
 
 // ── 16 · Ploma de paó ─────────────────────────────────────────────────────────────────────────────────────────────────────
 // A feather is a shaft (the rachis) with a row of barbs on each side, and every barb is a small shaft with a row of barbules on
@@ -51,3 +51,18 @@ export const FR_ARRELS={id:'arrels',name:'Arrels',what:'les arrels principals, l
  acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_ARRELS),t0,{wk:.7,wpow:1,wmin:1,lumw:[.9,.8,2.5],tipx:[6,.4,.3],taper:.4,fork:[10,.2,1,.6,.95],lumv:[.6,1,.5],lum:1,hot:.5,sway:.1});
   FR_ARRELS_X.forEach((x,i)=>frEvent(S,'tronc',x/941,t0+i*.1*k));
   frEvent(S,'branca',.5,t0+.9*k);frEvent(S,'branca',1.3,t0+1.3*k);for(let i=0;i<5;i++)frEvent(S,'fulla',.2+i*.33,t0+(1.6+i*.35)*k);}]};
+
+// ── 19 · Petxina de triangles ─────────────────────────────────────────────────────────────────────────────────────────────
+// A shell grows only at its lip, adding a band of new shell at a time, so its pattern is laid down line by line, like a printer's:
+// along the lip, a pigment that excites its own making and a slower substance that stops it (an activator and an inhibitor) switch
+// cells on and off, and the record of those switchings, band after band, is a field of triangles of every size, a big one holding
+// smaller ones as in the cone shells (Meinhardt & Klingler, 1987; Meinhardt, 1995). Concept 19: a cone shell drawn as a lattice of
+// cream lines, each cell holding nested triangles, orange outside and tan within. The lattice and the rings are traced from the
+// concept (tools/fractals-petxina.py: FR_TR_PETXINA): the lattice grows from the apex (the oldest part of the shell) towards the
+// lip, and in each cell, once the lattice has closed round it, its triangles appear from the outside in.
+export const FR_PETXINA={id:'petxina',name:'Petxina de triangles',what:'la xarxa de la closca i els triangles dins de triangles',
+ pal:['#f06a00','#d8b488','#ff8c14','#ffbc50','#fff8cc'],pal2:['#f03a50','#e8b0b8','#ff5878','#ffa8a0','#fff4ee'],
+ look:{bloom:.26,glow:1.7,halo:.32,core:.6,tubeW:7,tubeP:2,spread:.3,minW:.6,gsat:1.25,sat:1.05,white:2.4,exp:1.2},wind:0,
+ acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_PETXINA),t0,{wk:.9,wpow:1,wmin:1.2,lum:1,hot:.6,sway:0,under:[0,2.6,.14,-.45,.95]});
+  frEvent(S,'tronc',1645/941,t0);frEvent(S,'tronc',1200/941,t0+.9*k);frEvent(S,'tronc',500/941,t0+2*k);
+  for(let i=0;i<6;i++)frEvent(S,i%2?'branca':'fulla',.2+i*.27,t0+(1.6+i*.45)*k);}]};

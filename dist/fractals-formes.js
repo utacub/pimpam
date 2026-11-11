@@ -224,8 +224,8 @@ export function frDrawTraced(S,P,t0,o={}){const k=S.k,wk=o.wk??1,wm=o.wmin??0,wp
   lum=(o.lum??1)*(o.lumw?Math.min(1,o.lumw[0]+(1-o.lumw[0])*Math.max(0,wa-o.lumw[1])/(o.lumw[2]-o.lumw[1])):1)*(o.lumv?Math.max(o.lumv[2]??0,Math.pow(Math.min(1,p.b/o.lumv[0]),o.lumv[1])):1),
   base={d0:p.d0,lum,hot:o.hot??.7,sway:o.sway??0,seed:p.pts[0]*.01};
   // under a wide line, a wider and dimmer one of a deeper colour: the glow at its edges (o.under: [the least mean width, the width
-  // factor, its brightness, the shift of its colour])
-  if(o.under&&wa>=o.under[0])frPathT(S,p.pts,ts,{...base,lum:lum*o.under[2],hot:0,wf:i=>W(p.w[i])*o.under[1],cf:i=>Math.min(1,p.c[i]+o.under[3])});
+  // factor, its brightness, the shift of its colour, the least colour of the lines that have it (optional)])
+  if(o.under&&wa>=o.under[0]&&(o.under[4]==null||p.c[0]>=o.under[4]))frPathT(S,p.pts,ts,{...base,lum:lum*o.under[2],hot:0,wf:i=>W(p.w[i])*o.under[1],cf:i=>Math.min(1,p.c[i]+o.under[3])});
   // (o.taper: a line that ends in a free tip narrows along its whole length to this share of its width)
   const tp=o.taper&&p.tip?(()=>{const a=new Float32Array(n);let s=0;for(let i=1;i<n;i++){s+=Math.hypot(p.pts[i*2]-p.pts[i*2-2],p.pts[i*2+1]-p.pts[i*2-1]);a[i]=s;}return i=>1-(1-o.taper)*a[i]/Math.max(1e-6,s);})():null;
   frPathT(S,p.pts,ts,{...base,wf:tp?i=>W(p.w[i])*tp(i):i=>W(p.w[i]),cf:i=>p.c[i]});
