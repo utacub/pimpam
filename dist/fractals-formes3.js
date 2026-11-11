@@ -1,6 +1,7 @@
 // Fractals a la natura (CE46, 0.73) · stimuli 11–15: nervis d'una fulla, gel a la finestra, nautilus, micel·li, fang esquerdat. As in
 // fractals-formes1.js: each one follows its concept picture (ChatGPT, 2026-11-11), in its units (1672 × 941), and grows order by order.
-import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOut,frLine,frTurn,frRoom,frTree,frInPoly,frVoronoi,FR_TAU} from './fractals-formes.js';
+import {frPath,frPathT,frLoop,frEvent,frCurve,frGrow,frAt,frSpline,frOut,frLine,frTurn,frRoom,frTree,frInPoly,frVoronoi,frTraced,frDrawTraced,FR_TAU} from './fractals-formes.js';
+import {FR_TR_MICELI} from './fractals-traces.js';
 import {frRandom,frNoise,frIso,frChains} from './fractals-motor.js';
 
 // ── 11 · Nervis d'una fulla ───────────────────────────────────────────────────────────────────────────────────────────────
@@ -122,3 +123,18 @@ export const FR_NAUTILUS={id:'nautilus',name:'Nautilus',what:'la closca en espir
  acts:[(S,t0)=>{const k=S.k,R=S.rnd;
   for(const [x,y,Rm,ang,lag] of FR_SHELLS){frShell(S,x,y,Rm,ang,t0+lag*k,R);frEvent(S,'tronc',x/941,t0+lag*k);}
   frEvent(S,'branca',.8,t0+.9*k);frEvent(S,'fulla',.6,t0+1.5*k);frEvent(S,'fulla',1.1,t0+2*k);}]};
+
+// ── 14 · Micel·li ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+// A fungus under the soil is a network of threads (hyphae) that grow only at their tips, fork a little behind them, and fuse when they
+// meet another thread (anastomosis), so that the network closes into loops. Where food is found, many hyphae run together into thick
+// cords that carry it far; the cords branch into hyphae, the hyphae into finer ones, each fork a smaller copy of the one before, and
+// the whole network fills the ground in the same way at every scale (its box-counting dimension lies between 1 and 2: Bolton & Boddy,
+// 1993; Boddy, 1999; Ritz & Crawford, 1990). Growth: the cords come in from the four corners and meet in the middle, then the hyphae
+// leave them, then their forks and their fine tips, order by order, and where two fronts meet on a loop they fuse. Concept 14: a
+// network across the whole screen, the cords yellow-green, the hyphae cyan, the finest tips dim teal; traced from the picture.
+export const FR_MICELI={id:'miceli',name:'Micel·li',what:'els cordons del fong, les hifes i les seves puntes',
+ pal:['#78ff20','#30ff40','#00ffb0','#00f0ff','#0090a8'],pal2:['#e0ff40','#90ff60','#40ffe0','#40b8ff','#4a66d8'],
+ look:{bloom:.16,glow:1.7,halo:.35,core:1.1,tubeW:4.5,tubeP:4,spread:.22,minW:.7,gsat:1.5,sat:1.1,white:3,exp:1.25},wind:.002,
+ acts:[(S,t0)=>{const k=S.k;frDrawTraced(S,frTraced(FR_TR_MICELI),t0,{wk:.9,wpow:.9,wmin:.6,fork:[7,.36,1,.6,.8],lumw:[.55,.6,1.8],lum:1,hot:.7,sway:.15});
+  for(const [x,y] of [[10,108],[12,927],[1665,6],[1667,935]])frEvent(S,'tronc',x/941,t0);
+  frEvent(S,'branca',.5,t0+.8*k);frEvent(S,'branca',1.3,t0+1.1*k);for(let i=0;i<5;i++)frEvent(S,'fulla',.2+i*.33,t0+(1.5+i*.35)*k);}]};

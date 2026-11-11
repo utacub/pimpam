@@ -192,3 +192,30 @@ export function frVoronoi(R,box,sp,inside,jit=.85){const pts=[],gw=Math.ceil((bo
    poly=np;for(let k=0;k<poly.length;k++){const P=poly[k],Q=poly[(k+1)%poly.length];if(Math.abs(((P[0]+Q[0])/2-mx)*nx+((P[1]+Q[1])/2-my)*ny)<1e-6*(nx*nx+ny*ny)+1e-6)P[2]=b;}}
   for(let k=0;k<poly.length;k++){const P=poly[k],Q=poly[(k+1)%poly.length];if(P[2]>=0&&P[2]<a)continue;out.push([P[0],P[1],Q[0],Q[1],ax,ay,P[2]]);}}
  return {pts,walls:out};}
+
+// A network traced from its concept picture (tools/fractals-traca.py), in the order it grows: paths, each one [n (+32768 when it ends
+// in a free tip), x0, y0 (½ px, from −64), d0 (its distance from the root), t0 (ms), speed (px/s)] as u16 and its n points [dx, dy (½ px) as i8, width (0.1 px), colour (/255)] as
+// u8. Unpacked once.
+const FR_TRACED=new Map();
+export function frTraced(b64){let P=FR_TRACED.get(b64);if(P)return P;P=[];const t=atob(b64),u=new Uint8Array(t.length);for(let i=0;i<t.length;i++)u[i]=t.charCodeAt(i);
+ const dv=new DataView(u.buffer);let p=0;
+ while(p+12<=u.length){const n0=dv.getUint16(p,true),n=n0&32767,tip=n0>32767;let x=dv.getUint16(p+2,true),y=dv.getUint16(p+4,true);const d0=dv.getUint16(p+6,true),t0=dv.getUint16(p+8,true)/1000,sp=dv.getUint16(p+10,true);p+=12;
+  const pts=new Float32Array(n*2),w=new Float32Array(n),c=new Float32Array(n),ts=new Float32Array(n);let s=0;
+  for(let i=0;i<n;i++,p+=4){x+=dv.getInt8(p);y+=dv.getInt8(p+1);pts[i*2]=x/2-64;pts[i*2+1]=y/2-64;w[i]=u[p+2]/10;c[i]=u[p+3]/255;
+   if(i)s+=Math.hypot(pts[i*2]-pts[i*2-2],pts[i*2+1]-pts[i*2-1]);ts[i]=t0+s/sp;}
+  P.push({pts,w,c,ts,d0,t0,tip,len:s});}
+ FR_TRACED.set(b64,P);return P;}
+// Its drawing: every path grows point by point at its moment (scaled by the growth setting k) from t0; o: wk (width factor), wpow
+// (widths pressed towards the thin ones: w^wpow), wmin, lum, lumw [the brightness of the finest lines, from the width w0 up to w1
+// where it is whole], hot, sway, and fork: [length, half angle, levels, ratio, brightness] of the last small forks that every free
+// tip makes (the finest orders, too fine to be traced from the picture), or none.
+export function frDrawTraced(S,P,t0,o={}){const k=S.k,wk=o.wk??1,wm=o.wmin??0,wp=o.wpow??1,R=S.rnd,W=w=>Math.max(wm,Math.pow(w,wp)*wk);
+ for(const p of P){const ts=Array.from(p.ts,t=>t0+t*k),n=p.w.length,wa=p.w.reduce((a,b)=>a+b,0)/n,
+  lum=(o.lum??1)*(o.lumw?Math.min(1,o.lumw[0]+(1-o.lumw[0])*Math.max(0,wa-o.lumw[1])/(o.lumw[2]-o.lumw[1])):1),
+  base={d0:p.d0,lum,hot:o.hot??.7,sway:o.sway??0,seed:p.pts[0]*.01};
+  frPathT(S,p.pts,ts,{...base,wf:i=>W(p.w[i]),cf:i=>p.c[i]});
+  if(o.fork&&p.tip&&n>1){const v=Math.max(40,p.len/Math.max(.05,p.ts[n-1]-p.ts[0]));
+   // the forks of the forks: each level a Y smaller by o.fork[3] (o.fork[2] levels)
+   const Y=(x,y,a,l,we,T,c,d,lv)=>{for(const sd of [-1,1]){const b=a+sd*o.fork[1]*(.7+.6*R()),L=l*(.75+.5*R()),x1=x+Math.cos(b)*L,y1=y+Math.sin(b)*L,dur=L/v*k;
+    frLine(S,x,y,x1,y1,T,dur,{...base,lum:base.lum*(o.fork[4]??1),w0:we,w1:we*.6,c0:c,d0:d},40);if(lv>1)Y(x1,y1,b,l*(o.fork[3]??.6),we*.75,T+dur,Math.min(1,c+.04),d+L,lv-1);}};
+   Y(p.pts[n*2-2],p.pts[n*2-1],Math.atan2(p.pts[n*2-1]-p.pts[n*2-3],p.pts[n*2-2]-p.pts[n*2-4]),o.fork[0],W(p.w[n-1])*.9,ts[n-1],Math.min(1,p.c[n-1]+.04),p.d0+p.len,o.fork[2]??1);}}}

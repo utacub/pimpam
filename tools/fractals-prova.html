@@ -10,7 +10,7 @@ window.frShots=(id,n,gap,shots,W=1920,H=1080,lap=0)=>{const cv=document.getEleme
  const out=[],dt=1/30;let t=0,k=0,t0=performance.now();const presses=[...Array(n)].map((_,i)=>.2+i*gap);
  shots=[...shots].sort((a,b)=>a-b);
  while(shots.length){if(k<presses.length&&t>=presses[k]){frPress(g,s);k++;}frTick(g,s,dt);t+=dt;
-  if(t>=shots[0]){frDraw(c,W,H,g,s);out.push({t:+t.toFixed(2),url:cv.toDataURL('image/jpeg',.9),n:g.fractals.S?.st.n||0,phase:g.fractals.phase});shots.shift();}}
+  if(t>=shots[0]){frDraw(c,W,H,g,s);out.push({t:+t.toFixed(2),url:cv.toDataURL(window.FR_PNG?'image/png':'image/jpeg',.92),n:g.fractals.S?.st.n||0,phase:g.fractals.phase});shots.shift();}}
  return {out,ms:performance.now()-t0};};
 window.ready=true;
 </script>

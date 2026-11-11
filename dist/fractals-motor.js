@@ -68,14 +68,14 @@ export function frmDraw(layers,dim=1){const gl=FRM.gl,S=FRM.S;if(!gl||!S||FRM.lo
   gl.bindBuffer(gl.ARRAY_BUFFER,I.buf);if(st.n>I.up){gl.bufferSubData(gl.ARRAY_BUFFER,I.up*FR_STRIDE*4,st.seg,I.up*FR_STRIDE,(st.n-I.up)*FR_STRIDE);I.up=st.n;}
   const o=frmUse(gl,'line');if(!o)return false;gl.enable(gl.BLEND);gl.blendEquation(gl.MAX);gl.blendFunc(gl.ONE,gl.ONE);gl.bindVertexArray(I.vao);const ps=u.pulses||[];
   frmSet(gl,o,{uT:u.T,uAR:FRM.view.AR,uPx:FRM.view.H,uDmax:Math.max(1e-3,u.dmax??st.dmax),uExit:u.exit??-1,uExitDur:u.exitDur||4,uWind:u.wind||0,uFade:u.fade??1,uPulseV:u.pulseV||.5,
-   uMinW:L.minW??.9,uGlowW:L.glow??3,uFrame:{arr:new Float32Array(u.frame||[0,0,1]),size:3},uHalo:L.halo??.22,uCore:L.core??.7,uRim:L.rim??0,uView:u.view||[0,0,1,0],uPulse:[ps[0]??-1,ps[1]??-1,ps[2]??-1,ps[3]??-1],uPalA:frmPalArr(u.pal),uPalB:frmPalArr(u.pal2||u.pal)});
+   uMinW:L.minW??.9,uGlowW:L.glow??3,uFrame:{arr:new Float32Array(u.frame||[0,0,1]),size:3},uHalo:L.halo??.22,uCore:L.core??.7,uRim:L.rim??0,uTubeW:L.tubeW??1.4,uTubeP:L.tubeP??1,uView:u.view||[0,0,1,0],uPulse:[ps[0]??-1,ps[1]??-1,ps[2]??-1,ps[3]??-1],uPalA:frmPalArr(u.pal),uPalB:frmPalArr(u.pal2||u.pal)});
   gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,st.n);gl.blendEquation(gl.FUNC_ADD);}
  gl.disable(gl.BLEND);gl.bindVertexArray(FRM.quad);
  let p=frmUse(gl,'down');if(!p)return false;let src=S.hdr;for(const t of S.bl){gl.bindFramebuffer(gl.FRAMEBUFFER,t.f);gl.viewport(0,0,t.w,t.h);frmSet(gl,p,{uS:{tex:src.t,unit:0},uTx:[.5/src.w,.5/src.h]});gl.drawArrays(gl.TRIANGLES,0,3);src=t;}
  p=frmUse(gl,'up');if(!p)return false;let low=S.bl[FRM_LEVELS-1];for(let i=FRM_LEVELS-2;i>=0;i--){const t=S.up[i];gl.bindFramebuffer(gl.FRAMEBUFFER,t.f);gl.viewport(0,0,t.w,t.h);
   frmSet(gl,p,{uS:{tex:low.t,unit:0},uB:{tex:S.bl[i].t,unit:1},uTx:[.5/low.w,.5/low.h],uMix:L.spread??.85});gl.drawArrays(gl.TRIANGLES,0,3);low=t;}
  p=frmUse(gl,'final');if(!p)return false;gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.viewport(0,0,FRM.view.W,FRM.view.H);
- frmSet(gl,p,{uS:{tex:S.hdr.t,unit:0},uB:{tex:low.t,unit:1},uBloom:L.bloom??.55,uExp:L.exp??1,uDim:dim,uGSat:L.gsat??1,uSat:L.sat??1});gl.drawArrays(gl.TRIANGLES,0,3);gl.bindVertexArray(null);return true;}
+ frmSet(gl,p,{uS:{tex:S.hdr.t,unit:0},uB:{tex:low.t,unit:1},uBloom:L.bloom??.55,uExp:L.exp??1,uDim:dim,uGSat:L.gsat??1,uSat:L.sat??1,uWhite:L.white??1.2});gl.drawArrays(gl.TRIANGLES,0,3);gl.bindVertexArray(null);return true;}
 // ── Small tools for the stimuli ───────────────────────────────────────────────────────────────────────────────────────────
 // '#rrggbb' → linear RGB, multiplied by k (k > 1: a light brighter than the screen)
 export function frLin(hex,k=1){const n=parseInt(hex.slice(1),16),f=c=>{c/=255;return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;};return [f(n>>16&255)*k,f(n>>8&255)*k,f(n&255)*k];}

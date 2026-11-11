@@ -40,17 +40,17 @@ void main(){float t0=aB.x,dur=max(aB.y,1e-3),g=clamp((uT-t0)/dur,0.,1.);
  vTip=(g<1.&&r<=0.)?aD.w*uFade:0.;vHot=mix(vCol,vec3(1.)*max(aC.y,.6)*1.6,.55);
  gl_Position=vec4(P.x/(uAR*uPx)*2.-1.,1.-P.y/uPx*2.,0.,1.);}`;
 export const FR_FS_LINE=`#version 300 es
-precision highp float;in vec2 vP;flat in vec2 vA,vB;flat in float vW,vR,vTip;flat in vec3 vCol,vHot;uniform float uHalo,uCore,uRim;out vec4 o;
+precision highp float;in vec2 vP;flat in vec2 vA,vB;flat in float vW,vR,vTip;flat in vec3 vCol,vHot;uniform float uHalo,uCore,uRim,uTubeW,uTubeP;out vec4 o;
 void main(){if(vW<=0.)discard;vec2 ab=vB-vA,ap=vP-vA;float h=clamp(dot(ap,ab)/max(dot(ab,ab),1e-6),0.,1.),d=length(ap-ab*h);
- float hw=vW*.5,core=1.-smoothstep(hw-.6,hw+.6,d),s=vR*.42,halo=exp(-d*d/(s*s))*uHalo;
- // a neon tube: wide lines have a paler, brighter core along their middle
- float tube=core*max(0.,1.-d*d/(hw*hw+1e-3))*clamp((vW-1.4)/5.,0.,1.);
+ float hw=vW*.5,core=1.-smoothstep(hw-.6,hw+.6,d),s=vR*.42,halo=exp(-d*d/(s*s))*uHalo*(1.-smoothstep(vR*.7,vR,d));
+ // a neon tube: wide lines (wider than look.tubeW px) have a paler, brighter core along their middle (narrower with look.tubeP)
+ float tube=core*pow(max(0.,1.-d*d/(hw*hw+1e-3)),uTubeP)*clamp((vW-uTubeW)/5.,0.,1.);
  vec3 c=vCol*(core+halo)+mix(vCol,vec3(max(vCol.r,max(vCol.g,vCol.b))),.55)*tube*uCore;
  // a glass tube (corals): the edges of a wide line shine brighter than its inside
  // (measured across the line, not from its ends, so that the joints of a curve do not show)
  if(uRim>0.){float dp=abs(dot(ap,vec2(-ab.y,ab.x)))/max(length(ab),1e-4),wk=clamp((vW-5.)/9.,0.,1.),rim=core*smoothstep(hw*.58,hw*.9,dp)*wk;
   c=mix(c,mix(vCol,vec3(max(vCol.r,max(vCol.g,vCol.b))),.5)*1.2,rim*uRim);}
- if(vTip>0.){float q=length(vP-vB),tw=clamp(vW*1.6,2.2,9.);c+=vHot*vTip*(exp(-q*q/(tw*tw))*1.8+exp(-q*q/(tw*tw*5.))*.35);}
+ if(vTip>0.){float q=length(vP-vB),tw=clamp(vW*1.6,2.2,9.);c+=vHot*vTip*(exp(-q*q/(tw*tw))*1.8+exp(-q*q/(tw*tw*5.))*.35)*(1.-smoothstep(vR*.55,vR*.98,q));}
  if(max(c.r,max(c.g,c.b))<.002)discard;o=vec4(c,1.);}`;
 export const FR_FS_DOWN=`#version 300 es
 precision highp float;in vec2 vUv;uniform sampler2D uS;uniform vec2 uTx;out vec4 o;
@@ -61,11 +61,12 @@ void main(){vec3 c=texture(uS,vUv+uTx*vec2(-1.,-1.)).rgb+texture(uS,vUv+uTx*vec2
  o=vec4(texture(uB,vUv).rgb+c*.25*uMix,1.);}`;
 // to the screen: the lines and their glow, light pressed into the range of the screen with a gentle shoulder that keeps the colour
 // (a very bright line turns towards white, as light does), the darkness of the wait, sRGB, and a little noise against banding; the
-// glow and the whole picture can be made more saturated (look.gsat, look.sat), as the glow of real coloured light is
+// glow and the whole picture can be made more saturated (look.gsat, look.sat), as the glow of real coloured light is, and the
+// brightness where light begins to turn white can be raised (look.white), for forms whose colours stay pure at their brightest
 export const FR_FS_FINAL=`#version 300 es
-precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform float uBloom,uExp,uDim,uGSat,uSat;out vec4 o;
+precision highp float;in vec2 vUv;uniform sampler2D uS,uB;uniform float uBloom,uExp,uDim,uGSat,uSat,uWhite;out vec4 o;
 void main(){vec3 g=texture(uB,vUv).rgb;g=max(mix(vec3(dot(g,vec3(.2126,.7152,.0722))),g,uGSat),vec3(0.));
  vec3 c=(texture(uS,vUv).rgb+g*uBloom)*uExp;c=max(mix(vec3(dot(c,vec3(.2126,.7152,.0722))),c,uSat),vec3(0.));
- float m=max(c.r,max(c.g,c.b));vec3 t=c/(1.+m);float hot=clamp((m-1.2)/4.,0.,1.);t=mix(t,vec3(max(t.r,max(t.g,t.b))),hot*.5);
+ float m=max(c.r,max(c.g,c.b));vec3 t=c/(1.+m);float hot=clamp((m-uWhite)/4.,0.,1.);t=mix(t,vec3(max(t.r,max(t.g,t.b))),hot*.5);
  t=pow(t*1.18,vec3(1./2.2))*uDim;float n=fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453);
  o=vec4(t+(n-.5)/255.,1.);}`;
