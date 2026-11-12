@@ -66,11 +66,11 @@ Generada el 12 de novembre de 2026 amb `tools/flash-audit-app.mjs` (activitats e
 
 ## Resultats · vídeos (121)
 
-Superen el criteri 120 de 121. Els que tenen 2 flaixos per segon o més:
+Superen el criteri 120 de 121 a la 0.77.1; a la 0.77.2, després de refer l’escena 20 de la Sabana, 121 de 121. Els que tenen 2 flaixos per segon o més:
 
 | Vídeo | Flaixos generals per segon | Moment (s) | Flaixos vermells per segon | Resultat |
 |---|---|---|---|---|
-| sabana_escena_20.mp4 | 4,5 | 17,1 | 0,0 | **No supera** |
+| sabana_escena_20.mp4 (0.77.1) | 4,5 | 17,1 | 0,0 | **No supera** → refet a la 0.77.2: 1,5 flaixos per segon, supera |
 | pou_escena_20.mp4 | 3,0 | 15,5 | 0,0 | Supera, al límit |
 | fons_escena_19.mp4 | 2,0 | 0,5 | 0,0 | Supera |
 | pou_escena_03.mp4 | 2,0 | 0,3 | 0,0 | Supera |
@@ -80,7 +80,7 @@ Superen el criteri 120 de 121. Els que tenen 2 flaixos per segon o més:
 | selva_escena_06.mp4 | 2,0 | 0,5 | 0,0 | Supera |
 | selva_escena_09.mp4 | 2,0 | 0,6 | 0,0 | Supera |
 
-La resta de vídeos fan menys de 2 flaixos per segon en el pitjor camp. `sabana_escena_20.mp4` (Sabana de paper, travessa de núvols roses cap als 17 s) supera el llindar; `pou_escena_20.mp4` (El pou del temps, pujada ràpida entre estrats de roca cap als 15,5 s) queda exactament al límit. Cal decidir si es tornen a renderitzar més lents o més suaus.
+La resta de vídeos fan menys de 2 flaixos per segon en el pitjor camp. `sabana_escena_20.mp4` (Sabana de paper, travessa de núvols roses cap als 17 s) superava el llindar (corregit a la 0.77.2: boires de pas més transparents, vegeu CANVIS.md); `pou_escena_20.mp4` (El pou del temps, pujada ràpida entre estrats de roca cap als 15,5 s) queda exactament al límit. Queda al límit i no s’ha modificat.
 
 ## Referències
 

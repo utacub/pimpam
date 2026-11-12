@@ -114,10 +114,12 @@ export function drawSabana(c,w,h,o){if(typeof document==='undefined')return fals
  // The loop of the day: the climb after the twentieth scene ends in the night sky one period of the route on from the start. The
  // backdrop repeats, but its clouds do not, so in the last 1.2 s of the climb the same sky one period back (the start) is dissolved in
  // over it: when the camera is put back at the start, nothing jumps.
- if(running&&v===SABANA_N-1){const end=SABANA_TRAVEL+Math.max(SABANA_STIM,o.stim??SABANA_STIM)+SABANA_RETURN,k=SBsmooth((o.t-end+1.2)/1.2);
+ if(running&&v===SABANA_N-1){const end=SABANA_TRAVEL+Math.max(SABANA_STIM,o.stim??SABANA_STIM)+SABANA_RETURN,k=SGsmooth((o.t-end+1.2)/1.2);
   if(k>0){const pic2=sbRender(rw,rh,{...ro,cam:[cam[0]-SABANA_PERIOD,cam[1],cam[2],Math.max(0,cam[3]-1)],layers:[]});
    if(pic2){c.globalAlpha=k;c.drawImage(pic2,0,0,cv?cv.width:w,cv?cv.height:h);}}}
  c.restore();return true;}
+// 0.77.2 (audit): this module had used sabana.js's SBsmooth without importing it, so the last scene threw on every frame of the live version.
+function SGsmooth(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);}
 // Whether the diorama can be drawn here (WebGL2 with float targets).
 // Prepares the first programs in the background while the menu is open, only where the browser compiles in parallel (0.35): the
 // menu used to compile them by drawing the card live, and hung.

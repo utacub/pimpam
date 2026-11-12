@@ -1,3 +1,22 @@
+# Pim Pam 0.77.2 · Sabana de paper: escena 20 sense excés de flaixos i sense aturades
+
+Base: 0.77.1 (8bd5675). Respon a en Marc (12 de novembre de 2026, 10:15): «Un cop corregida l’escena, fes-ne també el vídeo i publica-ho tot arreglat».
+
+## Què canvia
+
+- **Error a la versió WebGL2.** A l’escena 20 de la Sabana de paper, `dist/sabana-gl.js` cridava `SBsmooth`, una funció de `sabana.js` que no importava: en arribar al final de la pujada, el dibuix fallava a cada fotograma i l’activitat s’aturava. Ara té la seva pròpia funció (`SGsmooth`). Una revisió d’ESLint (`no-undef`) dels 180 mòduls de `dist/` no troba cap altre nom sense definir.
+- **Flaixos.** Les boires de paper de seda que passen just davant de la càmera quan travessa els núvols (`production/sabana/near.glsl`) eren massa opaques i contrastades: a la pujada final (cap als 17 s) feien 3,5–4,5 flaixos per segon. Ara són més transparents (opacitat 0,85 → 0,40) i de vora més suau. Resultat: 1,5 flaixos per segon. Les mateixes boires surten al primer segon de les escenes 1 i 2.
+- **Vídeos nous** de les escenes 1, 2 i 20 (`dist/videos/sabana/`), renderitzats fotograma a fotograma amb el codi corregit (1920×1080, 30 fps, x264 veryslow, tune animation, CRF 21, High 4.0, GOP 60, bt709) i amb el mateix so que els anteriors (pista copiada sense recodificar).
+
+## Proves
+
+- Flaixos (`tools/flash-analyze.py`): vídeos nous de les escenes 1, 2 i 20 a 1,5 flaixos per segon o menys; cap flaix vermell.
+- Suite completa.
+
+## No verificat
+
+- Els vídeos nous s’han renderitzat per programari (SwiftShader), no amb la targeta gràfica d’en Marc com els anteriors; fora dels núvols la imatge és la mateixa (PSNR Y 38,6 dB respecte de l’anterior entre els segons 3 i 12, diferències de gra del paper).
+
 # Pim Pam 0.77.1 · Etiqueta «Requereix WebGL2»
 
 Base: 0.77 (00808c7). Respon a en Marc (12 de novembre de 2026, 08:14): «a les fitxes que correspongui hi posarem una etiqueta que digui que requereix WebGL2».

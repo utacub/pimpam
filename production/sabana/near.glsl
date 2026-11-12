@@ -29,6 +29,6 @@ void main(){hourLight();vec2 p=pScreen();float asp=.5*uR.x/uR.y;if(uDecor>1.5){O
    over(dark,ss(.035,.02,abs(x))*ss(top+.01,top-.02,L.y)*wz);}}
  // wisps of tissue cloud while crossing the clouds over Kilimanjaro (y 1.8–3.0) and the high sea of clouds (y 4.0–4.9)
  float cz=ss(1.7,2.1,y)*ss(3.1,2.7,y)*ss(5.,3.,wrapX(uCam.x))+ss(3.9,4.2,y)*ss(5.0,4.7,y);
- if(cz>0.){float d=fbm(L*vec2(1.2,2.4)/s+vec2(uG*.02,0.));vec3 wc=mix(SKYH*.8+SUNC*.3,vec3(1.,.85,.82),GLOW*.4);over(wc,ss(.45,.72,d)*cz*.85);}
+ if(cz>0.){float d=fbm(L*vec2(1.2,2.4)/s+vec2(uG*.02,0.));vec3 wc=mix(SKYH*.8+SUNC*.3,vec3(1.,.85,.82),GLOW*.4);over(wc,ss(.40,.85,d)*cz*.40);}
  float e=max(abs(p.y)*2.,abs(p.x)/asp);N*=ss(.50,.96,e)*(uDecor>.5?uOpacity:1.);
  O=N;}
