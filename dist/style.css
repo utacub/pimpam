@@ -311,3 +311,6 @@
    Instal·la could not be reached without scrolling sideways). There they show only their icon, as on phones; the name stays in aria-label. */
 @media (min-width:651px) and (max-width:1240px){.topbar .nav .settings-button>span{display:none}.topbar .nav .settings-button{padding:10px}.topbar{gap:12px}.topbar .nav{flex-wrap:wrap;justify-content:flex-end;min-width:0}}
 @media (min-width:651px) and (max-width:950px){.topbar .user-chip span:last-child{display:none}.topbar .user-chip{padding:3px}}
+
+/* 0.77.1: «Requereix WebGL2» on the cards of the activities that need it */
+.card-req{display:inline-block;margin:-2px 0 8px;padding:3px 10px;border-radius:12px;border:1px solid #c8d8ef;background:#f4f8ff;color:#192e55;font-size:12px;font-weight:700}

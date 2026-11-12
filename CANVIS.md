@@ -1,3 +1,16 @@
+# Pim Pam 0.77.1 · Etiqueta «Requereix WebGL2»
+
+Base: 0.77 (00808c7). Respon a en Marc (12 de novembre de 2026, 08:14): «a les fitxes que correspongui hi posarem una etiqueta que digui que requereix WebGL2».
+
+## Què canvia
+
+- Les targetes de Pluja de colors, Laboratori de matèria i Fractals a la natura (`NEEDS_WEBGL2` a `dist/app.js`) mostren l’etiqueta «Requereix WebGL2» sota la línia de nivell i tipus. Sense WebGL2 aquestes tres activitats queden en negre (el text d’ajuda del costat ja ho explicava). No canvia res més.
+- Text nou als sis idiomes (u2179).
+
+## Proves
+
+- Suite completa. Captura a 1280 px (català) i 390 px (anglès): l’etiqueta surt a les tres targetes i a cap altra, sense errors.
+
 # Pim Pam 0.77 · Auditoria completa abans de la presentació
 
 Base: 0.76.1 (a6e5480). Respon a en Marc (11 de novembre de 2026, 23:32 i 23:34): auditoria completa de tota l’aplicació, amb les proves de flaixos, i comprovació en totes les plataformes.
