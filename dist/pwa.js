@@ -129,7 +129,7 @@ function pw_finestra(close,onClose){
   if(!l)return `<p>Calculant l’espai que ocupa…</p>`;
   if(pw_pwa.feina||fase==='baixa'){
    const [f,t]=pw_pwa.progres||[0,l.total];const pc=t?Math.floor(f/t*100):0;
-   return `<p>S’estan descarregant les activitats, els sons i els vídeos. Deixeu aquesta pw_finestra oberta fins que acabi.</p>
+   return `<p>S’estan descarregant les activitats, els sons i els vídeos. Deixeu aquesta finestra oberta fins que acabi.</p>
 <div class="instal-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pc}"><span style="width:${pc}%"></span></div>
 <p class="instal-xifres"><span>${pwaMida(f)} de ${pwaMida(t)}</span><span>${pc} %</span></p>
 <div class="dialog-actions"><span class="hint">Si s’atura, la propera vegada continuarà on s’ha quedat.</span><button class="btn" data-instal-atura>Atura</button></div>`;

@@ -250,7 +250,7 @@
 .card.has-hq{padding-bottom:58px}.card-hq{position:absolute;left:21px;bottom:16px;z-index:2;min-height:34px;padding:0 14px;border-radius:17px;border:1px solid #c8d8ef;background:#f4f8ff;color:var(--ink);font-size:12px;font-weight:700}.card-hq:hover{background:#e9f0ff}.card-hq[data-tip]::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:0;padding:6px 11px;border-radius:9px;background:#14213d;color:#fff;font:700 13px/1.2 system-ui,sans-serif;white-space:nowrap;box-shadow:0 6px 18px #0006;pointer-events:none;opacity:0;transform:translateY(3px);transition:opacity .12s,transform .12s;z-index:20}.card-hq[data-tip]:hover::after,.card-hq[data-tip]:focus-visible::after{opacity:1;transform:none}
 
 /* 0.50.5 · the version next to the Pim Pam logo on the home page */
-.app-version{align-self:flex-end;margin:0 0 12px -14px;font-size:11px;font-weight:650;letter-spacing:.02em;color:#6a7d96}
+.app-version{align-self:flex-end;margin:0 0 12px -14px;font-size:11px;font-weight:650;letter-spacing:.02em;color:#5d6f87}
 /* 0.50.6 · the UTAC logo lowered so that its letters are centred on the letters of «Pim Pam» (the swoosh and the button of the Pim Pam logo
    take its upper part); the sizes stay as they are (Marc, 7 November 2026) */
 .brands .utac-logo{transform:translateY(21%)}
@@ -307,3 +307,7 @@
 .instal-xifres{display:flex;justify-content:space-between;font-size:14px;font-weight:650}
 .instal-error{color:#b3261e;font-weight:650}.instal-ok{font-weight:650}
 .instal-body .hint{font-size:12px}
+/* 0.77 (audit): from 651 to 1240 px wide (tablets) the header buttons kept their words and went past the right edge (Configuració and
+   Instal·la could not be reached without scrolling sideways). There they show only their icon, as on phones; the name stays in aria-label. */
+@media (min-width:651px) and (max-width:1240px){.topbar .nav .settings-button>span{display:none}.topbar .nav .settings-button{padding:10px}.topbar{gap:12px}.topbar .nav{flex-wrap:wrap;justify-content:flex-end;min-width:0}}
+@media (min-width:651px) and (max-width:950px){.topbar .user-chip span:last-child{display:none}.topbar .user-chip{padding:3px}}

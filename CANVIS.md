@@ -1,3 +1,26 @@
+# Pim Pam 0.77 · Auditoria completa abans de la presentació
+
+Base: 0.76.1 (a6e5480). Respon a en Marc (11 de novembre de 2026, 23:32 i 23:34): auditoria completa de tota l’aplicació, amb les proves de flaixos, i comprovació en totes les plataformes.
+
+## Què canvia
+
+- **Tauletes (651–1240 px d’amplada).** Els botons de la capçalera mostraven el nom i sortien per la dreta («Configuració» i «Instal·la» no es podien prémer sense desplaçar la pàgina). Ara, en aquesta amplada, mostren només la icona, com als mòbils; el nom es manté a `aria-label`. Comprovat sense desplaçament horitzontal de 360 a 1920 px.
+- **Accessibilitat (axe-core).** El número de versió tenia un contrast de 4,05:1 (ara #5d6f87, 4,94:1). Les il·lustracions de la portada tenen `role="img"` per a la seva etiqueta.
+- **Instal·lació (PWA).** Un text visible deia «Deixeu aquesta pw_finestra oberta»; ara diu «finestra».
+- **Idiomes.** La frase de crèdits «La llista completa, so per so…» i dues frases noves de la Informació (codi de l’aplicació, logotips) no tenien traducció: ara són als cinc idiomes.
+- **Proves.** Tres límits de mida desfasats (masia 1,8 MB, natura 4,6 MB, detectius 7 MB) s’ajusten a les mides reals.
+- **Eines noves.** `tools/flash-audit-app.mjs`, `tools/flash-analyze.py`, `tools/flash-audit-videos.sh` (auditoria de flaixos WCAG 2.3.1 de totes les activitats i de tots els vídeos) i `tools/i18n-crawl.mjs` (textos que queden en català en un altre idioma). Resultats a `AUDITORIA_FLAIXOS.md`.
+
+## Proves
+
+- Suite completa: 476 de 476.
+- Flaixos: 46 de 46 pantalles en directe superen el criteri (El vestidor fantàstic, al límit); vídeos, 120 de 121 (no supera `sabana_escena_20.mp4`; `pou_escena_20.mp4` al límit).
+- WebKitGTK (motor de la família de Safari): les 45 activitats s’obren sense errors de JavaScript. Mòbils i tauletes emulats (iPhone 13, Pixel 7, iPad Mini, iPad Pro 11, Galaxy Tab S4). PWA: instal·lació completa i funcionament sense connexió.
+
+## No verificat
+
+- Firefox (no es pot descarregar en aquest entorn), Safari real a iOS i macOS, i targetes gràfiques reals. Sense WebGL2, Pluja de colors, Laboratori de matèria i Fractals a la natura queden en negre sense cap avís (decisió de disseny pendent).
+
 # Pim Pam 0.76.1 · Informació: «Un petit «pim» genera un gran «pam».» com a frase pròpia
 
 Base: 0.76 (8a7cddf). Respon a en Marc (11 de novembre de 2026, 23:30). Al primer paràgraf d’«Informació», la frase va després d’un punt: «…cada pulsació té una resposta clara, visual i sonora. Un petit «pim» genera un gran «pam».» Canviat als sis idiomes.

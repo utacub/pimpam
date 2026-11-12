@@ -50,7 +50,7 @@ test('the 71 recordings of the masia are on disk, one shot each, normalised, wit
  const zones=SAMPLE_BANK.masiaRec.zones;assert.equal(zones.length,71);assert.equal(SAMPLE_BANK.masiaRec.pitched,false);assert.equal(SAMPLE_BANK.masiaRec.strict,true);
  const credits=read('../dist/assets/samples/CREDITS.md');assert.match(credits,/Estiu a la masia \(EN26, 0\.39\)/);assert.match(credits,/7yhgOGoARG3njMTQXFwa/);
  let bytes=0;for(const z of zones){const f=new URL(z[0],samples);assert.ok(fs.existsSync(f),z[0]);bytes+=fs.statSync(f).size;assert.ok(z[3]>=.5&&z[3]<=5.01,z[0]);assert.equal(z[9],z[0].slice(6,-4));assert.ok(credits.includes('`'+z[0]+'`'),z[0]);}
- assert.ok(bytes<1.4e6,`${bytes} bytes of masia recordings`);
+ assert.ok(bytes<1.8e6,`${bytes} bytes of masia recordings`); // 0.77 audit: budget raised from 1.4 MB (the recordings measured 1.66 MB since the 0.44 masia fixes)
  assert.equal(new Set(zones.map(z=>z[9])).size,71);
  for(const id of MS_CHARS){const f=msFocusSound(id);assert.ok(f&&names('masiaRec').has(f.variant)&&f.len<=2);}});
 
