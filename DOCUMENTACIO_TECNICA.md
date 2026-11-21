@@ -1,5 +1,9 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.78.1 · Sense l’opció de mida (EN27–EN32)
+
+- `mjCfg` (dist/mira.js) envia sempre `cfg.size:2` (la mida «petita» de Mira i Juga 2, el màxim d’opcions); `mjFields` ja no té el selector `mjSize`, i `mjSize` ha sortit de `defaults` i de `validateProfile` (dist/input.js), que ignora les claus desconegudes, de manera que els perfils antics s’importen igual. Textos u2192–u2195 fora de i18n/ui-*.tsv.
+
 ## 0.78 · Sis activitats de Mira i Juga 2 (EN27–EN32)
 
 - **`dist/mira.js`** (prefix `mj`): `MJ_ITEMS` (catàleg, `type:'scan'`, `mira:<escena>`, sense `scanState`), `mjStart` (crea l’iframe `.mj-frame` al fons de `#stage`; el canvas del joc hi queda a sobre, transparent, amb el focus), `mjTick` (cada fotograma: ajustos → `PP.cfg`, opcions → `PP.targets`; torna `true` quan canvien), `mjPick`, `mjPause`, `mjLoad` (coberta de càrrega), `mjDraw` (`tlRing` amb `scanRing(settings)` al voltant de l’opció; el·lipse per als nenúfars i els ous), `mjFields` (ajustos `mjSize` '0'/'1'/'2', `mjSpeed` lenta/normal/rapida, `mjMusic`).

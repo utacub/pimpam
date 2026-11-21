@@ -19,9 +19,9 @@ test('0.78 the six Mira i Juga 2 activities: codes, kinds and folders',()=>{
 });
 
 test('0.78 settings: size, speed and music, validated',()=>{
- assert.equal(defaults.mjSize,'1');assert.equal(defaults.mjSpeed,'normal');assert.equal(defaults.mjMusic,true);
- assert.equal(validateProfile({mjSize:'2',mjSpeed:'lenta',mjMusic:false}).mjSize,'2');
- assert.throws(()=>validateProfile({mjSize:'3'}));assert.throws(()=>validateProfile({mjSpeed:'molt'}));assert.throws(()=>validateProfile({mjMusic:'no'}));
+ assert.equal(defaults.mjSize,undefined);assert.equal(defaults.mjSpeed,'normal');assert.equal(defaults.mjMusic,true);
+ assert.equal(validateProfile({mjSize:'2',mjSpeed:'lenta',mjMusic:false}).mjSpeed,'lenta');
+ assert.match(read('../dist/mira.js'),/cfg:\{size:2,/);assert.throws(()=>validateProfile({mjSpeed:'molt'}));assert.throws(()=>validateProfile({mjMusic:'no'}));
 });
 
 test('0.78 the bridge: every activity is a mode of an imported scene; the app shell of Mira i Juga 2 is out',()=>{
@@ -40,5 +40,5 @@ test('0.78 the names, descriptions and settings are in the six languages',()=>{
  const ca=read('../i18n/ui-ca.tsv');
  for(const l of ['es','eu','gl','en','fr']){const d=JSON.parse(read(`../dist/i18n/${l}.json`)).s;
   for(const x of MJ_ITEMS){assert.ok(ca.includes('\t'+x.name+'\n'),x.name);assert.ok(d[x.name],`${l} ${x.name}`);assert.ok(d[x.desc],`${l} ${x.id} desc`);}
-  for(const t of ['Mida','Velocitat de l’escena','Música de fons','Tria una opció.','Mira l’escena.'])assert.ok(d[t],`${l} ${t}`);}
+  for(const t of ['Velocitat de l’escena','Música de fons','Tria una opció.','Mira l’escena.'])assert.ok(d[t],`${l} ${t}`);}
 });

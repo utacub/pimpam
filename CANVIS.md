@@ -1,3 +1,20 @@
+# Pim Pam 0.78.1 · Sense l’opció de mida a les activitats de Mira i Juga 2
+
+Base: 0.78 (5ea7884). Respon a en Marc (21 de novembre de 2026, 17:37): en l’encercament no té sentit parlar de mides; cal treure l’opció i deixar-ho tot com la mida «petita» de Mira i Juga 2, la que té més elements per triar.
+
+## Què canvia
+
+- **Sense «Mida».** Les sis activitats de Mira i Juga 2 (EN27–EN32) ja no tenen l’ajust «Mida» a «Aquesta activitat»; només hi queden «Velocitat de l’escena» i «Música de fons».
+- **Sempre el màxim d’opcions.** L’escena rep sempre la mida petita de Mira i Juga 2: 4 peces per triar al robot, 4 ous, més files de nenúfars i més salts a l’estany, i les solapes del conte tal com les dona aquesta mida.
+- **Perfils.** Un perfil desat o exportat amb la 0.78 que porti `mjSize` es pot continuar important: el valor s’ignora.
+- **Idiomes.** Fora els quatre textos de l’ajust (u2192–u2195) als sis idiomes.
+
+## Proves
+
+- Suite completa: 480 de 480.
+- Navegador (Chromium, SwiftShader): Segueix l’ou, Munta el teu robot, Escolta i tria i El camí dels nenúfars, 8 tries cadascuna amb un commutador, cap error; 4 ous i 4 peces a cada tria.
+- No s’ha escoltat el so ni s’ha provat en una GPU real, en pantalla tàctil ni a Safari.
+
 # Pim Pam 0.78 · Sis activitats de Mira i Juga 2
 
 Base: 0.77.2 (35808b5). Respon a en Marc (21 de novembre de 2026, 16:34): importar «Segueix l’ou», «El camí dels nenúfars», «Munta el teu robot», «Igual que el plànol», «Tria el teu conte» i «Escolta i tria» de Mira i Juga 2, amb les formes d’accés de Pim Pam, a «Encercament: triar i crear» o «Encercament: relacionar».
@@ -9,7 +26,7 @@ Base: 0.77.2 (35808b5). Respon a en Marc (21 de novembre de 2026, 16:34): import
   - «Encercament: relacionar»: **Igual que el plànol** (EN30, robots mode 2), **Escolta i tria** (EN31, conte mode 2), **Segueix l’ou** (EN32, ous mode 2).
 - **El contingut és el de Mira i Juga 2**, sense tocar: l’escena corre sencera dins d’un iframe (`dist/mj2/`), amb els seus models 3D, fons, sons, veus i música. `tools/mj2-import.py` agafa l’`index.html` publicat de Mira i Juga 2 i en treu només el que és de l’app: el service worker i el manifest, la portada amb vídeos i la càrrega anticipada del bosc; hi afegeix `dist/mj2/pont.js` i copia els fitxers de les quatre escenes (55,6 MB).
 - **Forma d’accés de Pim Pam.** A l’escena no s’activa res amb la mirada, el ratolí ni el tacte. `pont.js` diu quines coses es poden triar en cada moment (les peces del prestatge i la palanca, les solapes, els nenúfars a l’abast, els ous quan s’aturen), amb la seva posició a la pantalla; Pim Pam hi fa córrer el seu focus (marc i capa de color dels ajustos d’encercament, un commutador automàtic o dos pas a pas, «Inici» manual i «Voltes») i tria amb la pulsació. Mentre l’escena es mou no hi ha res per triar ni cap marc; quan torna a preguntar, el focus comença per la primera opció, d’esquerra a dreta. Si passa una volta sencera sense pulsació, surt l’avís del commutador.
-- **Gestió de Pim Pam.** No hi ha la barra, els botons de mode, el menú ni la finestra d’opcions de Mira i Juga 2: la capçalera, la pausa, la configuració i la sortida són les de Pim Pam. A «Aquesta activitat» (els mateixos tres ajustos per a les sis): **Mida** (gran, mitjana o petita, com a Mira i Juga 2: més o menys opcions), **Velocitat de l’escena** (lenta, normal, ràpida) i **Música de fons**. El so i el volum són els de Pim Pam (al volum per defecte, 40 %, sona com a Mira i Juga 2). L’idioma de Pim Pam passa a l’escena (les veus de Mira i Juga 2 són als sis idiomes).
+- **Gestió de Pim Pam.** No hi ha la barra, els botons de mode, el menú ni la finestra d’opcions de Mira i Juga 2: la capçalera, la pausa, la configuració i la sortida són les de Pim Pam. A «Aquesta activitat» (els mateixos ajustos per a les sis): **Velocitat de l’escena** (lenta, normal, ràpida) i **Música de fons**. El so i el volum són els de Pim Pam (al volum per defecte, 40 %, sona com a Mira i Juga 2). L’idioma de Pim Pam passa a l’escena (les veus de Mira i Juga 2 són als sis idiomes).
 - **Sense rètols escrits** durant l’activitat (norma de l’encercament de Pim Pam): les preguntes d’en Biel i d’en Lluc ja no surten escrites; les veus es mantenen.
 - La pausa, un diàleg obert, una altra pestanya o la coberta de càrrega aturen l’escena i la fan callar.
 - Targetes: una imatge de cada escena quan pregunta (`dist/mj2/cartes/`, `tools/mj2-app.mjs cartes` + `tools/mj2-cartes.py`).

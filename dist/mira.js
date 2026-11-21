@@ -25,10 +25,10 @@ export const MJ_CARD=Object.freeze(Object.fromEntries(MJ_IDS.map(id=>[id,`./mj2/
 
 const MJ_SPEED={lenta:.6,normal:1,rapida:1.4};
 let MJ=null;
-// What the scene receives from the settings: size (Mira i Juga 2: «gran», «mitjana», «petita» = fewer or more options), speed, music,
-// sound and volume. At the default volume of Pim Pam (40 %) the scene sounds as loud as in Mira i Juga 2 (its own volume, 0.8).
+// What the scene receives from the settings: speed, music, sound and volume. The size is always Mira i Juga 2's «petita» (the most
+// options to choose from): with scanning, a size setting makes no sense (Marc, 21 November 2026, 0.78.1). At the default volume of Pim Pam (40 %) the scene sounds as loud as in Mira i Juga 2 (its own volume, 0.8).
 function mjCfg(s,lang){const total=s.sound?.8*(s.volume??40)/40:0,vol=Math.min(1,total);
- return {lang,boost:vol>0?total/vol:1,cfg:{size:+(s.mjSize??'1'),speed:MJ_SPEED[s.mjSpeed]??1,music:s.mjMusic!==false,sound:!!s.sound&&total>0,vol:vol||0,mvol:.35}};}
+ return {lang,boost:vol>0?total/vol:1,cfg:{size:2,speed:MJ_SPEED[s.mjSpeed]??1,music:s.mjMusic!==false,sound:!!s.sound&&total>0,vol:vol||0,mvol:.35}};}
 export function mjStart(game,s,stage,lang,host){mjStop();if(!stage)return;const f=document.createElement('iframe');
  f.className='mj-frame';f.src='./mj2/index.html';f.title=game.item.name;f.tabIndex=-1;f.setAttribute('aria-hidden','true');
  f.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;background:#000';
@@ -56,6 +56,6 @@ function mjShape(t){const {x,y,w,h}=t,P=[];
 export function mjDraw(c,w,h,s,index,progress){c.clearRect(0,0,w,h);const t=MJ?.targets[index];if(!t||MJ.paused)return;
  const fw=MJ.f.clientWidth||w,fh=MJ.f.clientHeight||h,kx=w/fw,ky=h/fh,pad=Math.max(6,(s.scanWidth||10)*.6);
  tlRing(c,mjShape({...t,x:t.x*kx-pad,y:t.y*ky-pad,w:t.w*kx+pad*2,h:t.h*ky+pad*2}),progress,1,Math.max(.6,Math.min(1.2,w/1280)),scanRing(s));}
-// The settings of the «Aquesta activitat» tab (the same three for the six activities).
+// The settings of the «Aquesta activitat» tab (the same two for the six activities).
 export function mjFields(s,sel,checkbox){
- return `<div class="form-grid">${sel('mjSize','Mida',[['0','Gran: poques opcions i grans'],['1','Mitjana'],['2','Petita: més opcions i més petites']],'Com a Mira i Juga 2. Al robot, 2, 3 o 4 peces per triar; al conte, 2 o 3 solapes; als ous, 2, 3 o 4 ous i més barreges; a l’estany, més files de nenúfars i més salts possibles.')}${sel('mjSpeed','Velocitat de l’escena',[['lenta','Lenta'],['normal','Normal'],['rapida','Ràpida']],'Com es mouen els personatges; als ous, com de ràpid es barregen.')}</div>${checkbox('mjMusic','Música de fons','La música de cada escena de Mira i Juga 2. Els sons i les veus sonen sempre que el so estigui activat.')}`;}
+ return `<div class="form-grid">${sel('mjSpeed','Velocitat de l’escena',[['lenta','Lenta'],['normal','Normal'],['rapida','Ràpida']],'Com es mouen els personatges; als ous, com de ràpid es barregen.')}</div>${checkbox('mjMusic','Música de fons','La música de cada escena de Mira i Juga 2. Els sons i les veus sonen sempre que el so estigui activat.')}`;}
