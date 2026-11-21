@@ -314,3 +314,7 @@
 
 /* 0.77.1: «Requereix WebGL2» on the cards of the activities that need it */
 .card-req{display:inline-block;margin:-2px 0 8px;padding:3px 10px;border-radius:12px;border:1px solid #c8d8ef;background:#f4f8ff;color:#192e55;font-size:12px;font-weight:700}
+
+/* 0.78: the six Mira i Juga 2 activities. The scene is an iframe at the bottom of the stage; the canvas with the scanning focus goes over it */
+.mj-stage #game-canvas{position:relative;z-index:2;background:transparent}
+.mj-stage .mj-frame{z-index:0}

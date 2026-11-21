@@ -32,7 +32,7 @@ u0038	Itxaron eta sakatu unea iristean: itsasargiaren argia, norbaitek jotzen du
 u0039	Sakatuta eutsi
 u0040	Etengailua sakatuta dagoen bitartean gertatzen da, eta askatzean amaitzen da.
 u0041	Ekorketa: aukeratu eta sortu
-u0042	Aukera guztiak onak diren eszenak: margotu, sukaldatu, asmatu, bidaiatu eta baserria.
+u0042	Aukera guztiak onak diren eszenak: margotu, sukaldatu, asmatu, bidaiatu, baserria, robot bat muntatu, ipuin bat aukeratu eta nenufarrez nenufar jauzi egin.
 u0043	Ekorketa: erlazionatu
 u0044	Berrikusteko
 u0045	Lehen jarduerak, hasieran ChatGPTrekin eginak. Bereizita gordetzen dira berrikusteko.
@@ -1843,7 +1843,7 @@ u2019	Kodea
 u2020	Mota
 u2021	Iraupena (s)
 u2022	Aukerak
-u2023	Eredu bat entzun eta soinua nondik datorren aurkitu; zulo bati begiratu eta bertan sartzen den pieza aurkitu.
+u2023	Eredu bat entzun eta soinua nondik datorren aurkitu; zulo bati begiratu eta bertan sartzen den pieza aurkitu; plano bat kopiatu, zer aukeratu behar den entzun eta arrautza bati jarraitu.
 u2024	Sakatze bakoitzak lorategiko lore bat irekitzen du; denak irekita daudenean, hurrengoak lorategi osoa pizten du.
 u2025	Haizeak beti aurrera bultzatzen du; eguna amaitzen denean, lurreratu eta beste bidaia bat hasten da.
 u2026	Eutsi sakatuta igelak putz egin dezan; askatu burbuilak hegan egin dezan.
@@ -2001,3 +2001,28 @@ u0372	Zerrenda osoa, soinuz soinu, jatorria, egilea, lizentzia eta egindako alda
 u2177	. Aplikazioaren kodea hemen dago:
 u2178	. Logotipoak erakunde titularren markak dira.
 u2179	WebGL2 behar du
+u2180	Muntatu zure robota
+u2181	Aukeratu zure ipuina
+u2182	Nenufarren bidea
+u2183	Planoa bezala
+u2184	Entzun eta aukeratu
+u2185	Jarraitu arrautzari
+u2186	Biel kastore ingeniariaren tailerra: aukeratu robotaren hankak, gorputza, besoak eta burua, objektu birziklatuekin egindako piezen artean. Garabiak pieza bakoitza eraman eta torlojuz lotzen du; robota osatuta dagoenean, palankak pizten du eta pieza bakoitzak bere grazia egiten du. Hiru robotetik behin, talde-argazkia.
+u2187	Lau orrialdeko liburu zabalgarria: Lluc kameleoiak galdetzen du nor ateratzen den ipuinean, nora doan, zer aurkitzen duen eta nola amaitzen den, eta aukeratutako hegal bakoitzak bere paperezko eszena altxatzen du. Amaieran, Llucek aukeratutako ipuin osoa irakurtzen du.
+u2188	Igel batek urmaela zeharkatu behar du bere familia zain duen ertzeraino: jauzi bakoitzean, aukeratu eskura dituen nenufarretako zeinetara jauzi egiten duen. Nenufar batzuek ezustekoak ezkutatzen dituzte; hiru igel iristen diren bakoitzean, festa.
+u2189	Bielen tailerrean, plano urdin batek kopiatu behar den robota erakusten du: aukeratu bertan marraztuta dagoen pieza. Ez dagokiona, garabiak kulunkatu eta apalera itzultzen du, errore-soinurik gabe; robota planoaren berdina denean, bera bakarrik pizten da.
+u2190	Lluc-en liburu zabalgarria: berak esaten du zer pertsonaia, zer leku, zer objektu edo zer amaiera aukeratu behar den, eta hori erakusten duen hegala aurkitu behar da. Ez bada hori, hegala tolestu egiten da eta Llucek berriro esaten du.
+u2191	Dinosauro-kume batek arrautzetako batetik deitzen du; gero arrautzak nahasten dira eta kumearena jarraitu eta gelditzen direnean aukeratu behar da. Ez bada hori, arrautzak ezetz esaten du eta kumeak berriro deitzen du zuzenetik.
+u2192	Tamaina
+u2193	Handia: aukera gutxi eta handiak
+u2194	Txikia: aukera gehiago eta txikiagoak
+u2195	Mira i Juga 2-n bezala. Robotean, aukeratzeko 2, 3 edo 4 pieza; ipuinean, 2 edo 3 hegal; arrautzetan, 2, 3 edo 4 arrautza eta nahasketa gehiago; urmaelean, nenufar-ilara gehiago eta jauzi posible gehiago.
+u2196	Eszenaren abiadura
+u2197	Motela
+u2198	Azkarra
+u2199	Pertsonaiak nola mugitzen diren; arrautzetan, zein azkar nahasten diren.
+u2200	Hondo-musika
+u2201	Mira i Juga 2-ren eszena bakoitzeko musika. Soinuak eta ahotsak entzuten dira soinua aktibatuta dagoen bitartean.
+u2202	Eszena mugitzen den bitartean ez dago ezer aukeratzeko; markoa itzultzen da eszenak galdetzen duenean.
+u2203	Aukeratu aukera bat.
+u2204	Begiratu eszenari.

@@ -27,7 +27,7 @@ function ctx(){const calls=[],fills=[],gradient={addColorStop(){}};return new Pr
 test('EN12 is «Encaixos de fusta», guided, in the folder of relating; «Puzles que cobren vida» is gone from the code',()=>{
  const row=SCAN_ACTIVITIES.find(a=>a.id==='encaix');assert.ok(row);assert.equal(row.code,'EN12');assert.equal(row.name,'Encaixos de fusta');assert.equal(row.task,'guided');
  assert.ok(!SCAN_ACTIVITIES.some(a=>a.id==='puzzle'));
- const app=read('../dist/app.js');assert.match(app,/ids:\['sounds','sources','encaix'\]/);assert.doesNotMatch(app,/'puzzle'/);
+ const app=read('../dist/app.js');assert.match(app,/ids:\['sounds','sources','encaix'[,\]]/);assert.doesNotMatch(app,/'puzzle'/);
  for(const f of ['../dist/scan-catalog.js','../dist/scan-art.js'])assert.doesNotMatch(read(f),/puzzle/,f);
  assert.match(read('../build_standalone.py'),/'encaix\.js','encaix-figures\.js','encaix-mons\.js','encaix-so\.js','encaix-art\.js'/);
  assert.match(app,/LOAD_HEAVY=\[[^\]]*'encaix'/);});

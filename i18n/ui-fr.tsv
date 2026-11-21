@@ -32,7 +32,7 @@ u0038	Attendre et appuyer au bon moment : la lumière du phare, la porte où l�
 u0039	Maintenir appuyé
 u0040	Ça se passe tant que le contacteur est maintenu et ça s’arrête quand on le relâche.
 u0041	Défilement : choisir et créer
-u0042	Des scènes où tous les choix sont bons : peindre, cuisiner, inventer, voyager et la ferme.
+u0042	Des scènes où tous les choix sont bons : peindre, cuisiner, inventer, voyager, la ferme, monter un robot, choisir une histoire et sauter de nénuphar en nénuphar.
 u0043	Défilement : associer
 u0044	À revoir
 u0045	Les premières activités, faites avec ChatGPT au début. Elles sont gardées à part pour être revues.
@@ -1843,7 +1843,7 @@ u2019	Code
 u2020	Type
 u2021	Durée (s)
 u2022	Choix
-u2023	Écouter un modèle et trouver d’où vient le son ; regarder un trou et trouver la pièce qui s’y emboîte.
+u2023	Écouter un modèle et trouver d’où vient le son ; regarder un trou et trouver la pièce qui s’y emboîte ; copier un plan, écouter ce qu’il faut choisir et suivre un œuf.
 u2024	Chaque appui ouvre une fleur du jardin ; quand elles sont toutes ouvertes, le suivant illumine tout le jardin.
 u2025	Le vent le pousse toujours en avant ; quand la journée se termine, il atterrit et un autre voyage commence.
 u2026	Maintiens appuyé pour que la grenouille souffle ; relâche pour que la bulle s’envole.
@@ -2001,3 +2001,28 @@ u0372	La liste complète, son par son, avec l’origine, l’auteur, la licence 
 u2177	. Le code de l’application se trouve sur
 u2178	. Les logos sont des marques des institutions titulaires.
 u2179	Nécessite WebGL2
+u2180	Monte ton robot
+u2181	Choisis ton histoire
+u2182	Le chemin de nénuphars
+u2183	Comme sur le plan
+u2184	Écoute et choisis
+u2185	Suis l’œuf
+u2186	L’atelier de Biel, le castor ingénieur : choisis les jambes, le corps, les bras et la tête du robot parmi des pièces faites d’objets recyclés. La grue apporte chaque pièce et la visse ; quand le robot est complet, le levier l’allume et chaque pièce fait son tour. Tous les trois robots, photo de groupe.
+u2187	Un livre animé de quatre pages : Lluc, le caméléon, demande qui est dans l’histoire, où il va, ce qu’il trouve et comment elle finit, et chaque rabat choisi fait se dresser sa scène de papier. À la fin, Lluc lit toute l’histoire choisie.
+u2188	Une grenouille doit traverser la mare jusqu’à la rive où l’attend sa famille : à chaque saut, choisis sur lequel des nénuphars à sa portée elle saute. Certains nénuphars cachent des surprises ; toutes les trois grenouilles arrivées, c’est la fête.
+u2189	Dans l’atelier de Biel, un plan bleu montre le robot à copier : choisis la pièce qui y est dessinée. Celle qui ne va pas, la grue la balance et la remet sur l’étagère, sans son d’erreur ; quand le robot est comme sur le plan, il s’allume tout seul.
+u2190	Le livre animé de Lluc : il dit quel personnage, quel lieu, quel objet ou quelle fin il faut choisir, et il faut trouver le rabat qui le montre. Si ce n’est pas celui-là, le rabat se replie et Lluc le redit.
+u2191	Un bébé dinosaure appelle depuis l’un des œufs ; puis les œufs se mélangent et il faut suivre celui du bébé et le choisir quand ils s’arrêtent. Si ce n’est pas celui-là, l’œuf dit non et le bébé appelle de nouveau depuis le bon.
+u2192	Taille
+u2193	Grande : peu d’options, et grandes
+u2194	Petite : plus d’options, et plus petites
+u2195	Comme dans Mira i Juga 2. Pour le robot, 2, 3 ou 4 pièces à choisir ; pour l’histoire, 2 ou 3 rabats ; pour les œufs, 2, 3 ou 4 œufs et plus de mélanges ; dans la mare, plus de rangées de nénuphars et plus de sauts possibles.
+u2196	Vitesse de la scène
+u2197	Lente
+u2198	Rapide
+u2199	Comment bougent les personnages ; pour les œufs, à quelle vitesse ils se mélangent.
+u2200	Musique de fond
+u2201	La musique de chaque scène de Mira i Juga 2. Les sons et les voix se font entendre tant que le son est activé.
+u2202	Pendant que la scène bouge, il n’y a rien à choisir ; le cadre revient quand la scène pose la question.
+u2203	Choisis une option.
+u2204	Regarde la scène.

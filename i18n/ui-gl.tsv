@@ -32,7 +32,7 @@ u0038	Agardar e premer cando toca: a luz do faro, a porta onde petan e as tres l
 u0039	Manter premido
 u0040	Pasa mentres se mantén premido o conmutador e remata ao soltalo.
 u0041	Varrido: escoller e crear
-u0042	Escenas onde todas as escollas son boas: pintar, cociñar, inventar, viaxar e a casa de labranza.
+u0042	Escenas onde todas as escollas son boas: pintar, cociñar, inventar, viaxar, a casa de labranza, montar un robot, escoller un conto e saltar de nenúfar en nenúfar.
 u0043	Varrido: relacionar
 u0044	Para revisar
 u0045	As primeiras actividades, feitas con ChatGPT ao principio. Gárdanse á parte para revisalas.
@@ -1843,7 +1843,7 @@ u2019	Código
 u2020	Tipo
 u2021	Duración (s)
 u2022	Escollas
-u2023	Escoitar un modelo e atopar de onde vén o son; mirar un oco e atopar a peza que encaixa nel.
+u2023	Escoitar un modelo e atopar de onde vén o son; mirar un oco e atopar a peza que encaixa nel; copiar un plano, escoitar que hai que escoller e seguir un ovo.
 u2024	Cada pulsación abre unha flor do xardín; cando todas están abertas, a seguinte acende o xardín enteiro.
 u2025	O vento sempre o empurra cara adiante; cando remata o día, aterra e comeza outra viaxe.
 u2026	Mantén premido para que a ra sopre; solta para que a burbulla voe.
@@ -2001,3 +2001,28 @@ u0372	A lista completa, son por son, coa orixe, o autor, a licenza e os cambios 
 u2177	. O código da aplicación está en
 u2178	. Os logotipos son marcas das institucións titulares.
 u2179	Require WebGL2
+u2180	Monta o teu robot
+u2181	Escolle o teu conto
+u2182	O camiño de nenúfares
+u2183	Igual que o plano
+u2184	Escoita e escolle
+u2185	Segue o ovo
+u2186	O obradoiro do Biel, o castor enxeñeiro: escolle as patas, o corpo, os brazos e a cabeza do robot entre pezas feitas con obxectos reciclados. O guindastre leva cada peza e aparafúsaa; co robot completo, a panca acéndeo e cada peza fai a súa graza. Cada tres robots, foto de grupo.
+u2187	Un libro despregable de catro páxinas: o Lluc, o camaleón, pregunta quen sae no conto, onde vai, que atopa e como remata, e cada solapa escollida levanta a súa escena de papel. Ao final, o Lluc le todo o conto que se escolleu.
+u2188	Unha ra ten que cruzar a lagoa ata a beira onde a agarda a súa familia: en cada salto, escolle a cal dos nenúfares que ten ao seu alcance salta. Algúns nenúfares agochan sorpresas; cada tres ras que chegan, festa.
+u2189	No obradoiro do Biel, un plano azul mostra o robot que hai que copiar: escolle a peza que está debuxada. A que non vai, o guindastre abanéaa e devólvea ao andel, sen son de erro; cando o robot é igual ca o plano, acéndese só.
+u2190	O libro despregable do Lluc: el di que personaxe, que lugar, que obxecto ou que final hai que escoller, e hai que atopar a solapa que o mostra. Se non é esa, a solapa dóbrase e o Lluc vólveo dicir.
+u2191	Unha cría de dinosauro chama desde un dos ovos; despois os ovos mestúranse e hai que seguir o da cría e escollelo cando se paran. Se non é ese, o ovo di que non e a cría volve chamar desde o bo.
+u2192	Tamaño
+u2193	Grande: poucas opcións e grandes
+u2194	Pequena: máis opcións e máis pequenas
+u2195	Como en Mira i Juga 2. No robot, 2, 3 ou 4 pezas para escoller; no conto, 2 ou 3 solapas; nos ovos, 2, 3 ou 4 ovos e máis mesturas; na lagoa, máis filas de nenúfares e máis saltos posibles.
+u2196	Velocidade da escena
+u2197	Lenta
+u2198	Rápida
+u2199	Como se moven os personaxes; nos ovos, o rápido que se mesturan.
+u2200	Música de fondo
+u2201	A música de cada escena de Mira i Juga 2. Os sons e as voces soan sempre que o son estea activado.
+u2202	Mentres a escena se move non hai nada que escoller; o marco volve cando a escena pregunta.
+u2203	Escolle unha opción.
+u2204	Mira a escena.

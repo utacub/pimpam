@@ -1,3 +1,32 @@
+# Pim Pam 0.78 · Sis activitats de Mira i Juga 2
+
+Base: 0.77.2 (35808b5). Respon a en Marc (21 de novembre de 2026, 16:34): importar «Segueix l’ou», «El camí dels nenúfars», «Munta el teu robot», «Igual que el plànol», «Tria el teu conte» i «Escolta i tria» de Mira i Juga 2, amb les formes d’accés de Pim Pam, a «Encercament: triar i crear» o «Encercament: relacionar».
+
+## Què canvia
+
+- **Sis activitats noves d’encercament** (EN27–EN32). Són modes de quatre escenes de Mira i Juga 2 1.2 (github.com/utacub/miraijuga2, 286eee3):
+  - «Encercament: triar i crear»: **Munta el teu robot** (EN27, robots mode 1), **Tria el teu conte** (EN28, conte mode 1), **El camí dels nenúfars** (EN29, estany mode 1).
+  - «Encercament: relacionar»: **Igual que el plànol** (EN30, robots mode 2), **Escolta i tria** (EN31, conte mode 2), **Segueix l’ou** (EN32, ous mode 2).
+- **El contingut és el de Mira i Juga 2**, sense tocar: l’escena corre sencera dins d’un iframe (`dist/mj2/`), amb els seus models 3D, fons, sons, veus i música. `tools/mj2-import.py` agafa l’`index.html` publicat de Mira i Juga 2 i en treu només el que és de l’app: el service worker i el manifest, la portada amb vídeos i la càrrega anticipada del bosc; hi afegeix `dist/mj2/pont.js` i copia els fitxers de les quatre escenes (55,6 MB).
+- **Forma d’accés de Pim Pam.** A l’escena no s’activa res amb la mirada, el ratolí ni el tacte. `pont.js` diu quines coses es poden triar en cada moment (les peces del prestatge i la palanca, les solapes, els nenúfars a l’abast, els ous quan s’aturen), amb la seva posició a la pantalla; Pim Pam hi fa córrer el seu focus (marc i capa de color dels ajustos d’encercament, un commutador automàtic o dos pas a pas, «Inici» manual i «Voltes») i tria amb la pulsació. Mentre l’escena es mou no hi ha res per triar ni cap marc; quan torna a preguntar, el focus comença per la primera opció, d’esquerra a dreta. Si passa una volta sencera sense pulsació, surt l’avís del commutador.
+- **Gestió de Pim Pam.** No hi ha la barra, els botons de mode, el menú ni la finestra d’opcions de Mira i Juga 2: la capçalera, la pausa, la configuració i la sortida són les de Pim Pam. A «Aquesta activitat» (els mateixos tres ajustos per a les sis): **Mida** (gran, mitjana o petita, com a Mira i Juga 2: més o menys opcions), **Velocitat de l’escena** (lenta, normal, ràpida) i **Música de fons**. El so i el volum són els de Pim Pam (al volum per defecte, 40 %, sona com a Mira i Juga 2). L’idioma de Pim Pam passa a l’escena (les veus de Mira i Juga 2 són als sis idiomes).
+- **Sense rètols escrits** durant l’activitat (norma de l’encercament de Pim Pam): les preguntes d’en Biel i d’en Lluc ja no surten escrites; les veus es mantenen.
+- La pausa, un diàleg obert, una altra pestanya o la coberta de càrrega aturen l’escena i la fan callar.
+- Targetes: una imatge de cada escena quan pregunta (`dist/mj2/cartes/`, `tools/mj2-app.mjs cartes` + `tools/mj2-cartes.py`).
+- Textos nous als sis idiomes (u2180–u2204) i descripcions de les dues carpetes ampliades (u0042, u2023).
+
+## Proves
+
+- Suite completa: 480 de 480.
+- `tools/mj2-app.mjs app`: les sis activitats obertes des de la seva carpeta, vuit tries cadascuna amb un commutador (Espai), sense cap error de pàgina ni cap fitxer que falti.
+
+## No verificat
+
+- No s’ha escoltat el so (és el de Mira i Juga 2 tal com és). El volum relatiu amb les altres activitats de Pim Pam és una estimació.
+- Proves amb SwiftShader (Chromium sense targeta gràfica); no provat a Windows/Chrome amb la targeta d’en Marc, ni a Safari, ni amb pantalla tàctil.
+- El fitxer únic (`build_standalone.py`) no inclou aquestes sis activitats: necessiten la carpeta `dist/mj2/` del web.
+- L’auditoria de flaixos no s’ha fet (en Marc la fa ell).
+
 # Pim Pam 0.77.2 · Sabana de paper: escena 20 sense excés de flaixos i sense aturades
 
 Base: 0.77.1 (8bd5675). Respon a en Marc (12 de novembre de 2026, 10:15): «Un cop corregida l’escena, fes-ne també el vídeo i publica-ho tot arreglat».

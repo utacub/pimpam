@@ -32,7 +32,7 @@ u0038	Esperar y pulsar cuando toca: la luz del faro, la puerta donde llaman y la
 u0039	Mantener pulsado
 u0040	Pasa mientras se mantiene pulsado el conmutador y termina al soltarlo.
 u0041	Barrido: elegir y crear
-u0042	Escenas donde todas las elecciones son buenas: pintar, cocinar, inventar, viajar y la masía.
+u0042	Escenas donde todas las elecciones son buenas: pintar, cocinar, inventar, viajar, la masía, montar un robot, elegir un cuento y saltar de nenúfar en nenúfar.
 u0043	Barrido: relacionar
 u0044	Por revisar
 u0045	Las primeras actividades, hechas con ChatGPT al principio. Se guardan aparte para revisarlas.
@@ -1843,7 +1843,7 @@ u2019	Código
 u2020	Tipo
 u2021	Duración (s)
 u2022	Elecciones
-u2023	Escuchar un modelo y encontrar de dónde viene el sonido; mirar un hueco y encontrar la pieza que encaja en él.
+u2023	Escuchar un modelo y encontrar de dónde viene el sonido; mirar un hueco y encontrar la pieza que encaja en él; copiar un plano, escuchar qué hay que elegir y seguir un huevo.
 u2024	Cada pulsación abre una flor del jardín; cuando todas están abiertas, la siguiente enciende todo el jardín.
 u2025	El viento siempre lo empuja hacia delante; cuando se acaba el día, aterriza y empieza otro viaje.
 u2026	Mantén pulsado para que la rana sople; suelta para que la burbuja vuele.
@@ -2001,3 +2001,28 @@ u0372	La lista completa, sonido por sonido, con el origen, el autor, la licencia
 u2177	. El código de la aplicación está en
 u2178	. Los logotipos son marcas de las instituciones titulares.
 u2179	Requiere WebGL2
+u2180	Monta tu robot
+u2181	Elige tu cuento
+u2182	El camino de nenúfares
+u2183	Igual que el plano
+u2184	Escucha y elige
+u2185	Sigue el huevo
+u2186	El taller de Biel, el castor ingeniero: elige las patas, el cuerpo, los brazos y la cabeza del robot entre piezas hechas con objetos reciclados. La grúa lleva cada pieza y la atornilla; con el robot completo, la palanca lo enciende y cada pieza hace su gracia. Cada tres robots, foto de grupo.
+u2187	Un libro desplegable de cuatro páginas: Lluc, el camaleón, pregunta quién sale en el cuento, adónde va, qué encuentra y cómo acaba, y cada solapa elegida levanta su escena de papel. Al final, Lluc lee todo el cuento que se ha elegido.
+u2188	Una rana tiene que cruzar el estanque hasta la orilla donde la espera su familia: en cada salto, elige a cuál de los nenúfares que tiene a su alcance salta. Algunos nenúfares esconden sorpresas; cada tres ranas que llegan, fiesta.
+u2189	En el taller de Biel, un plano azul muestra el robot que hay que copiar: elige la pieza que está dibujada. La que no va, la grúa la balancea y la devuelve al estante, sin sonido de error; cuando el robot es igual que el plano, se enciende solo.
+u2190	El libro desplegable de Lluc: él dice qué personaje, qué lugar, qué objeto o qué final hay que elegir, y hay que encontrar la solapa que lo muestra. Si no es esa, la solapa se pliega y Lluc lo vuelve a decir.
+u2191	Una cría de dinosaurio llama desde uno de los huevos; después los huevos se mezclan y hay que seguir el de la cría y elegirlo cuando se paran. Si no es ese, el huevo dice que no y la cría vuelve a llamar desde el bueno.
+u2192	Tamaño
+u2193	Grande: pocas opciones y grandes
+u2194	Pequeña: más opciones y más pequeñas
+u2195	Como en Mira i Juga 2. En el robot, 2, 3 o 4 piezas para elegir; en el cuento, 2 o 3 solapas; en los huevos, 2, 3 o 4 huevos y más mezclas; en el estanque, más filas de nenúfares y más saltos posibles.
+u2196	Velocidad de la escena
+u2197	Lenta
+u2198	Rápida
+u2199	Cómo se mueven los personajes; en los huevos, lo rápido que se mezclan.
+u2200	Música de fondo
+u2201	La música de cada escena de Mira i Juga 2. Los sonidos y las voces suenan siempre que el sonido esté activado.
+u2202	Mientras la escena se mueve no hay nada que elegir; el marco vuelve cuando la escena pregunta.
+u2203	Elige una opción.
+u2204	Mira la escena.

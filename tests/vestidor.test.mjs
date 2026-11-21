@@ -98,7 +98,7 @@ test('the drawing: board and effects with finite coordinates, with and without t
 
 test('the wiring: the folder, the settings, the loading, the sound, the build, the dictionaries and the home card',()=>{
  const app=read('../dist/app.js'),build=read('../build_standalone.py'),input=read('../dist/input.js');
- assert.match(app,/ids:\[[^\]]*'vehicles','vestidor'\]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vestidor'/);assert.match(app,/if\(id==='vestidor'\)out\.push\(vsSettings\(\)\)/);
+ assert.match(app,/ids:\[[^\]]*'vehicles','vestidor'[,\]]/);assert.match(app,/LOAD_HEAVY=\[[^\]]*'vestidor'/);assert.match(app,/if\(id==='vestidor'\)out\.push\(vsSettings\(\)\)/);
  for(const name of ['vsSettings','vsAirUpdate','vsAirStop'])assert.match(app,new RegExp(`function ${name}\\(`),name);assert.match(app,/vsAirStop\(\);ringStyle\(\)/);
  assert.match(app,/game\.vsMade\|\|\(game\.vsMade=\{\}\)\)\[state\.round\]=picks/);
  assert.match(build,/'vestidor-dades\.js','vestidor\.js','vestidor-gags\.js','vestidor-motor\.js','vestidor-art\.js','vestidor-so\.js'/);assert.match(build,/const VS_IMAGES=null;/);

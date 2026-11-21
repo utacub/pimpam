@@ -1,5 +1,12 @@
 # Pim Pam · 36 activitats · 0.36.3
 
+## 0.78 · Sis activitats de Mira i Juga 2 (EN27–EN32)
+
+- **`dist/mira.js`** (prefix `mj`): `MJ_ITEMS` (catàleg, `type:'scan'`, `mira:<escena>`, sense `scanState`), `mjStart` (crea l’iframe `.mj-frame` al fons de `#stage`; el canvas del joc hi queda a sobre, transparent, amb el focus), `mjTick` (cada fotograma: ajustos → `PP.cfg`, opcions → `PP.targets`; torna `true` quan canvien), `mjPick`, `mjPause`, `mjLoad` (coberta de càrrega), `mjDraw` (`tlRing` amb `scanRing(settings)` al voltant de l’opció; el·lipse per als nenúfars i els ous), `mjFields` (ajustos `mjSize` '0'/'1'/'2', `mjSpeed` lenta/normal/rapida, `mjMusic`).
+- **`dist/app.js`**: `mjPress` (sense opcions no fa res; amb `mjArmed` fals, la primera pulsació arma; amb dos commutadors, el primer avança) i `mjFrame` (rellotge `scan` sobre `mjCount()`, `scanLaps`, avís del commutador via `hintOn`). Branques a `start`, `home`, `accepted`, `frame`, `updateGameUI`, `activityStatus`, `activitySettings`, `paintPreview` (`MJ_CARD`), `loadSteps` i `LOAD_HEAVY`.
+- **`dist/mj2/`**: `index.html` (escrit per `tools/mj2-import.py <checkout de miraijuga2>`; no editar a mà), `pont.js` (API `window.PP`: `open(id,cfg)`, `close`, `cfg`, `targets`, `pick`, `pause`, `ready`), carpetes `ous`, `estany`, `robots`, `conte`, `so`, `fonts` i tres sons de `bosc`, `cartes/`, `origen.json` (versió i commit d’origen). El so de l’escena es crea sobre el context d’àudio de Pim Pam (`window.__mjAudio`) amb un bus propi que es desconnecta en sortir.
+- Per actualitzar-les quan canviï Mira i Juga 2: `python3 tools/mj2-import.py ../miraijuga2`, revisar amb `node tools/mj2-app.mjs app <carpeta>` i, si cal, refer les targetes (`node tools/mj2-app.mjs cartes && python3 tools/mj2-cartes.py`). Si Mira i Juga 2 canvia els noms interns (`st.opts`, `st.flaps`, `reachable()`, `G.ph`, `eggs`), cal adaptar `raw()` de `pont.js`.
+
 ## 0.75.3 · Fractals a la natura: el riu baixa de les fonts al mar
 
 - **`frFlow(S,n0)`** (`dist/fractals-formes.js`): gira en el temps i al llarg d’elles mateixes les línies desades des de `n0`: `t0' = t1 + t2 − (t0 + dur)`, s’intercanvien els extrems i els gruixos, i la distància a l’arrel es compta des de l’altre cap (`d' = dmax − d`). La xarxa del riu es construeix igual que abans (des de la desembocadura) i després es gira; els esdeveniments es posen al començament de cada ordre girat.

@@ -1,0 +1,13 @@
+{
+ "from": "github.com/utacub/miraijuga2",
+ "version": "1.2",
+ "commit": "286eee3",
+ "dirs": [
+  "ous",
+  "estany",
+  "robots",
+  "conte",
+  "so",
+  "fonts"
+ ]
+}

@@ -32,7 +32,7 @@ u0038	Wait and press at the right time: the lighthouse beam, the door when someo
 u0039	Press and hold
 u0040	Things happen while the switch is held down and stop when it is released.
 u0041	Scanning: choose and create
-u0042	Scenes where every choice is a good one: painting, cooking, inventing, travelling and the farmhouse.
+u0042	Scenes where every choice is a good one: painting, cooking, inventing, travelling, the farmhouse, building a robot, choosing a story and hopping from lily pad to lily pad.
 u0043	Scanning: match
 u0044	To review
 u0045	The first activities, made with ChatGPT at the beginning. They are kept apart to be reviewed.
@@ -1843,7 +1843,7 @@ u2019	Code
 u2020	Type
 u2021	Duration (s)
 u2022	Choices
-u2023	Listen to a model and find where the sound comes from; look at a hole and find the piece that fits it.
+u2023	Listen to a model and find where the sound comes from; look at a hole and find the piece that fits it; copy a plan, listen to what to choose and follow an egg.
 u2024	Each press opens a flower in the garden; when they are all open, the next one lights up the whole garden.
 u2025	The wind always pushes it onwards; when the day ends, it lands and another journey begins.
 u2026	Hold down so the frog blows; let go so the bubble flies.
@@ -2001,3 +2001,28 @@ u0372	The full list, sound by sound, with the source, the author, the licence an
 u2177	. The code of the app is at
 u2178	. The logos are trademarks of the institutions that own them.
 u2179	Requires WebGL2
+u2180	Build your robot
+u2181	Choose your story
+u2182	The lily pad path
+u2183	Just like the plan
+u2184	Listen and choose
+u2185	Follow the egg
+u2186	The workshop of Biel, the engineer beaver: choose the robot’s legs, body, arms and head from pieces made of recycled objects. The crane carries each piece and screws it on; when the robot is complete, the lever switches it on and each piece does its trick. Every three robots, a group photo.
+u2187	A four-page pop-up book: Lluc the chameleon asks who is in the story, where they go, what they find and how it ends, and each chosen flap raises its paper scene. At the end, Lluc reads the whole story that was chosen.
+u2188	A frog has to cross the pond to the bank where its family is waiting: at each hop, choose which of the lily pads within reach it jumps to. Some lily pads hide surprises; every three frogs that arrive, a party.
+u2189	In Biel’s workshop, a blue plan shows the robot to copy: choose the piece drawn on it. A piece that does not belong is swung by the crane and put back on the shelf, with no error sound; when the robot is just like the plan, it switches itself on.
+u2190	Lluc’s pop-up book: he says which character, place, object or ending to choose, and you have to find the flap that shows it. If it is not that one, the flap folds back and Lluc says it again.
+u2191	A baby dinosaur calls from one of the eggs; then the eggs are shuffled and you have to follow the baby’s egg and choose it when they stop. If it is not that one, the egg says no and the baby calls again from the right one.
+u2192	Size
+u2193	Large: few, big options
+u2194	Small: more options, and smaller
+u2195	As in Mira i Juga 2. In the robot, 2, 3 or 4 pieces to choose from; in the story, 2 or 3 flaps; with the eggs, 2, 3 or 4 eggs and more shuffles; in the pond, more rows of lily pads and more possible hops.
+u2196	Scene speed
+u2197	Slow
+u2198	Fast
+u2199	How the characters move; with the eggs, how fast they are shuffled.
+u2200	Background music
+u2201	The music of each Mira i Juga 2 scene. Sounds and voices play whenever the sound is on.
+u2202	While the scene is moving there is nothing to choose; the frame comes back when the scene asks.
+u2203	Choose an option.
+u2204	Watch the scene.
